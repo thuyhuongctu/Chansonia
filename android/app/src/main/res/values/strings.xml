@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Je m\'appelle Hương</string>
+    <string name="title_activity_main">Je m\'appelle Hương</string>
+    <string name="package_name">com.jemappellehuong.songbook</string>
+    <string name="custom_url_scheme">com.jemappellehuong.songbook</string>
+</resources>
