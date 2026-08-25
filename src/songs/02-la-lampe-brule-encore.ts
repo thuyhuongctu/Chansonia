@@ -1,0 +1,60 @@
+import type { RawSong } from "@/lib/catalog";
+
+export const song: RawSong = {
+  id: "la-lampe-brule-encore",
+  trackNo: 2,
+  title: "La lampe brûle encore",
+  subtitle: "Đèn vẫn còn sáng",
+  language: "Tiếng Việt · Pháp",
+  note: "Nguồn gốc khoảng lặng · Mất mát, ấm áp",
+  accent: "#f0876a",
+  audioSrc: "audio/track02-den-van-con-sang.mp3",
+  durationMs: 313416,
+  sections: [
+    {
+      id: "couplet1vn",
+      label: "Khổ 1",
+      startMs: 12536,
+      lines: [
+        "Em muốn đặt đôi tay xuống một lần,",
+        "cho trang giấy ngủ yên bên cửa sổ.",
+        "Cho đêm trôi như con nước thật chậm,",
+        "không đếm giờ, không gọi sớm bình minh.",
+        "Ngày còn bé, nhà mình từng rất rộng,",
+        "dẫu chỉ vừa đủ một mái hiên thôi.",
+        "Rồi một chiều, chiếc ghế bỗng im tiếng,",
+        "từ đó về sau chẳng có ai ngồi.",
+        "Em lớn lên bên người còn ở lại,",
+        "gom nắng chiều hong ấm những mùa đông.",
+        "Mẹ không kể những ngày xa xưa nữa,",
+        "chỉ thắp đèn khi trời xuống bên sông.",
+        "Có những khoảng trời không ai nhìn thấy,",
+        "vẫn theo mình qua hết những mùa sau.",
+        "Không thành vết thương để người ta hỏi,",
+        "chỉ thành một khoảng lặng rất sâu.",
+      ],
+    },
+    {
+      id: "prerefrain",
+      label: "Chuyển khúc",
+      startMs: 175740,
+      lines: [
+        "Nếu em đi chậm lại, dòng sông vẫn trôi mà.",
+        "Nếu em khép mắt lại, ngọn đèn vẫn ở nhà.",
+      ],
+    },
+    {
+      id: "refrain",
+      label: "Điệp khúc",
+      startMs: 199218,
+      lines: [
+        "Je voudrais te parler, à toi, về một người em nhớ mà không gọi.",
+        "Về một bàn tay từng ở rất gần, rồi hóa thành trời cao từ thuở ấy.",
+        "Je m'appelle Hương — em đã lớn qua bao mùa nước nổi.",
+        "Tên vẫn còn, căn nhà vẫn còn, chỉ một người đã đi xa mãi thôi.",
+        "Em muốn ngồi bên nhau một đêm, không cần hỏi vì sao em lặng im.",
+        "Ngoài kia con nước tìm về biển, còn em chỉ muốn ngủ thật yên.",
+      ],
+    },
+  ],
+};

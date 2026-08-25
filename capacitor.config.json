@@ -1,0 +1,16 @@
+{
+  "appId": "com.jemappellehuong.songbook",
+  "appName": "Je m'appelle Hương",
+  "webDir": "dist",
+  "android": { "allowMixedContent": false },
+  "server": { "androidScheme": "https" },
+  "plugins": {
+    "SplashScreen": {
+      "launchAutoHide": true,
+      "launchShowDuration": 1000,
+      "backgroundColor": "#07080d",
+      "androidSplashResourceName": "splash",
+      "showSpinner": false
+    }
+  }
+}
