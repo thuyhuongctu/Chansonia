@@ -1,4 +1,4 @@
-import { Pause, Play, SkipBack } from "lucide-react";
+import { Pause, Play, SkipBack, SkipForward } from "lucide-react";
 import { usePlayer, useSong } from "@/lib/player-store";
 import { cn, formatTime } from "@/lib/utils";
 
@@ -9,6 +9,8 @@ export function PlayerBar({ paper }: { paper: boolean }) {
   const play = usePlayer((s) => s.play);
   const pause = usePlayer((s) => s.pause);
   const seek = usePlayer((s) => s.seek);
+  const prev = usePlayer((s) => s.prev);
+  const next = usePlayer((s) => s.next);
   const progress = song.durationMs > 0 ? currentMs / song.durationMs : 0;
 
   return (
@@ -46,14 +48,14 @@ export function PlayerBar({ paper }: { paper: boolean }) {
       <div className="flex items-center gap-3 px-4 py-3 sm:px-6">
         <button
           type="button"
-          onClick={() => seek(0)}
+          onClick={() => void prev()}
           className={cn(
             "flex size-11 items-center justify-center rounded-lg transition-colors",
             paper
               ? "text-ink-muted hover:bg-paper-2 hover:text-ink-fg"
               : "text-fg-muted hover:bg-ink-3 hover:text-fg",
           )}
-          aria-label="Về đầu"
+          aria-label="Bài trước"
         >
           <SkipBack className="size-4" />
         </button>
@@ -72,6 +74,20 @@ export function PlayerBar({ paper }: { paper: boolean }) {
           ) : (
             <Play className="size-5 fill-current" />
           )}
+        </button>
+
+        <button
+          type="button"
+          onClick={() => void next()}
+          className={cn(
+            "flex size-11 items-center justify-center rounded-lg transition-colors",
+            paper
+              ? "text-ink-muted hover:bg-paper-2 hover:text-ink-fg"
+              : "text-fg-muted hover:bg-ink-3 hover:text-fg",
+          )}
+          aria-label="Bài tiếp theo"
+        >
+          <SkipForward className="size-4" />
         </button>
 
         <div
