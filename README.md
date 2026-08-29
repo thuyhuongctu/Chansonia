@@ -154,6 +154,14 @@ Capacitor 8.
 
 ---
 
+## See also
+
+[Open WebUI](https://github.com/open-webui/open-webui.git) — an open-source
+web UI for running local LLMs. Unrelated to this project, linked here for
+reference.
+
+---
+
 ## Copyright
 
 © 2026 Đỗ Thùy Hương. All rights reserved.
