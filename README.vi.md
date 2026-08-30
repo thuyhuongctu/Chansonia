@@ -5,7 +5,8 @@
 
 Chạy được ở hai nơi từ cùng một mã nguồn:
 
-- **Web** — mở bằng trình duyệt, hoặc đưa lên GitHub Pages / Netlify / Vercel.
+- **Web** — đang chạy tại **[thuyhuongctu.github.io/Chansonia](https://thuyhuongctu.github.io/Chansonia/)**,
+  tự động triển khai lại mỗi khi push vào nhánh `main`.
 - **Android** — đóng gói bằng Capacitor, nộp lên CH Play dưới dạng `.aab`.
 
 ---
@@ -51,7 +52,18 @@ khác — không phải sửa mã nguồn, chỉ đổi biến môi trường r�
 
 ---
 
-## 3. Đóng gói Android
+## 3. Triển khai bản web
+
+`.github/workflows/deploy-pages.yml` tự động build bản trực tuyến và đưa
+`dist/` lên GitHub Pages mỗi khi push vào `main`. Chỉ cần bật một lần ở
+Settings → Pages → Source: "GitHub Actions" trên GitHub — sau đó push vào
+`main` là đủ để cập nhật trang đang chạy.
+
+Muốn chạy tay: vào tab Actions → "Deploy web app to GitHub Pages" → Run workflow.
+
+---
+
+## 4. Đóng gói Android
 
 ```bash
 npm run build                       # hoặc bản trực tuyến ở mục 2.2
@@ -69,9 +81,14 @@ Khoá ký nằm ở `android/upload-keystore.jks`, mật khẩu ghi trong
 (`.gitignore` đã chặn sẵn) và cũng **không được làm mất** — mất khoá là mất
 quyền cập nhật ứng dụng trên CH Play.
 
+Cần cài Android SDK (platform 36, build-tools 36.0.0) để build — Android
+Studio tự cài sẵn, hoặc dùng `sdkmanager` trên máy không có giao diện, sau đó
+trỏ `android/local.properties` (`sdk.dir=...`) tới thư mục SDK. Tệp
+`local.properties` phụ thuộc từng máy nên đã bị `.gitignore` chặn.
+
 ---
 
-## 4. Thêm hoặc sửa bài hát
+## 5. Thêm hoặc sửa bài hát
 
 Xem `src/songs/README.md`. Tóm tắt ba bước:
 
@@ -84,7 +101,7 @@ Thời lượng (`durationMs`) phải khớp với tệp mp3, nếu lệch thì 
 
 ---
 
-## 5. Cấu trúc
+## 6. Cấu trúc
 
 ```
 src/
@@ -103,7 +120,7 @@ android/             dự án Capacitor
 
 ---
 
-## 6. Bản quyền
+## 7. Bản quyền
 
 © 2026 Đỗ Thùy Hương. Giữ toàn bộ quyền — xem `LICENSE`.
 
