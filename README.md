@@ -6,7 +6,8 @@ A lyrics-synchronised music player for the album
 
 One codebase, two targets:
 
-- **Web** — open in any browser, or deploy to GitHub Pages / Netlify / Vercel.
+- **Web** — live at **[thuyhuongctu.github.io/Chansonia](https://thuyhuongctu.github.io/Chansonia/)**,
+  redeployed automatically on every push to `main`.
 - **Android** — packaged with Capacitor, submitted to Google Play as an `.aab`.
 
 > **This is proprietary software.** It is published here for the author's own
@@ -92,6 +93,19 @@ source change needed, just rebuild.
 
 ---
 
+## Deploying the web app
+
+`.github/workflows/deploy-pages.yml` builds the streaming variant and
+publishes `dist/` to GitHub Pages on every push to `main`, via the official
+`actions/deploy-pages` flow. GitHub Pages must be enabled once, under repo
+Settings → Pages → Source: "GitHub Actions" — after that, pushing to `main`
+is the only step needed to update the live site.
+
+To trigger a deploy manually, run the workflow from the Actions tab
+("Deploy web app to GitHub Pages" → Run workflow).
+
+---
+
 ## Building for Android
 
 ```bash
@@ -112,6 +126,11 @@ Release builds are signed from `android/upload-keystore.jks` with credentials in
 `android/keystore.properties`. **Neither file is in this repository** — both are
 excluded by `.gitignore` and must be kept privately. Losing the keystore means
 losing the ability to publish updates under this application ID.
+
+Building for Android requires the Android SDK (platform 36, build-tools
+36.0.0) — installed automatically by Android Studio, or via `sdkmanager` on a
+headless machine, with `android/local.properties` pointing `sdk.dir` at it.
+`local.properties` is machine-specific and excluded by `.gitignore`.
 
 Google Play submission steps are written up in
 [HUONG-DAN-PHAT-HANH.md](HUONG-DAN-PHAT-HANH.md) (Vietnamese).
@@ -151,14 +170,6 @@ android/             Capacitor project
 
 Built with Vite 6, React 19, TypeScript 5.7, Tailwind CSS 4, Zustand 5 and
 Capacitor 8.
-
----
-
-## See also
-
-[Open WebUI](https://github.com/open-webui/open-webui.git) — an open-source
-web UI for running local LLMs. Unrelated to this project, linked here for
-reference.
 
 ---
 
