@@ -42,7 +42,8 @@ Total running time 26:42.
   navigator, so any part of a song can be jumped to directly.
 - Shows the full lyric sheet of a track as a static page for reading.
 - Carries an artist page with the album's epigraph, recurring motifs and links.
-- Auto-advances to the next track and remembers the playing queue.
+- Auto-advances to the next track, either in album order or shuffled.
+- Sleep timer: pauses playback automatically after 5–60 minutes.
 
 No account, no analytics, no advertising, no tracking of any kind.
 
