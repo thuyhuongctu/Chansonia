@@ -1,15 +1,19 @@
-import { Pause, Play, SkipBack } from "lucide-react";
+import { Pause, Play, Shuffle, SkipBack } from "lucide-react";
 import { usePlayer, useSong } from "@/lib/player-store";
+import { SleepTimerButton } from "@/components/sleep-timer";
 import { cn, formatTime } from "@/lib/utils";
 
 export function PlayerBar({ paper }: { paper: boolean }) {
   const song = useSong();
   const playing = usePlayer((s) => s.playing);
   const currentMs = usePlayer((s) => s.currentMs);
+  const playOrder = usePlayer((s) => s.playOrder);
+  const setPlayOrder = usePlayer((s) => s.setPlayOrder);
   const play = usePlayer((s) => s.play);
   const pause = usePlayer((s) => s.pause);
   const seek = usePlayer((s) => s.seek);
   const progress = song.durationMs > 0 ? currentMs / song.durationMs : 0;
+  const shuffling = playOrder === "shuffle";
 
   return (
     <div
@@ -46,6 +50,23 @@ export function PlayerBar({ paper }: { paper: boolean }) {
       <div className="flex items-center gap-3 px-4 py-3 sm:px-6">
         <button
           type="button"
+          onClick={() => setPlayOrder(shuffling ? "sequential" : "shuffle")}
+          aria-pressed={shuffling}
+          className={cn(
+            "flex size-11 items-center justify-center rounded-lg transition-colors",
+            shuffling
+              ? "text-coral"
+              : paper
+                ? "text-ink-muted hover:bg-paper-2 hover:text-ink-fg"
+                : "text-fg-muted hover:bg-ink-3 hover:text-fg",
+          )}
+          aria-label={shuffling ? "Đang phát ngẫu nhiên — chuyển sang phát theo thứ tự" : "Đang phát theo thứ tự — chuyển sang phát ngẫu nhiên"}
+        >
+          <Shuffle className="size-4" />
+        </button>
+
+        <button
+          type="button"
           onClick={() => seek(0)}
           className={cn(
             "flex size-11 items-center justify-center rounded-lg transition-colors",
@@ -74,13 +95,16 @@ export function PlayerBar({ paper }: { paper: boolean }) {
           )}
         </button>
 
-        <div
-          className={cn(
-            "ml-auto font-sans text-xs tabular-nums",
-            paper ? "text-ink-muted" : "text-fg-muted",
-          )}
-        >
-          {formatTime(currentMs)} / {formatTime(song.durationMs)}
+        <div className="ml-auto flex items-center gap-2">
+          <span
+            className={cn(
+              "font-sans text-xs tabular-nums",
+              paper ? "text-ink-muted" : "text-fg-muted",
+            )}
+          >
+            {formatTime(currentMs)} / {formatTime(song.durationMs)}
+          </span>
+          <SleepTimerButton paper={paper} />
         </div>
       </div>
     </div>
