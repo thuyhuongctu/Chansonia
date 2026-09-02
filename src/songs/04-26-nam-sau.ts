@@ -8,6 +8,7 @@ export const song: RawSong = {
   language: "Tiếng Việt",
   note: "Hồi sinh, ngộ ra · Hộp màu, màn hình, code",
   accent: "#a78bfa",
+  coverSrc: "covers/04-26-nam-sau.jpg",
   titleTrack: true,
   audioSrc: "audio/track04-26-nam-sau-v2.mp3",
   durationMs: 303024,

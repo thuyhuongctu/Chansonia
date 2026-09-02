@@ -8,6 +8,7 @@ export const song: RawSong = {
   language: "Tiếng Anh",
   note: "Thấu hiểu, chữa lành · Dòng sông, đôi vai",
   accent: "#34d399",
+  coverSrc: "covers/05-a-fathers-song.jpg",
   audioSrc: "audio/track05-father-song-v2.mp3",
   durationMs: 317472,
   sections: [
