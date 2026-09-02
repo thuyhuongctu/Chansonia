@@ -3,11 +3,13 @@
 Ứng dụng nghe nhạc kèm lời cho album **«La lampe, le fleuve et les couleurs»**
 (mini song-cycle · EP, 6 bài, sáng tác 07–13/08/2026).
 
-Chạy được ở hai nơi từ cùng một mã nguồn:
+Chạy được ở nhiều nơi từ cùng một mã nguồn:
 
-- **Web** — đang chạy tại **[thuyhuongctu.github.io/Chansonia](https://thuyhuongctu.github.io/Chansonia/)**,
-  tự động triển khai lại mỗi khi push vào nhánh `main`.
+- **Web** — bản GitHub Pages hiện có tại **[thuyhuongctu.github.io/Chansonia](https://thuyhuongctu.github.io/Chansonia/)**; bản web app giao diện mới được triển khai độc lập trong dự án `chansonia-web-app`.
 - **Android** — đóng gói bằng Capacitor, nộp lên CH Play dưới dạng `.aab`.
+- **iOS** — dự án Capacitor đã được tạo tại `ios/`, sẵn sàng mở bằng Xcode và gửi qua TestFlight/App Store sau khi cấu hình Apple Developer.
+
+Xem quy trình chi tiết tại [APP-STORE-TODO.md](APP-STORE-TODO.md).
 
 ---
 
@@ -88,7 +90,22 @@ trỏ `android/local.properties` (`sdk.dir=...`) tới thư mục SDK. Tệp
 
 ---
 
-## 5. Thêm hoặc sửa bài hát
+## 5. Đóng gói iOS và App Store
+
+```bash
+npm install
+npm run build
+npx cap sync ios
+npx cap open ios
+```
+
+Mở `ios/App/App.xcworkspace` bằng Xcode, chọn Team Apple Developer trong Signing & Capabilities, kiểm tra Bundle Identifier `com.jemappellehuong.songbook`, archive với `Any iOS Device (arm64)`, validate và upload bằng Organizer. Phần ký và gửi build cần thực hiện trên macOS với tài khoản Apple Developer; môi trường Linux không thể tạo archive iOS production.
+
+Xem checklist đầy đủ tại [APP-STORE-TODO.md](APP-STORE-TODO.md).
+
+---
+
+## 6. Thêm hoặc sửa bài hát
 
 Xem `src/songs/README.md`. Tóm tắt ba bước:
 
@@ -101,7 +118,7 @@ Thời lượng (`durationMs`) phải khớp với tệp mp3, nếu lệch thì 
 
 ---
 
-## 6. Cấu trúc
+## 7. Cấu trúc
 
 ```
 src/
@@ -120,7 +137,7 @@ android/             dự án Capacitor
 
 ---
 
-## 7. Bản quyền
+## 8. Bản quyền
 
 © 2026 Đỗ Thùy Hương. Giữ toàn bộ quyền — xem `LICENSE`.
 

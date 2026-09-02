@@ -3,12 +3,13 @@
   "appName": "Je m'appelle Hương",
   "webDir": "dist",
   "android": { "allowMixedContent": false },
+  "ios": { "contentInset": "automatic" },
   "server": { "androidScheme": "https" },
   "plugins": {
     "SplashScreen": {
       "launchAutoHide": true,
       "launchShowDuration": 1000,
-      "backgroundColor": "#07080d",
+      "backgroundColor": "#182033",
       "androidSplashResourceName": "splash",
       "showSpinner": false
     }
