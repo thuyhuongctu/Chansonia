@@ -90,6 +90,14 @@ source change needed, just rebuild.
 > outside the app. Choose the offline build, or a host with access control, if
 > the recordings need to stay restricted.
 
+### Deploying to GitHub Pages
+
+`.github/workflows/deploy-pages.yml` builds the streaming variant and deploys
+it to GitHub Pages on every push to `main`. One-time setup: in the repo's
+**Settings → Pages**, set **Source** to **GitHub Actions**. After that the
+live URL is `https://<owner>.github.io/<repo>/`, no manual build/upload step
+needed.
+
 ---
 
 ## Building for Android
