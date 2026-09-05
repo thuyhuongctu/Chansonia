@@ -49,6 +49,14 @@ VITE_AUDIO_BASE=https://thuyhuongctu.github.io/JESUISHUONG_WEBSITE_2026/assets/a
 Đổi `VITE_AUDIO_BASE` sang địa chỉ khác nếu sau này chuyển nhạc sang máy chủ
 khác — không phải sửa mã nguồn, chỉ đổi biến môi trường rồi build lại.
 
+### 2.3 Đưa lên GitHub Pages tự động
+
+`.github/workflows/deploy-pages.yml` tự build bản trực tuyến và đưa lên GitHub
+Pages mỗi khi có commit mới vào nhánh `main`. Cần bật một lần: vào
+**Settings → Pages** của repo, chọn **Source** là **GitHub Actions**. Sau đó
+địa chỉ live là `https://<owner>.github.io/<repo>/`, không cần build/upload
+tay nữa.
+
 ---
 
 ## 3. Đóng gói Android
