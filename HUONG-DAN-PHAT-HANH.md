@@ -28,7 +28,12 @@ Tài liệu này ghi lại những việc **chỉ chủ tài khoản làm đư�
 | Alias | `upload` |
 | Mật khẩu | ghi trong `android/keystore.properties` |
 | Chủ thể | CN=Do Thuy Huong, O=Personal Music Project, L=Can Tho, C=VN |
-| SHA-256 | `7B:72:DB:B7:FE:38:8C:8C:7E:3C:EE:55:12:EE:30:B5:E7:2E:3D:07:8B:FE:84:3E:85:E7:D5:8C:E5:F6:50:9E` |
+| SHA-256 | `48:69:87:7A:4D:7A:D5:8D:D7:D2:99:98:BD:86:58:85:3B:FA:F2:40:79:DC:90:A2:DB:D6:D5:AB:6B:84:70:5E` |
+
+> Khoá này được tạo lại ngày 09/09/2026 (lần nộp đầu tiên, chưa từng phát hành
+> nên tạo mới là an toàn). Nếu bạn từng có một tệp `.jks` khác với vân tay
+> `7B:72:DB:B7:...` từ trước, đó là khoá cũ — **không dùng lẫn hai khoá**, chỉ
+> giữ khoá khớp với vân tay ở trên.
 
 Sao lưu tệp `.jks` ra ít nhất hai nơi (ổ cứng ngoài + Drive riêng). Mất khoá thì
 không cập nhật được ứng dụng nữa, phải phát hành lại dưới package name khác.
