@@ -70,7 +70,7 @@ export function KaraokeStage() {
               <button
                 type="button"
                 onClick={() => void play()}
-                className="inline-flex h-13 items-center gap-2.5 rounded-full bg-fg px-7 py-3.5 font-sans text-base font-medium text-ink transition-all duration-200 hover:scale-[1.03] hover:shadow-[0_0_40px_-6px_rgba(255,255,255,0.35)] active:scale-[0.97]"
+                className="inline-flex h-13 items-center gap-2.5 rounded-full bg-fg px-7 py-3.5 font-sans text-base font-medium text-ink shadow-clay transition-all duration-200 hover:scale-[1.03] active:scale-[0.97]"
               >
                 <Play className="size-4 fill-current" />
                 Phát bài hát
