@@ -25,9 +25,9 @@ export function SectionNav({ paper }: { paper: boolean }) {
             type="button"
             onClick={() => seekSection(sec.id)}
             className={cn(
-              "h-9 shrink-0 rounded-full px-3 font-sans text-xs font-medium transition-colors",
-              active && paper && "bg-ink-fg text-paper",
-              active && !paper && "bg-coral text-ink",
+              "h-9 shrink-0 rounded-full px-3 font-sans text-xs font-medium transition-all",
+              active && paper && "bg-ink-fg text-paper shadow-clay-paper-sm",
+              active && !paper && "bg-coral text-ink shadow-clay-sm",
               !active && paper && "bg-paper-2 text-ink-muted hover:text-ink-fg",
               !active && !paper && "bg-ink-3 text-fg-muted hover:text-fg",
             )}
