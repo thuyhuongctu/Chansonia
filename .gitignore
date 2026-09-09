@@ -10,6 +10,10 @@ public/audio/*.mp3
 public/audio/*.wav
 public/audio/*.m4a
 
+# Remotion render output and cache
+out/
+.remotion/
+
 # Android build output
 android/build/
 android/app/build/
