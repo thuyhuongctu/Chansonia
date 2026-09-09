@@ -46,7 +46,13 @@ export function KaraokeStage() {
           <div className="hero-veil" aria-hidden />
 
           <div className="relative z-10 flex w-full max-w-3xl flex-col items-center text-center">
-            <Cover accent={song.accent} trackNo={song.trackNo} size="lg" />
+            <Cover
+              accent={song.accent}
+              trackNo={song.trackNo}
+              src={song.coverSrc}
+              alt={song.title}
+              size="lg"
+            />
 
             <p className="mt-6 font-sans text-[0.65rem] font-medium tracking-[0.28em] text-fg-muted uppercase">
               {ARTIST.name} · {song.language}

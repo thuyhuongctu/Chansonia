@@ -8,6 +8,7 @@ export const song: RawSong = {
   language: "Tiếng Anh",
   note: "Góc nhìn thứ ba · An ủi, cho phép nghỉ",
   accent: "#22d3ee",
+  coverSrc: "covers/03-the-lamp-still-burns.jpg",
   audioSrc: "audio/track03.mp3",
   durationMs: 124272,
   sections: [

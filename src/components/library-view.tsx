@@ -72,7 +72,7 @@ export function LibraryView() {
                       : "border-transparent hover:border-edge hover:bg-fg/[0.04]",
                   )}
                 >
-                  <Cover accent={s.accent} trackNo={s.trackNo} />
+                  <Cover accent={s.accent} trackNo={s.trackNo} src={s.coverSrc} alt={s.title} />
 
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">

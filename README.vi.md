@@ -5,7 +5,9 @@
 
 Chạy được ở nhiều nơi từ cùng một mã nguồn:
 
-- **Web** — bản GitHub Pages hiện có tại **[thuyhuongctu.github.io/Chansonia](https://thuyhuongctu.github.io/Chansonia/)**; bản web app giao diện mới được triển khai độc lập trong dự án `chansonia-web-app`.
+- **Web** — đang chạy tại **[thuyhuongctu.github.io/Chansonia](https://thuyhuongctu.github.io/Chansonia/)**,
+  tự động triển khai lại mỗi khi push vào nhánh `main` (xem mục 3). Bản web app
+  giao diện mới hơn đang được triển khai độc lập trong dự án `chansonia-web-app`.
 - **Android** — đóng gói bằng Capacitor, nộp lên CH Play dưới dạng `.aab`.
 - **iOS** — dự án Capacitor đã được tạo tại `ios/`, sẵn sàng mở bằng Xcode và gửi qua TestFlight/App Store sau khi cấu hình Apple Developer.
 
@@ -132,7 +134,8 @@ src/
 public/
   audio/             mp3 (không commit)
   brand/artist.jpg   ảnh chân dung
-android/             dự án Capacitor
+android/             dự án Capacitor (Android)
+ios/                 dự án Capacitor (iOS)
 ```
 
 ---
