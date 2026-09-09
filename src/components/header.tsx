@@ -56,7 +56,10 @@ export function AppHeader({ paper }: { paper: boolean }) {
       <div className="flex flex-wrap items-center gap-2">
         {view === "player" ? (
           <div
-            className={cn("flex rounded-lg p-1", paper ? "bg-paper-2" : "bg-ink-3")}
+            className={cn(
+              "flex rounded-clay-sm p-1",
+              paper ? "bg-paper-2 shadow-clay-paper-inset" : "bg-ink-3 shadow-clay-inset",
+            )}
             role="tablist"
             aria-label="Chế độ xem"
           >
@@ -100,9 +103,9 @@ function Tab({
       aria-selected={active}
       onClick={onClick}
       className={cn(
-        "flex h-10 items-center gap-1.5 rounded-md px-3 font-sans text-sm font-medium transition-colors duration-150",
-        active && paper && "bg-paper text-ink-fg shadow-sm",
-        active && !paper && "bg-ink-2 text-fg",
+        "flex h-10 items-center gap-1.5 rounded-clay-sm px-3 font-sans text-sm font-medium transition-all duration-150",
+        active && paper && "bg-paper text-ink-fg shadow-clay-paper-sm",
+        active && !paper && "bg-ink-2 text-fg shadow-clay-sm",
         !active && paper && "text-ink-muted hover:text-ink-fg",
         !active && !paper && "text-fg-muted hover:text-fg",
       )}

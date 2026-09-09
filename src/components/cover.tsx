@@ -10,6 +10,7 @@ export function Cover({
   src,
   alt,
   size = "md",
+  paper = false,
   className,
 }: {
   accent: string;
@@ -17,15 +18,19 @@ export function Cover({
   src?: string;
   alt?: string;
   size?: "sm" | "md" | "lg";
+  /** Đặt trên nền sáng (bg-paper) để dùng bóng đất sét sáng màu tương ứng */
+  paper?: boolean;
   className?: string;
 }) {
   const dim = { sm: "size-12", md: "size-16", lg: "size-28" }[size];
   const num = { sm: "text-sm", md: "text-lg", lg: "text-3xl" }[size];
+  const radius = size === "lg" ? "rounded-clay" : "rounded-clay-sm";
+  const clayShadow = paper ? "shadow-clay-paper" : "shadow-clay";
 
   if (src) {
     return (
       <div
-        className={cn("relative shrink-0 overflow-hidden rounded-xl", dim, className)}
+        className={cn("relative shrink-0 overflow-hidden", radius, clayShadow, dim, className)}
       >
         <img
           src={src}
@@ -40,7 +45,9 @@ export function Cover({
   return (
     <div
       className={cn(
-        "relative shrink-0 overflow-hidden rounded-xl",
+        "relative shrink-0 overflow-hidden",
+        radius,
+        clayShadow,
         dim,
         className,
       )}

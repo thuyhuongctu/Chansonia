@@ -54,12 +54,14 @@ export function SleepTimerButton({ paper }: { paper: boolean }) {
         aria-label="Hẹn giờ tắt nhạc"
         aria-expanded={open}
         className={cn(
-          "flex size-11 items-center justify-center rounded-lg transition-colors",
+          "flex size-11 items-center justify-center rounded-clay-sm transition-all active:scale-95",
           active
-            ? "text-coral"
+            ? paper
+              ? "bg-paper-2 text-coral shadow-clay-paper-inset"
+              : "bg-ink-3 text-coral shadow-clay-inset"
             : paper
-              ? "text-ink-muted hover:bg-paper-2 hover:text-ink-fg"
-              : "text-fg-muted hover:bg-ink-3 hover:text-fg",
+              ? "bg-paper text-ink-muted shadow-clay-paper-sm hover:text-ink-fg"
+              : "bg-ink text-fg-muted shadow-clay-sm hover:text-fg",
         )}
       >
         <Moon className={cn("size-4", active && "fill-current")} />
@@ -68,8 +70,8 @@ export function SleepTimerButton({ paper }: { paper: boolean }) {
       {open ? (
         <div
           className={cn(
-            "absolute bottom-full right-0 z-30 mb-2 w-64 rounded-xl border p-4 shadow-lg",
-            paper ? "border-edge-paper bg-paper" : "border-edge bg-ink-2",
+            "absolute bottom-full right-0 z-30 mb-2 w-64 rounded-clay p-4",
+            paper ? "bg-paper shadow-clay-paper" : "bg-ink-2 shadow-clay",
           )}
         >
           <p
@@ -94,7 +96,10 @@ export function SleepTimerButton({ paper }: { paper: boolean }) {
               <button
                 type="button"
                 onClick={cancelSleepTimer}
-                className="mt-3 w-full rounded-lg bg-coral px-3 py-2 font-sans text-sm font-medium text-white transition-opacity hover:opacity-90"
+                className={cn(
+                  "mt-3 w-full rounded-clay-sm bg-coral px-3 py-2 font-sans text-sm font-medium text-white transition-all active:scale-[0.98]",
+                  paper ? "shadow-clay-paper-sm" : "shadow-clay-sm",
+                )}
               >
                 Huỷ hẹn giờ
               </button>
@@ -141,8 +146,8 @@ export function SleepTimerButton({ paper }: { paper: boolean }) {
                 type="button"
                 onClick={startSleepTimer}
                 className={cn(
-                  "mt-3 w-full rounded-lg px-3 py-2 font-sans text-sm font-medium transition-opacity hover:opacity-90",
-                  paper ? "bg-ink-fg text-paper" : "bg-fg text-ink",
+                  "mt-3 w-full rounded-clay-sm px-3 py-2 font-sans text-sm font-medium transition-all active:scale-[0.98]",
+                  paper ? "bg-ink-fg text-paper shadow-clay-paper-sm" : "bg-fg text-ink shadow-clay-sm",
                 )}
               >
                 Bắt đầu

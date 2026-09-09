@@ -13,7 +13,7 @@ export function ScrollingStaff() {
   );
 
   return (
-    <div className="relative h-[88px] shrink-0 overflow-hidden border-b border-edge bg-ink-2 px-4">
+    <div className="relative h-[88px] shrink-0 overflow-hidden bg-ink-2 px-4 shadow-clay-inset">
       <svg
         viewBox={`0 0 800 ${STAFF_H + 16}`}
         className="h-full w-full"
