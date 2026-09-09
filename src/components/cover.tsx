@@ -1,19 +1,42 @@
 import { cn } from "@/lib/utils";
 
-/** Ảnh bìa sinh từ màu chủ đạo của bài — không cần tệp ảnh riêng cho từng track. */
+/**
+ * Ảnh bìa của bài hát. Có `src` thì hiển thị ảnh thật; không có thì sinh ảnh
+ * gradient từ màu chủ đạo (accent) — không bắt buộc phải có tệp ảnh riêng.
+ */
 export function Cover({
   accent,
   trackNo,
+  src,
+  alt,
   size = "md",
   className,
 }: {
   accent: string;
   trackNo: number;
+  src?: string;
+  alt?: string;
   size?: "sm" | "md" | "lg";
   className?: string;
 }) {
   const dim = { sm: "size-12", md: "size-16", lg: "size-28" }[size];
   const num = { sm: "text-sm", md: "text-lg", lg: "text-3xl" }[size];
+
+  if (src) {
+    return (
+      <div
+        className={cn("relative shrink-0 overflow-hidden rounded-xl", dim, className)}
+      >
+        <img
+          src={src}
+          alt={alt ?? ""}
+          className="size-full object-cover"
+          loading="lazy"
+        />
+      </div>
+    );
+  }
+
   return (
     <div
       className={cn(

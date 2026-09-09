@@ -36,6 +36,8 @@ export type RawSong = {
   note?: string;
   /** Màu chủ đạo của bài, dùng cho ảnh bìa và điểm nhấn giao diện */
   accent: string;
+  /** Ảnh bìa riêng của bài (tuỳ chọn) — không có thì dùng ảnh gradient sinh từ accent */
+  coverSrc?: string;
   /** Đánh dấu bài hát chủ đề của album */
   titleTrack?: boolean;
   audioSrc: string;
