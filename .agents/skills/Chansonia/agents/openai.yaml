@@ -1,0 +1,6 @@
+interface:
+  display_name: "Chansonia"
+  short_description: "Repo-specific patterns and workflows for Chansonia"
+  default_prompt: "Use the Chansonia repo skill to follow existing architecture, testing, and workflow conventions."
+policy:
+  allow_implicit_invocation: true
