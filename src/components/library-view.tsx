@@ -43,7 +43,7 @@ export function LibraryView() {
           <button
             type="button"
             onClick={() => void playSong(SONGS[0].id)}
-            className="inline-flex h-12 items-center gap-2.5 rounded-full bg-fg px-6 font-sans text-sm font-medium text-ink transition-all duration-200 hover:scale-[1.03] hover:shadow-[0_0_36px_-6px_rgba(255,255,255,0.35)] active:scale-[0.97]"
+            className="inline-flex h-12 items-center gap-2.5 rounded-full bg-fg px-6 font-sans text-sm font-medium text-ink shadow-clay transition-all duration-200 hover:scale-[1.03] active:scale-[0.97]"
           >
             <Play className="size-4 fill-current" />
             Phát từ đầu
@@ -66,10 +66,10 @@ export function LibraryView() {
                   onClick={() => openSong(s.id)}
                   onDoubleClick={() => void playSong(s.id)}
                   className={cn(
-                    "group flex w-full items-center gap-4 rounded-2xl border p-3 text-left transition-colors duration-150",
+                    "group flex w-full items-center gap-4 rounded-clay bg-ink-2/60 p-3 text-left transition-all duration-150",
                     active
-                      ? "border-fg/25 bg-fg/[0.07]"
-                      : "border-transparent hover:border-edge hover:bg-fg/[0.04]",
+                      ? "shadow-clay-inset"
+                      : "shadow-clay-sm hover:-translate-y-0.5 hover:shadow-clay",
                   )}
                 >
                   <Cover accent={s.accent} trackNo={s.trackNo} src={s.coverSrc} alt={s.title} />
@@ -107,8 +107,8 @@ export function LibraryView() {
                       className={cn(
                         "flex size-9 items-center justify-center rounded-full transition-all duration-150",
                         active && playing
-                          ? "bg-fg text-ink"
-                          : "bg-fg/10 text-fg opacity-0 group-hover:opacity-100",
+                          ? "bg-fg text-ink shadow-clay-sm"
+                          : "bg-fg/10 text-fg opacity-0 shadow-clay-sm group-hover:opacity-100",
                       )}
                       onClick={(e) => {
                         e.stopPropagation();
@@ -133,7 +133,7 @@ export function LibraryView() {
             {ALBUM.motifs.map((m) => (
               <span
                 key={m.label}
-                className="inline-flex items-center gap-2 rounded-full border border-edge px-3 py-1.5 font-sans text-xs text-fg-muted"
+                className="inline-flex items-center gap-2 rounded-full bg-ink-2/60 px-3 py-1.5 font-sans text-xs text-fg-muted shadow-clay-sm"
               >
                 <span aria-hidden>{m.icon}</span>
                 {m.label}

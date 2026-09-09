@@ -18,7 +18,7 @@ export function ArtistView() {
 
       <div className="relative z-10 mx-auto w-full max-w-3xl px-5 pt-12 pb-28 sm:px-8">
         <div className="flex flex-col items-center text-center">
-          <div className="relative size-28 overflow-hidden rounded-full border border-fg/15 bg-ink-3">
+          <div className="relative size-28 overflow-hidden rounded-full bg-ink-3 shadow-clay">
             <img
               src={ARTIST.portrait}
               alt={ARTIST.name}
@@ -62,7 +62,7 @@ export function ArtistView() {
             { k: "Thời lượng", v: formatTime(TOTAL_DURATION_MS) },
             { k: "Chương", v: String(ALBUM.chapters) },
           ].map((x) => (
-            <div key={x.k} className="rounded-2xl border border-edge px-4 py-4 text-center">
+            <div key={x.k} className="rounded-clay bg-ink-2/60 px-4 py-4 text-center shadow-clay-sm">
               <dt className="font-sans text-[0.6rem] tracking-[0.18em] text-fg-subtle uppercase">
                 {x.k}
               </dt>
@@ -84,7 +84,7 @@ export function ArtistView() {
                   href={l.url}
                   target="_blank"
                   rel="noreferrer noopener"
-                  className="inline-flex items-center gap-2 rounded-full border border-edge px-4 py-2 font-sans text-xs text-fg-muted transition-colors hover:border-fg/30 hover:text-fg"
+                  className="inline-flex items-center gap-2 rounded-full bg-ink-2/60 px-4 py-2 font-sans text-xs text-fg-muted shadow-clay-sm transition-all hover:-translate-y-0.5 hover:text-fg"
                 >
                   {l.label}
                   <ExternalLink className="size-3" />

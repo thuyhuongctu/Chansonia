@@ -22,11 +22,11 @@ export function PlayerBar({ paper }: { paper: boolean }) {
         paper ? "border-edge-paper bg-paper" : "border-edge bg-ink",
       )}
     >
-      <div className="px-4 pt-2 sm:px-6">
+      <div className="px-4 pt-3 sm:px-6">
         <div
           className={cn(
-            "relative h-1.5 cursor-pointer overflow-hidden rounded-full",
-            paper ? "bg-paper-2" : "bg-ink-3",
+            "relative h-2.5 cursor-pointer overflow-hidden rounded-full",
+            paper ? "bg-paper-2 shadow-clay-paper-inset" : "bg-ink-3 shadow-clay-inset",
           )}
           onClick={(e) => {
             const rect = e.currentTarget.getBoundingClientRect();
@@ -47,18 +47,20 @@ export function PlayerBar({ paper }: { paper: boolean }) {
         </div>
       </div>
 
-      <div className="flex items-center gap-3 px-4 py-3 sm:px-6">
+      <div className="flex items-center gap-3 px-4 py-4 sm:px-6">
         <button
           type="button"
           onClick={() => setPlayOrder(shuffling ? "sequential" : "shuffle")}
           aria-pressed={shuffling}
           className={cn(
-            "flex size-11 items-center justify-center rounded-lg transition-colors",
+            "flex size-11 items-center justify-center rounded-clay-sm transition-all active:scale-95",
             shuffling
-              ? "text-coral"
+              ? paper
+                ? "bg-paper-2 text-coral shadow-clay-paper-inset"
+                : "bg-ink-3 text-coral shadow-clay-inset"
               : paper
-                ? "text-ink-muted hover:bg-paper-2 hover:text-ink-fg"
-                : "text-fg-muted hover:bg-ink-3 hover:text-fg",
+                ? "bg-paper text-ink-muted shadow-clay-paper-sm hover:text-ink-fg"
+                : "bg-ink text-fg-muted shadow-clay-sm hover:text-fg",
           )}
           aria-label={shuffling ? "Đang phát ngẫu nhiên — chuyển sang phát theo thứ tự" : "Đang phát theo thứ tự — chuyển sang phát ngẫu nhiên"}
         >
@@ -69,10 +71,10 @@ export function PlayerBar({ paper }: { paper: boolean }) {
           type="button"
           onClick={() => seek(0)}
           className={cn(
-            "flex size-11 items-center justify-center rounded-lg transition-colors",
+            "flex size-11 items-center justify-center rounded-clay-sm transition-all active:scale-95",
             paper
-              ? "text-ink-muted hover:bg-paper-2 hover:text-ink-fg"
-              : "text-fg-muted hover:bg-ink-3 hover:text-fg",
+              ? "bg-paper text-ink-muted shadow-clay-paper-sm hover:text-ink-fg"
+              : "bg-ink text-fg-muted shadow-clay-sm hover:text-fg",
           )}
           aria-label="Về đầu"
         >
@@ -83,8 +85,8 @@ export function PlayerBar({ paper }: { paper: boolean }) {
           type="button"
           onClick={() => (playing ? pause() : void play())}
           className={cn(
-            "flex size-12 items-center justify-center rounded-full transition-transform active:scale-95",
-            paper ? "bg-ink-fg text-paper" : "bg-fg text-ink",
+            "flex size-13 items-center justify-center rounded-full transition-transform active:scale-95",
+            paper ? "bg-ink-fg text-paper shadow-clay-paper" : "bg-fg text-ink shadow-clay",
           )}
           aria-label={playing ? "Tạm dừng" : "Phát"}
         >
