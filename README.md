@@ -4,11 +4,15 @@ A lyrics-synchronised music player for the album
 **«La lampe, le fleuve et les couleurs»** — a six-track mini song-cycle by
 **Je m'appelle Hương** (Đỗ Thùy Hương), written between 7 and 13 August 2026.
 
-One codebase, two targets:
+One codebase, multiple targets:
 
 - **Web** — live at **[thuyhuongctu.github.io/Chansonia](https://thuyhuongctu.github.io/Chansonia/)**,
-  redeployed automatically on every push to `main`.
+  redeployed automatically on every push to `main`. A newer-UI web app is
+  deployed separately from the `chansonia-web-app` project.
 - **Android** — packaged with Capacitor, submitted to Google Play as an `.aab`.
+- **iOS** — Capacitor project scaffolded under `ios/`, ready to open in Xcode
+  and submit via TestFlight/App Store once signed with an Apple Developer
+  account. See [APP-STORE-TODO.md](APP-STORE-TODO.md).
 
 > **This is proprietary software.** It is published here for the author's own
 > use and record. No open-source licence is granted — see [LICENSE](LICENSE).
@@ -138,6 +142,25 @@ Google Play submission steps are written up in
 
 ---
 
+## Building for iOS
+
+```bash
+npm run build
+npx cap sync ios
+npx cap open ios
+```
+
+Open `ios/App/App.xcworkspace` in Xcode (not the bare `.xcodeproj`), select an
+Apple Developer Team under Signing & Capabilities, confirm the Bundle
+Identifier is `com.jemappellehuong.songbook`, then archive with
+`Any iOS Device (arm64)`, validate, and upload via the Organizer. Signing and
+submitting requires macOS and an Apple Developer account — this can't be done
+from a Linux environment.
+
+Full checklist in [APP-STORE-TODO.md](APP-STORE-TODO.md).
+
+---
+
 ## Adding or editing a song
 
 Each track is one file under `src/songs/`. The full procedure is in
@@ -166,7 +189,8 @@ src/
 public/
   audio/             mp3 files (never committed)
   brand/artist.jpg   portrait
-android/             Capacitor project
+android/             Capacitor project (Android)
+ios/                 Capacitor project (iOS)
 ```
 
 Built with Vite 6, React 19, TypeScript 5.7, Tailwind CSS 4, Zustand 5 and
