@@ -27,6 +27,22 @@
   --radius-md: 12px;
   --radius-lg: 16px;
   --radius-xl: 24px;
+  --radius-clay: 28px;
+  --radius-clay-sm: 20px;
+
+  /* ── Bóng "đất sét" (claymorphism): sáng một góc, tối một góc, mềm ── */
+  --shadow-clay: 10px 10px 24px color-mix(in oklab, black 62%, transparent),
+    -8px -8px 18px color-mix(in oklab, white 5%, transparent);
+  --shadow-clay-sm: 5px 5px 12px color-mix(in oklab, black 56%, transparent),
+    -4px -4px 10px color-mix(in oklab, white 4%, transparent);
+  --shadow-clay-inset: inset 5px 5px 11px color-mix(in oklab, black 62%, transparent),
+    inset -4px -4px 9px color-mix(in oklab, white 3%, transparent);
+  --shadow-clay-paper: 10px 10px 22px color-mix(in oklab, var(--color-ink-fg) 20%, transparent),
+    -8px -8px 16px color-mix(in oklab, white 95%, transparent);
+  --shadow-clay-paper-sm: 5px 5px 12px color-mix(in oklab, var(--color-ink-fg) 18%, transparent),
+    -4px -4px 9px color-mix(in oklab, white 90%, transparent);
+  --shadow-clay-paper-inset: inset 5px 5px 11px color-mix(in oklab, var(--color-ink-fg) 22%, transparent),
+    inset -4px -4px 9px color-mix(in oklab, white 75%, transparent);
 }
 
 @layer base {

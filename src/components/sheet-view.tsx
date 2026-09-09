@@ -11,7 +11,7 @@ export function SheetView() {
     <div className="flex-1 overflow-y-auto bg-paper px-4 py-10 text-ink-fg sm:px-8">
       <div className="mx-auto max-w-2xl">
         <header className="mb-10 border-b border-edge-paper pb-6 text-center">
-          <Cover accent={song.accent} trackNo={song.trackNo} size="lg" className="mx-auto" />
+          <Cover accent={song.accent} trackNo={song.trackNo} size="lg" paper className="mx-auto" />
           <p className="mt-4 font-sans text-xs font-medium tracking-[0.2em] text-ink-muted uppercase">
             School of Economics · Cần Thơ University
           </p>
