@@ -1,4 +1,5 @@
 import { AppHeader } from "@/components/header";
+import { HuongAiMascot } from "@/components/huong-ai-mascot";
 import { LibraryView } from "@/components/library-view";
 import { ArtistView } from "@/components/artist-view";
 import { KaraokeStage } from "@/components/karaoke-stage";
@@ -43,6 +44,7 @@ export default function App() {
       )}
 
       <PlayerBar paper={paper} />
+      <HuongAiMascot />
     </div>
   );
 }
