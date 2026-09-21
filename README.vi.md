@@ -118,6 +118,22 @@ Xem `src/songs/README.md`. Tóm tắt ba bước:
 
 Thời lượng (`durationMs`) phải khớp với tệp mp3, nếu lệch thì lời chạy sai nhịp.
 
+Mỗi bài còn có thể khai báo các trường như trang songbook: `coverSrc` (ảnh bìa),
+`style` (dòng *Style:* — thể loại, BPM, nhạc cụ), `signature` (câu hát đại diện,
+in nghiêng) và `pictures` (ảnh đất sét kèm chú thích). Ảnh để trong
+`public/art/`, liệt kê ở `src/lib/art.ts`.
+
+---
+
+## 6b. Hình ảnh và giao diện
+
+Toàn bộ hình trong ứng dụng lấy từ trang songbook cá nhân
+[`Je-mappelle-Huong/music.html`](https://thuyhuongctu.github.io/Je-mappelle-Huong/music.html)
+và được đóng gói sẵn trong `public/art/` nên mở offline vẫn thấy đủ. Giao diện
+dùng đúng bộ màu của trang đó: giấy `#f6f1e7`, đất nung `#c45c3a`, xanh sông
+`#3f6f68`, tiêu đề chữ serif, thẻ giấy bo 16px có viền mảnh và bóng mềm; kèm
+bản nền tối theo cài đặt máy hoặc nút Sáng/Tối ở đầu trang.
+
 ---
 
 ## 7. Cấu trúc
@@ -129,10 +145,13 @@ src/
     catalog.ts       gom các bài, tính mốc thời gian cho từng dòng lời
     audio-source.ts  công tắc offline / trực tuyến
     player-store.ts  trạng thái trình phát (Zustand)
-  songs/             mỗi bài một tệp: lời + mốc thời gian
+    art.ts           kho ảnh đất sét dùng chung (đường dẫn trong public/art)
+    theme.ts         chuyển nền sáng/tối, giống nút Sáng·Tối của trang web
+  songs/             mỗi bài một tệp: lời, mốc thời gian, ảnh, dòng Style
   components/        giao diện
 public/
   audio/             mp3 (không commit)
+  art/               ảnh đất sét chép từ trang songbook
   brand/artist.jpg   ảnh chân dung
 android/             dự án Capacitor (Android)
 ios/                 dự án Capacitor (iOS)

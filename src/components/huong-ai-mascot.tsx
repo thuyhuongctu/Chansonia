@@ -54,7 +54,7 @@ export function HuongAiMascot() {
       onClick={poke}
       aria-label="Hương AI"
       title="Hương AI"
-      className="fixed right-3 bottom-24 z-30 flex size-14 items-center justify-center rounded-full bg-ink-2 shadow-clay transition-transform duration-150 ease-out sm:right-6 sm:bottom-28"
+      className="fixed right-3 bottom-24 z-30 flex size-14 items-center justify-center rounded-full border border-line bg-surface shadow-song transition-transform duration-150 ease-out sm:right-6 sm:bottom-28"
       style={{
         transform: bounce
           ? "scale(1.14) rotate(-4deg)"
@@ -62,7 +62,7 @@ export function HuongAiMascot() {
       }}
     >
       <img
-        src="/brand/huong-ai.webp"
+        src="brand/huong-ai.webp"
         alt=""
         aria-hidden
         className="size-full rounded-full object-cover object-top"

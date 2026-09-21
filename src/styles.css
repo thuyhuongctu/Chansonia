@@ -1,59 +1,104 @@
 @import "tailwindcss";
 
-@theme {
-  --color-ink: #07080d;
-  --color-ink-2: #0e1018;
-  --color-ink-3: #171a26;
-  --color-paper: #f6eee6;
-  --color-paper-2: #eadfd4;
-  --color-fg: #f5ece6;
-  --color-fg-muted: #b7a396;
-  --color-fg-subtle: #7d6c62;
-  --color-ink-fg: #2a201c;
-  --color-ink-muted: #6e5e54;
-  --color-coral: #d47868;
-  --color-coral-bright: #f0b5a8;
-  /* Bảng màu aurora cho hero */
-  --color-aurora-1: #4b7bec;
-  --color-aurora-2: #22d3ee;
-  --color-aurora-3: #a78bfa;
-  --color-aurora-4: #f0876a;
-  --color-edge: color-mix(in oklab, #f5ece6 10%, transparent);
-  --color-edge-paper: color-mix(in oklab, #2a201c 14%, transparent);
-  --color-staff: #262b3d;
-  --font-display: "Fraunces", "Times New Roman", serif;
-  --font-sans: "Figtree", ui-sans-serif, system-ui, sans-serif;
+/* ══════════════════════════════════════════════════════════════════════
+   BẢNG MÀU "ĐẤT SÉT" — cùng một bộ token với trang songbook cá nhân
+   (thuyhuongctu.github.io/Je-mappelle-Huong/music.html).
+   Mặc định là giấy sáng; chuyển tối theo cài đặt hệ thống, hoặc theo
+   thuộc tính data-theme trên thẻ <html> khi người dùng tự chọn.
+   ══════════════════════════════════════════════════════════════════════ */
+
+:root {
+  --paper: #f6f1e7;
+  --surface: #fffcf5;
+  --sunk: #efe8dc;
+  --ink: #1c1814;
+  --muted: #6f6459;
+  --subtle: #8c8073;
+  --line: #e2d8c7;
+  --accent: #c45c3a;
+  --accent-2: #3f6f68;
+  --accent-soft: #f3e4da;
+  --gold: #b8842c;
+  --shadow: 0 1px 1px rgba(60, 40, 28, 0.05), 0 10px 22px rgba(90, 60, 40, 0.09);
+  --shadow-lift: 0 2px 3px rgba(60, 40, 28, 0.07), 0 18px 34px rgba(90, 60, 40, 0.14);
+  --press: inset 0 2px 0 rgba(255, 255, 255, 0.72), inset 0 -2px 0 rgba(120, 85, 60, 0.06);
+  --wash-opacity: 0.055;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #17130f;
+    --surface: #201914;
+    --sunk: #120e0b;
+    --ink: #efe6d8;
+    --muted: #a6998a;
+    --subtle: #877b6d;
+    --line: #332a22;
+    --accent: #e08055;
+    --accent-2: #79b3a6;
+    --accent-soft: #3a251c;
+    --gold: #d6a24e;
+    --shadow: 0 1px 1px rgba(0, 0, 0, 0.4), 0 10px 24px rgba(0, 0, 0, 0.42);
+    --shadow-lift: 0 2px 4px rgba(0, 0, 0, 0.45), 0 18px 36px rgba(0, 0, 0, 0.5);
+    --press: inset 0 2px 0 rgba(255, 255, 255, 0.05), inset 0 -2px 0 rgba(0, 0, 0, 0.28);
+    --wash-opacity: 0.085;
+  }
+}
+
+:root[data-theme="dark"] {
+  --paper: #17130f;
+  --surface: #201914;
+  --sunk: #120e0b;
+  --ink: #efe6d8;
+  --muted: #a6998a;
+  --subtle: #877b6d;
+  --line: #332a22;
+  --accent: #e08055;
+  --accent-2: #79b3a6;
+  --accent-soft: #3a251c;
+  --gold: #d6a24e;
+  --shadow: 0 1px 1px rgba(0, 0, 0, 0.4), 0 10px 24px rgba(0, 0, 0, 0.42);
+  --shadow-lift: 0 2px 4px rgba(0, 0, 0, 0.45), 0 18px 36px rgba(0, 0, 0, 0.5);
+  --press: inset 0 2px 0 rgba(255, 255, 255, 0.05), inset 0 -2px 0 rgba(0, 0, 0, 0.28);
+  --wash-opacity: 0.085;
+}
+
+/* `inline` để Tailwind giữ nguyên var() — nhờ vậy đổi chủ đề sáng/tối chỉ cần
+   đổi giá trị biến ở trên, không phải dựng lại lớp tiện ích. */
+@theme inline {
+  --color-paper: var(--paper);
+  --color-surface: var(--surface);
+  --color-sunk: var(--sunk);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-subtle: var(--subtle);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-2: var(--accent-2);
+  --color-accent-soft: var(--accent-soft);
+  --color-gold: var(--gold);
+
+  --font-display: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia,
+    "Times New Roman", serif;
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial,
+    sans-serif;
+
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 16px;
-  --radius-xl: 24px;
-  --radius-clay: 28px;
-  --radius-clay-sm: 20px;
+  --radius-xl: 18px;
+  --radius-song: 16px;
 
-  /* ── Bóng "đất sét" (claymorphism): sáng một góc, tối một góc, mềm ── */
-  --shadow-clay: 10px 10px 24px color-mix(in oklab, black 62%, transparent),
-    -8px -8px 18px color-mix(in oklab, white 5%, transparent);
-  --shadow-clay-sm: 5px 5px 12px color-mix(in oklab, black 56%, transparent),
-    -4px -4px 10px color-mix(in oklab, white 4%, transparent);
-  --shadow-clay-inset: inset 5px 5px 11px color-mix(in oklab, black 62%, transparent),
-    inset -4px -4px 9px color-mix(in oklab, white 3%, transparent);
-  --shadow-clay-paper: 10px 10px 22px color-mix(in oklab, var(--color-ink-fg) 20%, transparent),
-    -8px -8px 16px color-mix(in oklab, white 95%, transparent);
-  --shadow-clay-paper-sm: 5px 5px 12px color-mix(in oklab, var(--color-ink-fg) 18%, transparent),
-    -4px -4px 9px color-mix(in oklab, white 90%, transparent);
-  --shadow-clay-paper-inset: inset 5px 5px 11px color-mix(in oklab, var(--color-ink-fg) 22%, transparent),
-    inset -4px -4px 9px color-mix(in oklab, white 75%, transparent);
+  --shadow-song: var(--shadow);
+  --shadow-lift: var(--shadow-lift);
+  --shadow-press: var(--press);
 }
 
 @layer base {
   html {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-  }
-
-  button:not(:disabled),
-  [role="button"]:not(:disabled) {
-    cursor: pointer;
+    scroll-behavior: smooth;
   }
 
   html,
@@ -62,13 +107,20 @@
     height: 100%;
     min-height: 100%;
     min-height: 100dvh;
-    background: var(--color-ink);
+    background: var(--paper);
   }
 
   body {
     display: flex;
     flex-direction: column;
     margin: 0;
+    color: var(--ink);
+    line-height: 1.6;
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
   }
 
   h1,
@@ -82,104 +134,115 @@
   }
 }
 
-/* ── Hero: dải aurora chuyển động chậm ──────────────────────────────────── */
+/* ── Ảnh chìm của trang: chính ảnh bìa, làm mờ và rất nhạt ─────────────── */
+/* Đường dẫn ảnh đặt bằng style ở React (đường dẫn tương đối) để bản dựng
+   chạy được cả khi mở trực tiếp từ đĩa, không qua máy chủ web. */
 
-.hero-aurora {
+.pagewash {
   position: absolute;
-  inset: -30% -10% -10%;
+  inset: 0;
+  z-index: 0;
   pointer-events: none;
-  filter: blur(64px) saturate(140%);
-  opacity: 0.9;
+  background-position: center 22%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  opacity: var(--wash-opacity);
+  filter: blur(3px) saturate(0.72);
+  -webkit-mask: radial-gradient(120% 85% at 50% 42%, transparent 0 38%, #000 78%);
+  mask: radial-gradient(120% 85% at 50% 42%, transparent 0 38%, #000 78%);
 }
 
-.hero-aurora span {
-  position: absolute;
+/* ── Gạch màu dưới tiêu đề trang, giống header.page::after của trang web ── */
+
+.title-rule {
   display: block;
-  border-radius: 50%;
-  mix-blend-mode: screen;
-  will-change: transform;
+  margin: 22px auto 0;
+  width: 84%;
+  height: 4px;
+  border-radius: 99px;
+  background: linear-gradient(
+    90deg,
+    var(--accent-2),
+    var(--accent-soft),
+    var(--accent-2)
+  );
 }
 
-.hero-aurora span:nth-child(1) {
-  width: 52%; aspect-ratio: 1.3;
-  left: 4%; top: 18%;
-  background: radial-gradient(circle at 50% 50%,
-    color-mix(in oklab, var(--color-aurora-1) 72%, transparent), transparent 68%);
-  animation: drift-a 26s ease-in-out infinite;
-}
-.hero-aurora span:nth-child(2) {
-  width: 46%; aspect-ratio: 1.1;
-  right: 2%; top: 6%;
-  background: radial-gradient(circle at 50% 50%,
-    color-mix(in oklab, var(--color-aurora-2) 58%, transparent), transparent 66%);
-  animation: drift-b 32s ease-in-out infinite;
-}
-.hero-aurora span:nth-child(3) {
-  width: 58%; aspect-ratio: 1.4;
-  left: 22%; bottom: -6%;
-  background: radial-gradient(circle at 50% 50%,
-    color-mix(in oklab, var(--color-aurora-3) 62%, transparent), transparent 70%);
-  animation: drift-c 29s ease-in-out infinite;
-}
-.hero-aurora span:nth-child(4) {
-  width: 40%; aspect-ratio: 1.2;
-  right: 14%; bottom: 4%;
-  background: radial-gradient(circle at 50% 50%,
-    color-mix(in oklab, var(--color-aurora-4) 55%, transparent), transparent 68%);
-  animation: drift-d 35s ease-in-out infinite;
+/* ── Đầu mục có vạch kẻ kéo dài, giống .shead ────────────────────────── */
+
+.shead {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
 }
 
-@keyframes drift-a {
-  0%,100% { transform: translate3d(0,0,0) scale(1); }
-  50%     { transform: translate3d(12%,-8%,0) scale(1.16); }
-}
-@keyframes drift-b {
-  0%,100% { transform: translate3d(0,0,0) scale(1.08); }
-  50%     { transform: translate3d(-14%,10%,0) scale(0.92); }
-}
-@keyframes drift-c {
-  0%,100% { transform: translate3d(0,0,0) scale(0.96); }
-  50%     { transform: translate3d(8%,-12%,0) scale(1.18); }
-}
-@keyframes drift-d {
-  0%,100% { transform: translate3d(0,0,0) scale(1.1); }
-  50%     { transform: translate3d(-10%,-6%,0) scale(0.94); }
+.shead-line {
+  flex: 1;
+  height: 1px;
+  background: var(--line);
 }
 
-/* Lớp hạt mịn phủ lên aurora cho đỡ bệt màu */
-.hero-grain::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.05;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+/* ── Thẻ bài hát ─────────────────────────────────────────────────────── */
+
+.song-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
 }
 
-/* Làm tối dần về đáy để thanh điều khiển nổi rõ */
-.hero-veil {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: linear-gradient(to bottom,
-    color-mix(in oklab, var(--color-ink) 55%, transparent) 0%,
-    transparent 32%,
-    transparent 58%,
-    var(--color-ink) 100%);
+.song-card-hover {
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
 }
 
-.hero-title {
-  background: linear-gradient(102deg, #ffffff 12%, #dfe7ff 46%, #ffd9cd 88%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+@media (hover: hover) {
+  .song-card-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lift);
+  }
 }
+
+/* Câu ký tên của bài hát — chữ nghiêng, vạch màu bên trái */
+.signature {
+  border-left: 3px solid var(--accent);
+  padding-left: 12px;
+  font-style: italic;
+}
+
+/* ── Ảnh minh hoạ: thu vừa khung, không cắt mất phần nào của ảnh ─────── */
+
+.songpic img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 420px;
+  margin-inline: auto;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+}
+
+.picrow img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 300px;
+  margin-inline: auto;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+}
+
+/* ── Sân khấu lời: cuộn mềm ──────────────────────────────────────────── */
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-aurora span,
   .lyric-stage,
   .staff-playhead,
-  .staff-note {
+  .staff-note,
+  .song-card-hover {
     transition: none !important;
     animation: none !important;
   }

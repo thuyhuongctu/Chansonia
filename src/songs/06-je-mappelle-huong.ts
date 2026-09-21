@@ -7,7 +7,24 @@ export const song: RawSong = {
   subtitle: "Là où mon enfance respire encore",
   language: "Tiếng Pháp",
   note: "Hợp nhất mọi phiên bản · Trở về, bình yên",
-  accent: "#e879b9",
+  accent: "#a8547b",
+  coverSrc: "art/hoa-si-lon-len.webp",
+  style:
+    "French cinematic electro-pop / art-tech chanson · 112–116 BPM · mơ màng, rộng và sáng dần đến cao trào",
+  signature:
+    "«Je m'appelle Hương. / Elle est encore là, je le sais. / Papa, I found my way back.»",
+  pictures: [
+    {
+      src: "art/hoa-si-lon-len.webp",
+      alt: "Người phụ nữ ngồi vẽ trên bảng vẽ điện tử, quanh bàn là bút chì màu và những trang phác thảo",
+      caption: "«Elle est encore là» — đứa trẻ mê vẽ ngày ấy vẫn còn, chỉ đổi cây cọ.",
+    },
+    {
+      src: "art/bac-them-nhin-ra-bien.webp",
+      alt: "Hình đất sét: Hương trong áo dài trắng đứng ở khung cửa gỗ mở ra mặt biển lúc hoàng hôn, ánh nắng trải một vệt vàng trên nước",
+      caption: "Bậc thềm nhìn ra biển — khung hình khép lại album.",
+    },
+  ],
   audioSrc: "audio/je-mappelle-huong.mp3",
   durationMs: 373512,
   sections: [

@@ -1,8 +1,9 @@
 import { cn } from "@/lib/utils";
 
 /**
- * Ảnh bìa của bài hát. Có `src` thì hiển thị ảnh thật; không có thì sinh ảnh
- * gradient từ màu chủ đạo (accent) — không bắt buộc phải có tệp ảnh riêng.
+ * Ảnh bìa của bài hát — bo góc 12–16px, viền mảnh và bóng mềm như thẻ bài hát
+ * trên trang songbook. Có `src` thì hiển thị ảnh thật; không có thì sinh ảnh
+ * gradient từ màu chủ đạo (accent) kèm số thứ tự bài.
  */
 export function Cover({
   accent,
@@ -10,7 +11,6 @@ export function Cover({
   src,
   alt,
   size = "md",
-  paper = false,
   className,
 }: {
   accent: string;
@@ -18,24 +18,26 @@ export function Cover({
   src?: string;
   alt?: string;
   size?: "sm" | "md" | "lg";
-  /** Đặt trên nền sáng (bg-paper) để dùng bóng đất sét sáng màu tương ứng */
-  paper?: boolean;
   className?: string;
 }) {
-  const dim = { sm: "size-12", md: "size-16", lg: "size-28" }[size];
-  const num = { sm: "text-sm", md: "text-lg", lg: "text-3xl" }[size];
-  const radius = size === "lg" ? "rounded-clay" : "rounded-clay-sm";
-  const clayShadow = paper ? "shadow-clay-paper" : "shadow-clay";
+  const dim = { sm: "size-12", md: "size-[104px] sm:size-[130px]", lg: "size-40" }[size];
+  const num = { sm: "text-sm", md: "text-2xl", lg: "text-4xl" }[size];
+  const radius = size === "sm" ? "rounded-[10px]" : "rounded-xl";
 
   if (src) {
     return (
       <div
-        className={cn("relative shrink-0 overflow-hidden", radius, clayShadow, dim, className)}
+        className={cn(
+          "relative shrink-0 overflow-hidden border border-line shadow-song",
+          radius,
+          dim,
+          className,
+        )}
       >
         <img
           src={src}
           alt={alt ?? ""}
-          className="size-full object-cover"
+          className="size-full object-cover object-[50%_12%]"
           loading="lazy"
         />
       </div>
@@ -45,22 +47,21 @@ export function Cover({
   return (
     <div
       className={cn(
-        "relative shrink-0 overflow-hidden",
+        "relative shrink-0 overflow-hidden border border-line shadow-song",
         radius,
-        clayShadow,
         dim,
         className,
       )}
       style={{
-        background: `radial-gradient(circle at 28% 22%, ${accent}, transparent 62%),
-                     radial-gradient(circle at 78% 82%, ${accent}55, transparent 58%),
-                     linear-gradient(148deg, #12141d, #070810)`,
+        background: `radial-gradient(circle at 26% 20%, ${accent}, transparent 64%),
+                     radial-gradient(circle at 78% 82%, ${accent}44, transparent 60%),
+                     linear-gradient(150deg, var(--sunk), var(--surface))`,
       }}
       aria-hidden
     >
       <span
         className={cn(
-          "absolute inset-0 flex items-center justify-center font-display font-medium text-fg/85",
+          "absolute inset-0 flex items-center justify-center font-display font-semibold text-ink/70",
           num,
         )}
       >
