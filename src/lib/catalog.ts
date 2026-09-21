@@ -5,6 +5,7 @@
  * THÊM BÀI MỚI: xem hướng dẫn tại src/songs/README.md
  */
 
+import type { Picture } from "@/lib/art";
 import { song as s01 } from "@/songs/01-je-voudrais-te-parler";
 import { song as s02 } from "@/songs/02-la-lampe-brule-encore";
 import { song as s03 } from "@/songs/03-the-lamp-still-burns";
@@ -38,6 +39,12 @@ export type RawSong = {
   accent: string;
   /** Ảnh bìa riêng của bài (tuỳ chọn) — không có thì dùng ảnh gradient sinh từ accent */
   coverSrc?: string;
+  /** Mô tả phong cách/nhịp độ, như dòng "Style:" trên trang songbook */
+  style?: string;
+  /** Câu ký tên của bài hát — câu hát đại diện, in nghiêng dưới phần mô tả */
+  signature?: string;
+  /** Ảnh đất sét minh hoạ cho bài, hiện ở màn hình bài hát và trang lời */
+  pictures?: Picture[];
   /** Đánh dấu bài hát chủ đề của album */
   titleTrack?: boolean;
   audioSrc: string;

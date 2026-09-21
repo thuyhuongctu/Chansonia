@@ -7,8 +7,24 @@ export const song: RawSong = {
   subtitle: "Bài hát chủ đề của album",
   language: "Tiếng Việt",
   note: "Hồi sinh, ngộ ra · Hộp màu, màn hình, code",
-  accent: "#a78bfa",
-  coverSrc: "covers/04-26-nam-sau.jpg",
+  accent: "#c45c3a",
+  coverSrc: "art/huong_songbook_hero.jpg",
+  style:
+    "Cyber-orchestral Pop · 116 BPM · dàn dây lớn, synth neon, bass điện ảnh trầm sâu",
+  signature:
+    "«26 năm sau, em thấy mình trong những dòng code. / I found the light, I found the way.»",
+  pictures: [
+    {
+      src: "art/hoi-thi-be-kheo-tay.webp",
+      alt: "Hình đất sét: cô bé mang số báo danh 84 trong hội thi Bé khéo tay tỉnh Cần Thơ, năm học 1999–2000",
+      caption: "Em bé sáu tuổi — hội thi «Bé khéo tay» tỉnh Cần Thơ, 1999–2000.",
+    },
+    {
+      src: "art/26-nam-sau-dong-code.webp",
+      alt: "Người phụ nữ ngồi trước màn hình máy tính với biểu đồ dữ liệu, hai mươi sáu năm sau",
+      caption: "Hai mươi sáu năm sau, hộp màu đổi thành màn hình và những dòng code.",
+    },
+  ],
   titleTrack: true,
   audioSrc: "audio/track04-26-nam-sau-v2.mp3",
   durationMs: 303024,

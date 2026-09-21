@@ -30,10 +30,11 @@ export function KaraokeVideo({ songId }: KaraokeVideoProps) {
   return (
     <AbsoluteFill
       style={{
-        backgroundColor: "#0b0b10",
+        backgroundColor: "#17130f",
         alignItems: "center",
         justifyContent: "center",
-        fontFamily: "system-ui, sans-serif",
+        fontFamily:
+          '"Iowan Old Style", Palatino, Georgia, "Times New Roman", serif',
         padding: 80,
       }}
     >
@@ -42,7 +43,7 @@ export function KaraokeVideo({ songId }: KaraokeVideoProps) {
       <div
         style={{
           textAlign: "center",
-          color: "#6b6b78",
+          color: "#a6998a",
           fontSize: 34,
           marginBottom: 24,
           opacity: 0.7,
@@ -56,7 +57,7 @@ export function KaraokeVideo({ songId }: KaraokeVideoProps) {
           <span
             key={`${line.id}-${i}`}
             style={{
-              color: i <= wordIndex ? song.accent : "#f4f4f6",
+              color: i <= wordIndex ? song.accent : "#efe6d8",
               marginRight: "0.3em",
             }}
           >
@@ -68,7 +69,7 @@ export function KaraokeVideo({ songId }: KaraokeVideoProps) {
       <div
         style={{
           textAlign: "center",
-          color: "#6b6b78",
+          color: "#a6998a",
           fontSize: 34,
           marginTop: 24,
           opacity: 0.7,
