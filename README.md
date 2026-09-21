@@ -1,5 +1,7 @@
 # Chansonia
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22172794.svg)](https://doi.org/10.5281/zenodo.22172794)
+
 A lyrics-synchronised music player for the album
 **«La lampe, le fleuve et les couleurs»** — a six-track mini song-cycle by
 **Je m'appelle Hương** (Đỗ Thùy Hương), written between 7 and 13 August 2026.
@@ -250,6 +252,44 @@ ios/                 Capacitor project (iOS)
 
 Built with Vite 6, React 19, TypeScript 5.7, Tailwind CSS 4, Zustand 5 and
 Capacitor 8.
+
+---
+
+## Archived on Zenodo
+
+Every GitHub release of this repository is archived on Zenodo, which mints a
+DOI for it. Cite the **concept DOI** — it always resolves to the newest
+version:
+
+| | |
+|---|---|
+| Concept DOI (all versions) | [10.5281/zenodo.22172794](https://doi.org/10.5281/zenodo.22172794) |
+| v.1.0 (30 Aug 2026) | [10.5281/zenodo.22172795](https://doi.org/10.5281/zenodo.22172795) |
+
+Citation metadata lives in two files at the repository root:
+[`CITATION.cff`](CITATION.cff) — which GitHub reads for its "Cite this
+repository" button — and [`.zenodo.json`](.zenodo.json), which Zenodo reads at
+the tagged commit, so title, author, ORCID, keywords and the *restricted*
+access condition are set without editing anything by hand.
+
+### Publishing a new version
+
+No new repository is needed — a new version belongs to the same Zenodo record:
+
+1. Merge the work into `main`.
+2. Bump the version in `package.json`, `android/app/build.gradle`
+   (`versionCode` **and** `versionName`), `ios/App/App.xcodeproj`
+   (`MARKETING_VERSION`), `.zenodo.json` and `CITATION.cff`.
+3. Draft a GitHub release with a new tag (`v1.1.0`, …).
+
+Zenodo picks the release up through its GitHub webhook and adds a new version
+under the same concept DOI. The webhook is switched on per repository at
+[zenodo.org/account/settings/github](https://zenodo.org/account/settings/github)
+— only the account owner can do that, and only releases created *after* it is
+switched on are archived.
+
+Access on Zenodo is **restricted**, matching the licence below: the record and
+its metadata are public, the files are released by the author on request.
 
 ---
 

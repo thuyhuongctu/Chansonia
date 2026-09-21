@@ -185,6 +185,43 @@ ios/                 dự án Capacitor (iOS)
 
 ---
 
+## 7b. Lưu trữ trên Zenodo
+
+Mỗi bản phát hành (release) trên GitHub đều được Zenodo lưu lại và cấp một DOI.
+Khi trích dẫn, dùng **concept DOI** — địa chỉ này luôn trỏ tới bản mới nhất:
+
+| | |
+|---|---|
+| Concept DOI (mọi phiên bản) | [10.5281/zenodo.22172794](https://doi.org/10.5281/zenodo.22172794) |
+| Bản v.1.0 (30/08/2026) | [10.5281/zenodo.22172795](https://doi.org/10.5281/zenodo.22172795) |
+
+Thông tin trích dẫn nằm ở hai tệp tại gốc kho: [`CITATION.cff`](CITATION.cff)
+— GitHub đọc tệp này để hiện nút "Cite this repository" — và
+[`.zenodo.json`](.zenodo.json), Zenodo đọc tại đúng commit được gắn thẻ, nhờ
+vậy tên, tác giả, ORCID, từ khoá và chế độ truy cập *restricted* được đặt sẵn,
+không phải sửa tay trên trang Zenodo.
+
+### Phát hành một phiên bản mới
+
+**Không cần tạo kho mới** — phiên bản mới nằm trong cùng một bản ghi Zenodo:
+
+1. Gộp phần việc vào nhánh `main`.
+2. Nâng số phiên bản ở `package.json`, `android/app/build.gradle`
+   (cả `versionCode` **và** `versionName`), `ios/App/App.xcodeproj`
+   (`MARKETING_VERSION`), `.zenodo.json` và `CITATION.cff`.
+3. Tạo release mới trên GitHub kèm thẻ mới (`v1.1.0`, …).
+
+Zenodo nhận release qua webhook GitHub rồi thêm một phiên bản mới vào cùng
+concept DOI. Webhook bật riêng cho từng kho tại
+[zenodo.org/account/settings/github](https://zenodo.org/account/settings/github)
+— chỉ chủ tài khoản bật được, và chỉ những release tạo **sau** khi bật mới
+được lưu.
+
+Chế độ truy cập trên Zenodo là **restricted**, đúng với giấy phép độc quyền:
+bản ghi và phần mô tả thì công khai, còn tệp thì tác giả cấp khi có người xin.
+
+---
+
 ## 8. Bản quyền
 
 © 2026 Đỗ Thùy Hương. Giữ toàn bộ quyền — xem `LICENSE`.
