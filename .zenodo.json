@@ -1,0 +1,43 @@
+{
+  "upload_type": "software",
+  "title": "Chansonia — a lyrics-synchronised player for «La lampe, le fleuve et les couleurs»",
+  "version": "1.1.0",
+  "language": "vie",
+  "creators": [
+    {
+      "name": "Do, Thuy Huong",
+      "affiliation": "Can Tho University",
+      "orcid": "0000-0002-7711-2487"
+    }
+  ],
+  "description": "<p>Chansonia is a lyrics-synchronised music player for the album <em>«La lampe, le fleuve et les couleurs»</em>, a six-track mini song-cycle by Je m'appelle H&#432;&#417;ng (&#272;&#7895; Th&#249;y H&#432;&#417;ng), written between 7 and 13 August 2026. One codebase ships as a web app (GitHub Pages), an Android app and an iOS app, all built with Vite, React, TypeScript, Tailwind CSS and Capacitor.</p><p>Each track plays with its lyrics scrolling line by line, the sung line highlighted word by word; lyrics are grouped into named sections with a navigator, and every song also has a printable lyric sheet. The app carries an artist page, shuffle playback and a sleep timer. No account, no analytics, no advertising, no tracking.</p><p>Version 1.1.0 rebuilds the interface to match the songbook page of the author's academic homepage: the same clay palette (paper, terracotta, river teal), serif headings and paper cards, a dark variant that follows the device, and the clay artwork of the album bundled with the app so it stays legible offline.</p>",
+  "keywords": [
+    "songbook",
+    "lyrics synchronisation",
+    "karaoke",
+    "music player",
+    "Vietnamese chanson",
+    "French chanson",
+    "clay art",
+    "Capacitor",
+    "React",
+    "TypeScript"
+  ],
+  "access_right": "restricted",
+  "access_conditions": "Proprietary work. The software, the lyrics, the music, the recordings and the album and artist artwork are all rights reserved (see LICENSE). Access is granted by the author on request, for study and review; redistribution and derivative works require written permission.",
+  "related_identifiers": [
+    {
+      "relation": "isSupplementTo",
+      "identifier": "https://thuyhuongctu.github.io/Je-mappelle-Huong/music.html",
+      "resource_type": "other",
+      "scheme": "url"
+    },
+    {
+      "relation": "isIdenticalTo",
+      "identifier": "https://thuyhuongctu.github.io/Chansonia/",
+      "resource_type": "software",
+      "scheme": "url"
+    }
+  ],
+  "notes": "Audio recordings are not part of this deposit: they are excluded from the repository and fetched from the author's own server at runtime, or copied in locally before an offline build."
+}

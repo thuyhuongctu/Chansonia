@@ -11,7 +11,7 @@ Tài liệu này ghi lại những việc **chỉ chủ tài khoản làm đư�
 |---|---|
 | Tên hiển thị | Je m'appelle Hương |
 | Package name | `com.jemappellehuong.songbook` |
-| Phiên bản | 1.0.0 (versionCode 1) |
+| Phiên bản | 1.1.0 (versionCode 2) |
 | minSdk / targetSdk | 24 / 36 |
 | Kích thước `.aab` | ~9,6 MB (bản trực tuyến, đã gồm ảnh songbook) |
 
