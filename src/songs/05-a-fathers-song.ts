@@ -7,8 +7,29 @@ export const song: RawSong = {
   subtitle: "Lời nhắn nhủ từ người cha",
   language: "Tiếng Anh",
   note: "Thấu hiểu, chữa lành · Dòng sông, đôi vai",
-  accent: "#34d399",
-  coverSrc: "covers/05-a-fathers-song.jpg",
+  accent: "#7d9e5c",
+  coverSrc: "art/ba-cong-con-tren-vai.webp",
+  style:
+    "Cinematic Folk / Spoken Word · guitar mộc ấm, piano nhẹ, không gian thân mật",
+  signature:
+    "«You don't have to be the strongest girl in the world. / If you are tired, rest. I will not be angry.»",
+  pictures: [
+    {
+      src: "art/con-muon-lam-hoa-si.webp",
+      alt: "Hình đất sét: cô bé ngồi trong lớp, tay cầm cọ vẽ trên tờ giấy, bên cạnh là hộp màu",
+      caption: "«Con muốn làm hoạ sĩ» — hộp màu và tờ giấy trong lớp học.",
+    },
+    {
+      src: "art/ba-cong-con-tren-vai.webp",
+      alt: "Hình đất sét: người cha cõng con gái trên vai đi trên con đường làng lúc hoàng hôn bên dòng sông",
+      caption: "Đôi vai của ba, con đường làng bên dòng sông.",
+    },
+    {
+      src: "art/con-thuyen-hoang-hon.webp",
+      alt: "Hình đất sét: cô bé một mình chèo thuyền gỗ trên sông lúc hoàng hôn, hai bên là những mái nhà lá",
+      caption: "Rồi một ngày con tự chèo lấy con thuyền của mình.",
+    },
+  ],
   audioSrc: "audio/track05-father-song-v2.mp3",
   durationMs: 317472,
   sections: [

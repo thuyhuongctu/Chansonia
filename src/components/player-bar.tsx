@@ -3,7 +3,8 @@ import { usePlayer, useSong } from "@/lib/player-store";
 import { SleepTimerButton } from "@/components/sleep-timer";
 import { cn, formatTime } from "@/lib/utils";
 
-export function PlayerBar({ paper }: { paper: boolean }) {
+/** Thanh điều khiển — nút tròn màu đất nung trên nền giấy, viền mảnh. */
+export function PlayerBar() {
   const song = useSong();
   const playing = usePlayer((s) => s.playing);
   const currentMs = usePlayer((s) => s.currentMs);
@@ -16,18 +17,10 @@ export function PlayerBar({ paper }: { paper: boolean }) {
   const shuffling = playOrder === "shuffle";
 
   return (
-    <div
-      className={cn(
-        "sticky bottom-0 z-20 flex shrink-0 flex-col border-t",
-        paper ? "border-edge-paper bg-paper" : "border-edge bg-ink",
-      )}
-    >
+    <div className="sticky bottom-0 z-20 flex shrink-0 flex-col border-t border-line bg-surface">
       <div className="px-4 pt-3 sm:px-6">
         <div
-          className={cn(
-            "relative h-2.5 cursor-pointer overflow-hidden rounded-full",
-            paper ? "bg-paper-2 shadow-clay-paper-inset" : "bg-ink-3 shadow-clay-inset",
-          )}
+          className="relative h-2.5 cursor-pointer overflow-hidden rounded-full bg-sunk"
           onClick={(e) => {
             const rect = e.currentTarget.getBoundingClientRect();
             const ratio = (e.clientX - rect.left) / rect.width;
@@ -41,7 +34,7 @@ export function PlayerBar({ paper }: { paper: boolean }) {
           tabIndex={0}
         >
           <div
-            className="absolute inset-y-0 left-0 rounded-full bg-coral transition-[width] duration-100"
+            className="absolute inset-y-0 left-0 rounded-full bg-accent transition-[width] duration-100"
             style={{ width: `${Math.min(100, progress * 100)}%` }}
           />
         </div>
@@ -53,16 +46,16 @@ export function PlayerBar({ paper }: { paper: boolean }) {
           onClick={() => setPlayOrder(shuffling ? "sequential" : "shuffle")}
           aria-pressed={shuffling}
           className={cn(
-            "flex size-11 items-center justify-center rounded-clay-sm transition-all active:scale-95",
+            "flex size-11 items-center justify-center rounded-full border transition-colors active:scale-95",
             shuffling
-              ? paper
-                ? "bg-paper-2 text-coral shadow-clay-paper-inset"
-                : "bg-ink-3 text-coral shadow-clay-inset"
-              : paper
-                ? "bg-paper text-ink-muted shadow-clay-paper-sm hover:text-ink-fg"
-                : "bg-ink text-fg-muted shadow-clay-sm hover:text-fg",
+              ? "border-accent bg-accent-soft text-accent"
+              : "border-line bg-paper text-muted hover:text-ink",
           )}
-          aria-label={shuffling ? "Đang phát ngẫu nhiên — chuyển sang phát theo thứ tự" : "Đang phát theo thứ tự — chuyển sang phát ngẫu nhiên"}
+          aria-label={
+            shuffling
+              ? "Đang phát ngẫu nhiên — chuyển sang phát theo thứ tự"
+              : "Đang phát theo thứ tự — chuyển sang phát ngẫu nhiên"
+          }
         >
           <Shuffle className="size-4" />
         </button>
@@ -70,12 +63,7 @@ export function PlayerBar({ paper }: { paper: boolean }) {
         <button
           type="button"
           onClick={() => seek(0)}
-          className={cn(
-            "flex size-11 items-center justify-center rounded-clay-sm transition-all active:scale-95",
-            paper
-              ? "bg-paper text-ink-muted shadow-clay-paper-sm hover:text-ink-fg"
-              : "bg-ink text-fg-muted shadow-clay-sm hover:text-fg",
-          )}
+          className="flex size-11 items-center justify-center rounded-full border border-line bg-paper text-muted transition-colors hover:text-ink active:scale-95"
           aria-label="Về đầu"
         >
           <SkipBack className="size-4" />
@@ -84,10 +72,7 @@ export function PlayerBar({ paper }: { paper: boolean }) {
         <button
           type="button"
           onClick={() => (playing ? pause() : void play())}
-          className={cn(
-            "flex size-13 items-center justify-center rounded-full transition-transform active:scale-95",
-            paper ? "bg-ink-fg text-paper shadow-clay-paper" : "bg-fg text-ink shadow-clay",
-          )}
+          className="flex size-13 items-center justify-center rounded-full bg-accent text-white shadow-song transition-transform active:scale-95"
           aria-label={playing ? "Tạm dừng" : "Phát"}
         >
           {playing ? (
@@ -98,15 +83,10 @@ export function PlayerBar({ paper }: { paper: boolean }) {
         </button>
 
         <div className="ml-auto flex items-center gap-2">
-          <span
-            className={cn(
-              "font-sans text-xs tabular-nums",
-              paper ? "text-ink-muted" : "text-fg-muted",
-            )}
-          >
+          <span className="font-sans text-xs tabular-nums text-muted">
             {formatTime(currentMs)} / {formatTime(song.durationMs)}
           </span>
-          <SleepTimerButton paper={paper} />
+          <SleepTimerButton />
         </div>
       </div>
     </div>

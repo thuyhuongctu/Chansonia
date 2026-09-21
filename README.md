@@ -46,6 +46,9 @@ Total running time 26:42.
   navigator, so any part of a song can be jumped to directly.
 - Shows the full lyric sheet of a track as a static page for reading.
 - Carries an artist page with the album's epigraph, recurring motifs and links.
+- Looks and reads like the songbook page of the author's own site: warm clay
+  palette, serif headings, paper cards, and the same clay artwork for every
+  track — light or dark, following the device (or the Sáng/Tối switch).
 - Auto-advances to the next track, either in album order or shuffled.
 - Sleep timer: pauses playback automatically after 5–60 minutes.
 
@@ -173,6 +176,24 @@ Each track is one file under `src/songs/`. The full procedure is in
 
 `durationMs` must match the mp3 exactly, or the lyrics will drift out of sync.
 
+A track may also carry the songbook fields: `coverSrc` (cover art),
+`style` (the *Style:* line — genre, BPM, instrumentation), `signature` (the
+representative line, shown in italics) and `pictures` (clay illustrations with
+captions). Artwork files live in `public/art/` and are listed in
+`src/lib/art.ts`.
+
+---
+
+## Artwork and interface
+
+Every image in the app comes from the songbook page of the author's site,
+[`Je-mappelle-Huong/music.html`](https://thuyhuongctu.github.io/Je-mappelle-Huong/music.html),
+and is bundled under `public/art/` so the app stays fully offline. The
+interface uses the same design tokens as that page — paper `#f6f1e7`,
+terracotta `#c45c3a`, river teal `#3f6f68`, serif headings, 16px paper cards
+with a thin rule and a soft shadow — with a dark variant that follows the
+system setting or the Sáng/Tối button in the header.
+
 ---
 
 ## Layout
@@ -184,10 +205,13 @@ src/
     catalog.ts       assembles songs, derives per-line timing
     audio-source.ts  offline / streaming switch
     player-store.ts  player state (Zustand)
-  songs/             one file per track: lyrics and timings
+    art.ts           clay artwork used across the app (paths under public/art)
+    theme.ts         light / dark switch, mirrors the website's Sáng·Tối button
+  songs/             one file per track: lyrics, timings, artwork, style note
   components/        user interface
 public/
   audio/             mp3 files (never committed)
+  art/               clay artwork copied from the songbook page
   brand/artist.jpg   portrait
 android/             Capacitor project (Android)
 ios/                 Capacitor project (iOS)

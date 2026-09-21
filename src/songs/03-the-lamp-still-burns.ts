@@ -7,8 +7,18 @@ export const song: RawSong = {
   subtitle: "A third-person embrace",
   language: "Tiếng Anh",
   note: "Góc nhìn thứ ba · An ủi, cho phép nghỉ",
-  accent: "#22d3ee",
-  coverSrc: "covers/03-the-lamp-still-burns.jpg",
+  accent: "#3f6f68",
+  coverSrc: "art/dem-nghi-ngoi.webp",
+  style:
+    "Cinematic electro-pop / nocturnal trance-folk · 118 BPM · trôi về phía trước như dòng sông, mỏi mệt nhưng bền bỉ",
+  signature: "«The lamp still burns. / Tu peux dormir.»",
+  pictures: [
+    {
+      src: "art/dem-nghi-ngoi.webp",
+      alt: "Chân dung trong ánh đèn đêm dịu, gương mặt thư thái sau một ngày dài",
+      caption: "«Tu peux dormir» — trạm nghỉ của bài hát: đặt gánh nặng xuống một đêm.",
+    },
+  ],
   audioSrc: "audio/track03.mp3",
   durationMs: 124272,
   sections: [
