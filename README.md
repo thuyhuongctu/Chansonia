@@ -81,7 +81,8 @@ comes from. Nothing else changes between the two builds.
 npm run build
 ```
 
-Roughly **44 MB**. Plays with no network connection.
+Roughly **40 MB** (≈ 2.3 MB of app, ≈ 37 MB of recordings). Plays with no
+network connection.
 
 ### Streaming build — audio fetched from a server
 
@@ -89,8 +90,9 @@ Roughly **44 MB**. Plays with no network connection.
 VITE_AUDIO_BASE=https://thuyhuongctu.github.io/JESUISHUONG_WEBSITE_2026/assets/audio npm run build
 ```
 
-Roughly **8 MB**. Requires a connection during playback, and does not need the
-mp3 files present at build time.
+Roughly **2.3 MB**, artwork included. Requires a connection during playback,
+and does not need the mp3 files present at build time. This is the variant
+GitHub Pages deploys, and the one used for the packaged builds below.
 
 Point `VITE_AUDIO_BASE` at a different host to move the audio elsewhere — no
 source change needed, just rebuild.
@@ -118,11 +120,16 @@ To trigger a deploy manually, run the workflow from the Actions tab
 
 ```bash
 npm run build                       # or the streaming variant above
-npx cap sync android
+npx cap sync android                # copies dist/ into the native project
 cd android
 ./gradlew bundleRelease             # -> app/build/outputs/bundle/release/app-release.aab
 ./gradlew assembleRelease           # -> app/build/outputs/apk/release/app-release.apk
+./gradlew assembleDebug             # -> app/build/outputs/apk/debug/app-debug.apk
 ```
+
+The debug APK is signed with the local debug key and installs straight onto a
+phone (`adb install -r app-debug.apk`) — handy for checking a build without
+touching the upload keystore.
 
 | | |
 |---|---|
@@ -135,10 +142,34 @@ Release builds are signed from `android/upload-keystore.jks` with credentials in
 excluded by `.gitignore` and must be kept privately. Losing the keystore means
 losing the ability to publish updates under this application ID.
 
-Building for Android requires the Android SDK (platform 36, build-tools
-36.0.0) — installed automatically by Android Studio, or via `sdkmanager` on a
-headless machine, with `android/local.properties` pointing `sdk.dir` at it.
+Without `keystore.properties` the release task still runs, but produces an
+**unsigned** `app-release.aab` / `app-release-unsigned.apk`: good enough to
+verify that packaging works, not uploadable to Google Play. Sign it afterwards
+with the real keystore, or rebuild on a machine that has it.
+
+Building for Android requires JDK 21 and the Android SDK (platform 36,
+build-tools 36.0.0) — installed automatically by Android Studio, or on a
+headless machine with the command line tools:
+
+```bash
+sdkmanager --licenses
+sdkmanager "platform-tools" "platforms;android-36" "build-tools;36.0.0"
+echo "sdk.dir=$ANDROID_HOME" > android/local.properties
+```
+
 `local.properties` is machine-specific and excluded by `.gitignore`.
+
+### What a packaging run produces
+
+| Artefact | Size | Notes |
+|---|---|---|
+| `dist/` (streaming) | ≈ 2.3 MB | web bundle, also what GitHub Pages serves |
+| `app-release.aab` | ≈ 9.6 MB | Play upload format; unsigned unless the keystore is present |
+| `app-release-unsigned.apk` | ≈ 9.8 MB | same build as a raw APK |
+| `app-debug.apk` | ≈ 11.2 MB | debug-signed, installable for testing |
+
+Version 1.0.0 (versionCode 1). The APK is larger than the web bundle because it
+carries the Capacitor runtime and the full set of splash-screen densities.
 
 Google Play submission steps are written up in
 [HUONG-DAN-PHAT-HANH.md](HUONG-DAN-PHAT-HANH.md) (Vietnamese).

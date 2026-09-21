@@ -13,7 +13,7 @@ Tài liệu này ghi lại những việc **chỉ chủ tài khoản làm đư�
 | Package name | `com.jemappellehuong.songbook` |
 | Phiên bản | 1.0.0 (versionCode 1) |
 | minSdk / targetSdk | 24 / 36 |
-| Kích thước `.aab` | ~7,8 MB (bản trực tuyến) |
+| Kích thước `.aab` | ~9,6 MB (bản trực tuyến, đã gồm ảnh songbook) |
 
 **Package name không đổi được sau khi đã phát hành.** Nếu muốn tên khác thì phải
 đổi ngay bây giờ, trước lần nộp đầu tiên.
@@ -100,7 +100,7 @@ Gợi ý mở đầu mô tả đầy đủ:
 
 ## 6. Việc cần làm trước khi nộp
 
-- [ ] Quyết định dùng bản offline (44 MB) hay bản trực tuyến (8 MB).
+- [ ] Quyết định dùng bản offline (~40 MB) hay bản trực tuyến (~9,6 MB).
 - [ ] Nếu chọn bản trực tuyến: kiểm tra 6 tệp mp3 vẫn truy cập được ở
       `VITE_AUDIO_BASE`, và cân nhắc rằng nhạc khi đó ai cũng tải trực tiếp được.
 - [ ] Tạo icon 512×512 và feature graphic 1024×500.
