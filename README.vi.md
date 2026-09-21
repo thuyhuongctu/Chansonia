@@ -38,7 +38,7 @@ Muốn nghe nhạc khi chạy thử thì chép 6 tệp mp3 vào `public/audio/`
 npm run build
 ```
 
-- App khoảng **44 MB**, phát nhạc không cần mạng.
+- App khoảng **40 MB** (≈ 2,3 MB phần ứng dụng + ≈ 37 MB nhạc), phát không cần mạng.
 - Dùng khi muốn người nghe không phụ thuộc đường truyền.
 
 ### 2.2 Bản TRỰC TUYẾN — nhạc tải từ máy chủ
@@ -47,7 +47,7 @@ npm run build
 VITE_AUDIO_BASE=https://thuyhuongctu.github.io/JESUISHUONG_WEBSITE_2026/assets/audio npm run build
 ```
 
-- App khoảng **8 MB**, cần mạng khi phát.
+- App khoảng **2,3 MB** (đã gồm ảnh), cần mạng khi phát.
 - Không cần chép mp3 vào `public/audio/`.
 - Đây là bản đang được đóng gói sẵn kèm theo.
 
@@ -71,24 +71,50 @@ Muốn chạy tay: vào tab Actions → "Deploy web app to GitHub Pages" → Run
 
 ```bash
 npm run build                       # hoặc bản trực tuyến ở mục 2.2
-npx cap sync android
+npx cap sync android                # chép dist/ vào dự án Android
 cd android
 ./gradlew bundleRelease             # -> app/build/outputs/bundle/release/app-release.aab
 ./gradlew assembleRelease           # -> app/build/outputs/apk/release/app-release.apk
+./gradlew assembleDebug             # -> app/build/outputs/apk/debug/app-debug.apk
 ```
 
 - `.aab` là tệp nộp lên CH Play.
-- `.apk` để cài thử trực tiếp lên điện thoại (`adb install -r app-release.apk`).
+- `.apk` release để cài thử trực tiếp lên điện thoại (`adb install -r app-release.apk`).
+- `.apk` debug đã được ký bằng khoá debug của máy, cài thẳng lên điện thoại được
+  ngay mà không cần đụng tới khoá ký chính thức.
+
+Nếu máy build **không có** `android/keystore.properties`, lệnh release vẫn chạy
+nhưng cho ra tệp **chưa ký** (`app-release.aab`, `app-release-unsigned.apk`):
+đủ để kiểm tra việc đóng gói, chưa nộp lên CH Play được. Muốn nộp thì ký lại
+bằng khoá thật, hoặc build trên máy có sẵn khoá.
 
 Khoá ký nằm ở `android/upload-keystore.jks`, mật khẩu ghi trong
 `android/keystore.properties`. **Hai tệp này không được đưa lên kho công khai**
 (`.gitignore` đã chặn sẵn) và cũng **không được làm mất** — mất khoá là mất
 quyền cập nhật ứng dụng trên CH Play.
 
-Cần cài Android SDK (platform 36, build-tools 36.0.0) để build — Android
-Studio tự cài sẵn, hoặc dùng `sdkmanager` trên máy không có giao diện, sau đó
-trỏ `android/local.properties` (`sdk.dir=...`) tới thư mục SDK. Tệp
-`local.properties` phụ thuộc từng máy nên đã bị `.gitignore` chặn.
+Cần JDK 21 và Android SDK (platform 36, build-tools 36.0.0) để build — Android
+Studio tự cài sẵn, hoặc trên máy không có giao diện thì dùng bộ công cụ dòng lệnh:
+
+```bash
+sdkmanager --licenses
+sdkmanager "platform-tools" "platforms;android-36" "build-tools;36.0.0"
+echo "sdk.dir=$ANDROID_HOME" > android/local.properties
+```
+
+Tệp `local.properties` phụ thuộc từng máy nên đã bị `.gitignore` chặn.
+
+### Một lần đóng gói cho ra những gì
+
+| Tệp | Dung lượng | Ghi chú |
+|---|---|---|
+| `dist/` (bản trực tuyến) | ≈ 2,3 MB | bản web, cũng là bản đưa lên GitHub Pages |
+| `app-release.aab` | ≈ 9,6 MB | tệp nộp CH Play; chưa ký nếu máy không có khoá |
+| `app-release-unsigned.apk` | ≈ 9,8 MB | cùng bản build, dạng APK |
+| `app-debug.apk` | ≈ 11,2 MB | ký bằng khoá debug, cài thử được ngay |
+
+Phiên bản 1.0.0 (versionCode 1). APK nặng hơn bản web vì mang theo phần chạy
+Capacitor và trọn bộ ảnh splash cho mọi mật độ màn hình.
 
 ---
 
