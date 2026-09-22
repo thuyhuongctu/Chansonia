@@ -7,12 +7,11 @@ A lyrics-synchronised music player for the album
 One codebase, multiple targets:
 
 - **Web** — live at **[thuyhuongctu.github.io/Chansonia](https://thuyhuongctu.github.io/Chansonia/)**,
-  redeployed automatically on every push to `main`. A newer-UI web app is
-  deployed separately from the `chansonia-web-app` project.
+  redeployed automatically on every push to `main`.
 - **Android** — packaged with Capacitor, submitted to Google Play as an `.aab`.
 - **iOS** — Capacitor project scaffolded under `ios/`, ready to open in Xcode
   and submit via TestFlight/App Store once signed with an Apple Developer
-  account. See [APP-STORE-TODO.md](APP-STORE-TODO.md).
+  account. See [docs/app-store-todo.md](docs/app-store-todo.md).
 
 > **This is proprietary software.** It is published here for the author's own
 > use and record. No open-source licence is granted — see [LICENSE](LICENSE).
@@ -48,8 +47,14 @@ Total running time 26:42.
 - Carries an artist page with the album's epigraph, recurring motifs and links.
 - Auto-advances to the next track, either in album order or shuffled.
 - Sleep timer: pauses playback automatically after 5–60 minutes.
+- Claymorphism ("3D đất sét") visual design across the whole app.
+- A decorative "Hương AI" mascot badge that tilts toward the pointer.
+- Optional karaoke lyric video export via Remotion — see
+  [`remotion-video/`](remotion-video).
 
-No account, no analytics, no advertising, no tracking of any kind.
+No account, no login, no analytics, no advertising, no tracking of any kind —
+the app has no backend and no server-side state at all (see
+[Security](#security) below).
 
 ---
 
@@ -138,7 +143,7 @@ headless machine, with `android/local.properties` pointing `sdk.dir` at it.
 `local.properties` is machine-specific and excluded by `.gitignore`.
 
 Google Play submission steps are written up in
-[HUONG-DAN-PHAT-HANH.md](HUONG-DAN-PHAT-HANH.md) (Vietnamese).
+[docs/huong-dan-phat-hanh.md](docs/huong-dan-phat-hanh.md) (Vietnamese).
 
 ---
 
@@ -157,7 +162,7 @@ Identifier is `com.jemappellehuong.songbook`, then archive with
 submitting requires macOS and an Apple Developer account — this can't be done
 from a Linux environment.
 
-Full checklist in [APP-STORE-TODO.md](APP-STORE-TODO.md).
+Full checklist in [docs/app-store-todo.md](docs/app-store-todo.md).
 
 ---
 
@@ -188,13 +193,41 @@ src/
   components/        user interface
 public/
   audio/             mp3 files (never committed)
-  brand/artist.jpg   portrait
+  brand/             portrait, mascot image
 android/             Capacitor project (Android)
 ios/                 Capacitor project (iOS)
+remotion-video/      karaoke lyric video composition (optional export)
+docs/                release checklists (Android, iOS)
 ```
 
 Built with Vite 6, React 19, TypeScript 5.7, Tailwind CSS 4, Zustand 5 and
 Capacitor 8.
+
+---
+
+## Security
+
+This is a static, client-only app: there is no backend, no database, no
+accounts and no login. Every visitor gets a read-only copy of the same
+build served from GitHub Pages.
+
+- **Nothing a visitor does can change the live site.** Preferences (shuffle,
+  sleep timer, theme) are stored with `zustand/persist` in that visitor's own
+  browser (`localStorage`) — private to their device, never sent anywhere,
+  and invisible to other visitors.
+- **No write access is granted to anyone but the repository owner.** Only
+  `thuyhuongctu` has push/merge rights; third-party GitHub Apps (ImgBot,
+  ecc-tools, CodeRabbit) can only leave comments or open pull requests from
+  their own branch — nothing they do reaches `main` without the owner
+  reviewing and merging it by hand.
+- **No secrets are stored in this repository.** The Android signing keystore
+  (`android/upload-keystore.jks`, `android/keystore.properties`) is excluded
+  by `.gitignore` and kept only on the machine that builds releases — see
+  [Building for Android](#building-for-android).
+- Recommended, optional hardening on GitHub: enable **Settings → Branches →
+  branch protection on `main`** (require a pull request before merging) as a
+  second line of defence, and review **Settings → Integrations → GitHub
+  Apps** periodically to revoke any automation no longer wanted.
 
 ---
 

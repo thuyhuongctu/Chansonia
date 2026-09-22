@@ -6,12 +6,11 @@
 Chạy được ở nhiều nơi từ cùng một mã nguồn:
 
 - **Web** — đang chạy tại **[thuyhuongctu.github.io/Chansonia](https://thuyhuongctu.github.io/Chansonia/)**,
-  tự động triển khai lại mỗi khi push vào nhánh `main` (xem mục 3). Bản web app
-  giao diện mới hơn đang được triển khai độc lập trong dự án `chansonia-web-app`.
+  tự động triển khai lại mỗi khi push vào nhánh `main` (xem mục 3).
 - **Android** — đóng gói bằng Capacitor, nộp lên CH Play dưới dạng `.aab`.
 - **iOS** — dự án Capacitor đã được tạo tại `ios/`, sẵn sàng mở bằng Xcode và gửi qua TestFlight/App Store sau khi cấu hình Apple Developer.
 
-Xem quy trình chi tiết tại [APP-STORE-TODO.md](APP-STORE-TODO.md).
+Xem quy trình chi tiết tại [docs/app-store-todo.md](docs/app-store-todo.md).
 
 ---
 
@@ -80,6 +79,8 @@ cd android
 - `.aab` là tệp nộp lên CH Play.
 - `.apk` để cài thử trực tiếp lên điện thoại (`adb install -r app-release.apk`).
 
+Xem chi tiết nộp CH Play tại [docs/huong-dan-phat-hanh.md](docs/huong-dan-phat-hanh.md).
+
 Khoá ký nằm ở `android/upload-keystore.jks`, mật khẩu ghi trong
 `android/keystore.properties`. **Hai tệp này không được đưa lên kho công khai**
 (`.gitignore` đã chặn sẵn) và cũng **không được làm mất** — mất khoá là mất
@@ -103,7 +104,7 @@ npx cap open ios
 
 Mở `ios/App/App.xcworkspace` bằng Xcode, chọn Team Apple Developer trong Signing & Capabilities, kiểm tra Bundle Identifier `com.jemappellehuong.songbook`, archive với `Any iOS Device (arm64)`, validate và upload bằng Organizer. Phần ký và gửi build cần thực hiện trên macOS với tài khoản Apple Developer; môi trường Linux không thể tạo archive iOS production.
 
-Xem checklist đầy đủ tại [APP-STORE-TODO.md](APP-STORE-TODO.md).
+Xem checklist đầy đủ tại [docs/app-store-todo.md](docs/app-store-todo.md).
 
 ---
 
@@ -133,14 +134,41 @@ src/
   components/        giao diện
 public/
   audio/             mp3 (không commit)
-  brand/artist.jpg   ảnh chân dung
+  brand/             ảnh chân dung, ảnh linh vật
 android/             dự án Capacitor (Android)
 ios/                 dự án Capacitor (iOS)
+remotion-video/      video lời bài hát (Remotion, tuỳ chọn xuất video)
+docs/                checklist phát hành (Android, iOS)
 ```
 
 ---
 
-## 8. Bản quyền
+## 8. Bảo mật
+
+Đây là app tĩnh, chạy hoàn toàn phía trình duyệt — **không có máy chủ, không
+có cơ sở dữ liệu, không tài khoản, không đăng nhập**. Mọi người ghé trang đều
+chỉ nhận đúng một bản dựng như nhau từ GitHub Pages, chỉ đọc.
+
+- **Không ai ghé trang có thể sửa được nội dung trang chung.** Các tuỳ chọn cá
+  nhân (phát ngẫu nhiên, hẹn giờ ngủ, giao diện sáng/tối) được lưu bằng
+  `zustand/persist` ngay trên trình duyệt của người đó (`localStorage`) — chỉ
+  riêng máy họ, không gửi đi đâu cả, người khác không thấy được.
+- **Không ai ngoài chủ repo có quyền ghi.** Chỉ tài khoản `thuyhuongctu` có
+  quyền push/merge; các GitHub App bên thứ ba (ImgBot, ecc-tools, CodeRabbit)
+  chỉ có thể bình luận hoặc mở pull request từ nhánh riêng của họ — không có
+  gì vào được `main` nếu chủ repo không tự tay duyệt và gộp.
+- **Không có thông tin bí mật nào nằm trong repo.** Khoá ký Android
+  (`android/upload-keystore.jks`, `android/keystore.properties`) đã bị
+  `.gitignore` chặn, chỉ giữ trên máy dùng để build bản phát hành.
+- Khuyến nghị thêm (tuỳ chọn) trên GitHub: bật **Settings → Branches →
+  branch protection** cho nhánh `main` (bắt buộc phải qua pull request mới
+  được gộp) để có thêm một lớp phòng vệ, và thỉnh thoảng kiểm tra lại
+  **Settings → Integrations → GitHub Apps** để thu hồi quyền của app nào
+  không còn cần dùng.
+
+---
+
+## 9. Bản quyền
 
 © 2026 Đỗ Thùy Hương. Giữ toàn bộ quyền — xem `LICENSE`.
 
