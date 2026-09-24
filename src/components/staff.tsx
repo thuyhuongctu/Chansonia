@@ -13,7 +13,7 @@ export function ScrollingStaff() {
   );
 
   return (
-    <div className="relative h-[88px] shrink-0 overflow-hidden bg-ink-2 px-4 shadow-clay-inset">
+    <div className="relative h-[88px] shrink-0 overflow-hidden border-b border-line bg-surface px-4">
       <svg
         viewBox={`0 0 800 ${STAFF_H + 16}`}
         className="h-full w-full"
@@ -27,7 +27,8 @@ export function ScrollingStaff() {
             x2="800"
             y1={12 + i * 12}
             y2={12 + i * 12}
-            stroke="var(--color-staff)"
+            stroke="var(--muted)"
+            strokeOpacity="0.35"
             strokeWidth="1"
           />
         ))}
@@ -35,7 +36,7 @@ export function ScrollingStaff() {
         <text
           x="8"
           y="48"
-          fill="var(--color-coral-bright)"
+          fill="var(--accent)"
           fontSize="28"
           fontFamily="serif"
           opacity="0.7"
@@ -49,7 +50,7 @@ export function ScrollingStaff() {
           x2="120"
           y1="4"
           y2={STAFF_H + 12}
-          stroke="var(--color-coral)"
+          stroke="var(--accent)"
           strokeWidth="2"
           opacity="0.85"
         />
@@ -65,7 +66,7 @@ export function ScrollingStaff() {
               cy={y}
               rx={NOTE_R + 1}
               ry={NOTE_R}
-              fill={active ? "var(--color-coral-bright)" : "var(--color-fg-muted)"}
+              fill={active ? "var(--accent)" : "var(--muted)"}
               opacity={active ? 1 : 0.55}
             />
           );
@@ -78,11 +79,9 @@ export function ScrollingStaff() {
 export function MiniStaff({
   startMs,
   endMs,
-  paper,
 }: {
   startMs: number;
   endMs: number;
-  paper?: boolean;
 }) {
   const song = useSong();
   const notes = song.notes.filter((n) => n.startMs >= startMs && n.startMs < endMs);
@@ -101,7 +100,8 @@ export function MiniStaff({
           x2="320"
           y1={6 + i * 8}
           y2={6 + i * 8}
-          stroke={paper ? "var(--color-edge-paper)" : "var(--color-staff)"}
+          stroke="var(--muted)"
+          strokeOpacity="0.3"
           strokeWidth="1"
         />
       ))}
@@ -115,7 +115,7 @@ export function MiniStaff({
             cy={y}
             rx="4"
             ry="3.2"
-            fill={paper ? "var(--color-ink-fg)" : "var(--color-coral)"}
+            fill="var(--accent-2)"
           />
         );
       })}

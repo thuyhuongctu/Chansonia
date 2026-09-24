@@ -7,7 +7,19 @@ export const song: RawSong = {
   subtitle: "Parler à mon père, moi aussi",
   language: "Tiếng Pháp",
   note: "Người trưởng thành lên tiếng · Mong manh",
-  accent: "#4b7bec",
+  accent: "#c45c3a",
+  coverSrc: "art/huong_silver_tablet.webp",
+  style:
+    "French cinematic electro-pop chanson · 116–118 BPM · giọng hát sát micro, piano tiết chế, tiếng đàn tranh điểm xuyết, kết gần như a cappella",
+  signature:
+    "«Je voudrais te parler, à toi. / Tu n'as rien à prouver. / Je m'appelle Hương.»",
+  pictures: [
+    {
+      src: "art/ba-cong-con-tren-vai.webp",
+      alt: "Hình đất sét: người cha cõng con gái trên vai đi trên con đường làng lúc hoàng hôn bên dòng sông",
+      caption: "«Parler à mon père, moi aussi» — con đường làng trong trí nhớ.",
+    },
+  ],
   audioSrc: "audio/track01.mp3",
   durationMs: 170952,
   sections: [
