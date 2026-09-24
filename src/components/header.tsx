@@ -1,4 +1,3 @@
-import { useEffect, useRef } from "react";
 import { Library, User, AlignLeft, Music2, ChevronLeft, Sun, Moon } from "lucide-react";
 import { ARTIST } from "@/lib/artist";
 import { SEAL } from "@/lib/art";
@@ -18,28 +17,9 @@ export function AppHeader() {
   const setMode = usePlayer((s) => s.setMode);
   const song = useSong();
   const { resolved, setTheme } = useTheme();
-  const ref = useRef<HTMLElement>(null);
-
-  // Thanh này xuống hai dòng trên màn hẹp, nên chiều cao thay đổi. Ghi chiều
-  // cao thật vào biến --header-h để những thanh dính khác (ô tìm kiếm ở trang
-  // album) bám đúng ngay bên dưới, không bị che.
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const set = () =>
-      document.documentElement.style.setProperty(
-        "--header-h",
-        `${Math.round(el.getBoundingClientRect().height)}px`,
-      );
-    set();
-    const ro = new ResizeObserver(set);
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, []);
 
   return (
     <header
-      ref={ref}
       className="sticky top-0 z-20 flex shrink-0 items-center justify-between gap-2 border-b border-line bg-paper/95 px-4 py-2.5 backdrop-blur-md sm:gap-3 sm:px-6 sm:py-3"
     >
       <div className="flex min-w-0 items-center gap-3">

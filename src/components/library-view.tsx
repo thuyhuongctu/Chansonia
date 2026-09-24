@@ -210,10 +210,9 @@ export function LibraryView() {
           </div>
 
           {/* Tìm kiếm và lọc — dính lại khi cuộn để luôn trong tầm tay */}
-          <div
-            className="sticky z-10 -mx-5 mt-4 bg-paper/92 px-5 py-3 backdrop-blur-md sm:-mx-8 sm:px-8"
-            style={{ top: "var(--header-h, 4rem)" }}
-          >
+          {/* Khung giữa tự cuộn bên trong (xem App.tsx), mà nó đã bắt đầu
+              ngay dưới thanh đầu trang, nên dính vào đỉnh khung là vừa. */}
+          <div className="sticky top-0 z-10 -mx-5 mt-4 bg-paper/92 px-5 py-3 backdrop-blur-md sm:-mx-8 sm:px-8">
             <div className="mx-auto flex w-full max-w-3xl flex-col gap-3">
               <div className="relative">
                 <Search
