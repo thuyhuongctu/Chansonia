@@ -50,8 +50,20 @@ Total running time 26:42.
 - Looks and reads like the songbook page of the author's own site: warm clay
   palette, serif headings, paper cards, and the same clay artwork for every
   track — light or dark, following the device (or the Sáng/Tối switch).
+- Moves like an app: views fade in, cards rise in sequence, buttons sink under
+  the finger, and the sung lyric line lifts while the lines further away dim and
+  soften. Every one of those effects switches off when the device asks for
+  reduced motion.
 - Auto-advances to the next track, either in album order or shuffled.
+- **Searches the whole songbook**, lyrics included — and ignores Vietnamese
+  diacritics, so typing `den` finds *đèn* and `huong` finds *Hương*. A matching
+  lyric line is quoted right inside the song card.
+- Filters the track list by language (Vietnamese, French, English).
+- **Draggable progress bar** with a thumb, plus previous/next track buttons and
+  a mini cover in the player bar; arrow keys nudge playback by 5 seconds.
 - Sleep timer: pauses playback automatically after 5–60 minutes.
+- **Installs as an app** (PWA): add to the home screen, open it full-screen and
+  offline. See [Installing as an app](#installing-as-an-app).
 - Claymorphism ("3D đất sét") visual design across the whole app.
 - A decorative "Hương AI" mascot badge that tilts toward the pointer.
 - Optional karaoke lyric video export via Remotion — see
@@ -73,6 +85,40 @@ npm run dev          # http://localhost:5173
 To hear audio while developing, drop the six mp3 files into `public/audio/`.
 The exact filenames are listed in [`public/audio/README.md`](public/audio/README.md).
 Without them the app still runs and displays every lyric — only playback is silent.
+
+---
+
+## Automated tests
+
+A Playwright suite drives the real app in a real browser — it opens the album,
+types in the search box, plays a track, drags the progress bar and pulls the
+network out from under it — so a broken interface is caught before release,
+not after.
+
+```bash
+npm test             # run everything (mobile and desktop widths)
+npm run test:ui      # step through the tests visually
+npm run test:report  # open the report from the last run
+```
+
+The first run downloads a browser: `npx playwright install --with-deps chromium`.
+
+| File | What it checks |
+| --- | --- |
+| `tests/album.spec.ts` | album page, six songs, cover artwork, artist page, light/dark |
+| `tests/search.spec.ts` | accent-insensitive search, lyric search, language filters, sticky search bar |
+| `tests/player.spec.ts` | opening a song, playback, lyric highlighting, tap-a-line to seek, pause, next |
+| `tests/scrubber.spec.ts` | dragging the progress bar, dragging off the bar, keyboard seeking, screen-reader labels |
+| `tests/pwa.spec.ts` | manifest, icons, service worker, audio never cached, reload with the network off |
+| `tests/motion.spec.ts` | motion on by default, everything still with "reduce motion" |
+
+The recordings are proprietary and are not in the repository, so
+`tests/make-silent-audio.mjs` writes a silent mp3 of the right length for every
+track that is missing. It never touches a real recording that is already there.
+
+Every push and pull request runs the whole suite on GitHub Actions
+([`.github/workflows/test.yml`](.github/workflows/test.yml)); the report is kept
+as a build artifact for two weeks.
 
 ---
 
@@ -107,6 +153,36 @@ source change needed, just rebuild.
 > Audio served from a public static host can be downloaded directly by URL,
 > outside the app. Choose the offline build, or a host with access control, if
 > the recordings need to stay restricted.
+
+---
+
+## Installing as an app
+
+The web build is a Progressive Web App. On the deployed site (or any HTTPS
+host), the browser offers **Add to Home screen** / **Install**; the app then
+opens full-screen with its own icon, and keeps working without a network.
+
+What makes that work:
+
+| File | Role |
+| --- | --- |
+| `public/manifest.webmanifest` | name, icons, colours, `display: standalone` |
+| `public/sw.js` | service worker: caches the app shell and static files |
+| `public/icons/` | 192/512 px icons, a maskable one, and the Apple touch icon |
+
+Notes worth knowing before changing any of it:
+
+- The service worker is registered only in a production build served over
+  `https:` (or `localhost`). Opening `dist/index.html` straight from disk, and
+  the Android/iOS builds, skip it entirely.
+- **Audio is never cached by the service worker.** Recordings are large, and
+  range requests — the thing that makes seeking work — must reach the server
+  untouched.
+- Pages use network-first (so a deploy shows up immediately), static files
+  cache-first. Bump `CACHE` in `public/sw.js` to make every device drop its
+  stored copies and start over.
+- Icons are generated from `public/art/lr-seal-round.webp`; regenerate them with
+  `sharp` if the seal ever changes.
 
 ---
 
@@ -226,7 +302,9 @@ captions). Artwork files live in `public/art/` and are listed in
 
 Every image in the app comes from the songbook page of the author's site,
 [`Je-mappelle-Huong/music.html`](https://thuyhuongctu.github.io/Je-mappelle-Huong/music.html),
-and is bundled under `public/art/` so the app stays fully offline. The
+and is bundled under `public/art/` so the app stays fully offline. Each track
+carries **the same frames, in the same order, with the same captions** as its
+section on that page — including the opening frames of the short films. The
 interface uses the same design tokens as that page — paper `#f6f1e7`,
 terracotta `#c45c3a`, river teal `#3f6f68`, serif headings, 16px paper cards
 with a thin rule and a soft shadow — with a dark variant that follows the
@@ -251,10 +329,15 @@ public/
   audio/             mp3 files (never committed)
   art/               clay artwork copied from the songbook page
   brand/             portrait, mascot image
+  icons/             home-screen icons (192/512, maskable, Apple touch)
+  manifest.webmanifest  installable-app declaration (PWA)
+  sw.js              service worker: offline shell and static-file cache
 android/             Capacitor project (Android)
 ios/                 Capacitor project (iOS)
 remotion-video/      karaoke lyric video composition (optional export)
 docs/                release checklists (Android, iOS)
+tests/               Playwright suite; make-silent-audio.mjs builds test audio
+playwright.config.ts test runner: builds the app and previews it on :4173
 ```
 
 Built with Vite 6, React 19, TypeScript 5.7, Tailwind CSS 4, Zustand 5 and

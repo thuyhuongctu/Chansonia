@@ -10,6 +10,12 @@ public/audio/*.mp3
 public/audio/*.wav
 public/audio/*.m4a
 
+# Kết quả chạy kiểm thử Playwright
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+
 # Remotion render output and cache
 out/
 .remotion/

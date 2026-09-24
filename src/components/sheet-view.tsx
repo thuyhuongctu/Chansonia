@@ -15,7 +15,7 @@ export function SheetView() {
   const sections = song.sections;
 
   return (
-    <div className="flex-1 overflow-y-auto bg-paper px-4 py-10 text-ink sm:px-8">
+    <div className="view-enter flex-1 overflow-y-auto bg-paper px-4 py-10 text-ink sm:px-8">
       <div className="mx-auto max-w-2xl">
         <header className="mb-10 text-center">
           <img src={SEAL} alt="" aria-hidden className="mx-auto size-14 rounded-full" />

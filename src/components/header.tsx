@@ -19,14 +19,16 @@ export function AppHeader() {
   const { resolved, setTheme } = useTheme();
 
   return (
-    <header className="sticky top-0 z-20 flex shrink-0 flex-wrap items-center justify-between gap-3 border-b border-line bg-paper/95 px-4 py-3 backdrop-blur-md sm:px-6">
+    <header
+      className="sticky top-0 z-20 flex shrink-0 items-center justify-between gap-2 border-b border-line bg-paper/95 px-4 py-2.5 backdrop-blur-md sm:gap-3 sm:px-6 sm:py-3"
+    >
       <div className="flex min-w-0 items-center gap-3">
         {view === "player" ? (
           <button
             type="button"
             onClick={() => setView("library")}
             aria-label="Quay lại danh sách"
-            className="flex size-9 shrink-0 items-center justify-center rounded-full text-muted transition-colors hover:bg-sunk hover:text-ink"
+            className="press flex size-9 shrink-0 items-center justify-center rounded-full text-muted hover:bg-sunk hover:text-ink"
           >
             <ChevronLeft className="size-5" />
           </button>
@@ -49,7 +51,7 @@ export function AppHeader() {
         </div>
       </div>
 
-      <div className="flex flex-wrap items-center gap-2">
+      <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
         {view === "player" ? (
           <div
             className="flex rounded-full border border-line bg-surface p-1 shadow-song"
@@ -79,7 +81,7 @@ export function AppHeader() {
           onClick={() => setTheme(resolved === "dark" ? "light" : "dark")}
           aria-label={resolved === "dark" ? "Chuyển sang nền sáng" : "Chuyển sang nền tối"}
           title={resolved === "dark" ? "Sáng" : "Tối"}
-          className="flex h-9 items-center gap-1.5 rounded-full border border-line bg-surface px-3 font-sans text-xs text-muted shadow-song transition-colors hover:text-ink"
+          className="press flex h-9 items-center gap-1.5 rounded-full border border-line bg-surface px-3 font-sans text-xs text-muted shadow-song hover:text-ink"
         >
           {resolved === "dark" ? <Sun className="size-3.5" /> : <Moon className="size-3.5" />}
           <span className="hidden sm:inline">{resolved === "dark" ? "Sáng" : "Tối"}</span>
@@ -105,13 +107,15 @@ function Tab({
       role="tab"
       aria-selected={active}
       onClick={onClick}
+      aria-label={label}
+      title={label}
       className={cn(
-        "flex h-8 items-center gap-1.5 rounded-full px-3 font-sans text-sm font-medium transition-colors",
+        "press flex h-8 items-center gap-1.5 rounded-full px-2.5 font-sans text-sm font-medium sm:px-3",
         active ? "bg-accent text-white" : "text-muted hover:text-ink",
       )}
     >
-      <Icon className="size-3.5" />
-      {label}
+      <Icon className="size-4 sm:size-3.5" />
+      <span className="hidden sm:inline">{label}</span>
     </button>
   );
 }

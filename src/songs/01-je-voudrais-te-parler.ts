@@ -15,9 +15,10 @@ export const song: RawSong = {
     "«Je voudrais te parler, à toi. / Tu n'as rien à prouver. / Je m'appelle Hương.»",
   pictures: [
     {
-      src: "art/ba-cong-con-tren-vai.webp",
-      alt: "Hình đất sét: người cha cõng con gái trên vai đi trên con đường làng lúc hoàng hôn bên dòng sông",
-      caption: "«Parler à mon père, moi aussi» — con đường làng trong trí nhớ.",
+      src: "art/ba-va-con-duong-lang.webp",
+      alt: "Hình đất sét: người cha và con gái nhỏ đứng cạnh nhau trên con đường làng lát gạch lúc chiều muộn",
+      caption:
+        "«Parler à mon père, moi aussi» — con đường làng trong bài hát, dựng thành hoạt cảnh đất sét.",
     },
   ],
   audioSrc: "audio/track01.mp3",

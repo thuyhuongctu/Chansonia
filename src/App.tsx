@@ -18,11 +18,15 @@ export default function App() {
   const inPlayer = view === "player";
   const started = playing || currentMs > 80;
 
+  // Khung ứng dụng cao đúng bằng màn hình và KHÔNG để cả trang cuộn: có vậy
+  // phần giữa mới tự cuộn bên trong, ô tìm kiếm mới dính lại được khi cuộn,
+  // và lời hát mới tự trôi theo nhạc. Để cả trang cuộn thì mọi thứ "dính"
+  // bên trong đều trôi mất.
   return (
     <div
       data-view={view}
       data-mode={mode}
-      className="flex min-h-full min-h-dvh w-full flex-1 flex-col bg-paper font-sans text-ink"
+      className="flex h-full h-dvh w-full flex-col overflow-hidden bg-paper font-sans text-ink"
     >
       <AppHeader />
 
