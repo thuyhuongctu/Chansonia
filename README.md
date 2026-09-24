@@ -268,7 +268,9 @@ captions). Artwork files live in `public/art/` and are listed in
 
 Every image in the app comes from the songbook page of the author's site,
 [`Je-mappelle-Huong/music.html`](https://thuyhuongctu.github.io/Je-mappelle-Huong/music.html),
-and is bundled under `public/art/` so the app stays fully offline. The
+and is bundled under `public/art/` so the app stays fully offline. Each track
+carries **the same frames, in the same order, with the same captions** as its
+section on that page — including the opening frames of the short films. The
 interface uses the same design tokens as that page — paper `#f6f1e7`,
 terracotta `#c45c3a`, river teal `#3f6f68`, serif headings, 16px paper cards
 with a thin rule and a soft shadow — with a dark variant that follows the
