@@ -26,6 +26,41 @@ Muốn nghe nhạc khi chạy thử thì chép 6 tệp mp3 vào `public/audio/`
 
 ---
 
+## 1b. Bộ kiểm thử tự động
+
+Một bộ kiểm thử Playwright mở ứng dụng bằng trình duyệt thật rồi làm đúng
+những việc người nghe vẫn làm: xem trang album, gõ vào ô tìm kiếm, bấm phát
+một bài, kéo thanh tiến độ, rồi ngắt mạng xem có mở lại được không. Sửa mã mà
+làm vỡ chỗ nào là biết ngay, không phải đợi tới lúc phát hành mới lộ.
+
+```bash
+npm test             # chạy toàn bộ, cả khổ điện thoại lẫn khổ máy tính
+npm run test:ui      # chạy có giao diện, xem lại từng bước
+npm run test:report  # mở báo cáo của lần chạy gần nhất
+```
+
+Lần đầu cần tải trình duyệt về: `npx playwright install --with-deps chromium`.
+
+| Tệp | Kiểm những gì |
+| --- | --- |
+| `tests/album.spec.ts` | trang album, đủ sáu bài, ảnh bìa, trang nghệ sĩ, nền sáng/tối |
+| `tests/search.spec.ts` | tìm không dấu, tìm theo lời, lọc ngôn ngữ, ô tìm kiếm dính khi cuộn |
+| `tests/player.spec.ts` | mở bài, phát nhạc, lời sáng theo dòng, bấm dòng lời để tua, tạm dừng, bài sau |
+| `tests/scrubber.spec.ts` | kéo thanh tiến độ, kéo ra ngoài thanh, tua bằng bàn phím, nhãn cho máy đọc màn hình |
+| `tests/pwa.spec.ts` | manifest, biểu tượng, service worker, không lưu tệp nhạc, mất mạng vẫn mở được |
+| `tests/motion.spec.ts` | có chuyển động khi bình thường, tắt hẳn khi máy đặt giảm chuyển động |
+
+Bản thu là tài sản riêng, không nằm trong kho mã, nên
+`tests/make-silent-audio.mjs` tự tạo tệp mp3 im lặng đúng độ dài từng bài cho
+những tệp còn thiếu. Máy nào đã có bản thu thật thì tệp thật giữ nguyên, không
+bị ghi đè.
+
+Mỗi lần đẩy mã và mỗi lần mở pull request, GitHub Actions chạy lại toàn bộ bộ
+kiểm thử ([`.github/workflows/test.yml`](.github/workflows/test.yml)); báo cáo
+được giữ lại hai tuần để xem khi cần.
+
+---
+
 ## 2. Hai cách đóng gói
 
 Ứng dụng có công tắc `VITE_AUDIO_BASE` để chọn nguồn nhạc.
@@ -156,10 +191,48 @@ in nghiêng) và `pictures` (ảnh đất sét kèm chú thích). Ảnh để tr
 
 Toàn bộ hình trong ứng dụng lấy từ trang songbook cá nhân
 [`Je-mappelle-Huong/music.html`](https://thuyhuongctu.github.io/Je-mappelle-Huong/music.html)
-và được đóng gói sẵn trong `public/art/` nên mở offline vẫn thấy đủ. Giao diện
+và được đóng gói sẵn trong `public/art/` nên mở offline vẫn thấy đủ. Mỗi bài
+mang **đúng những khung hình của bài đó trên trang, đúng thứ tự và đúng lời chú
+thích** — kể cả khung hình mở đầu các đoạn phim ngắn. Giao diện
 dùng đúng bộ màu của trang đó: giấy `#f6f1e7`, đất nung `#c45c3a`, xanh sông
 `#3f6f68`, tiêu đề chữ serif, thẻ giấy bo 16px có viền mảnh và bóng mềm; kèm
 bản nền tối theo cài đặt máy hoặc nút Sáng/Tối ở đầu trang.
+
+---
+
+## 6c. Tìm kiếm, chuyển động và cài lên máy
+
+**Tìm kiếm** ở trang album tìm cả trong lời hát và **bỏ qua dấu tiếng Việt** —
+gõ `den` ra *đèn*, gõ `huong` ra *Hương*. Câu lời khớp được trích ngay trong thẻ
+bài hát. Cạnh ô tìm kiếm là bộ lọc theo ngôn ngữ (Việt · Pháp · Anh).
+
+**Thanh tiến độ kéo được** bằng ngón tay hoặc chuột, có nút tròn; phím mũi tên
+trái/phải tua 5 giây. Thanh phát có thêm nút bài trước / bài sau và ảnh bìa nhỏ.
+
+**Chuyển động**: trang hiện mờ dần, các thẻ nổi lên lần lượt, nút lún xuống khi
+bấm, dòng lời đang hát nhô lên còn dòng ở xa mờ đi. Tất cả tự tắt khi máy đặt
+chế độ giảm chuyển động.
+
+**Cài lên máy như một ứng dụng (PWA)**: mở bản web trên điện thoại rồi chọn
+*Thêm vào màn hình chính*. App có biểu tượng riêng, mở toàn màn hình và **chạy
+được cả khi mất mạng**.
+
+| Tệp | Việc |
+| --- | --- |
+| `public/manifest.webmanifest` | tên, biểu tượng, màu nền, mở toàn màn hình |
+| `public/sw.js` | service worker: lưu sẵn khung ứng dụng và tệp tĩnh |
+| `public/icons/` | biểu tượng 192/512 px, bản maskable và bản cho iPhone |
+
+Vài điều cần nhớ trước khi sửa:
+
+- Service worker chỉ chạy ở bản dựng thật, mở qua `https:` (hoặc `localhost`).
+  Mở thẳng `dist/index.html` từ đĩa và bản Android/iOS đều bỏ qua.
+- **Tệp nhạc không bao giờ được lưu vào bộ nhớ đệm** — tệp rất nặng, và các yêu
+  cầu tải từng đoạn (thao tác tua) phải đi thẳng tới máy chủ.
+- Trang ưu tiên mạng (đăng bản mới là thấy ngay), tệp tĩnh ưu tiên bản đã lưu.
+  Đổi số trong `CACHE` ở `public/sw.js` là mọi máy dọn kho cũ, lưu lại từ đầu.
+- Biểu tượng sinh từ `public/art/lr-seal-round.webp` bằng `sharp`; đổi dấu triện
+  thì sinh lại.
 
 ---
 
@@ -180,10 +253,15 @@ public/
   audio/             mp3 (không commit)
   art/               ảnh đất sét chép từ trang songbook
   brand/             ảnh chân dung, ảnh linh vật
+  icons/             biểu tượng để cài lên màn hình chính
+  manifest.webmanifest  khai báo ứng dụng cài được (PWA)
+  sw.js              service worker: mở được khi mất mạng
 android/             dự án Capacitor (Android)
 ios/                 dự án Capacitor (iOS)
 remotion-video/      video lời bài hát (Remotion, tuỳ chọn xuất video)
 docs/                checklist phát hành (Android, iOS)
+tests/               bộ kiểm thử Playwright; make-silent-audio.mjs tạo nhạc thử
+playwright.config.ts cách chạy kiểm thử: dựng app rồi mở thử ở cổng 4173
 ```
 
 ---

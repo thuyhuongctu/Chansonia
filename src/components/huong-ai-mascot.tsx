@@ -54,8 +54,9 @@ export function HuongAiMascot() {
       onClick={poke}
       aria-label="Hương AI"
       title="Hương AI"
-      className="fixed right-3 bottom-24 z-30 flex size-14 items-center justify-center rounded-full border border-line bg-surface shadow-song transition-transform duration-150 ease-out sm:right-6 sm:bottom-28"
+      className="press fixed right-3 z-30 flex size-14 items-center justify-center rounded-full border border-line bg-surface shadow-song sm:right-6"
       style={{
+        bottom: "calc(var(--player-h, 7rem) + 14px)",
         transform: bounce
           ? "scale(1.14) rotate(-4deg)"
           : `rotate(${tilt.ry * 0.4}deg) translate(${tilt.ry * 0.5}px, ${tilt.rx * 0.5}px)`,
