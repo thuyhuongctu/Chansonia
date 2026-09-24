@@ -81,6 +81,17 @@ export async function waitForLyrics(page: Page) {
   });
 }
 
+/**
+ * Tên bài đang mở, đọc từ thanh đầu trang.
+ *
+ * Đừng đọc từ thẻ <h1>: thẻ ấy nằm trong tấm bìa bài hát, mà tấm bìa biến mất
+ * ngay khi nhạc bắt đầu chạy, nhường chỗ cho khung lời. Thanh đầu trang thì
+ * luôn có tên bài, dù đang xem bìa hay đang nghe.
+ */
+export function songTitleInHeader(page: Page): Promise<string | null> {
+  return page.locator("header p").first().textContent();
+}
+
 /** Thứ tự dòng lời đang được hát; -1 nghĩa là vẫn đang dạo nhạc. */
 export function activeLyricIndex(page: Page): Promise<number> {
   return page.$$eval(".lyric-line", (els) =>

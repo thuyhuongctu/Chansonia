@@ -5,6 +5,7 @@ import {
   openApp,
   openFirstSong,
   playSong,
+  songTitleInHeader,
   waitForLyrics,
 } from "./helpers";
 
@@ -84,14 +85,16 @@ test.describe("Nghe nhạc", () => {
   test("nút bài sau chuyển sang bài kế tiếp", async ({ page }) => {
     await openApp(page);
     await openFirstSong(page);
-    const dau = await page.getByRole("heading", { level: 1 }).textContent();
+    const dau = await songTitleInHeader(page);
+    expect(dau).toBeTruthy();
 
+    // Bấm "Bài sau" là bài mới phát luôn, nên tấm bìa bài hát biến mất ngay.
+    // Vì vậy đọc tên bài ở thanh đầu trang, chỗ lúc nào cũng có.
     await page.getByRole("button", { name: "Bài sau" }).click();
-    await expect
-      .poll(() => page.getByRole("heading", { level: 1 }).textContent(), {
-        timeout: 15_000,
-      })
-      .not.toBe(dau);
+    await expect.poll(() => songTitleInHeader(page), { timeout: 15_000 }).not.toBe(dau);
+
+    // Và vẫn ở màn hình bài hát, không bị văng về danh sách.
+    await expect(page.getByRole("button", { name: "Quay lại danh sách" })).toBeVisible();
   });
 
   test("quay lại danh sách vẫn giữ nguyên bài đang nghe", async ({ page }) => {
