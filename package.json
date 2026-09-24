@@ -13,7 +13,7 @@
     "test": "playwright test",
     "test:ui": "playwright test --ui",
     "test:report": "playwright show-report",
-    "test:serve": "node tests/make-silent-audio.mjs && vite build && vite preview --port 4173 --strictPort",
+    "test:serve": "node tests/make-silent-audio.mjs && vite build && vite preview --host 127.0.0.1 --port 4173 --strictPort",
     "remotion": "remotion studio remotion-video/index.ts",
     "remotion:render": "remotion render remotion-video/index.ts"
   },
