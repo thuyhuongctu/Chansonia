@@ -50,8 +50,20 @@ Total running time 26:42.
 - Looks and reads like the songbook page of the author's own site: warm clay
   palette, serif headings, paper cards, and the same clay artwork for every
   track — light or dark, following the device (or the Sáng/Tối switch).
+- Moves like an app: views fade in, cards rise in sequence, buttons sink under
+  the finger, and the sung lyric line lifts while the lines further away dim and
+  soften. Every one of those effects switches off when the device asks for
+  reduced motion.
 - Auto-advances to the next track, either in album order or shuffled.
+- **Searches the whole songbook**, lyrics included — and ignores Vietnamese
+  diacritics, so typing `den` finds *đèn* and `huong` finds *Hương*. A matching
+  lyric line is quoted right inside the song card.
+- Filters the track list by language (Vietnamese, French, English).
+- **Draggable progress bar** with a thumb, plus previous/next track buttons and
+  a mini cover in the player bar; arrow keys nudge playback by 5 seconds.
 - Sleep timer: pauses playback automatically after 5–60 minutes.
+- **Installs as an app** (PWA): add to the home screen, open it full-screen and
+  offline. See [Installing as an app](#installing-as-an-app).
 - Claymorphism ("3D đất sét") visual design across the whole app.
 - A decorative "Hương AI" mascot badge that tilts toward the pointer.
 - Optional karaoke lyric video export via Remotion — see
@@ -107,6 +119,36 @@ source change needed, just rebuild.
 > Audio served from a public static host can be downloaded directly by URL,
 > outside the app. Choose the offline build, or a host with access control, if
 > the recordings need to stay restricted.
+
+---
+
+## Installing as an app
+
+The web build is a Progressive Web App. On the deployed site (or any HTTPS
+host), the browser offers **Add to Home screen** / **Install**; the app then
+opens full-screen with its own icon, and keeps working without a network.
+
+What makes that work:
+
+| File | Role |
+| --- | --- |
+| `public/manifest.webmanifest` | name, icons, colours, `display: standalone` |
+| `public/sw.js` | service worker: caches the app shell and static files |
+| `public/icons/` | 192/512 px icons, a maskable one, and the Apple touch icon |
+
+Notes worth knowing before changing any of it:
+
+- The service worker is registered only in a production build served over
+  `https:` (or `localhost`). Opening `dist/index.html` straight from disk, and
+  the Android/iOS builds, skip it entirely.
+- **Audio is never cached by the service worker.** Recordings are large, and
+  range requests — the thing that makes seeking work — must reach the server
+  untouched.
+- Pages use network-first (so a deploy shows up immediately), static files
+  cache-first. Bump `CACHE` in `public/sw.js` to make every device drop its
+  stored copies and start over.
+- Icons are generated from `public/art/lr-seal-round.webp`; regenerate them with
+  `sharp` if the seal ever changes.
 
 ---
 
@@ -251,6 +293,9 @@ public/
   audio/             mp3 files (never committed)
   art/               clay artwork copied from the songbook page
   brand/             portrait, mascot image
+  icons/             home-screen icons (192/512, maskable, Apple touch)
+  manifest.webmanifest  installable-app declaration (PWA)
+  sw.js              service worker: offline shell and static-file cache
 android/             Capacitor project (Android)
 ios/                 Capacitor project (iOS)
 remotion-video/      karaoke lyric video composition (optional export)

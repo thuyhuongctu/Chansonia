@@ -37,14 +37,21 @@ export function KaraokeStage() {
     const el = root.querySelector<HTMLElement>(`[data-line="${lineIndex}"]`);
     if (!el) return;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    el.scrollIntoView({
-      block: "center",
+    // Chỉ cuộn bên trong khung lời. Dùng scrollIntoView thì trình duyệt cuộn
+    // luôn cả trang, làm dải tên các phần bài hát bị đẩy khuất sau thanh
+    // đầu trang.
+    const rootRect = root.getBoundingClientRect();
+    const lineRect = el.getBoundingClientRect();
+    const delta =
+      lineRect.top - rootRect.top - (root.clientHeight - lineRect.height) / 2;
+    root.scrollTo({
+      top: Math.max(0, root.scrollTop + delta),
       behavior: reduce ? "auto" : "smooth",
     });
   }, [lineIndex, song.id]);
 
   return (
-    <div className="relative flex min-h-[28rem] flex-1 flex-col overflow-hidden bg-paper">
+    <div className="view-enter relative flex min-h-[28rem] flex-1 flex-col overflow-hidden bg-paper">
       {!started ? (
         <div className="relative min-h-0 flex-1 overflow-y-auto">
           <div
@@ -97,7 +104,7 @@ export function KaraokeStage() {
                 <button
                   type="button"
                   onClick={() => void play()}
-                  className="inline-flex h-12 items-center gap-2.5 rounded-full bg-accent px-6 font-sans text-base font-semibold text-white shadow-song transition-transform duration-150 hover:-translate-y-0.5 active:scale-[0.98]"
+                  className="press press-lg inline-flex h-12 items-center gap-2.5 rounded-full bg-accent px-6 font-sans text-base font-semibold text-white shadow-song"
                 >
                   <Play className="size-4 fill-current" />
                   Phát bài hát
@@ -133,8 +140,20 @@ export function KaraokeStage() {
               const sec = sections.find((s) => s.id === line.sectionId);
               const showLabel =
                 i === 0 || lines[i - 1]?.sectionId !== line.sectionId;
+              const state = active
+                ? "active"
+                : past
+                  ? "past"
+                  : dist <= 2
+                    ? "near"
+                    : "far";
               return (
-                <div key={line.id} data-line={i} className="scroll-mt-24">
+                <div
+                  key={line.id}
+                  data-line={i}
+                  data-state={state}
+                  className="lyric-line scroll-mt-28"
+                >
                   {line.cue ? (
                     <p className="mb-1 font-sans text-xs text-muted italic">{line.cue}</p>
                   ) : null}
@@ -147,30 +166,34 @@ export function KaraokeStage() {
                     type="button"
                     onClick={() => seek(line.startMs)}
                     className={cn(
-                      "w-full text-left font-display transition-[color,opacity] duration-300 ease-out",
+                      "w-full text-left font-display leading-snug",
                       line.role === "title"
-                        ? "text-2xl font-semibold sm:text-3xl"
-                        : "text-lg sm:text-2xl",
+                        ? "text-[1.6rem] font-semibold sm:text-4xl"
+                        : "text-xl sm:text-3xl",
                       line.role === "whisper" && "italic",
-                      active && "text-ink",
-                      past && "text-subtle",
-                      !active && !past && dist <= 2 && "text-muted",
-                      !active && !past && dist > 2 && "text-subtle",
+                      active ? "text-ink" : past ? "text-subtle" : "text-muted",
                     )}
                   >
                     {line.words.map((w, wi) => {
                       const on = active && wi === wordIndex && started;
                       const sung = active && wi < wordIndex && started;
                       return (
-                        <span
-                          key={`${line.id}-w${wi}`}
-                          className={cn(
-                            "mr-[0.28em] inline-block transition-colors duration-150",
-                            on && "text-accent",
-                            sung && "text-ink",
-                          )}
-                        >
-                          {w.text}
+                        // Dấu cách thật giữa các chữ (không dùng lề) để khi sao
+                        // chép lời hoặc đọc bằng trình đọc màn hình, các chữ
+                        // không bị dính liền nhau.
+                        <span key={`${line.id}-w${wi}`}>
+                          <span
+                            className={cn(
+                              "inline-block transition-colors duration-150",
+                              on && "text-accent",
+                              sung && "text-ink",
+                            )}
+                            style={
+                              on ? { textShadow: "0 0 26px var(--accent-soft)" } : undefined
+                            }
+                          >
+                            {w.text}
+                          </span>{" "}
                         </span>
                       );
                     })}
