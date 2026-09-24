@@ -163,6 +163,42 @@ bản nền tối theo cài đặt máy hoặc nút Sáng/Tối ở đầu trang
 
 ---
 
+## 6c. Tìm kiếm, chuyển động và cài lên máy
+
+**Tìm kiếm** ở trang album tìm cả trong lời hát và **bỏ qua dấu tiếng Việt** —
+gõ `den` ra *đèn*, gõ `huong` ra *Hương*. Câu lời khớp được trích ngay trong thẻ
+bài hát. Cạnh ô tìm kiếm là bộ lọc theo ngôn ngữ (Việt · Pháp · Anh).
+
+**Thanh tiến độ kéo được** bằng ngón tay hoặc chuột, có nút tròn; phím mũi tên
+trái/phải tua 5 giây. Thanh phát có thêm nút bài trước / bài sau và ảnh bìa nhỏ.
+
+**Chuyển động**: trang hiện mờ dần, các thẻ nổi lên lần lượt, nút lún xuống khi
+bấm, dòng lời đang hát nhô lên còn dòng ở xa mờ đi. Tất cả tự tắt khi máy đặt
+chế độ giảm chuyển động.
+
+**Cài lên máy như một ứng dụng (PWA)**: mở bản web trên điện thoại rồi chọn
+*Thêm vào màn hình chính*. App có biểu tượng riêng, mở toàn màn hình và **chạy
+được cả khi mất mạng**.
+
+| Tệp | Việc |
+| --- | --- |
+| `public/manifest.webmanifest` | tên, biểu tượng, màu nền, mở toàn màn hình |
+| `public/sw.js` | service worker: lưu sẵn khung ứng dụng và tệp tĩnh |
+| `public/icons/` | biểu tượng 192/512 px, bản maskable và bản cho iPhone |
+
+Vài điều cần nhớ trước khi sửa:
+
+- Service worker chỉ chạy ở bản dựng thật, mở qua `https:` (hoặc `localhost`).
+  Mở thẳng `dist/index.html` từ đĩa và bản Android/iOS đều bỏ qua.
+- **Tệp nhạc không bao giờ được lưu vào bộ nhớ đệm** — tệp rất nặng, và các yêu
+  cầu tải từng đoạn (thao tác tua) phải đi thẳng tới máy chủ.
+- Trang ưu tiên mạng (đăng bản mới là thấy ngay), tệp tĩnh ưu tiên bản đã lưu.
+  Đổi số trong `CACHE` ở `public/sw.js` là mọi máy dọn kho cũ, lưu lại từ đầu.
+- Biểu tượng sinh từ `public/art/lr-seal-round.webp` bằng `sharp`; đổi dấu triện
+  thì sinh lại.
+
+---
+
 ## 7. Cấu trúc
 
 ```
@@ -180,6 +216,9 @@ public/
   audio/             mp3 (không commit)
   art/               ảnh đất sét chép từ trang songbook
   brand/             ảnh chân dung, ảnh linh vật
+  icons/             biểu tượng để cài lên màn hình chính
+  manifest.webmanifest  khai báo ứng dụng cài được (PWA)
+  sw.js              service worker: mở được khi mất mạng
 android/             dự án Capacitor (Android)
 ios/                 dự án Capacitor (iOS)
 remotion-video/      video lời bài hát (Remotion, tuỳ chọn xuất video)

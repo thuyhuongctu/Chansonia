@@ -21,7 +21,7 @@ export function ArtistView() {
     .join("");
 
   return (
-    <div className="relative min-h-0 flex-1 overflow-y-auto bg-paper">
+    <div className="view-enter relative min-h-0 flex-1 overflow-y-auto bg-paper">
       <div
         className="pagewash"
         aria-hidden
