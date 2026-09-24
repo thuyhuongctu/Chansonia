@@ -13,6 +13,10 @@ import { defineConfig, devices } from "@playwright/test";
  * và "mất mạng vẫn mở được" thì phải có nó mới thử được.
  */
 
+/* Địa chỉ ghi rõ 127.0.0.1 ở cả hai đầu: máy chủ thử nghiệm gắn vào đúng địa
+   chỉ này (xem script test:serve), Playwright cũng gõ cửa đúng địa chỉ này.
+   Để "localhost" thì có máy phân giải ra IPv6 ::1, có máy ra IPv4 — hai bên
+   trỏ hai nơi khác nhau và Playwright chờ mãi không thấy máy chủ đâu. */
 const PORT = Number(process.env.PORT ?? 4173);
 const BASE_URL = `http://127.0.0.1:${PORT}`;
 
