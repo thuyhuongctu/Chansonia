@@ -26,6 +26,41 @@ Muốn nghe nhạc khi chạy thử thì chép 6 tệp mp3 vào `public/audio/`
 
 ---
 
+## 1b. Bộ kiểm thử tự động
+
+Một bộ kiểm thử Playwright mở ứng dụng bằng trình duyệt thật rồi làm đúng
+những việc người nghe vẫn làm: xem trang album, gõ vào ô tìm kiếm, bấm phát
+một bài, kéo thanh tiến độ, rồi ngắt mạng xem có mở lại được không. Sửa mã mà
+làm vỡ chỗ nào là biết ngay, không phải đợi tới lúc phát hành mới lộ.
+
+```bash
+npm test             # chạy toàn bộ, cả khổ điện thoại lẫn khổ máy tính
+npm run test:ui      # chạy có giao diện, xem lại từng bước
+npm run test:report  # mở báo cáo của lần chạy gần nhất
+```
+
+Lần đầu cần tải trình duyệt về: `npx playwright install --with-deps chromium`.
+
+| Tệp | Kiểm những gì |
+| --- | --- |
+| `tests/album.spec.ts` | trang album, đủ sáu bài, ảnh bìa, trang nghệ sĩ, nền sáng/tối |
+| `tests/search.spec.ts` | tìm không dấu, tìm theo lời, lọc ngôn ngữ, ô tìm kiếm dính khi cuộn |
+| `tests/player.spec.ts` | mở bài, phát nhạc, lời sáng theo dòng, bấm dòng lời để tua, tạm dừng, bài sau |
+| `tests/scrubber.spec.ts` | kéo thanh tiến độ, kéo ra ngoài thanh, tua bằng bàn phím, nhãn cho máy đọc màn hình |
+| `tests/pwa.spec.ts` | manifest, biểu tượng, service worker, không lưu tệp nhạc, mất mạng vẫn mở được |
+| `tests/motion.spec.ts` | có chuyển động khi bình thường, tắt hẳn khi máy đặt giảm chuyển động |
+
+Bản thu là tài sản riêng, không nằm trong kho mã, nên
+`tests/make-silent-audio.mjs` tự tạo tệp mp3 im lặng đúng độ dài từng bài cho
+những tệp còn thiếu. Máy nào đã có bản thu thật thì tệp thật giữ nguyên, không
+bị ghi đè.
+
+Mỗi lần đẩy mã và mỗi lần mở pull request, GitHub Actions chạy lại toàn bộ bộ
+kiểm thử ([`.github/workflows/test.yml`](.github/workflows/test.yml)); báo cáo
+được giữ lại hai tuần để xem khi cần.
+
+---
+
 ## 2. Hai cách đóng gói
 
 Ứng dụng có công tắc `VITE_AUDIO_BASE` để chọn nguồn nhạc.
@@ -225,6 +260,8 @@ android/             dự án Capacitor (Android)
 ios/                 dự án Capacitor (iOS)
 remotion-video/      video lời bài hát (Remotion, tuỳ chọn xuất video)
 docs/                checklist phát hành (Android, iOS)
+tests/               bộ kiểm thử Playwright; make-silent-audio.mjs tạo nhạc thử
+playwright.config.ts cách chạy kiểm thử: dựng app rồi mở thử ở cổng 4173
 ```
 
 ---
