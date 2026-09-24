@@ -7,7 +7,18 @@ export const song: RawSong = {
   subtitle: "Đèn vẫn còn sáng",
   language: "Tiếng Việt · Pháp",
   note: "Nguồn gốc khoảng lặng · Mất mát, ấm áp",
-  accent: "#f0876a",
+  accent: "#b8842c",
+  coverSrc: "art/huong_silver_room.webp",
+  style:
+    "Vietnamese–French cinematic electro-pop / riverine chanson · 118 BPM · mỏng manh ở đầu, cuộn chảy như sông ở khổ 2",
+  signature: "«Je m'appelle Hương — la lampe brûle encore.»",
+  pictures: [
+    {
+      src: "art/me-giu-den.webp",
+      alt: "Bến sông lúc hoàng hôn, một ngọn đèn dầu cháy trên sàn gỗ và đôi bàn tay nâng một tượng đất sét nhỏ",
+      caption: "«La lampe brûle encore» — ngọn đèn mẹ giữ, vẫn cháy bên bến sông.",
+    },
+  ],
   audioSrc: "audio/track02-den-van-con-sang.mp3",
   durationMs: 313416,
   sections: [

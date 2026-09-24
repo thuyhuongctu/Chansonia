@@ -1,5 +1,7 @@
 # Chansonia
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22172794.svg)](https://doi.org/10.5281/zenodo.22172794)
+
 A lyrics-synchronised music player for the album
 **«La lampe, le fleuve et les couleurs»** — a six-track mini song-cycle by
 **Je m'appelle Hương** (Đỗ Thùy Hương), written between 7 and 13 August 2026.
@@ -45,6 +47,9 @@ Total running time 26:42.
   navigator, so any part of a song can be jumped to directly.
 - Shows the full lyric sheet of a track as a static page for reading.
 - Carries an artist page with the album's epigraph, recurring motifs and links.
+- Looks and reads like the songbook page of the author's own site: warm clay
+  palette, serif headings, paper cards, and the same clay artwork for every
+  track — light or dark, following the device (or the Sáng/Tối switch).
 - Auto-advances to the next track, either in album order or shuffled.
 - Sleep timer: pauses playback automatically after 5–60 minutes.
 - Claymorphism ("3D đất sét") visual design across the whole app.
@@ -83,7 +88,8 @@ comes from. Nothing else changes between the two builds.
 npm run build
 ```
 
-Roughly **44 MB**. Plays with no network connection.
+Roughly **40 MB** (≈ 2.3 MB of app, ≈ 37 MB of recordings). Plays with no
+network connection.
 
 ### Streaming build — audio fetched from a server
 
@@ -91,8 +97,9 @@ Roughly **44 MB**. Plays with no network connection.
 VITE_AUDIO_BASE=https://thuyhuongctu.github.io/JESUISHUONG_WEBSITE_2026/assets/audio npm run build
 ```
 
-Roughly **8 MB**. Requires a connection during playback, and does not need the
-mp3 files present at build time.
+Roughly **2.3 MB**, artwork included. Requires a connection during playback,
+and does not need the mp3 files present at build time. This is the variant
+GitHub Pages deploys, and the one used for the packaged builds below.
 
 Point `VITE_AUDIO_BASE` at a different host to move the audio elsewhere — no
 source change needed, just rebuild.
@@ -120,16 +127,21 @@ To trigger a deploy manually, run the workflow from the Actions tab
 
 ```bash
 npm run build                       # or the streaming variant above
-npx cap sync android
+npx cap sync android                # copies dist/ into the native project
 cd android
 ./gradlew bundleRelease             # -> app/build/outputs/bundle/release/app-release.aab
 ./gradlew assembleRelease           # -> app/build/outputs/apk/release/app-release.apk
+./gradlew assembleDebug             # -> app/build/outputs/apk/debug/app-debug.apk
 ```
+
+The debug APK is signed with the local debug key and installs straight onto a
+phone (`adb install -r app-debug.apk`) — handy for checking a build without
+touching the upload keystore.
 
 | | |
 |---|---|
 | Application ID | `com.jemappellehuong.songbook` |
-| Version | 1.0.0 (versionCode 1) |
+| Version | 1.1.0 (versionCode 2) |
 | min / target SDK | 24 / 36 |
 
 Release builds are signed from `android/upload-keystore.jks` with credentials in
@@ -137,10 +149,34 @@ Release builds are signed from `android/upload-keystore.jks` with credentials in
 excluded by `.gitignore` and must be kept privately. Losing the keystore means
 losing the ability to publish updates under this application ID.
 
-Building for Android requires the Android SDK (platform 36, build-tools
-36.0.0) — installed automatically by Android Studio, or via `sdkmanager` on a
-headless machine, with `android/local.properties` pointing `sdk.dir` at it.
+Without `keystore.properties` the release task still runs, but produces an
+**unsigned** `app-release.aab` / `app-release-unsigned.apk`: good enough to
+verify that packaging works, not uploadable to Google Play. Sign it afterwards
+with the real keystore, or rebuild on a machine that has it.
+
+Building for Android requires JDK 21 and the Android SDK (platform 36,
+build-tools 36.0.0) — installed automatically by Android Studio, or on a
+headless machine with the command line tools:
+
+```bash
+sdkmanager --licenses
+sdkmanager "platform-tools" "platforms;android-36" "build-tools;36.0.0"
+echo "sdk.dir=$ANDROID_HOME" > android/local.properties
+```
+
 `local.properties` is machine-specific and excluded by `.gitignore`.
+
+### What a packaging run produces
+
+| Artefact | Size | Notes |
+|---|---|---|
+| `dist/` (streaming) | ≈ 2.3 MB | web bundle, also what GitHub Pages serves |
+| `app-release.aab` | ≈ 9.6 MB | Play upload format; unsigned unless the keystore is present |
+| `app-release-unsigned.apk` | ≈ 9.8 MB | same build as a raw APK |
+| `app-debug.apk` | ≈ 11.2 MB | debug-signed, installable for testing |
+
+Version 1.1.0 (versionCode 2). The APK is larger than the web bundle because it
+carries the Capacitor runtime and the full set of splash-screen densities.
 
 Google Play submission steps are written up in
 [docs/huong-dan-phat-hanh.md](docs/huong-dan-phat-hanh.md) (Vietnamese).
@@ -178,6 +214,24 @@ Each track is one file under `src/songs/`. The full procedure is in
 
 `durationMs` must match the mp3 exactly, or the lyrics will drift out of sync.
 
+A track may also carry the songbook fields: `coverSrc` (cover art),
+`style` (the *Style:* line — genre, BPM, instrumentation), `signature` (the
+representative line, shown in italics) and `pictures` (clay illustrations with
+captions). Artwork files live in `public/art/` and are listed in
+`src/lib/art.ts`.
+
+---
+
+## Artwork and interface
+
+Every image in the app comes from the songbook page of the author's site,
+[`Je-mappelle-Huong/music.html`](https://thuyhuongctu.github.io/Je-mappelle-Huong/music.html),
+and is bundled under `public/art/` so the app stays fully offline. The
+interface uses the same design tokens as that page — paper `#f6f1e7`,
+terracotta `#c45c3a`, river teal `#3f6f68`, serif headings, 16px paper cards
+with a thin rule and a soft shadow — with a dark variant that follows the
+system setting or the Sáng/Tối button in the header.
+
 ---
 
 ## Layout
@@ -189,10 +243,13 @@ src/
     catalog.ts       assembles songs, derives per-line timing
     audio-source.ts  offline / streaming switch
     player-store.ts  player state (Zustand)
-  songs/             one file per track: lyrics and timings
+    art.ts           clay artwork used across the app (paths under public/art)
+    theme.ts         light / dark switch, mirrors the website's Sáng·Tối button
+  songs/             one file per track: lyrics, timings, artwork, style note
   components/        user interface
 public/
   audio/             mp3 files (never committed)
+  art/               clay artwork copied from the songbook page
   brand/             portrait, mascot image
 android/             Capacitor project (Android)
 ios/                 Capacitor project (iOS)
@@ -228,6 +285,44 @@ build served from GitHub Pages.
   branch protection on `main`** (require a pull request before merging) as a
   second line of defence, and review **Settings → Integrations → GitHub
   Apps** periodically to revoke any automation no longer wanted.
+
+---
+
+## Archived on Zenodo
+
+Every GitHub release of this repository is archived on Zenodo, which mints a
+DOI for it. Cite the **concept DOI** — it always resolves to the newest
+version:
+
+| | |
+|---|---|
+| Concept DOI (all versions) | [10.5281/zenodo.22172794](https://doi.org/10.5281/zenodo.22172794) |
+| v.1.0 (30 Aug 2026) | [10.5281/zenodo.22172795](https://doi.org/10.5281/zenodo.22172795) |
+
+Citation metadata lives in two files at the repository root:
+[`CITATION.cff`](CITATION.cff) — which GitHub reads for its "Cite this
+repository" button — and [`.zenodo.json`](.zenodo.json), which Zenodo reads at
+the tagged commit, so title, author, ORCID, keywords and the *restricted*
+access condition are set without editing anything by hand.
+
+### Publishing a new version
+
+No new repository is needed — a new version belongs to the same Zenodo record:
+
+1. Merge the work into `main`.
+2. Bump the version in `package.json`, `android/app/build.gradle`
+   (`versionCode` **and** `versionName`), `ios/App/App.xcodeproj`
+   (`MARKETING_VERSION`), `.zenodo.json` and `CITATION.cff`.
+3. Draft a GitHub release with a new tag (`v1.1.0`, …).
+
+Zenodo picks the release up through its GitHub webhook and adds a new version
+under the same concept DOI. The webhook is switched on per repository at
+[zenodo.org/account/settings/github](https://zenodo.org/account/settings/github)
+— only the account owner can do that, and only releases created *after* it is
+switched on are archived.
+
+Access on Zenodo is **restricted**, matching the licence below: the record and
+its metadata are public, the files are released by the author on request.
 
 ---
 

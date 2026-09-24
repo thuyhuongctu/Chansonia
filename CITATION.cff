@@ -1,0 +1,28 @@
+cff-version: 1.2.0
+message: "If you refer to this software, please cite it as below."
+title: "Chansonia — a lyrics-synchronised player for «La lampe, le fleuve et les couleurs»"
+abstract: >-
+  A lyrics-synchronised music player for the album «La lampe, le fleuve et les
+  couleurs», a six-track mini song-cycle by Je m'appelle Hương. One codebase
+  ships as a web app, an Android app and an iOS app; the interface follows the
+  songbook page of the author's academic homepage.
+type: software
+authors:
+  - family-names: "Do"
+    given-names: "Thuy Huong"
+    affiliation: "Can Tho University"
+    orcid: "https://orcid.org/0000-0002-7711-2487"
+version: "1.1.0"
+date-released: "2026-09-21"
+repository-code: "https://github.com/thuyhuongctu/Chansonia"
+url: "https://thuyhuongctu.github.io/Chansonia/"
+license-url: "https://github.com/thuyhuongctu/Chansonia/blob/main/LICENSE"
+doi: "10.5281/zenodo.22172794"
+keywords:
+  - songbook
+  - lyrics synchronisation
+  - karaoke
+  - music player
+  - Vietnamese chanson
+  - French chanson
+  - clay art

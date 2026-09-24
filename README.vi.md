@@ -37,7 +37,7 @@ Muốn nghe nhạc khi chạy thử thì chép 6 tệp mp3 vào `public/audio/`
 npm run build
 ```
 
-- App khoảng **44 MB**, phát nhạc không cần mạng.
+- App khoảng **40 MB** (≈ 2,3 MB phần ứng dụng + ≈ 37 MB nhạc), phát không cần mạng.
 - Dùng khi muốn người nghe không phụ thuộc đường truyền.
 
 ### 2.2 Bản TRỰC TUYẾN — nhạc tải từ máy chủ
@@ -46,7 +46,7 @@ npm run build
 VITE_AUDIO_BASE=https://thuyhuongctu.github.io/JESUISHUONG_WEBSITE_2026/assets/audio npm run build
 ```
 
-- App khoảng **8 MB**, cần mạng khi phát.
+- App khoảng **2,3 MB** (đã gồm ảnh), cần mạng khi phát.
 - Không cần chép mp3 vào `public/audio/`.
 - Đây là bản đang được đóng gói sẵn kèm theo.
 
@@ -70,14 +70,22 @@ Muốn chạy tay: vào tab Actions → "Deploy web app to GitHub Pages" → Run
 
 ```bash
 npm run build                       # hoặc bản trực tuyến ở mục 2.2
-npx cap sync android
+npx cap sync android                # chép dist/ vào dự án Android
 cd android
 ./gradlew bundleRelease             # -> app/build/outputs/bundle/release/app-release.aab
 ./gradlew assembleRelease           # -> app/build/outputs/apk/release/app-release.apk
+./gradlew assembleDebug             # -> app/build/outputs/apk/debug/app-debug.apk
 ```
 
 - `.aab` là tệp nộp lên CH Play.
-- `.apk` để cài thử trực tiếp lên điện thoại (`adb install -r app-release.apk`).
+- `.apk` release để cài thử trực tiếp lên điện thoại (`adb install -r app-release.apk`).
+- `.apk` debug đã được ký bằng khoá debug của máy, cài thẳng lên điện thoại được
+  ngay mà không cần đụng tới khoá ký chính thức.
+
+Nếu máy build **không có** `android/keystore.properties`, lệnh release vẫn chạy
+nhưng cho ra tệp **chưa ký** (`app-release.aab`, `app-release-unsigned.apk`):
+đủ để kiểm tra việc đóng gói, chưa nộp lên CH Play được. Muốn nộp thì ký lại
+bằng khoá thật, hoặc build trên máy có sẵn khoá.
 
 Xem chi tiết nộp CH Play tại [docs/huong-dan-phat-hanh.md](docs/huong-dan-phat-hanh.md).
 
@@ -86,10 +94,28 @@ Khoá ký nằm ở `android/upload-keystore.jks`, mật khẩu ghi trong
 (`.gitignore` đã chặn sẵn) và cũng **không được làm mất** — mất khoá là mất
 quyền cập nhật ứng dụng trên CH Play.
 
-Cần cài Android SDK (platform 36, build-tools 36.0.0) để build — Android
-Studio tự cài sẵn, hoặc dùng `sdkmanager` trên máy không có giao diện, sau đó
-trỏ `android/local.properties` (`sdk.dir=...`) tới thư mục SDK. Tệp
-`local.properties` phụ thuộc từng máy nên đã bị `.gitignore` chặn.
+Cần JDK 21 và Android SDK (platform 36, build-tools 36.0.0) để build — Android
+Studio tự cài sẵn, hoặc trên máy không có giao diện thì dùng bộ công cụ dòng lệnh:
+
+```bash
+sdkmanager --licenses
+sdkmanager "platform-tools" "platforms;android-36" "build-tools;36.0.0"
+echo "sdk.dir=$ANDROID_HOME" > android/local.properties
+```
+
+Tệp `local.properties` phụ thuộc từng máy nên đã bị `.gitignore` chặn.
+
+### Một lần đóng gói cho ra những gì
+
+| Tệp | Dung lượng | Ghi chú |
+|---|---|---|
+| `dist/` (bản trực tuyến) | ≈ 2,3 MB | bản web, cũng là bản đưa lên GitHub Pages |
+| `app-release.aab` | ≈ 9,6 MB | tệp nộp CH Play; chưa ký nếu máy không có khoá |
+| `app-release-unsigned.apk` | ≈ 9,8 MB | cùng bản build, dạng APK |
+| `app-debug.apk` | ≈ 11,2 MB | ký bằng khoá debug, cài thử được ngay |
+
+Phiên bản 1.1.0 (versionCode 2). APK nặng hơn bản web vì mang theo phần chạy
+Capacitor và trọn bộ ảnh splash cho mọi mật độ màn hình.
 
 ---
 
@@ -119,6 +145,22 @@ Xem `src/songs/README.md`. Tóm tắt ba bước:
 
 Thời lượng (`durationMs`) phải khớp với tệp mp3, nếu lệch thì lời chạy sai nhịp.
 
+Mỗi bài còn có thể khai báo các trường như trang songbook: `coverSrc` (ảnh bìa),
+`style` (dòng *Style:* — thể loại, BPM, nhạc cụ), `signature` (câu hát đại diện,
+in nghiêng) và `pictures` (ảnh đất sét kèm chú thích). Ảnh để trong
+`public/art/`, liệt kê ở `src/lib/art.ts`.
+
+---
+
+## 6b. Hình ảnh và giao diện
+
+Toàn bộ hình trong ứng dụng lấy từ trang songbook cá nhân
+[`Je-mappelle-Huong/music.html`](https://thuyhuongctu.github.io/Je-mappelle-Huong/music.html)
+và được đóng gói sẵn trong `public/art/` nên mở offline vẫn thấy đủ. Giao diện
+dùng đúng bộ màu của trang đó: giấy `#f6f1e7`, đất nung `#c45c3a`, xanh sông
+`#3f6f68`, tiêu đề chữ serif, thẻ giấy bo 16px có viền mảnh và bóng mềm; kèm
+bản nền tối theo cài đặt máy hoặc nút Sáng/Tối ở đầu trang.
+
 ---
 
 ## 7. Cấu trúc
@@ -130,10 +172,13 @@ src/
     catalog.ts       gom các bài, tính mốc thời gian cho từng dòng lời
     audio-source.ts  công tắc offline / trực tuyến
     player-store.ts  trạng thái trình phát (Zustand)
-  songs/             mỗi bài một tệp: lời + mốc thời gian
+    art.ts           kho ảnh đất sét dùng chung (đường dẫn trong public/art)
+    theme.ts         chuyển nền sáng/tối, giống nút Sáng·Tối của trang web
+  songs/             mỗi bài một tệp: lời, mốc thời gian, ảnh, dòng Style
   components/        giao diện
 public/
   audio/             mp3 (không commit)
+  art/               ảnh đất sét chép từ trang songbook
   brand/             ảnh chân dung, ảnh linh vật
 android/             dự án Capacitor (Android)
 ios/                 dự án Capacitor (iOS)
@@ -168,7 +213,44 @@ chỉ nhận đúng một bản dựng như nhau từ GitHub Pages, chỉ đọc
 
 ---
 
-## 9. Bản quyền
+## 9. Lưu trữ trên Zenodo
+
+Mỗi bản phát hành (release) trên GitHub đều được Zenodo lưu lại và cấp một DOI.
+Khi trích dẫn, dùng **concept DOI** — địa chỉ này luôn trỏ tới bản mới nhất:
+
+| | |
+|---|---|
+| Concept DOI (mọi phiên bản) | [10.5281/zenodo.22172794](https://doi.org/10.5281/zenodo.22172794) |
+| Bản v.1.0 (30/08/2026) | [10.5281/zenodo.22172795](https://doi.org/10.5281/zenodo.22172795) |
+
+Thông tin trích dẫn nằm ở hai tệp tại gốc kho: [`CITATION.cff`](CITATION.cff)
+— GitHub đọc tệp này để hiện nút "Cite this repository" — và
+[`.zenodo.json`](.zenodo.json), Zenodo đọc tại đúng commit được gắn thẻ, nhờ
+vậy tên, tác giả, ORCID, từ khoá và chế độ truy cập *restricted* được đặt sẵn,
+không phải sửa tay trên trang Zenodo.
+
+### Phát hành một phiên bản mới
+
+**Không cần tạo kho mới** — phiên bản mới nằm trong cùng một bản ghi Zenodo:
+
+1. Gộp phần việc vào nhánh `main`.
+2. Nâng số phiên bản ở `package.json`, `android/app/build.gradle`
+   (cả `versionCode` **và** `versionName`), `ios/App/App.xcodeproj`
+   (`MARKETING_VERSION`), `.zenodo.json` và `CITATION.cff`.
+3. Tạo release mới trên GitHub kèm thẻ mới (`v1.1.0`, …).
+
+Zenodo nhận release qua webhook GitHub rồi thêm một phiên bản mới vào cùng
+concept DOI. Webhook bật riêng cho từng kho tại
+[zenodo.org/account/settings/github](https://zenodo.org/account/settings/github)
+— chỉ chủ tài khoản bật được, và chỉ những release tạo **sau** khi bật mới
+được lưu.
+
+Chế độ truy cập trên Zenodo là **restricted**, đúng với giấy phép độc quyền:
+bản ghi và phần mô tả thì công khai, còn tệp thì tác giả cấp khi có người xin.
+
+---
+
+## 10. Bản quyền
 
 © 2026 Đỗ Thùy Hương. Giữ toàn bộ quyền — xem `LICENSE`.
 

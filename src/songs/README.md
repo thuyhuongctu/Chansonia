@@ -21,7 +21,13 @@ export const song: RawSong = {
   subtitle: "Album · 2026",
   audioSrc: "audio/ten-bai-hat.mp3",
   durationMs: 214000,             // độ dài thật của mp3, tính bằng mili-giây
-  accent: "#4b7bec",              // màu chủ đạo của bài, dùng cho ảnh bìa
+  accent: "#c45c3a",              // màu chủ đạo của bài, dùng khi không có ảnh bìa
+  coverSrc: "art/ten-anh.webp",   // ảnh bìa (tuỳ chọn), đặt trong public/art
+  style: "Thể loại · BPM · nhạc cụ",   // dòng "Style:" như trang songbook
+  signature: "«Câu hát đại diện.»",    // in nghiêng dưới phần mô tả
+  pictures: [                     // ảnh đất sét minh hoạ (tuỳ chọn)
+    { src: "art/ten-anh.webp", alt: "Mô tả ảnh", caption: "Chú thích" },
+  ],
   sections: [
     {
       id: "verse1",
