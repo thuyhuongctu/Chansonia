@@ -88,6 +88,40 @@ Without them the app still runs and displays every lyric — only playback is si
 
 ---
 
+## Automated tests
+
+A Playwright suite drives the real app in a real browser — it opens the album,
+types in the search box, plays a track, drags the progress bar and pulls the
+network out from under it — so a broken interface is caught before release,
+not after.
+
+```bash
+npm test             # run everything (mobile and desktop widths)
+npm run test:ui      # step through the tests visually
+npm run test:report  # open the report from the last run
+```
+
+The first run downloads a browser: `npx playwright install --with-deps chromium`.
+
+| File | What it checks |
+| --- | --- |
+| `tests/album.spec.ts` | album page, six songs, cover artwork, artist page, light/dark |
+| `tests/search.spec.ts` | accent-insensitive search, lyric search, language filters, sticky search bar |
+| `tests/player.spec.ts` | opening a song, playback, lyric highlighting, tap-a-line to seek, pause, next |
+| `tests/scrubber.spec.ts` | dragging the progress bar, dragging off the bar, keyboard seeking, screen-reader labels |
+| `tests/pwa.spec.ts` | manifest, icons, service worker, audio never cached, reload with the network off |
+| `tests/motion.spec.ts` | motion on by default, everything still with "reduce motion" |
+
+The recordings are proprietary and are not in the repository, so
+`tests/make-silent-audio.mjs` writes a silent mp3 of the right length for every
+track that is missing. It never touches a real recording that is already there.
+
+Every push and pull request runs the whole suite on GitHub Actions
+([`.github/workflows/test.yml`](.github/workflows/test.yml)); the report is kept
+as a build artifact for two weeks.
+
+---
+
 ## Two ways to package
 
 A single environment variable, `VITE_AUDIO_BASE`, selects where the audio
@@ -302,6 +336,8 @@ android/             Capacitor project (Android)
 ios/                 Capacitor project (iOS)
 remotion-video/      karaoke lyric video composition (optional export)
 docs/                release checklists (Android, iOS)
+tests/               Playwright suite; make-silent-audio.mjs builds test audio
+playwright.config.ts test runner: builds the app and previews it on :4173
 ```
 
 Built with Vite 6, React 19, TypeScript 5.7, Tailwind CSS 4, Zustand 5 and

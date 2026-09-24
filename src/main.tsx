@@ -14,10 +14,14 @@ createRoot(document.getElementById("root")!).render(
  * chính. Chỉ chạy ở bản dựng thật và khi mở qua http(s) — mở thẳng từ đĩa
  * (file://) hoặc trong bản Android/iOS đóng gói thì bỏ qua.
  */
+const TREN_MAY_NHA = ["localhost", "127.0.0.1", "[::1]", "::1"].includes(
+  location.hostname,
+);
+
 if (
   import.meta.env.PROD &&
   "serviceWorker" in navigator &&
-  (location.protocol === "https:" || location.hostname === "localhost")
+  (location.protocol === "https:" || TREN_MAY_NHA)
 ) {
   window.addEventListener("load", () => {
     navigator.serviceWorker.register("./sw.js").catch(() => {
