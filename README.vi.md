@@ -156,7 +156,9 @@ in nghiêng) và `pictures` (ảnh đất sét kèm chú thích). Ảnh để tr
 
 Toàn bộ hình trong ứng dụng lấy từ trang songbook cá nhân
 [`Je-mappelle-Huong/music.html`](https://thuyhuongctu.github.io/Je-mappelle-Huong/music.html)
-và được đóng gói sẵn trong `public/art/` nên mở offline vẫn thấy đủ. Giao diện
+và được đóng gói sẵn trong `public/art/` nên mở offline vẫn thấy đủ. Mỗi bài
+mang **đúng những khung hình của bài đó trên trang, đúng thứ tự và đúng lời chú
+thích** — kể cả khung hình mở đầu các đoạn phim ngắn. Giao diện
 dùng đúng bộ màu của trang đó: giấy `#f6f1e7`, đất nung `#c45c3a`, xanh sông
 `#3f6f68`, tiêu đề chữ serif, thẻ giấy bo 16px có viền mảnh và bóng mềm; kèm
 bản nền tối theo cài đặt máy hoặc nút Sáng/Tối ở đầu trang.

@@ -8,7 +8,7 @@ export const song: RawSong = {
   language: "Tiếng Anh",
   note: "Thấu hiểu, chữa lành · Dòng sông, đôi vai",
   accent: "#7d9e5c",
-  coverSrc: "art/ba-cong-con-tren-vai.webp",
+  coverSrc: "art/ba-goi-con-ve-poster.webp",
   style:
     "Cinematic Folk / Spoken Word · guitar mộc ấm, piano nhẹ, không gian thân mật",
   signature:
@@ -16,18 +16,18 @@ export const song: RawSong = {
   pictures: [
     {
       src: "art/con-muon-lam-hoa-si.webp",
-      alt: "Hình đất sét: cô bé ngồi trong lớp, tay cầm cọ vẽ trên tờ giấy, bên cạnh là hộp màu",
-      caption: "«Con muốn làm hoạ sĩ» — hộp màu và tờ giấy trong lớp học.",
+      alt: "Hình đất sét: bé gái ngồi vẽ, trước mặt là hộp màu và tờ giấy",
+      caption: "«Con muốn làm hoạ sĩ.»",
     },
     {
       src: "art/ba-cong-con-tren-vai.webp",
       alt: "Hình đất sét: người cha cõng con gái trên vai đi trên con đường làng lúc hoàng hôn bên dòng sông",
-      caption: "Đôi vai của ba, con đường làng bên dòng sông.",
+      caption: "«Có những buổi chiều ba cõng con trên vai.»",
     },
     {
       src: "art/con-thuyen-hoang-hon.webp",
-      alt: "Hình đất sét: cô bé một mình chèo thuyền gỗ trên sông lúc hoàng hôn, hai bên là những mái nhà lá",
-      caption: "Rồi một ngày con tự chèo lấy con thuyền của mình.",
+      alt: "Hình đất sét: con thuyền nhỏ trên dòng sông lúc hoàng hôn",
+      caption: "«Ngồi bên bờ sông, để dòng nước chở giùm đêm nay.»",
     },
   ],
   audioSrc: "audio/track05-father-song-v2.mp3",

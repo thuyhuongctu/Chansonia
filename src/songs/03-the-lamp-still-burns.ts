@@ -14,9 +14,10 @@ export const song: RawSong = {
   signature: "«The lamp still burns. / Tu peux dormir.»",
   pictures: [
     {
-      src: "art/dem-nghi-ngoi.webp",
-      alt: "Chân dung trong ánh đèn đêm dịu, gương mặt thư thái sau một ngày dài",
-      caption: "«Tu peux dormir» — trạm nghỉ của bài hát: đặt gánh nặng xuống một đêm.",
+      src: "art/den-dau-ben-song-poster.webp",
+      alt: "Hình đất sét: ngọn đèn dầu đặt bên bờ sông lúc chạng vạng, con thuyền nhỏ đậu phía xa",
+      caption:
+        "Ngọn đèn dầu bên sông lúc chạng vạng — hai hình ảnh xuyên suốt bài hát.",
     },
   ],
   audioSrc: "audio/track03.mp3",

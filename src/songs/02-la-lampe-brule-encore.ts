@@ -16,7 +16,7 @@ export const song: RawSong = {
     {
       src: "art/me-giu-den.webp",
       alt: "Bến sông lúc hoàng hôn, một ngọn đèn dầu cháy trên sàn gỗ và đôi bàn tay nâng một tượng đất sét nhỏ",
-      caption: "«La lampe brûle encore» — ngọn đèn mẹ giữ, vẫn cháy bên bến sông.",
+      caption: "«La lampe brûle encore» — ngọn đèn mẹ giữ, vẫn cháy bên sông.",
     },
   ],
   audioSrc: "audio/track02-den-van-con-sang.mp3",
