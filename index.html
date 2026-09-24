@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#100c0b" />
+    <meta name="theme-color" content="#f6f1e7" />
     <meta
       name="description"
       content="La lampe, le fleuve et les couleurs — album của Je m'appelle Hương. Nghe nhạc kèm lời từng dòng."
@@ -15,17 +15,22 @@
       property="og:description"
       content="Mini song-cycle · EP — Je m'appelle Hương (Đỗ Thùy Hương)"
     />
-    <meta property="og:image" content="/brand/artist.jpg" />
+    <meta property="og:image" content="./art/music-cover-ba-cong-con.webp" />
     <meta name="twitter:card" content="summary_large_image" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap"
-      rel="stylesheet"
-    />
+    <!-- Chữ dùng ngay bộ có sẵn của máy (serif kiểu Iowan Old Style/Georgia cho
+         tiêu đề, sans hệ thống cho phần còn lại) — cùng một lựa chọn với trang
+         songbook trên web, và không cần tải font qua mạng. -->
     <title>Je m'appelle Hương — La lampe, le fleuve et les couleurs</title>
   </head>
   <body>
+    <script>
+      // Đặt chủ đề sáng/tối trước khi vẽ trang để không bị nháy màu.
+      try {
+        var t = localStorage.getItem("chansonia-theme");
+        if (t === "light" || t === "dark")
+          document.documentElement.setAttribute("data-theme", t);
+      } catch (e) {}
+    </script>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

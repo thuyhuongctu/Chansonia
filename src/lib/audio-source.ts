@@ -4,11 +4,11 @@
  * Có hai cách đóng gói ứng dụng:
  *
  *  1. BẢN OFFLINE (mặc định) — nhạc nằm trong thư mục public/audio và được
- *     đóng gói vào app. App nặng khoảng 44 MB nhưng chạy không cần mạng.
+ *     đóng gói vào app. App nặng khoảng 40 MB nhưng chạy không cần mạng.
  *
  *         npm run build
  *
- *  2. BẢN TRỰC TUYẾN — nhạc tải từ máy chủ, app chỉ khoảng 3 MB.
+ *  2. BẢN TRỰC TUYẾN — nhạc tải từ máy chủ, app chỉ khoảng 2,3 MB (bản web).
  *     Cần có mạng khi phát.
  *
  *         VITE_AUDIO_BASE=https://thuyhuongctu.github.io/JESUISHUONG_WEBSITE_2026/assets/audio npm run build
