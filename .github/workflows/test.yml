@@ -1,12 +1,13 @@
 name: Kiểm thử ứng dụng web
 
-# Chạy mỗi lần đẩy mã và mỗi lần mở pull request: mở ứng dụng bằng trình duyệt
-# thật rồi bấm, gõ, kéo đúng như người dùng. Có gì vỡ là biết ngay, không phải
-# đợi tới lúc phát hành.
+# Chạy mỗi lần đẩy mã: mở ứng dụng bằng trình duyệt thật rồi bấm, gõ, kéo đúng
+# như người dùng. Có gì vỡ là biết ngay, không phải đợi tới lúc phát hành.
+#
+# Chỉ bắt theo "push". Pull request mở từ chính kho này đã được lần đẩy mã
+# tương ứng bao trọn rồi, thêm "pull_request" nữa là chạy đúp, tốn công vô ích.
 on:
   push:
     branches: ["**"]
-  pull_request:
   workflow_dispatch:
 
 permissions:
