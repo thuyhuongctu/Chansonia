@@ -23,7 +23,7 @@ export function SectionNav() {
             type="button"
             onClick={() => seekSection(sec.id)}
             className={cn(
-              "h-9 shrink-0 rounded-full border px-3.5 font-sans text-xs font-medium transition-colors",
+              "press h-9 shrink-0 rounded-full border px-3.5 font-sans text-xs font-medium",
               active
                 ? "border-accent bg-accent text-white"
                 : "border-line bg-surface text-muted hover:text-ink",
