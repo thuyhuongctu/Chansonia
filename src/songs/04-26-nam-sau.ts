@@ -16,13 +16,19 @@ export const song: RawSong = {
   pictures: [
     {
       src: "art/hoi-thi-be-kheo-tay.webp",
-      alt: "Hình đất sét: cô bé mang số báo danh 84 trong hội thi Bé khéo tay tỉnh Cần Thơ, năm học 1999–2000",
-      caption: "Em bé sáu tuổi — hội thi «Bé khéo tay» tỉnh Cần Thơ, 1999–2000.",
+      alt: "Hình đất sét: em bé sáu tuổi mặc váy vàng đứng trước phông hội thi «Bé khéo tay» tỉnh Cần Thơ",
+      caption: "Em bé sáu tuổi — hội thi «Bé khéo tay» tỉnh Cần Thơ, năm học 1999–2000.",
     },
     {
       src: "art/26-nam-sau-dong-code.webp",
-      alt: "Người phụ nữ ngồi trước màn hình máy tính với biểu đồ dữ liệu, hai mươi sáu năm sau",
-      caption: "Hai mươi sáu năm sau, hộp màu đổi thành màn hình và những dòng code.",
+      alt: "Người lớn ngồi trước màn hình máy tính hiện đồ thị, đèn bàn sáng trong đêm",
+      caption: "Hai mươi sáu năm sau — vẫn đôi tay ấy, nay vẽ bằng những dòng code.",
+    },
+    {
+      src: "art/26-nam-sau-ben-song-poster.webp",
+      alt: "Hình đất sét: người lớn bế đứa trẻ sáu tuổi bên bờ sông lúc trời sập tối",
+      caption:
+        "«26 năm sau» — người lớn cầm lại chính mình hồi sáu tuổi, bên sông lúc trời sập tối.",
     },
   ],
   titleTrack: true,
