@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { openApp, scrollPane, SONG_CARD, songCount } from "./helpers";
+import { openApp, scrollPane, SONG_CARD, SONG_COUNT, songCount } from "./helpers";
 
 test.describe("Trang album", () => {
   test("mở lên là thấy đủ tên album và danh sách bài", async ({ page }) => {
@@ -9,12 +9,11 @@ test.describe("Trang album", () => {
       "La lampe, le fleuve et les couleurs",
     );
 
-    // Album có sáu bài; con số này đổi thì bài kiểm thử phải đổi theo.
-    expect(await songCount(page)).toBe(6);
+    expect(await songCount(page)).toBe(SONG_COUNT);
 
     // Mỗi thẻ đều ghi rõ số thứ tự bài.
     const tracks = await page.locator(`${SONG_CARD} p:has-text("Track")`).allInnerTexts();
-    expect(tracks.length).toBe(6);
+    expect(tracks.length).toBe(SONG_COUNT);
     // Trang in hoa bằng CSS, nên so không phân biệt hoa thường.
     expect(tracks[0].toLowerCase()).toContain("track 01");
 
@@ -30,7 +29,7 @@ test.describe("Trang album", () => {
 
     const covers = page.locator(`${SONG_CARD} img`);
     const total = await covers.count();
-    expect(total).toBeGreaterThanOrEqual(6);
+    expect(total).toBeGreaterThanOrEqual(SONG_COUNT);
 
     for (let i = 0; i < total; i += 1) {
       const img = covers.nth(i);

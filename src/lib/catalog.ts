@@ -12,6 +12,7 @@ import { song as s03 } from "@/songs/03-the-lamp-still-burns";
 import { song as s04 } from "@/songs/04-26-nam-sau";
 import { song as s05 } from "@/songs/05-a-fathers-song";
 import { song as s06 } from "@/songs/06-je-mappelle-huong";
+import { song as s07 } from "@/songs/07-le-ciel-que-tu-nas-jamais-quitte";
 
 /* ── Kiểu dữ liệu thô (do người viết nhập tay) ───────────────────────── */
 
@@ -165,7 +166,7 @@ function compile(raw: RawSong): Song {
 
 /* ── Danh mục ────────────────────────────────────────────────────────── */
 
-const RAW: RawSong[] = [s01, s02, s03, s04, s05, s06];
+const RAW: RawSong[] = [s01, s02, s03, s04, s05, s06, s07];
 
 export const SONGS: Song[] = RAW.slice()
   .sort((a, b) => a.trackNo - b.trackNo)
