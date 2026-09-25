@@ -4,6 +4,12 @@ import { expect, type Page } from "@playwright/test";
 export const SONG_CARD = "article.song-card";
 
 /**
+ * Số bài trong album. Thêm hoặc bớt bài thì sửa đúng một chỗ này, đừng rải
+ * con số ra khắp các tệp kiểm thử.
+ */
+export const SONG_COUNT = 7;
+
+/**
  * Mở ứng dụng và chờ trang album hiện xong.
  *
  * Trả về danh sách lỗi mà trình duyệt ghi ra trong lúc chạy — cuối bài kiểm

@@ -1,5 +1,12 @@
 import { expect, test } from "@playwright/test";
-import { openApp, scrollPane, searchBox, SONG_CARD, songCount } from "./helpers";
+import {
+  openApp,
+  scrollPane,
+  searchBox,
+  SONG_CARD,
+  SONG_COUNT,
+  songCount,
+} from "./helpers";
 
 test.describe("Tìm kiếm và lọc", () => {
   test("gõ không dấu vẫn ra đúng bài như gõ có dấu", async ({ page }) => {
@@ -16,7 +23,7 @@ test.describe("Tìm kiếm và lọc", () => {
 
     expect(khongDau).toBe(coDau);
     expect(khongDau).toBeGreaterThan(0);
-    expect(khongDau).toBeLessThan(6);
+    expect(khongDau).toBeLessThan(SONG_COUNT);
   });
 
   test("chữ đ và chữ d tìm ra như nhau", async ({ page }) => {
@@ -52,7 +59,7 @@ test.describe("Tìm kiếm và lọc", () => {
     expect(await songCount(page)).toBe(0);
 
     await page.getByRole("button", { name: "Xem lại tất cả" }).click();
-    expect(await songCount(page)).toBe(6);
+    expect(await songCount(page)).toBe(SONG_COUNT);
     await expect(searchBox(page)).toHaveValue("");
   });
 
@@ -64,7 +71,7 @@ test.describe("Tìm kiếm và lọc", () => {
 
     await page.getByRole("button", { name: "Xoá từ khoá" }).click();
     await expect(searchBox(page)).toHaveValue("");
-    expect(await songCount(page)).toBe(6);
+    expect(await songCount(page)).toBe(SONG_COUNT);
   });
 
   test("lọc theo ngôn ngữ chỉ giữ lại bài đúng thứ tiếng", async ({ page }) => {
@@ -73,7 +80,7 @@ test.describe("Tìm kiếm và lọc", () => {
     await page.getByRole("button", { name: "Tiếng Pháp", exact: true }).click();
     const phap = await songCount(page);
     expect(phap).toBeGreaterThan(0);
-    expect(phap).toBeLessThan(6);
+    expect(phap).toBeLessThan(SONG_COUNT);
     for (const text of await page.locator(SONG_CARD).allInnerTexts()) {
       expect(text).toContain("Pháp");
     }
@@ -84,7 +91,7 @@ test.describe("Tìm kiếm và lọc", () => {
     }
 
     await page.getByRole("button", { name: "Tất cả", exact: true }).click();
-    expect(await songCount(page)).toBe(6);
+    expect(await songCount(page)).toBe(SONG_COUNT);
   });
 
   test("ô tìm kiếm luôn nằm trong tầm mắt khi cuộn", async ({ page }) => {
