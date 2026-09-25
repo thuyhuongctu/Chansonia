@@ -21,7 +21,7 @@ npm install
 npm run dev          # mở http://localhost:5173
 ```
 
-Muốn nghe nhạc khi chạy thử thì chép 6 tệp mp3 vào `public/audio/`
+Muốn nghe nhạc khi chạy thử thì chép 7 tệp mp3 vào `public/audio/`
 (xem `public/audio/README.md` để biết tên tệp chính xác).
 
 ---
@@ -43,7 +43,7 @@ Lần đầu cần tải trình duyệt về: `npx playwright install --with-dep
 
 | Tệp | Kiểm những gì |
 | --- | --- |
-| `tests/album.spec.ts` | trang album, đủ sáu bài, ảnh bìa, trang nghệ sĩ, nền sáng/tối |
+| `tests/album.spec.ts` | trang album, đủ số bài, ảnh bìa, trang nghệ sĩ, nền sáng/tối |
 | `tests/search.spec.ts` | tìm không dấu, tìm theo lời, lọc ngôn ngữ, ô tìm kiếm dính khi cuộn |
 | `tests/player.spec.ts` | mở bài, phát nhạc, lời sáng theo dòng, bấm dòng lời để tua, tạm dừng, bài sau |
 | `tests/scrubber.spec.ts` | kéo thanh tiến độ, kéo ra ngoài thanh, tua bằng bàn phím, nhãn cho máy đọc màn hình |
@@ -68,7 +68,7 @@ kiểm thử ([`.github/workflows/test.yml`](.github/workflows/test.yml)); báo 
 ### 2.1 Bản OFFLINE — nhạc nằm trong app
 
 ```bash
-# chép 6 tệp mp3 vào public/audio/ trước
+# chép 7 tệp mp3 vào public/audio/ trước
 npm run build
 ```
 
@@ -252,6 +252,7 @@ src/
 public/
   audio/             mp3 (không commit)
   art/               ảnh đất sét chép từ trang songbook
+  photo/             ảnh chụp Hương, dùng cho bài bonus
   brand/             ảnh chân dung, ảnh linh vật
   icons/             biểu tượng để cài lên màn hình chính
   manifest.webmanifest  khai báo ứng dụng cài được (PWA)
