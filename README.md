@@ -3,7 +3,7 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22172794.svg)](https://doi.org/10.5281/zenodo.22172794)
 
 A lyrics-synchronised music player for the album
-**«La lampe, le fleuve et les couleurs»** — a six-track mini song-cycle by
+**«La lampe, le fleuve et les couleurs»** — a six-track mini song-cycle (plus a bonus track) by
 **Je m'appelle Hương** (Đỗ Thùy Hương), written between 7 and 13 August 2026.
 
 One codebase, multiple targets:
@@ -32,8 +32,9 @@ A Vietnamese version of this document is at [README.vi.md](README.vi.md).
 | 4 | 26 Năm Sau *(title track)* | Vietnamese | 5:03 |
 | 5 | A Father's Song to His Little Girl | English | 5:17 |
 | 6 | Je m'appelle Hương | French · Vietnamese | 6:14 |
+| 7 | Le ciel que tu n'as jamais quitté *(bonus)* | French | 5:53 |
 
-Total running time 26:42.
+Total running time 32:35.
 
 > *Some dreams don't disappear. They change their brush.*
 
@@ -82,7 +83,7 @@ npm install
 npm run dev          # http://localhost:5173
 ```
 
-To hear audio while developing, drop the six mp3 files into `public/audio/`.
+To hear audio while developing, drop the seven mp3 files into `public/audio/`.
 The exact filenames are listed in [`public/audio/README.md`](public/audio/README.md).
 Without them the app still runs and displays every lyric — only playback is silent.
 
@@ -105,7 +106,7 @@ The first run downloads a browser: `npx playwright install --with-deps chromium`
 
 | File | What it checks |
 | --- | --- |
-| `tests/album.spec.ts` | album page, six songs, cover artwork, artist page, light/dark |
+| `tests/album.spec.ts` | album page, every song, cover artwork, artist page, light/dark |
 | `tests/search.spec.ts` | accent-insensitive search, lyric search, language filters, sticky search bar |
 | `tests/player.spec.ts` | opening a song, playback, lyric highlighting, tap-a-line to seek, pause, next |
 | `tests/scrubber.spec.ts` | dragging the progress bar, dragging off the bar, keyboard seeking, screen-reader labels |
@@ -130,7 +131,7 @@ comes from. Nothing else changes between the two builds.
 ### Offline build — audio bundled inside the app
 
 ```bash
-# copy the six mp3 files into public/audio/ first
+# copy the seven mp3 files into public/audio/ first
 npm run build
 ```
 
@@ -328,6 +329,7 @@ src/
 public/
   audio/             mp3 files (never committed)
   art/               clay artwork copied from the songbook page
+  photo/             photographs of Hương used by the bonus track
   brand/             portrait, mascot image
   icons/             home-screen icons (192/512, maskable, Apple touch)
   manifest.webmanifest  installable-app declaration (PWA)

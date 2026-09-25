@@ -1,5 +1,12 @@
 import { expect, test } from "@playwright/test";
-import { openApp, openFirstSong, playSong, SONG_CARD, waitForLyrics } from "./helpers";
+import {
+  openApp,
+  openFirstSong,
+  playSong,
+  SONG_CARD,
+  SONG_COUNT,
+  waitForLyrics,
+} from "./helpers";
 
 test.describe("Chuyển động", () => {
   test("bình thường thì thẻ bài hát hiện lên có chuyển động", async ({ page }) => {
@@ -28,7 +35,7 @@ test.describe("Chuyển động", () => {
       expect(Number(style.opacity)).toBe(1);
       expect(["none", "matrix(1, 0, 0, 1, 0, 0)"]).toContain(style.transform);
 
-      await expect(page.locator(SONG_CARD)).toHaveCount(6);
+      await expect(page.locator(SONG_CARD)).toHaveCount(SONG_COUNT);
     });
 
     test("lời hát vẫn chạy theo nhạc, chỉ là không trôi mượt", async ({ page }) => {
