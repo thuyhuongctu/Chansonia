@@ -48,12 +48,6 @@ export const MOTIF_PICTURE: Picture = {
 /** Ảnh cho mục "Ngoài album" — thế giới đồng hành của songbook */
 export const OUTSIDE_PICTURES: Picture[] = [
   {
-    src: p("bac-them-nhin-ra-bien.webp"),
-    alt: "Hình đất sét: bậc thềm trước cửa nhà nhìn ra mặt biển lúc sớm mai",
-    caption:
-      "«Il reste une marche devant ta demeure» — khung hình của bài bonus «Le ciel que tu n'as jamais quitté», chưa có trong album.",
-  },
-  {
     src: p("mekong-sunfire-cover.webp"),
     alt: "Bìa bài hát: Hương trong áo dài trắng bên bờ sông lúc nắng chiều, đang xếp những tượng đất sét nhỏ vào thùng gỗ",
     caption: "Bìa của «Mekong Sunfire · Rise With The River».",
