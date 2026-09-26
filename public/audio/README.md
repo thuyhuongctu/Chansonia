@@ -4,12 +4,12 @@ This directory is **intentionally empty** in the repository.
 
 ## Why there are no mp3 files here
 
-The six recordings of «La lampe, le fleuve et les couleurs» are not committed.
+The seven recordings of «La lampe, le fleuve et les couleurs» are not committed.
 They are excluded by `.gitignore` (`public/audio/*.mp3`).
 
 Two reasons:
 
-1. **Size.** The six files total roughly 37 MB — enough to make every clone and
+1. **Size.** The seven files total roughly 45 MB — enough to make every clone and
    every fetch of this repository slow, for files that change far less often
    than the code.
 2. **Control.** The recordings are proprietary (see `LICENSE`). Keeping them out
@@ -18,7 +18,7 @@ Two reasons:
 
 ## Expected files
 
-Copy the six files here, under exactly these names:
+Copy the seven files here, under exactly these names:
 
 | File | Track | Length | `durationMs` |
 |---|---|---|---|
@@ -28,6 +28,7 @@ Copy the six files here, under exactly these names:
 | `track04-26-nam-sau-v2.mp3` | 26 Năm Sau | 5:03 | 303024 |
 | `track05-father-song-v2.mp3` | A Father's Song to His Little Girl | 5:17 | 317472 |
 | `je-mappelle-huong.mp3` | Je m'appelle Hương | 6:14 | 373512 |
+| `track07-le-ciel.mp3` | Le ciel que tu n'as jamais quitté *(bonus)* | 5:53 | 353560 |
 
 The `durationMs` column must match the `durationMs` field in the corresponding
 file under `src/songs/`. Lyric timing is derived from that number, so a mismatch
@@ -53,3 +54,9 @@ VITE_AUDIO_BASE=https://thuyhuongctu.github.io/JESUISHUONG_WEBSITE_2026/assets/a
 ```
 
 See the root `README.md` for the difference between the two builds.
+
+**One catch for the streaming build:** it only plays what is actually on that
+server. A newly added track — `track07-le-ciel.mp3` at the time of writing —
+has to be uploaded to `assets/audio/` on the
+`JESUISHUONG_WEBSITE_2026` site under exactly the filename above, or the web
+app shows the track and its lyrics but plays nothing.
