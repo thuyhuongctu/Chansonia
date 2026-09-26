@@ -135,8 +135,21 @@ comes from. Nothing else changes between the two builds.
 npm run build
 ```
 
-Roughly **40 MB** (≈ 2.3 MB of app, ≈ 37 MB of recordings). Plays with no
+Roughly **37 MB** (≈ 3.3 MB of app, ≈ 34 MB of recordings). Plays with no
 network connection.
+
+> Check what is actually in `public/audio/` first:
+>
+> ```bash
+> node scripts/kiem-tra-nhac.mjs
+> ```
+>
+> On a machine that has never held the recordings, `npm test` leaves behind
+> silent placeholder files with the right names and plausible sizes (see
+> [`tests/make-silent-audio.mjs`](tests/make-silent-audio.mjs)). An offline build
+> made over those ships an app that shows every lyric and plays nothing. The
+> command above tells the two apart and the packaging script refuses to continue
+> over placeholders.
 
 ### Streaming build — audio fetched from a server
 
@@ -144,9 +157,14 @@ network connection.
 VITE_AUDIO_BASE=https://thuyhuongctu.github.io/JESUISHUONG_WEBSITE_2026/assets/audio npm run build
 ```
 
-Roughly **2.3 MB**, artwork included. Requires a connection during playback,
+Roughly **3.3 MB**, artwork included. Requires a connection during playback,
 and does not need the mp3 files present at build time. This is the variant
-GitHub Pages deploys, and the one used for the packaged builds below.
+GitHub Pages deploys.
+
+`VITE_AUDIO_BASE` only changes where the app *looks* for audio — Vite still
+copies the whole of `public/` into `dist/`, so on a machine that holds the
+recordings a "streaming" build quietly carries them too. The packaging script
+drops them for this variant.
 
 Point `VITE_AUDIO_BASE` at a different host to move the audio elsewhere — no
 source change needed, just rebuild.
@@ -202,6 +220,19 @@ To trigger a deploy manually, run the workflow from the Actions tab
 
 ## Building for Android
 
+One command does the whole run — build the web bundle, copy it into the native
+project, produce the `.aab`, and report whether the result is signed:
+
+```bash
+scripts/dong-goi-android.sh            # offline build (audio inside the app)
+scripts/dong-goi-android.sh truc-tuyen # streaming build (audio from a server)
+```
+
+It refuses to make an offline build over silent placeholder audio, and it says
+up front when the signing keystore is missing rather than after the build.
+
+The same steps by hand:
+
 ```bash
 npm run build                       # or the streaming variant above
 npx cap sync android                # copies dist/ into the native project
@@ -218,7 +249,7 @@ touching the upload keystore.
 | | |
 |---|---|
 | Application ID | `com.jemappellehuong.songbook` |
-| Version | 1.1.0 (versionCode 2) |
+| Version | 1.2.0 (versionCode 3) |
 | min / target SDK | 24 / 36 |
 
 Release builds are signed from `android/upload-keystore.jks` with credentials in
@@ -247,12 +278,13 @@ echo "sdk.dir=$ANDROID_HOME" > android/local.properties
 
 | Artefact | Size | Notes |
 |---|---|---|
-| `dist/` (streaming) | ≈ 2.3 MB | web bundle, also what GitHub Pages serves |
-| `app-release.aab` | ≈ 9.6 MB | Play upload format; unsigned unless the keystore is present |
-| `app-release-unsigned.apk` | ≈ 9.8 MB | same build as a raw APK |
-| `app-debug.apk` | ≈ 11.2 MB | debug-signed, installable for testing |
+| `dist/` (streaming) | ≈ 3.3 MB | web bundle, also what GitHub Pages serves |
+| `dist/` (offline) | ≈ 37 MB | the same bundle plus the seven recordings |
+| `app-release.aab` (streaming) | ≈ 11 MB | Play upload format; unsigned unless the keystore is present |
+| `app-release.aab` (offline) | ≈ 37 MB | mp3 is already compressed, so the bundle barely shrinks |
+| `app-release-unsigned.apk` | ≈ 11 MB | streaming build as a raw APK |
 
-Version 1.1.0 (versionCode 2). The APK is larger than the web bundle because it
+Version 1.2.0 (versionCode 3). The APK is larger than the web bundle because it
 carries the Capacitor runtime and the full set of splash-screen densities.
 
 Google Play submission steps are written up in

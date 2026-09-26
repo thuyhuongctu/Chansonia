@@ -1,7 +1,9 @@
 # Hướng dẫn đưa ứng dụng lên CH Play
 
-Tài liệu này ghi lại những việc **chỉ chủ tài khoản làm được** — phần kỹ thuật
-đã xong, tệp `.aab` đã ký sẵn.
+Tài liệu này ghi lại những việc **chỉ chủ tài khoản làm được**. Phần kỹ thuật đã
+xong: chạy `scripts/dong-goi-android.sh` là ra tệp `.aab`. Nhưng **phải chạy trên
+máy có khoá ký** (`android/keystore.properties`) — khoá không nằm trong kho mã,
+nên máy khác chỉ cho ra tệp chưa ký, CH Play không nhận.
 
 ---
 
@@ -11,9 +13,10 @@ Tài liệu này ghi lại những việc **chỉ chủ tài khoản làm đư�
 |---|---|
 | Tên hiển thị | Je m'appelle Hương |
 | Package name | `com.jemappellehuong.songbook` |
-| Phiên bản | 1.1.0 (versionCode 2) |
+| Phiên bản | 1.2.0 (versionCode 3) |
 | minSdk / targetSdk | 24 / 36 |
-| Kích thước `.aab` | ~9,6 MB (bản trực tuyến, đã gồm ảnh songbook) |
+| Số bài | 7 (6 bài album + 1 bài bonus Track 07) |
+| Kích thước `.aab` | ~11 MB bản trực tuyến · ~37 MB bản offline |
 
 **Package name không đổi được sau khi đã phát hành.** Nếu muốn tên khác thì phải
 đổi ngay bây giờ, trước lần nộp đầu tiên.
@@ -48,7 +51,9 @@ phát hành, tệp `.jks` này chỉ còn là khoá tải lên — mất thì xi
 1. **Tài khoản nhà phát triển** — 25 USD, trả một lần, xác minh danh tính
    (CMND/CCCD hoặc hộ chiếu). Thường mất 1–3 ngày.
 2. **Create app** — chọn: App, Free, ngôn ngữ mặc định Tiếng Việt.
-3. **Nộp `.aab`** ở Production hoặc Internal testing.
+3. **Nộp `.aab`** ở Production hoặc Internal testing. Tệp lấy ở
+   `android/app/build/outputs/bundle/release/app-release.aab` sau khi chạy
+   `scripts/dong-goi-android.sh` trên máy có khoá ký.
 4. **Store listing** — cần chuẩn bị:
    - Mô tả ngắn (≤ 80 ký tự) và mô tả đầy đủ (≤ 4000 ký tự).
    - Icon 512×512 PNG.
@@ -92,17 +97,23 @@ Gợi ý mô tả ngắn (74 ký tự):
 
 Gợi ý mở đầu mô tả đầy đủ:
 
-> Sáu bài hát của «La lampe, le fleuve et les couleurs», một mini song-cycle
-> viết trong tuần lễ tháng 8/2026. Ứng dụng hiển thị lời hát chạy theo nhạc
-> từng dòng, kèm trang giới thiệu về album và người sáng tác.
+> Bảy bài hát của «La lampe, le fleuve et les couleurs», một mini song-cycle
+> viết trong tuần lễ tháng 8/2026, kèm một bài bonus tiếng Pháp. Ứng dụng hiển
+> thị lời hát chạy theo nhạc từng dòng, kèm trang giới thiệu về album và người
+> sáng tác.
 
 ---
 
 ## 6. Việc cần làm trước khi nộp
 
-- [ ] Quyết định dùng bản offline (~40 MB) hay bản trực tuyến (~9,6 MB).
-- [ ] Nếu chọn bản trực tuyến: kiểm tra 6 tệp mp3 vẫn truy cập được ở
-      `VITE_AUDIO_BASE`, và cân nhắc rằng nhạc khi đó ai cũng tải trực tiếp được.
+- [ ] Quyết định dùng bản offline (~37 MB) hay bản trực tuyến (~11 MB).
+      Album nghe nhạc thì bản offline thường đáng hơn: phát không cần mạng, và
+      không để lộ đường dẫn tải nhạc trực tiếp.
+- [ ] Nếu chọn bản offline: chạy `node scripts/kiem-tra-nhac.mjs`, phải ra
+      «Cả 7 tệp đều là bản thu thật» rồi mới đóng gói.
+- [ ] Nếu chọn bản trực tuyến: chép `track07-le-ciel.mp3` lên máy chủ (6 tệp kia
+      đã có sẵn), kiểm tra cả 7 tệp truy cập được ở `VITE_AUDIO_BASE`, và cân
+      nhắc rằng nhạc khi đó ai cũng tải trực tiếp được.
 - [ ] Tạo icon 512×512 và feature graphic 1024×500.
 - [ ] Đăng trang chính sách quyền riêng tư, lấy URL.
 - [ ] Sao lưu `upload-keystore.jks`.
