@@ -64,3 +64,18 @@ Thời điểm từng dòng và từng chữ được tính tự động theo đ
 chia đều trong khung thời gian của phần đó.
 
 Muốn khớp chính xác hơn thì chia nhỏ phần ra, hoặc điền `endMs` cho phần.
+Bài 07 chia nhỏ tới 17 phần chính vì vậy: phần càng ngắn thì lời càng bám sát.
+
+Không biết phần nào bắt đầu ở giây nào thì cứ nghe rồi ghi lại. Cách khác là
+nhìn vào chính bản thu: tách phần âm thanh nằm giữa (chỗ giọng hát ngồi), lọc
+lấy dải tần giọng người rồi tìm những quãng im — ranh giới giữa các phần hiện
+ra khá rõ. Dù bằng cách nào, nghe lại một lượt vẫn là bước cuối cùng.
+
+## Ảnh minh hoạ
+
+- `public/art/` — hình đất sét chép từ trang songbook.
+- `public/photo/` — ảnh chụp thật.
+
+Ảnh bìa (`coverSrc`) bị cắt vuông nên hãy dùng ảnh đã cắt sẵn quanh chủ thể.
+Ảnh trong `pictures` thì hiện nguyên khung, không cắt: xếp hai cột, ảnh lẻ
+cuối cùng chiếm trọn hàng — nên để ảnh ngang ở vị trí cuối cho cân.

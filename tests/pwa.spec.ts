@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { openApp, playSong, scrollPane, SONG_CARD } from "./helpers";
+import { openApp, playSong, scrollPane, SONG_CARD, SONG_COUNT } from "./helpers";
 
 /** Chờ service worker cài xong và bắt đầu trông coi trang. */
 async function serviceWorkerSan(page: import("@playwright/test").Page) {
@@ -108,7 +108,7 @@ test.describe("Cài lên máy như một app", () => {
       await expect(page.getByRole("heading", { level: 1 })).toContainText(
         "La lampe, le fleuve et les couleurs",
       );
-      await expect(page.locator(SONG_CARD)).toHaveCount(6);
+      await expect(page.locator(SONG_CARD)).toHaveCount(SONG_COUNT);
       await expect(page.getByRole("slider", { name: "Tiến độ bài hát" })).toBeVisible();
     } finally {
       await context.setOffline(false);

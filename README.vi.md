@@ -21,7 +21,7 @@ npm install
 npm run dev          # mở http://localhost:5173
 ```
 
-Muốn nghe nhạc khi chạy thử thì chép 6 tệp mp3 vào `public/audio/`
+Muốn nghe nhạc khi chạy thử thì chép 7 tệp mp3 vào `public/audio/`
 (xem `public/audio/README.md` để biết tên tệp chính xác).
 
 ---
@@ -43,7 +43,7 @@ Lần đầu cần tải trình duyệt về: `npx playwright install --with-dep
 
 | Tệp | Kiểm những gì |
 | --- | --- |
-| `tests/album.spec.ts` | trang album, đủ sáu bài, ảnh bìa, trang nghệ sĩ, nền sáng/tối |
+| `tests/album.spec.ts` | trang album, đủ số bài, ảnh bìa, trang nghệ sĩ, nền sáng/tối |
 | `tests/search.spec.ts` | tìm không dấu, tìm theo lời, lọc ngôn ngữ, ô tìm kiếm dính khi cuộn |
 | `tests/player.spec.ts` | mở bài, phát nhạc, lời sáng theo dòng, bấm dòng lời để tua, tạm dừng, bài sau |
 | `tests/scrubber.spec.ts` | kéo thanh tiến độ, kéo ra ngoài thanh, tua bằng bàn phím, nhãn cho máy đọc màn hình |
@@ -68,12 +68,24 @@ kiểm thử ([`.github/workflows/test.yml`](.github/workflows/test.yml)); báo 
 ### 2.1 Bản OFFLINE — nhạc nằm trong app
 
 ```bash
-# chép 6 tệp mp3 vào public/audio/ trước
+# chép 7 tệp mp3 vào public/audio/ trước
 npm run build
 ```
 
-- App khoảng **40 MB** (≈ 2,3 MB phần ứng dụng + ≈ 37 MB nhạc), phát không cần mạng.
+- App khoảng **37 MB** (≈ 3,3 MB phần ứng dụng + ≈ 34 MB nhạc), phát không cần mạng.
 - Dùng khi muốn người nghe không phụ thuộc đường truyền.
+
+> Xem trong `public/audio/` đang là gì trước đã:
+>
+> ```bash
+> node scripts/kiem-tra-nhac.mjs
+> ```
+>
+> Máy nào chưa từng có bản thu mà đã chạy `npm test` thì
+> [`tests/make-silent-audio.mjs`](tests/make-silent-audio.mjs) để lại sẵn bảy tệp
+> **im lặng**, đúng tên và đúng cỡ vài MB, nhìn y như thật. Đóng gói bản offline
+> lúc đó sẽ ra ứng dụng hiện đủ lời hát mà không có tiếng. Lệnh trên phân biệt
+> được hai loại, và script đóng gói sẽ dừng nếu gặp tệp im lặng.
 
 ### 2.2 Bản TRỰC TUYẾN — nhạc tải từ máy chủ
 
@@ -81,9 +93,13 @@ npm run build
 VITE_AUDIO_BASE=https://thuyhuongctu.github.io/JESUISHUONG_WEBSITE_2026/assets/audio npm run build
 ```
 
-- App khoảng **2,3 MB** (đã gồm ảnh), cần mạng khi phát.
+- App khoảng **3,3 MB** (đã gồm ảnh), cần mạng khi phát.
 - Không cần chép mp3 vào `public/audio/`.
-- Đây là bản đang được đóng gói sẵn kèm theo.
+- Đây là bản GitHub Pages đang chạy.
+
+`VITE_AUDIO_BASE` chỉ đổi chỗ ứng dụng **đi tìm** nhạc; Vite vẫn chép cả thư mục
+`public/` sang `dist/`, nên máy nào đang giữ bản thu thì bản «trực tuyến» vẫn vô
+tình gói kèm mấy chục MB nhạc. Script đóng gói tự bỏ chúng ra ở bản này.
 
 Đổi `VITE_AUDIO_BASE` sang địa chỉ khác nếu sau này chuyển nhạc sang máy chủ
 khác — không phải sửa mã nguồn, chỉ đổi biến môi trường rồi build lại.
@@ -102,6 +118,19 @@ Muốn chạy tay: vào tab Actions → "Deploy web app to GitHub Pages" → Run
 ---
 
 ## 4. Đóng gói Android
+
+Một lệnh chạy hết: dựng bản web, chép sang dự án Android, ra tệp `.aab`, rồi cho
+biết tệp đã ký hay chưa.
+
+```bash
+scripts/dong-goi-android.sh            # bản offline (nhạc nằm trong app)
+scripts/dong-goi-android.sh truc-tuyen # bản trực tuyến (nhạc tải từ máy chủ)
+```
+
+Script từ chối làm bản offline nếu nhạc trong `public/audio/` là tệp im lặng, và
+báo thiếu khoá ký ngay từ đầu chứ không để build xong mới biết.
+
+Làm tay thì đúng các bước này:
 
 ```bash
 npm run build                       # hoặc bản trực tuyến ở mục 2.2
@@ -252,6 +281,7 @@ src/
 public/
   audio/             mp3 (không commit)
   art/               ảnh đất sét chép từ trang songbook
+  photo/             ảnh chụp Hương, dùng cho bài bonus
   brand/             ảnh chân dung, ảnh linh vật
   icons/             biểu tượng để cài lên màn hình chính
   manifest.webmanifest  khai báo ứng dụng cài được (PWA)
