@@ -11,7 +11,7 @@
  *  2. BẢN TRỰC TUYẾN — nhạc tải từ máy chủ, app chỉ khoảng 2,3 MB (bản web).
  *     Cần có mạng khi phát.
  *
- *         VITE_AUDIO_BASE=https://thuyhuongctu.github.io/JESUISHUONG_WEBSITE_2026/assets/audio npm run build
+ *         VITE_AUDIO_BASE=https://jemappellehuong.com/assets/audio npm run build
  *
  * Trong tệp bài hát, `audioSrc` luôn ghi dạng "audio/ten-bai.mp3".
  * Hàm dưới đây tự đổi sang địa chỉ đầy đủ khi bật chế độ trực tuyến.
