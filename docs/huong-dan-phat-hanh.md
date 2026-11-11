@@ -27,11 +27,11 @@ nên máy khác chỉ cho ra tệp chưa ký, CH Play không nhận.
 
 | Mục | Giá trị |
 |---|---|
-| Tệp | `android/upload-keystore.jks` |
-| Alias | `upload` |
+| Tệp | `chansonia-upload.keystore` (khóa tải lên tạo ngày 11/11/2026, giữ ngoài kho mã; khóa `android/upload-keystore.jks` cũ không dùng nữa) |
+| Alias | `chansonia` |
 | Mật khẩu | ghi trong `android/keystore.properties` |
-| Chủ thể | CN=Do Thuy Huong, O=Personal Music Project, L=Can Tho, C=VN |
-| SHA-256 | `48:69:87:7A:4D:7A:D5:8D:D7:D2:99:98:BD:86:58:85:3B:FA:F2:40:79:DC:90:A2:DB:D6:D5:AB:6B:84:70:5E` |
+| Chủ thể | CN=Do Thuy Huong, O=Thuy Huong Digital Learning, L=Vinh Long, C=VN |
+| SHA-256 | `1F:6D:F9:1D:81:3E:EA:D3:95:C2:5C:A5:71:6C:B4:55:0E:38:0B:6D:04:30:02:13:22:99:46:D2:37:72:5D:7F` |
 
 > Khoá này được tạo lại ngày 09/09/2026 (lần nộp đầu tiên, chưa từng phát hành
 > nên tạo mới là an toàn). Nếu bạn từng có một tệp `.jks` khác với vân tay
