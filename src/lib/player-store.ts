@@ -2,6 +2,7 @@ import { create } from "zustand";
 import {
   findLineIndex,
   findWordIndex,
+  songVersion,
   type Song,
   type ViewMode,
   type AppView,
@@ -28,6 +29,8 @@ const SAVE_KEY = "chansonia-player";
 type PlayerState = {
   view: AppView;
   songId: string;
+  /** Phiên bản đang nghe của bài (0 = bản chính) */
+  versionIndex: number;
   mode: ViewMode;
   playing: boolean;
   currentMs: number;
@@ -63,6 +66,8 @@ type PlayerState = {
   /** Mở màn hình lời của một bài; bài khác bài đang nghe thì phát luôn */
   openSong: (id: string) => Promise<void>;
   playSong: (id: string) => Promise<void>;
+  /** Đổi sang phiên bản khác của bài đang mở, phát lại từ đầu */
+  setVersion: (i: number) => Promise<void>;
   setMode: (m: ViewMode) => void;
   setPlayOrder: (order: PlayOrder) => void;
   play: () => Promise<void>;
@@ -110,25 +115,30 @@ function siblings(id: string): string[] {
 }
 
 /** Đọc bài và vị trí đã lưu lần trước */
-function restore(): { songId: string; ms: number } {
+function restore(): { songId: string; version: number; ms: number } {
   try {
     const raw = JSON.parse(localStorage.getItem(SAVE_KEY) ?? "null");
     if (raw && typeof raw.songId === "string" && SONG_INDEX[raw.songId]) {
-      return { songId: raw.songId, ms: Math.max(0, Number(raw.ms) || 0) };
+      const count = SONG_INDEX[raw.songId].versions?.length ?? 1;
+      const version = Math.min(Math.max(0, Number(raw.version) || 0), count - 1);
+      return { songId: raw.songId, version, ms: Math.max(0, Number(raw.ms) || 0) };
     }
   } catch {
     /* localStorage bị chặn hoặc hỏng — bắt đầu từ đầu */
   }
-  return { songId: ALL_SONGS[0].id, ms: 0 };
+  return { songId: ALL_SONGS[0].id, version: 0, ms: 0 };
 }
 
 let lastSaved = 0;
-function save(songId: string, ms: number, force = false) {
+function save(state: { songId: string; versionIndex: number }, ms: number, force = false) {
   const now = Date.now();
   if (!force && now - lastSaved < 2000) return;
   lastSaved = now;
   try {
-    localStorage.setItem(SAVE_KEY, JSON.stringify({ songId, ms: Math.round(ms) }));
+    localStorage.setItem(
+      SAVE_KEY,
+      JSON.stringify({ songId: state.songId, version: state.versionIndex, ms: Math.round(ms) }),
+    );
   } catch {
     /* không ghi được thì thôi */
   }
@@ -136,22 +146,26 @@ function save(songId: string, ms: number, force = false) {
 
 const saved = restore();
 const savedSong = songOf(saved.songId);
-const savedMs = Math.min(saved.ms, savedSong.durationMs || saved.ms);
+const savedVersion = songVersion(savedSong, saved.version);
+const savedMs = Math.min(saved.ms, savedVersion.durationMs || saved.ms);
 
-function indices(song: Song, ms: number) {
-  const lineIndex = findLineIndex(song.lines, ms);
-  const line = song.lines[lineIndex];
+/** Dòng và chữ đang hát — chỉ khi phiên bản này khớp với lời đồng bộ */
+function indices(song: Song, version: number, ms: number) {
+  const lines = songVersion(song, version).synced ? song.lines : [];
+  const lineIndex = findLineIndex(lines, ms);
+  const line = lines[lineIndex];
   return { lineIndex, wordIndex: line ? findWordIndex(line, ms) : 0 };
 }
 
 export const usePlayer = create<PlayerState>((set, get) => ({
   view: "library",
   songId: savedSong.id,
+  versionIndex: saved.version,
   mode: "karaoke",
   playing: false,
   currentMs: savedMs,
-  durationMs: savedSong.durationMs,
-  ...indices(savedSong, savedMs),
+  durationMs: savedVersion.durationMs,
+  ...indices(savedSong, saved.version, savedMs),
 
   collectionId: collectionOf(savedSong.id).id,
   libraryTab: "songs",
@@ -196,14 +210,32 @@ export const usePlayer = create<PlayerState>((set, get) => ({
     const sameCollection = collectionOf(id).id === collectionOf(get().songId).id;
     set({
       songId: song.id,
+      versionIndex: 0,
       playing: false,
       currentMs: 0,
-      durationMs: song.durationMs,
+      durationMs: songVersion(song, 0).durationMs,
       lineIndex: 0,
       wordIndex: 0,
       ...(sameCollection ? {} : { shuffleBag: [], history: [] }),
     });
-    save(song.id, 0, true);
+    save(get(), 0, true);
+    await get().play();
+  },
+
+  setVersion: async (i) => {
+    const song = songOf(get().songId);
+    if (i === get().versionIndex || !song.versions?.[i]) return;
+    engine.pause();
+    cancelAnimationFrame(raf);
+    set({
+      versionIndex: i,
+      playing: false,
+      currentMs: 0,
+      durationMs: song.versions[i].durationMs,
+      lineIndex: 0,
+      wordIndex: 0,
+    });
+    save(get(), 0, true);
     await get().play();
   },
 
@@ -220,13 +252,14 @@ export const usePlayer = create<PlayerState>((set, get) => ({
 
   play: async () => {
     const song = songOf(get().songId);
-    const fresh = engine.setTrack(resolveAudio(song.audioSrc));
+    const version = songVersion(song, get().versionIndex);
+    const fresh = engine.setTrack(resolveAudio(version.audioSrc));
     // Tệp vừa mở mà đã có vị trí (mở lại app, hoặc tua khi chưa phát) — nhảy tới đó.
     if (fresh && get().currentMs > 0) engine.seek(get().currentMs);
     engine.onEnded(() => {
       set({ playing: false });
       cancelAnimationFrame(raf);
-      save(get().songId, 0, true);
+      save(get(), 0, true);
       void get().next();
     });
     await engine.play();
@@ -238,7 +271,7 @@ export const usePlayer = create<PlayerState>((set, get) => ({
     engine.pause();
     set({ playing: false });
     cancelAnimationFrame(raf);
-    save(get().songId, get().currentMs, true);
+    save(get(), get().currentMs, true);
   },
 
   toggle: () => {
@@ -248,12 +281,13 @@ export const usePlayer = create<PlayerState>((set, get) => ({
 
   seek: (ms) => {
     const song = songOf(get().songId);
-    const limit = get().durationMs || song.durationMs || Number.POSITIVE_INFINITY;
+    const version = songVersion(song, get().versionIndex);
+    const limit = get().durationMs || version.durationMs || Number.POSITIVE_INFINITY;
     const at = Math.max(0, Math.min(ms, limit));
-    engine.setTrack(resolveAudio(song.audioSrc));
+    engine.setTrack(resolveAudio(version.audioSrc));
     engine.seek(at);
-    set({ currentMs: at, ...indices(song, at) });
-    save(song.id, at, true);
+    set({ currentMs: at, ...indices(song, get().versionIndex, at) });
+    save(get(), at, true);
   },
 
   seekSection: (sectionId) => {
@@ -304,10 +338,14 @@ export const usePlayer = create<PlayerState>((set, get) => ({
 
   tick: () => {
     const song = songOf(get().songId);
+    const v = get().versionIndex;
     const ms = engine.nowMs();
-    const durationMs = song.durationMs || engine.durationMs() || get().durationMs;
-    set({ currentMs: ms, durationMs, ...indices(song, ms) });
-    save(song.id, ms);
+    // Bản có lời đồng bộ thì giữ đúng độ dài ghi trong tệp bài (lời tính theo
+    // số đó); bản khác thì tin độ dài thật của tệp nhạc.
+    const known = songVersion(song, v).synced ? songVersion(song, v).durationMs : 0;
+    const durationMs = known || engine.durationMs() || songVersion(song, v).durationMs || get().durationMs;
+    set({ currentMs: ms, durationMs, ...indices(song, v, ms) });
+    save(get(), ms);
   },
 
   setSleepMinutes: (minutes) => set({ sleepMinutes: Math.max(1, Math.round(minutes)) }),

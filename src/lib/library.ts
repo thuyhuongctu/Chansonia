@@ -19,7 +19,7 @@
  * đồng bộ thì làm theo src/songs/README.md rồi đưa vào ALBUM.
  */
 
-import { compile, SONGS, type RawSong, type Song } from "@/lib/catalog";
+import { compile, SONGS, type RawSong, type Song, type SongVersion } from "@/lib/catalog";
 
 export type CollectionId = "huong" | "bizon" | "maida";
 
@@ -89,6 +89,48 @@ function extra(
   });
 }
 
+/** Phiên bản phát trực tuyến: [tên, địa chỉ, độ dài] */
+type Alt = [label: string, src: string, duration?: string];
+
+const alt = ([label, audioSrc, duration]: Alt): SongVersion => ({
+  label,
+  audioSrc,
+  durationMs: ms(duration),
+});
+
+/**
+ * Gắn hai phiên bản cho một bài của album: bản trong app (có lời đồng bộ) và
+ * một bản khác trên trang songbook.
+ */
+function albumVersions(song: Song, mainLabel: string, other: Alt): Song {
+  return {
+    ...song,
+    versions: [
+      { label: mainLabel, audioSrc: song.audioSrc, durationMs: song.durationMs, synced: true },
+      alt(other),
+    ],
+  };
+}
+
+/** Bài phát trực tuyến có hai phiên bản; bản đầu là bản mặc định */
+function twoVersions(versions: [Alt, Alt]): Partial<RawSong> {
+  return { versions: versions.map(alt), audioSrc: versions[0][1] };
+}
+
+const sb = (file: string) => `${SONGBOOK}/audio/${file}`;
+const ALT: Record<string, [string, Alt]> = {
+  "je-voudrais-te-parler": ["Bản gốc", ["Bản phối OR", sb("track01-or.mp3"), "5:07"]],
+  "la-lampe-brule-encore": ["Bản gốc", ["Bản v2", sb("track02-v2.mp3"), "5:40"]],
+  "the-lamp-still-burns": ["Bản gốc", ["Bản v2", sb("track03-v2.mp3"), "1:59"]],
+  "26-nam-sau": ["Bản 2026", ["Bản thu 2024", sb("track04-hai-muoi-sau-nam-sau.mp3"), "5:24"]],
+  "a-fathers-song": ["English", ["Tiếng Việt", sb("track05-father-song-vi.mp3"), "5:52"]],
+  "je-mappelle-huong": ["Bản dài", ["Bản ngắn", sb("track05.mp3"), "5:03"]],
+  "le-ciel-que-tu-nas-jamais-quitte": [
+    "Bản chính",
+    ["Le ciel que tu gardes", sb("le-ciel-que-tu-gardes.mp3"), "5:54"],
+  ],
+};
+
 /* ── Je m'appelle Hương ──────────────────────────────────────────────── */
 
 const HUONG: Collection = {
@@ -99,7 +141,10 @@ const HUONG: Collection = {
   color: "var(--accent)",
   art: "art/music-cover-ba-cong-con.webp",
   songs: [
-    ...SONGS,
+    ...SONGS.map((song) => {
+      const a = ALT[song.id];
+      return a ? albumVersions(song, a[0], a[1]) : song;
+    }),
     extra(
       "nha-van-sang-den",
       8,
@@ -113,10 +158,16 @@ const HUONG: Collection = {
       "returning-to-shore",
       9,
       "Returning to Shore · Trở về bờ",
-      "Đĩa đơn · 8 bản thu",
-      `${SONGBOOK}/audio/tro-ve-bo-4.mp3`,
-      undefined,
-      { accent: "#3f6f68" },
+      "Đĩa đơn · Việt · Anh",
+      sb("tro-ve-bo-4.mp3"),
+      "4:16",
+      {
+        accent: "#3f6f68",
+        ...twoVersions([
+          ["Tiếng Việt", sb("tro-ve-bo-4.mp3"), "4:16"],
+          ["English", sb("tro-ve-bo-5.mp3"), "3:58"],
+        ]),
+      },
     ),
   ],
   videos: [
@@ -133,6 +184,8 @@ const HUONG: Collection = {
 
 /* ── BizOn ───────────────────────────────────────────────────────────── */
 
+const bza = (file: string) => `${BIZON}/audio/${file}.mp3`;
+
 const bz = (
   id: string,
   n: number,
@@ -140,7 +193,17 @@ const bz = (
   meta: string,
   file: string,
   duration?: string,
-) => extra(`bizon-${id}`, n, title, meta, `${BIZON}/audio/${file}.mp3`, duration);
+  versions?: [Alt, Alt],
+) =>
+  extra(
+    `bizon-${id}`,
+    n,
+    title,
+    meta,
+    bza(file),
+    duration,
+    versions ? twoVersions(versions) : {},
+  );
 
 const BIZON_COLLECTION: Collection = {
   id: "bizon",
@@ -150,14 +213,35 @@ const BIZON_COLLECTION: Collection = {
   color: "var(--accent-2)",
   songs: [
     bz("lesprit-du-mekong", 1, "BizOn – L’Esprit du Mékong", "Bài hát chính · Pháp · Anh · Việt", "bizon-lesprit-du-mekong", "5:13"),
-    bz("huong-on-return", 2, "Hương on Return", "2 bản thu", "huong-on-return"),
-    bz("golden-silt", 3, "Journey on the Golden Silt", "Nhạc nền Bến Phù Sa · 6 bản thu", "golden-silt-journey-ben-phu-sa", "4:18"),
-    bz("sans-frontieres", 4, "Je m'appelle Hương sans frontières", "Hộ Chiếu Thương Hiệu · 8 bản thu", "huong-sans-frontieres", "2:39"),
+    bz("huong-on-return", 2, "Hương on Return", "Bài hát chính đầu tiên", "huong-on-return", undefined, [
+      ["Bản gốc", bza("huong-on-return")],
+      ["Remix", bza("huong-on-return-remix")],
+    ]),
+    bz("golden-silt", 3, "Journey on the Golden Silt", "Nhạc nền Bến Phù Sa · Anh · Pháp · Việt", "golden-silt-journey-ben-phu-sa", "4:18", [
+      ["Bản đầy đủ", bza("golden-silt-journey-ben-phu-sa"), "4:18"],
+      ["Bản gốc", bza("journey-golden-silt")],
+    ]),
+    bz("sans-frontieres", 4, "Je m'appelle Hương sans frontières", "Hộ Chiếu Thương Hiệu · Việt · Anh", "huong-and-the-world", undefined, [
+      ["Tiếng Việt", bza("huong-and-the-world")],
+      ["English", bza("huong-and-the-world-en")],
+    ]),
     bz("ben-phu-sa", 5, "Bến Phù Sa", "Song ca tiếng Việt", "bai-hat-ben-phu-sa", "5:49"),
-    bz("doi-phu-sa", 6, "Đội Phù Sa", "Anthem đội chơi · 4 bản thu", "doi-phu-sa"),
-    bz("brand-passport", 7, "Brand Passport", "Nhạc chủ đề · 8 bản thu", "brand-passport", "2:52"),
-    bz("ho-chieu-to-khuc", 8, "Brand Passport · tổ khúc ba phần", "13 bản thu", "ho-chieu-p1-tu-dong-mekong", "3:56"),
-    bz("bat-nghiep", 9, "Bật Nghiệp", "Nhạc chủ đề game · 9 bản thu", "bat-nghiep-co-loi", "3:23"),
+    bz("doi-phu-sa", 6, "Đội Phù Sa", "Anthem đội chơi", "doi-phu-sa", undefined, [
+      ["Bản gốc", bza("doi-phu-sa")],
+      ["Remix", bza("doi-phu-sa-remix")],
+    ]),
+    bz("brand-passport", 7, "Brand Passport", "Nhạc chủ đề Hộ Chiếu Thương Hiệu", "brand-passport", "2:52", [
+      ["Brand Passport", bza("brand-passport"), "2:52"],
+      ["English · Stamps Beyond Borders", bza("stamps-beyond-borders"), "3:03"],
+    ]),
+    bz("ho-chieu-to-khuc", 8, "Việt Nam ra thế giới", "Tổ khúc Hộ Chiếu Thương Hiệu · Phần III", "ho-chieu-p3-viet-nam-ra-the-gioi", "5:09", [
+      ["Tiếng Việt", bza("ho-chieu-p3-viet-nam-ra-the-gioi"), "5:09"],
+      ["English", bza("ho-chieu-p3-en-remix2"), "5:33"],
+    ]),
+    bz("bat-nghiep", 9, "Bật Nghiệp", "Nhạc chủ đề game", "bat-nghiep-co-loi", "3:23", [
+      ["Tiếng Việt", bza("bat-nghiep-co-loi"), "3:23"],
+      ["Anh · Việt · Mekong Sunfire", bza("bat-nghiep-mekong-sunfire-1"), "4:26"],
+    ]),
     bz("viet-nam-trong-tim", 10, "Việt Nam Trong Tim", "Tiếng Việt", "viet-nam-trong-tim", "2:36"),
     bz("vua-du-de-bay-cao", 11, "Vừa Đủ Để Bay Cao", "Bản thu có lời", "vua-du-de-bay-cao"),
     bz("and-the-world-say-hello", 12, "And The World Say Hello!", "Bản thu có lời", "and-the-world-say-hello"),

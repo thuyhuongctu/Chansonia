@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { formatTime, songMeta } from "@/lib/catalog";
+import { formatTime, songMeta, songVersion } from "@/lib/catalog";
 import { collectionOf } from "@/lib/library";
 import { usePlayer, useSong } from "@/lib/player-store";
 import { ScreenHeader } from "@/components/header";
@@ -26,8 +26,13 @@ export function KaraokeStage() {
   const playing = usePlayer((s) => s.playing);
   const seek = usePlayer((s) => s.seek);
   const play = usePlayer((s) => s.play);
+  const versionIndex = usePlayer((s) => s.versionIndex);
+  const setVersion = usePlayer((s) => s.setVersion);
 
-  const karaoke = mode === "karaoke";
+  const version = songVersion(song, versionIndex);
+  // Lời chỉ chạy theo nhạc ở bản khớp với nó; bản khác thì in lời đứng yên.
+  const synced = Boolean(version.synced);
+  const karaoke = mode === "karaoke" && synced;
   const started = playing || currentMs > 0;
   // Còn đang dạo nhạc thì chưa có dòng nào được hát.
   const active =
@@ -68,7 +73,10 @@ export function KaraokeStage() {
 
   return (
     <div className="view-enter flex min-h-0 flex-1 flex-col">
-      <ScreenHeader title={song.title} subtitle={col.name}>
+      <ScreenHeader
+        title={song.title}
+        subtitle={version.label ? `${col.name} · ${version.label}` : col.name}
+      >
         <div className="flex rounded-full border border-line bg-surface p-[3px]" role="tablist" aria-label="Cách xem lời">
           {(
             [
@@ -93,6 +101,32 @@ export function KaraokeStage() {
         </div>
       </ScreenHeader>
 
+      {song.versions && song.versions.length > 1 ? (
+        <div className="flex shrink-0 gap-2 overflow-x-auto border-b border-line px-4 py-2 lg:px-6" role="group" aria-label="Phiên bản">
+          {song.versions.map((v, i) => (
+            <button
+              key={v.label}
+              type="button"
+              aria-pressed={i === versionIndex}
+              onClick={() => void setVersion(i)}
+              className={cn(
+                "press h-11 shrink-0 rounded-full border px-4 font-sans text-[13px] font-semibold",
+                i === versionIndex
+                  ? "border-accent bg-accent-soft text-accent"
+                  : "border-line bg-surface text-muted hover:text-ink",
+              )}
+            >
+              {v.label}
+              {v.durationMs ? (
+                <span className="ml-1.5 font-normal tabular-nums opacity-70">
+                  {formatTime(v.durationMs)}
+                </span>
+              ) : null}
+            </button>
+          ))}
+        </div>
+      ) : null}
+
       <div className="mx-auto flex min-h-0 w-full max-w-6xl flex-1 lg:grid lg:grid-cols-[300px_minmax(0,1fr)] lg:gap-8 lg:px-6">
         <SongAside />
 
@@ -101,7 +135,15 @@ export function KaraokeStage() {
           className="lyric-stage min-h-0 flex-1 overflow-y-auto px-6 py-5 font-display lg:px-2"
           data-mode={mode}
         >
-          {song.lines.length === 0 ? (
+          {song.lines.length > 0 && !synced ? (
+            <div className="py-16 text-center" data-unsynced>
+              <p className="font-display text-xl font-semibold text-ink">{song.title}</p>
+              <p className="mx-auto mt-2 max-w-sm font-sans text-sm leading-relaxed text-muted">
+                Lời của bản «{version.label}» chưa có trong ứng dụng. Lời chạy theo nhạc có ở
+                bản «{song.versions?.find((v) => v.synced)?.label}».
+              </p>
+            </div>
+          ) : song.lines.length === 0 ? (
             <div className="py-16 text-center">
               <p className="font-display text-xl font-semibold text-ink">{song.title}</p>
               <p className="mx-auto mt-2 max-w-sm font-sans text-sm leading-relaxed text-muted">
@@ -111,6 +153,7 @@ export function KaraokeStage() {
             </div>
           ) : (
             <div className="mx-auto max-w-2xl pb-[40vh] lg:pt-[12vh]">
+
               {song.lines.map((line, i) => {
                 const label = sectionLabel.get(line.id);
                 const isActive = i === active;

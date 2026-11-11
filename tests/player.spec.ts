@@ -151,6 +151,31 @@ test.describe("Nghe nhạc", () => {
     await expect(scrubber(page)).toBeVisible();
   });
 
+  test("bài có hai phiên bản thì chuyển qua lại được", async ({ page }) => {
+    await openApp(page);
+    await expect(page.locator('[data-song-id="a-fathers-song"]')).toContainText("2 phiên bản");
+    await page.locator('[data-song-id="a-fathers-song"]').click();
+    await waitForPlayback(page);
+
+    const phienBan = page.getByRole("group", { name: "Phiên bản" });
+    await expect(phienBan.getByRole("button", { name: /English/ })).toHaveAttribute("aria-pressed", "true");
+
+    // Bản tiếng Việt phát trực tuyến; ở đây chỉ kiểm giao diện, không cần mạng.
+    await page.evaluate(() => {
+      HTMLMediaElement.prototype.play = () => Promise.resolve();
+    });
+    await phienBan.getByRole("button", { name: /Tiếng Việt/ }).click();
+    await expect(phienBan.getByRole("button", { name: /Tiếng Việt/ })).toHaveAttribute("aria-pressed", "true");
+    await expect(page.locator("header")).toContainText("Tiếng Việt");
+    // Bản này chưa có lời: báo rõ, không in nhầm lời của bản kia.
+    await expect(page.locator("[data-unsynced]")).toBeVisible();
+    await expect(page.locator(".lyric-line")).toHaveCount(0);
+
+    await phienBan.getByRole("button", { name: /English/ }).click();
+    await expect(page.locator("[data-unsynced]")).toHaveCount(0);
+    await expect(page.locator(".lyric-line").first()).toBeVisible();
+  });
+
   test("mở lại app thì nghe tiếp đúng bài, đúng chỗ", async ({ page }) => {
     await openApp(page);
     await page.locator(SONG_ROW).nth(2).click();

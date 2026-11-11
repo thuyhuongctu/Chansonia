@@ -28,6 +28,17 @@ export type RawSection = {
   lines: RawLine[];
 };
 
+/** Một phiên bản (bản thu) của bài hát */
+export type SongVersion = {
+  /** Tên ngắn trên nút chọn, ví dụ "Tiếng Việt", "English", "Bản phối OR" */
+  label: string;
+  audioSrc: string;
+  /** Độ dài (ms); 0 nếu chưa biết */
+  durationMs: number;
+  /** Lời đồng bộ của bài khớp với bản thu này */
+  synced?: boolean;
+};
+
 export type RawSong = {
   id: string;
   trackNo: number;
@@ -57,6 +68,11 @@ export type RawSong = {
   audioSrc: string;
   /** Độ dài bản thu (ms). Chưa biết thì để 0 — app đọc độ dài thật khi phát. */
   durationMs: number;
+  /**
+   * Tối đa hai phiên bản hay nhất của bài (ưu tiên một bản tiếng Việt và một
+   * bản tiếng Anh). Bản đầu tiên là bản mặc định. Bỏ trống = chỉ một bản.
+   */
+  versions?: SongVersion[];
   sections: RawSection[];
 };
 
@@ -191,6 +207,19 @@ export function songMeta(song: Song): string {
   return [song.titleTrack ? "Bài chủ đề" : null, song.language]
     .filter(Boolean)
     .join(" · ");
+}
+
+/** Phiên bản thứ i của bài (bản 0 = bản chính, có lời đồng bộ nếu bài có lời) */
+export function songVersion(song: Song, i: number): SongVersion {
+  return (
+    song.versions?.[i] ??
+    song.versions?.[0] ?? {
+      label: "",
+      audioSrc: song.audioSrc,
+      durationMs: song.durationMs,
+      synced: song.lines.length > 0,
+    }
+  );
 }
 
 /* ── Tra cứu theo thời gian phát ─────────────────────────────────────── */

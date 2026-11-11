@@ -246,7 +246,7 @@ function SongRow({ song, index }: { song: Song; index: number }) {
   const playing = usePlayer((s) => s.playing);
   const openSong = usePlayer((s) => s.openSong);
   const active = song.id === songId;
-  const meta = songMeta(song);
+  const meta = songMeta(song) + (song.versions && song.versions.length > 1 ? " · 2 phiên bản" : "");
 
   return (
     <button
