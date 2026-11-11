@@ -3,7 +3,9 @@
  * ║  THƯ VIỆN — BA BỘ SƯU TẬP: Je m'appelle Hương · BizOn · M-AIDA        ║
  * ╚══════════════════════════════════════════════════════════════════════╝
  *
- * Mỗi bộ sưu tập có hai danh sách: Bài hát và Video.
+ * Mỗi bộ sưu tập có hai danh sách: Bài hát và Video. Mục Video chỉ nhận
+ * video là trọn một bài hát (MV, danh sách phát MV) — không đưa clip ngắn,
+ * trailer hay phim giới thiệu vào đây.
  *
  *  - Album «La lampe, le fleuve et les couleurs» (7 bài, có lời chạy theo
  *    nhạc) lấy từ src/songs/*.ts — nhạc nằm trong app (public/audio).
@@ -119,35 +121,6 @@ const HUONG: Collection = {
   ],
   videos: [
     {
-      id: "ba-va-con-duong-lang",
-      title: "Ba và con đường làng",
-      meta: "Hoạt hình đất sét · Track 01",
-      mp4: `${SONGBOOK}/video/ba-va-con-duong-lang.mp4`,
-      poster: "art/music-cover-ba-cong-con.webp",
-    },
-    {
-      id: "den-dau-ben-song",
-      title: "Đèn dầu bên sông",
-      meta: "Hoạt hình đất sét · Track 03",
-      mp4: `${SONGBOOK}/video/den-dau-ben-song.mp4`,
-      poster: "art/den-dau-ben-song-poster.webp",
-    },
-    {
-      id: "26-nam-sau-ben-song",
-      title: "26 năm sau bên sông",
-      meta: "Hoạt hình đất sét · Track 04",
-      mp4: `${SONGBOOK}/video/26-nam-sau-ben-song.mp4`,
-      poster: "art/26-nam-sau-ben-song-poster.webp",
-    },
-    {
-      id: "ba-goi-con-ve",
-      title: "Ba gọi con về",
-      meta: "Phim ngắn · Track 05",
-      duration: "0:10",
-      mp4: `${SONGBOOK}/video/ba-goi-con-ve.mp4`,
-      poster: "art/ba-goi-con-ve-poster.webp",
-    },
-    {
       id: "nha-van-sang-den-mv",
       title: "Nhà vẫn sáng đèn",
       meta: "MV · YouTube",
@@ -173,7 +146,7 @@ const BIZON_COLLECTION: Collection = {
   id: "bizon",
   short: "BizOn",
   name: "BizOn",
-  desc: "Bài hát và trailer của các game mô phỏng kinh doanh",
+  desc: "Bài hát của các game mô phỏng kinh doanh",
   color: "var(--accent-2)",
   songs: [
     bz("lesprit-du-mekong", 1, "BizOn – L’Esprit du Mékong", "Bài hát chính · Pháp · Anh · Việt", "bizon-lesprit-du-mekong", "5:13"),
@@ -217,53 +190,6 @@ const BIZON_COLLECTION: Collection = {
       youtube: "LoIQxNs9ROo",
       poster: `${BIZON}/video/mv-ben-phu-sa-chuyen-dong-poster.webp`,
     },
-    {
-      id: "bizon-intro",
-      title: "Giới thiệu BizOn",
-      meta: "Giới thiệu",
-      duration: "1:03",
-      mp4: `${BIZON}/video/bizon-intro-vi-v4.mp4`,
-      poster: `${BIZON}/video/bizon-intro-en-v3-poster.webp`,
-    },
-    {
-      id: "bizon-bat-nghiep-trailer",
-      title: "Bật Nghiệp",
-      meta: "Trailer",
-      duration: "1:30",
-      mp4: `${BIZON}/video/bizon-trailer-v5-720p.mp4`,
-      poster: `${BIZON}/video/bizon-trailer-poster.webp`,
-    },
-    {
-      id: "bizon-ben-phu-sa-trailer",
-      title: "Bến Phù Sa",
-      meta: "Trailer",
-      duration: "1:30",
-      mp4: `${BIZON}/video/ben-phu-sa-trailer-v2-720p.mp4`,
-      poster: `${BIZON}/video/ben-phu-sa-trailer-poster.webp`,
-    },
-    {
-      id: "bizon-ho-chieu-trailer",
-      title: "Hộ Chiếu Thương Hiệu",
-      meta: "Trailer",
-      duration: "1:30",
-      mp4: `${BIZON}/video/bp-trailer-v2-720p.mp4`,
-      poster: `${BIZON}/video/bp-trailer-poster.webp`,
-    },
-    {
-      id: "bizon-sau-rieng-trailer",
-      title: "Hộ Chiếu Sầu Riêng",
-      meta: "Trailer",
-      duration: "1:40",
-      mp4: `${BIZON}/video/srp-trailer-720p.mp4`,
-      poster: `${BIZON}/video/srp-trailer-poster.webp`,
-    },
-    {
-      id: "bizon-gravity-lab-trailer",
-      title: "Gravity Lab",
-      meta: "Trailer",
-      duration: "1:00",
-      mp4: `${BIZON}/video/gravity-lab-trailer-720p.mp4`,
-    },
   ],
 };
 
@@ -273,7 +199,7 @@ const MAIDA: Collection = {
   id: "maida",
   short: "M-AIDA",
   name: "M-AIDA",
-  desc: "Nhạc nền của M-AIDA 8.0 và phim mở đầu",
+  desc: "Nhạc nền của M-AIDA 8.0",
   color: "#946a1f",
   songs: [
     extra(
@@ -293,16 +219,7 @@ const MAIDA: Collection = {
       "4:22",
     ),
   ],
-  videos: [
-    {
-      id: "maida-film",
-      title: "Phim mở đầu M-AIDA",
-      meta: "Giới thiệu",
-      duration: "1:07",
-      mp4: `${SONGBOOK}/video/maida-film.mp4`,
-      poster: `${SONGBOOK}/img/maida-film-poster.webp`,
-    },
-  ],
+  videos: [],
 };
 
 /* ── Tra cứu ─────────────────────────────────────────────────────────── */

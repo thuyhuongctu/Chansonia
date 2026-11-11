@@ -61,8 +61,9 @@ test.describe("Tìm kiếm", () => {
 
   test("lọc được cả danh sách video", async ({ page }) => {
     await openApp(page);
+    await collectionTab(page, "BizOn").click();
     await page.getByRole("tab", { name: /^Video ·/ }).click();
-    await searchBox(page).fill("song");
+    await searchBox(page).fill("phu sa");
     await expect(page.locator(VIDEO_ROW)).toHaveCount(2);
   });
 

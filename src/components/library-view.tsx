@@ -123,7 +123,9 @@ export function LibraryView() {
 
           {empty ? (
             <div className="py-8 text-center">
-              <p className="font-display text-base text-muted">Không có gì khớp.</p>
+              <p className="font-display text-base text-muted">
+                {query ? "Không có gì khớp." : tab === "videos" ? "Chưa có video." : "Chưa có bài hát."}
+              </p>
               {query ? (
                 <button
                   type="button"

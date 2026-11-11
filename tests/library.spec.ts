@@ -60,6 +60,10 @@ test.describe("Thư viện", () => {
 
     await collectionTab(page, "M-AIDA").click();
     await expect(page.locator(SONG_ROW)).toHaveCount(COUNTS.maida.songs);
+    // Bộ chưa có video thì nói rõ, không để trống trơn.
+    await page.getByRole("tab", { name: "Video · 0" }).click();
+    await expect(page.getByText("Chưa có video.")).toBeVisible();
+    await page.getByRole("tab", { name: /^Bài hát ·/ }).click();
 
     await collectionTab(page, "Hương").click();
     await expect(page.locator(SONG_ROW)).toHaveCount(COUNTS.huong.songs);
@@ -67,17 +71,16 @@ test.describe("Thư viện", () => {
 
   test("tab Video liệt kê video, mở một video rồi quay lại", async ({ page }) => {
     await openApp(page);
+    await collectionTab(page, "BizOn").click();
     await page.getByRole("tab", { name: /^Video ·/ }).click();
-    await expect(page.locator(VIDEO_ROW)).toHaveCount(COUNTS.huong.videos);
+    await expect(page.locator(VIDEO_ROW)).toHaveCount(COUNTS.bizon.videos);
 
     const title = (await page.locator(`${VIDEO_ROW} span.font-bold`).first().textContent())!;
     await page.locator(VIDEO_ROW).first().click();
 
     await expect(page.locator("[data-screen-title]")).toHaveText(title);
     await expect(page.getByText("Video khác")).toBeVisible();
-    await expect(page.locator(VIDEO_ROW)).toHaveCount(
-      COUNTS.huong.videos - 1,
-    );
+    await expect(page.locator(VIDEO_ROW)).toHaveCount(COUNTS.bizon.videos - 1);
 
     await page.getByRole("button", { name: "Quay lại" }).click();
     await expect(page.getByRole("heading", { level: 1, name: "Chansonia" })).toBeVisible();

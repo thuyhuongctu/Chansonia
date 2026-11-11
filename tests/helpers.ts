@@ -11,9 +11,9 @@ export const VIDEO_ROW = "[data-video-id]";
  * này, đừng rải con số ra khắp các tệp kiểm thử.
  */
 export const COUNTS = {
-  huong: { songs: 9, videos: 5 },
-  bizon: { songs: 17, videos: 9 },
-  maida: { songs: 2, videos: 1 },
+  huong: { songs: 9, videos: 1 },
+  bizon: { songs: 17, videos: 3 },
+  maida: { songs: 2, videos: 0 },
 } as const;
 
 /** Số bài của bộ sưu tập mở sẵn khi vào app (Hương). */
