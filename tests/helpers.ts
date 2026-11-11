@@ -51,7 +51,7 @@ export async function songCount(page: Page): Promise<number> {
 }
 
 /** Nút chọn bộ sưu tập. */
-export function collectionTab(page: Page, name: "Hương" | "BizOn" | "M-AIDA") {
+export function collectionTab(page: Page, name: "La maison de Madam Hương" | "BizOnland" | "M-AIDA") {
   return page.getByRole("tab", { name, exact: true });
 }
 

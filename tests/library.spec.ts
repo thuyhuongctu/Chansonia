@@ -14,15 +14,39 @@ test.describe("Thư viện", () => {
   test("mở lên là thấy ba bộ sưu tập và danh sách bài của Hương", async ({ page }) => {
     const errors = await openApp(page);
 
-    for (const name of ["Hương", "BizOn", "M-AIDA"] as const) {
+    for (const name of ["La maison de Madam Hương", "BizOnland", "M-AIDA"] as const) {
       await expect(collectionTab(page, name)).toBeVisible();
     }
-    await expect(collectionTab(page, "Hương")).toHaveAttribute("aria-selected", "true");
+    await expect(collectionTab(page, "La maison de Madam Hương")).toHaveAttribute("aria-selected", "true");
     await expect(page.getByRole("tab", { name: `Bài hát · ${SONG_COUNT}` })).toBeVisible();
     expect(await songCount(page)).toBe(SONG_COUNT);
     await expect(page.locator(SONG_ROW).first()).toContainText("Je voudrais te parler");
+    // Mã DOI của Zenodo có ngay ở trang chính.
+    await expect(page.locator("[data-doi]")).toHaveAttribute(
+      "href",
+      "https://doi.org/10.5281/zenodo.22172794",
+    );
 
     expect(errors).toEqual([]);
+  });
+
+  test("có đồng hồ giờ Việt Nam và giờ Pháp, kèm ngày", async ({ page }) => {
+    await page.clock.setFixedTime(new Date("2026-11-11T22:30:00Z"));
+    await openApp(page);
+    // Mùa đông: Việt Nam UTC+7, Pháp UTC+1.
+    await expect(page.locator('[data-clock="vn"]')).toContainText("05:30:00");
+    await expect(page.locator('[data-clock="vn"]')).toContainText("12/11");
+    await expect(page.locator('[data-clock="fr"]')).toContainText("23:30:00");
+    await expect(page.locator('[data-clock="fr"]')).toContainText("11/11");
+  });
+
+  test("bản đồ Việt Nam chìm dưới nền, không chặn tay bấm", async ({ page }) => {
+    await openApp(page);
+    const map = page.locator(".map-backdrop");
+    await expect(map).toHaveAttribute("aria-hidden", "true");
+    await expect(map.locator("svg")).toContainText("Hoàng Sa");
+    await expect(map.locator("svg")).toContainText("Trường Sa");
+    expect(await map.evaluate((el) => getComputedStyle(el).pointerEvents)).toBe("none");
   });
 
   test("màn hình chào hiện lúc mở app rồi tự tắt", async ({ page }) => {
@@ -53,8 +77,8 @@ test.describe("Thư viện", () => {
   test("đổi bộ sưu tập thì đổi cả danh sách bài và số đếm", async ({ page }) => {
     await openApp(page);
 
-    await collectionTab(page, "BizOn").click();
-    await expect(collectionTab(page, "BizOn")).toHaveAttribute("aria-selected", "true");
+    await collectionTab(page, "BizOnland").click();
+    await expect(collectionTab(page, "BizOnland")).toHaveAttribute("aria-selected", "true");
     await expect(page.locator(SONG_ROW)).toHaveCount(COUNTS.bizon.songs);
     await expect(page.getByRole("tab", { name: `Video · ${COUNTS.bizon.videos}` })).toBeVisible();
 
@@ -65,13 +89,13 @@ test.describe("Thư viện", () => {
     await expect(page.getByText("Chưa có video.")).toBeVisible();
     await page.getByRole("tab", { name: /^Bài hát ·/ }).click();
 
-    await collectionTab(page, "Hương").click();
+    await collectionTab(page, "La maison de Madam Hương").click();
     await expect(page.locator(SONG_ROW)).toHaveCount(COUNTS.huong.songs);
   });
 
   test("tab Video liệt kê video, mở một video rồi quay lại", async ({ page }) => {
     await openApp(page);
-    await collectionTab(page, "BizOn").click();
+    await collectionTab(page, "BizOnland").click();
     await page.getByRole("tab", { name: /^Video ·/ }).click();
     await expect(page.locator(VIDEO_ROW)).toHaveCount(COUNTS.bizon.videos);
 

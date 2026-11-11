@@ -5,6 +5,7 @@ import { KaraokeStage } from "@/components/karaoke-stage";
 import { VideoView } from "@/components/video-view";
 import { PlayerBar } from "@/components/player-bar";
 import { Splash } from "@/components/splash";
+import { MapBackdrop } from "@/components/depth";
 import { usePlayer } from "@/lib/player-store";
 
 export default function App() {
@@ -18,8 +19,9 @@ export default function App() {
     <div
       data-view={view}
       data-mode={mode}
-      className="flex h-full h-dvh w-full flex-col overflow-hidden bg-paper font-sans text-ink"
+      className="relative isolate flex h-full h-dvh w-full flex-col overflow-hidden bg-paper font-sans text-ink"
     >
+      <MapBackdrop />
       {view === "player" ? (
         <KaraokeStage />
       ) : view === "video" ? (
