@@ -24,6 +24,7 @@
   --shadow-lift: 0 2px 3px rgba(60, 40, 28, 0.07), 0 18px 34px rgba(90, 60, 40, 0.14);
   --press: inset 0 2px 0 rgba(255, 255, 255, 0.72), inset 0 -2px 0 rgba(120, 85, 60, 0.06);
   --wash-opacity: 0.055;
+  --map-opacity: 0.075;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -44,6 +45,7 @@
     --shadow-lift: 0 2px 4px rgba(0, 0, 0, 0.45), 0 18px 36px rgba(0, 0, 0, 0.5);
     --press: inset 0 2px 0 rgba(255, 255, 255, 0.05), inset 0 -2px 0 rgba(0, 0, 0, 0.28);
     --wash-opacity: 0.085;
+    --map-opacity: 0.11;
   }
 }
 
@@ -64,6 +66,7 @@
   --shadow-lift: 0 2px 4px rgba(0, 0, 0, 0.45), 0 18px 36px rgba(0, 0, 0, 0.5);
   --press: inset 0 2px 0 rgba(255, 255, 255, 0.05), inset 0 -2px 0 rgba(0, 0, 0, 0.28);
   --wash-opacity: 0.085;
+  --map-opacity: 0.11;
 }
 
 /* `inline` để Tailwind giữ nguyên var() — nhờ vậy đổi chủ đề sáng/tối chỉ cần
@@ -450,6 +453,113 @@ input[type="search"]::-webkit-search-decoration {
   padding-bottom: max(28px, calc(env(safe-area-inset-bottom, 0px) + 12px));
 }
 
+/* ── Chiều sâu 3D ────────────────────────────────────────────────────
+   Bản đồ Việt Nam chìm dưới nền, trôi chậm trong không gian; ô logo khẽ
+   xoay; ảnh lớn nghiêng theo con trỏ kèm vệt sáng. */
+
+.map-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  perspective: 1400px;
+}
+
+.map-backdrop-inner {
+  position: absolute;
+  top: 20%;
+  left: -6%;
+  width: min(120vw, 620px);
+  aspect-ratio: 289 / 321;
+  color: var(--accent-2);
+  opacity: var(--map-opacity);
+  transform-origin: 40% 50%;
+  transform: rotateX(16deg) rotateY(-16deg) rotateZ(-4deg);
+  animation: map-drift 28s ease-in-out infinite alternate;
+}
+
+.map-backdrop-inner svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+@media (min-width: 1024px) {
+  .map-backdrop-inner {
+    top: 7%;
+    left: auto;
+    right: 6%;
+    width: auto;
+    height: 86%;
+  }
+}
+
+@keyframes map-drift {
+  from {
+    transform: rotateX(16deg) rotateY(-16deg) rotateZ(-4deg) translate3d(0, 0, 0);
+  }
+  to {
+    transform: rotateX(8deg) rotateY(-4deg) rotateZ(-1deg) translate3d(-3%, 2%, 60px);
+  }
+}
+
+.logo-3d {
+  display: block;
+  transform-style: preserve-3d;
+  animation: logo-rock 7s ease-in-out infinite;
+}
+
+@keyframes logo-rock {
+  0%,
+  100% {
+    transform: perspective(240px) rotateY(-16deg) rotateX(6deg);
+  }
+  50% {
+    transform: perspective(240px) rotateY(16deg) rotateX(-4deg);
+  }
+}
+
+.tilt {
+  position: relative;
+  transform: perspective(700px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform 0.5s var(--ease-soft);
+  will-change: transform;
+}
+
+.tilt[data-tilting] {
+  transition: transform 0.08s linear;
+}
+
+.tilt::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(
+    circle at var(--gx, 50%) var(--gy, 50%),
+    rgba(255, 255, 255, 0.22),
+    transparent 60%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.tilt[data-tilting]::after {
+  opacity: 1;
+}
+
+.clock-card {
+  transition: transform var(--dur-base) var(--ease-soft);
+}
+
+@media (hover: hover) {
+  .clock-card:hover {
+    transform: perspective(500px) rotateX(8deg) translateY(-1px);
+  }
+}
+
 /* ── Tắt sạch chuyển động khi máy yêu cầu ────────────────────────────── */
 /* Màn hình chào vẫn hiện khung hình cuối rồi mờ đi, chỉ không có mặt trời mọc. */
 
@@ -465,6 +575,10 @@ input[type="search"]::-webkit-search-decoration {
   .logo-sun,
   .logo-reflection,
   .splash-word,
+  .map-backdrop-inner,
+  .logo-3d,
+  .tilt,
+  .clock-card,
   .scrub-track,
   .scrub-thumb {
     animation: none !important;

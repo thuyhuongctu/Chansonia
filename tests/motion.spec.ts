@@ -36,6 +36,12 @@ test.describe("Chuyển động", () => {
         return { anim: s.animationName, opacity: s.opacity };
       });
       expect(view.anim).toBe("none");
+      // Bản đồ nền và ô logo cũng đứng yên.
+      for (const sel of [".map-backdrop-inner", ".logo-3d"]) {
+        expect(
+          await page.locator(sel).first().evaluate((el) => getComputedStyle(el).animationName),
+        ).toBe("none");
+      }
       expect(Number(view.opacity)).toBe(1);
       await expect(page.locator(SONG_ROW)).toHaveCount(SONG_COUNT);
     });

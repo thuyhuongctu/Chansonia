@@ -61,7 +61,7 @@ test.describe("Tìm kiếm", () => {
 
   test("lọc được cả danh sách video", async ({ page }) => {
     await openApp(page);
-    await collectionTab(page, "BizOn").click();
+    await collectionTab(page, "BizOnland").click();
     await page.getByRole("tab", { name: /^Video ·/ }).click();
     await searchBox(page).fill("phu sa");
     await expect(page.locator(VIDEO_ROW)).toHaveCount(3);
@@ -70,7 +70,7 @@ test.describe("Tìm kiếm", () => {
   test("đổi bộ sưu tập thì xoá từ khoá cũ", async ({ page }) => {
     await openApp(page);
     await searchBox(page).fill("lampe");
-    await collectionTab(page, "BizOn").click();
+    await collectionTab(page, "BizOnland").click();
     await expect(searchBox(page)).toHaveValue("");
     await expect(page.locator(SONG_ROW)).toHaveCount(17);
   });

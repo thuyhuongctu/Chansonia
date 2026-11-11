@@ -44,8 +44,8 @@ Total running time 32:35.
 
 - Opens on a short **sunrise splash**: the Mekong bends into a C and the sun
   rises at the river mouth — the new Chansonia logo.
-- Groups the library into **three collections** — *Je m'appelle Hương*,
-  *BizOn* and *M-AIDA* — each with a **Songs** and a **Videos** list of compact
+- Groups the library into **three collections** — *La maison de Madam Hương*,
+  *BizOnland* and *M-AIDA* — each with a **Songs** and a **Videos** list of compact
   rows. The album tracks play from the app; BizOn and M-AIDA songs, the extra
   Hương singles and the films stream from `jemappellehuong.com` and
   `bizonland.com` (see [`src/lib/library.ts`](src/lib/library.ts)).
@@ -354,7 +354,7 @@ src/
   lib/
     artist.ts        artist and album metadata, copyright line
     catalog.ts       assembles songs, derives per-line timing
-    library.ts       the three collections (Hương · BizOn · M-AIDA): songs and videos
+    library.ts       the three collections (La maison de Madam Hương · BizOnland · M-AIDA): songs and videos
     audio-source.ts  offline / streaming switch
     player-store.ts  player state (Zustand)
     art.ts           clay artwork used across the app (paths under public/art)
