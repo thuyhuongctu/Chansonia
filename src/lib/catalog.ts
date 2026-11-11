@@ -28,6 +28,17 @@ export type RawSection = {
   lines: RawLine[];
 };
 
+/** Một phiên bản (bản thu) của bài hát */
+export type SongVersion = {
+  /** Tên ngắn trên nút chọn, ví dụ "Tiếng Việt", "English", "Bản phối OR" */
+  label: string;
+  audioSrc: string;
+  /** Độ dài (ms); 0 nếu chưa biết */
+  durationMs: number;
+  /** Lời đồng bộ của bài khớp với bản thu này */
+  synced?: boolean;
+};
+
 export type RawSong = {
   id: string;
   trackNo: number;
@@ -36,6 +47,8 @@ export type RawSong = {
   language: string;
   /** Ghi chú ngắn về chủ đề/cảm xúc, hiện ở màn hình danh sách */
   note?: string;
+  /** Dòng phụ dưới tên bài trong danh sách — bỏ trống thì ghép từ ngôn ngữ */
+  meta?: string;
   /** Màu chủ đạo của bài, dùng cho ảnh bìa và điểm nhấn giao diện */
   accent: string;
   /** Ảnh bìa riêng của bài (tuỳ chọn) — không có thì dùng ảnh gradient sinh từ accent */
@@ -48,8 +61,18 @@ export type RawSong = {
   pictures?: Picture[];
   /** Đánh dấu bài hát chủ đề của album */
   titleTrack?: boolean;
+  /**
+   * Tệp nhạc: "audio/ten-bai.mp3" cho bài nằm trong app, hoặc địa chỉ đầy đủ
+   * (https://…) cho bài phát trực tuyến từ trang khác.
+   */
   audioSrc: string;
+  /** Độ dài bản thu (ms). Chưa biết thì để 0 — app đọc độ dài thật khi phát. */
   durationMs: number;
+  /**
+   * Tối đa hai phiên bản hay nhất của bài (ưu tiên một bản tiếng Việt và một
+   * bản tiếng Anh). Bản đầu tiên là bản mặc định. Bỏ trống = chỉ một bản.
+   */
+  versions?: SongVersion[];
   sections: RawSection[];
 };
 
@@ -57,7 +80,7 @@ export type RawSong = {
 
 export type LineRole = "title" | "whisper" | "normal";
 export type ViewMode = "karaoke" | "sheet";
-export type AppView = "library" | "player" | "artist";
+export type AppView = "library" | "player" | "video" | "artist";
 
 export type LyricWord = { text: string; startMs: number; endMs: number };
 
@@ -91,7 +114,7 @@ function splitWords(text: string): string[] {
   return text.split(/\s+/).filter(Boolean);
 }
 
-function compile(raw: RawSong): Song {
+export function compile(raw: RawSong): Song {
   const lines: LyricLine[] = [];
   const sections: Section[] = [];
   const notes: Note[] = [];
@@ -177,6 +200,27 @@ export const SONG_BY_ID: Record<string, Song> = Object.fromEntries(
 );
 
 export const TOTAL_DURATION_MS = SONGS.reduce((a, s) => a + s.durationMs, 0);
+
+/** Dòng phụ dưới tên bài trong danh sách */
+export function songMeta(song: Song): string {
+  if (song.meta) return song.meta;
+  return [song.titleTrack ? "Bài chủ đề" : null, song.language]
+    .filter(Boolean)
+    .join(" · ");
+}
+
+/** Phiên bản thứ i của bài (bản 0 = bản chính, có lời đồng bộ nếu bài có lời) */
+export function songVersion(song: Song, i: number): SongVersion {
+  return (
+    song.versions?.[i] ??
+    song.versions?.[0] ?? {
+      label: "",
+      audioSrc: song.audioSrc,
+      durationMs: song.durationMs,
+      synced: song.lines.length > 0,
+    }
+  );
+}
 
 /* ── Tra cứu theo thời gian phát ─────────────────────────────────────── */
 

@@ -14,12 +14,14 @@ function ensure(): HTMLAudioElement {
   return audio;
 }
 
-export function setTrack(src: string, _durationMs?: number) {
+/** Đặt bài; trả về true nếu thật sự đổi sang tệp mới */
+export function setTrack(src: string): boolean {
   const a = ensure();
-  if (currentSrc === src && a.src) return;
+  if (currentSrc === src && a.src) return false;
   currentSrc = src;
   a.src = src;
   a.load();
+  return true;
 }
 
 export function play() {
@@ -40,6 +42,12 @@ export function seek(ms: number) {
 
 export function nowMs(): number {
   return (ensure().currentTime || 0) * 1000;
+}
+
+/** Độ dài tệp đang mở (ms); 0 khi trình duyệt chưa đọc được */
+export function durationMs(): number {
+  const d = ensure().duration;
+  return Number.isFinite(d) && d > 0 ? d * 1000 : 0;
 }
 
 export function isPaused(): boolean {

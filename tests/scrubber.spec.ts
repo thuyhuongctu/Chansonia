@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { elapsedSeconds, openApp, openFirstSong, playSong, scrubber } from "./helpers";
+import { elapsedSeconds, openApp, openFirstSong, scrubber } from "./helpers";
 
 /** Đọc số giây mà thanh tiến độ đang báo cho máy đọc màn hình. */
 async function valueNow(page: import("@playwright/test").Page): Promise<number> {
@@ -10,7 +10,6 @@ test.describe("Kéo thanh tiến độ", () => {
   test.beforeEach(async ({ page }) => {
     await openApp(page);
     await openFirstSong(page);
-    await playSong(page);
   });
 
   test("kéo tới đâu nhạc nhảy tới đó", async ({ page }) => {

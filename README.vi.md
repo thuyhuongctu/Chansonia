@@ -43,9 +43,10 @@ Lần đầu cần tải trình duyệt về: `npx playwright install --with-dep
 
 | Tệp | Kiểm những gì |
 | --- | --- |
-| `tests/album.spec.ts` | trang album, đủ số bài, ảnh bìa, trang nghệ sĩ, nền sáng/tối |
-| `tests/search.spec.ts` | tìm không dấu, tìm theo lời, lọc ngôn ngữ, ô tìm kiếm dính khi cuộn |
-| `tests/player.spec.ts` | mở bài, phát nhạc, lời sáng theo dòng, bấm dòng lời để tua, tạm dừng, bài sau |
+| `tests/library.spec.ts` | ba bộ sưu tập, số bài và số video, màn hình chào, ảnh bìa, màn hình video, trang nghệ sĩ (DOI), nền sáng/tối |
+| `tests/search.spec.ts` | tìm không dấu, tìm theo lời, báo không khớp, tìm video, đổi bộ sưu tập thì xoá từ khoá |
+| `tests/player.spec.ts` | bấm hàng để phát, lời sáng theo dòng, bấm dòng lời để tua, chế độ Trang lời, tạm dừng, bài trước/sau, bài chưa có lời, mở lại nghe tiếp |
+| `tests/sleep.spec.ts` | tấm hẹn giờ: chọn phút, bắt đầu, huỷ, đóng, hết giờ thì dừng nhạc |
 | `tests/scrubber.spec.ts` | kéo thanh tiến độ, kéo ra ngoài thanh, tua bằng bàn phím, nhãn cho máy đọc màn hình |
 | `tests/pwa.spec.ts` | manifest, biểu tượng, service worker, không lưu tệp nhạc, mất mạng vẫn mở được |
 | `tests/motion.spec.ts` | có chuyển động khi bình thường, tắt hẳn khi máy đặt giảm chuyển động |
@@ -90,7 +91,7 @@ npm run build
 ### 2.2 Bản TRỰC TUYẾN — nhạc tải từ máy chủ
 
 ```bash
-VITE_AUDIO_BASE=https://thuyhuongctu.github.io/JESUISHUONG_WEBSITE_2026/assets/audio npm run build
+VITE_AUDIO_BASE=https://jemappellehuong.com/assets/audio npm run build
 ```
 
 - App khoảng **3,3 MB** (đã gồm ảnh), cần mạng khi phát.

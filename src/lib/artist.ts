@@ -17,10 +17,13 @@ export const ARTIST = {
     "Hai mươi sáu năm sau, cô bé ấy vẽ tiếp giấc mơ của mình — lần này bằng những dòng code.",
   ],
 
+  /** DOI của phần mềm Chansonia trên Zenodo (concept DOI — trỏ tới bản mới nhất) */
+  doi: "10.5281/zenodo.22172794",
+
   links: [
+    { label: "GitHub · thuyhuongctu/Chansonia", url: "https://github.com/thuyhuongctu/Chansonia" },
     { label: "Songbook", url: "https://thuyhuongctu.github.io/Je-mappelle-Huong/music.html" },
-    { label: "GitHub", url: "https://github.com/thuyhuongctu" },
-    { label: "ORCID", url: "https://orcid.org/0000-0002-7711-2487" },
+    { label: "ORCID · 0000-0002-7711-2487", url: "https://orcid.org/0000-0002-7711-2487" },
   ] as SocialLink[],
 
   contactEmail: "thuyhuongctu@gmail.com",

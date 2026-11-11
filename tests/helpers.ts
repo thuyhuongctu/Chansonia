@@ -1,19 +1,31 @@
 import { expect, type Page } from "@playwright/test";
 
-/** Thẻ bài hát trong trang album (mỗi bài một thẻ). */
-export const SONG_CARD = "article.song-card";
+/** Một hàng bài hát trong danh sách thư viện. */
+export const SONG_ROW = "[data-song-id]";
+
+/** Một hàng video trong danh sách thư viện. */
+export const VIDEO_ROW = "[data-video-id]";
 
 /**
- * Số bài trong album. Thêm hoặc bớt bài thì sửa đúng một chỗ này, đừng rải
- * con số ra khắp các tệp kiểm thử.
+ * Số bài và số video của từng bộ sưu tập. Thêm hoặc bớt thì sửa đúng một chỗ
+ * này, đừng rải con số ra khắp các tệp kiểm thử.
  */
-export const SONG_COUNT = 7;
+export const COUNTS = {
+  huong: { songs: 9, videos: 1 },
+  bizon: { songs: 17, videos: 3 },
+  maida: { songs: 2, videos: 0 },
+} as const;
+
+/** Số bài của bộ sưu tập mở sẵn khi vào app (Hương). */
+export const SONG_COUNT = COUNTS.huong.songs;
 
 /**
- * Mở ứng dụng và chờ trang album hiện xong.
+ * Mở ứng dụng và chờ thư viện hiện xong.
  *
  * Trả về danh sách lỗi mà trình duyệt ghi ra trong lúc chạy — cuối bài kiểm
  * thử chỉ cần `expect(errors).toEqual([])` là biết có gì vỡ ngầm hay không.
+ * Màn hình chào không chặn tay bấm (pointer-events: none) nên không cần chờ
+ * nó tắt.
  */
 export async function openApp(page: Page): Promise<string[]> {
   const errors: string[] = [];
@@ -23,43 +35,30 @@ export async function openApp(page: Page): Promise<string[]> {
   page.on("pageerror", (e) => errors.push(`pageerror: ${e.message}`));
 
   await page.goto("/", { waitUntil: "domcontentloaded" });
-  await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
-  await expect(page.locator(SONG_CARD).first()).toBeVisible();
+  await expect(page.getByRole("heading", { level: 1, name: "Chansonia" })).toBeVisible();
+  await expect(page.locator(SONG_ROW).first()).toBeVisible();
   return errors;
 }
 
-/** Ô tìm kiếm trên trang album. */
+/** Ô tìm kiếm của thư viện. */
 export function searchBox(page: Page) {
-  return page.getByLabel("Tìm bài hát");
+  return page.getByLabel("Tìm trong bộ sưu tập");
 }
 
-/** Số thẻ bài hát đang hiện. */
+/** Số hàng bài hát đang hiện. */
 export async function songCount(page: Page): Promise<number> {
-  return page.locator(SONG_CARD).count();
+  return page.locator(SONG_ROW).count();
 }
 
-/**
- * Cuộn khung nội dung. Cả trang không cuộn (khung ứng dụng cao đúng bằng màn
- * hình), nên phải đưa con trỏ vào giữa khung rồi mới lăn chuột.
- */
+/** Nút chọn bộ sưu tập. */
+export function collectionTab(page: Page, name: "Hương" | "BizOn" | "M-AIDA") {
+  return page.getByRole("tab", { name, exact: true });
+}
+
+/** Cuộn danh sách thư viện. */
 export async function scrollPane(page: Page, dy: number) {
-  const size = page.viewportSize() ?? { width: 800, height: 600 };
-  await page.mouse.move(size.width / 2, size.height / 2);
-  await page.mouse.wheel(0, dy);
-  await page.waitForTimeout(500);
-}
-
-/** Mở bài hát đầu tiên trong danh sách và chờ màn hình bài hát hiện ra. */
-export async function openFirstSong(page: Page) {
-  await page.locator("[data-song-id]").first().click();
-  await expect(page.getByRole("button", { name: "Phát bài hát" })).toBeVisible();
-}
-
-/** Đọc đồng hồ bên trái thanh tiến độ, ví dụ "1:23", đổi ra giây. */
-export async function elapsedSeconds(page: Page): Promise<number> {
-  const text = (await page.locator('[role="slider"] ~ div span').first().textContent()) ?? "0:00";
-  const [m, s] = text.trim().split(":").map(Number);
-  return m * 60 + s;
+  await page.locator("[data-library-list]").evaluate((el, d) => el.scrollBy(0, d), dy);
+  await page.waitForTimeout(400);
 }
 
 /** Thanh tiến độ (kéo được). */
@@ -67,14 +66,24 @@ export function scrubber(page: Page) {
   return page.getByRole("slider", { name: "Tiến độ bài hát" });
 }
 
+/** Số giây đã nghe, đọc từ thanh tiến độ. */
+export async function elapsedSeconds(page: Page): Promise<number> {
+  return Number((await scrubber(page).getAttribute("aria-valuenow")) ?? "0");
+}
+
 /**
- * Bấm phát rồi chờ nhạc thật sự chạy.
- *
- * Bài nào cũng có đoạn dạo nhạc trước khi vào lời, nên chờ riêng cho dòng lời
- * đầu tiên sáng lên bằng `waitForLyrics`.
+ * Bấm vào bài đầu tiên: màn hình lời mở ra và nhạc phát luôn. Chờ tới khi
+ * đồng hồ thật sự chạy.
  */
-export async function playSong(page: Page) {
-  await page.getByRole("button", { name: "Phát bài hát" }).click();
+export async function openFirstSong(page: Page) {
+  await page.locator(SONG_ROW).first().click();
+  await expect(page.getByRole("button", { name: "Quay lại" })).toBeVisible();
+  await waitForPlayback(page);
+}
+
+/** Chờ nhạc thật sự chạy. */
+export async function waitForPlayback(page: Page) {
+  await expect(page.getByRole("button", { name: "Tạm dừng" })).toBeVisible();
   await expect
     .poll(() => elapsedSeconds(page), { timeout: 20_000, message: "nhạc phải chạy" })
     .toBeGreaterThan(0);
@@ -87,20 +96,19 @@ export async function waitForLyrics(page: Page) {
   });
 }
 
-/**
- * Tên bài đang mở, đọc từ thanh đầu trang.
- *
- * Đừng đọc từ thẻ <h1>: thẻ ấy nằm trong tấm bìa bài hát, mà tấm bìa biến mất
- * ngay khi nhạc bắt đầu chạy, nhường chỗ cho khung lời. Thanh đầu trang thì
- * luôn có tên bài, dù đang xem bìa hay đang nghe.
- */
+/** Tên bài đang mở, đọc từ thanh đầu màn hình lời. */
 export function songTitleInHeader(page: Page): Promise<string | null> {
-  return page.locator("header p").first().textContent();
+  return page.locator("[data-screen-title]").textContent();
+}
+
+/** Tên bài đang nghe, đọc từ thanh phát (có ở mọi màn hình). */
+export function nowPlayingTitle(page: Page): Promise<string | null> {
+  return page.locator("[data-now-title]").textContent();
 }
 
 /** Thứ tự dòng lời đang được hát; -1 nghĩa là vẫn đang dạo nhạc. */
-export function activeLyricIndex(page: Page): Promise<number> {
-  return page.$$eval(".lyric-line", (els) =>
-    els.findIndex((e) => e.getAttribute("data-state") === "active"),
-  );
+export async function activeLyricIndex(page: Page): Promise<number> {
+  const el = page.locator('.lyric-line[data-state="active"]');
+  if ((await el.count()) === 0) return -1;
+  return Number(await el.getAttribute("data-line"));
 }

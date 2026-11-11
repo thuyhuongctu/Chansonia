@@ -18,6 +18,7 @@
   --accent: #c45c3a;
   --accent-2: #3f6f68;
   --accent-soft: #f3e4da;
+  --on-accent: #ffffff;
   --gold: #b8842c;
   --shadow: 0 1px 1px rgba(60, 40, 28, 0.05), 0 10px 22px rgba(90, 60, 40, 0.09);
   --shadow-lift: 0 2px 3px rgba(60, 40, 28, 0.07), 0 18px 34px rgba(90, 60, 40, 0.14);
@@ -37,6 +38,7 @@
     --accent: #e08055;
     --accent-2: #79b3a6;
     --accent-soft: #3a251c;
+    --on-accent: #17130f;
     --gold: #d6a24e;
     --shadow: 0 1px 1px rgba(0, 0, 0, 0.4), 0 10px 24px rgba(0, 0, 0, 0.42);
     --shadow-lift: 0 2px 4px rgba(0, 0, 0, 0.45), 0 18px 36px rgba(0, 0, 0, 0.5);
@@ -56,6 +58,7 @@
   --accent: #e08055;
   --accent-2: #79b3a6;
   --accent-soft: #3a251c;
+  --on-accent: #17130f;
   --gold: #d6a24e;
   --shadow: 0 1px 1px rgba(0, 0, 0, 0.4), 0 10px 24px rgba(0, 0, 0, 0.42);
   --shadow-lift: 0 2px 4px rgba(0, 0, 0, 0.45), 0 18px 36px rgba(0, 0, 0, 0.5);
@@ -76,6 +79,7 @@
   --color-accent: var(--accent);
   --color-accent-2: var(--accent-2);
   --color-accent-soft: var(--accent-soft);
+  --color-on-accent: var(--on-accent);
   --color-gold: var(--gold);
 
   --font-display: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia,
@@ -131,120 +135,6 @@
 
   p {
     text-wrap: pretty;
-  }
-}
-
-/* ── Ảnh chìm của trang: chính ảnh bìa, làm mờ và rất nhạt ─────────────── */
-/* Đường dẫn ảnh đặt bằng style ở React (đường dẫn tương đối) để bản dựng
-   chạy được cả khi mở trực tiếp từ đĩa, không qua máy chủ web. */
-
-.pagewash {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background-position: center 22%;
-  background-size: cover;
-  background-repeat: no-repeat;
-  opacity: var(--wash-opacity);
-  filter: blur(3px) saturate(0.72);
-  -webkit-mask: radial-gradient(120% 85% at 50% 42%, transparent 0 38%, #000 78%);
-  mask: radial-gradient(120% 85% at 50% 42%, transparent 0 38%, #000 78%);
-}
-
-/* ── Gạch màu dưới tiêu đề trang, giống header.page::after của trang web ── */
-
-.title-rule {
-  display: block;
-  margin: 22px auto 0;
-  width: 84%;
-  height: 4px;
-  border-radius: 99px;
-  background: linear-gradient(
-    90deg,
-    var(--accent-2),
-    var(--accent-soft),
-    var(--accent-2)
-  );
-}
-
-/* ── Đầu mục có vạch kẻ kéo dài, giống .shead ────────────────────────── */
-
-.shead {
-  display: flex;
-  align-items: baseline;
-  gap: 12px;
-}
-
-.shead-line {
-  flex: 1;
-  height: 1px;
-  background: var(--line);
-}
-
-/* ── Thẻ bài hát ─────────────────────────────────────────────────────── */
-
-.song-card {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  box-shadow: var(--shadow);
-  overflow: hidden;
-}
-
-.song-card-hover {
-  transition:
-    transform 0.18s ease,
-    box-shadow 0.18s ease;
-}
-
-@media (hover: hover) {
-  .song-card-hover:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lift);
-  }
-}
-
-/* Câu ký tên của bài hát — chữ nghiêng, vạch màu bên trái */
-.signature {
-  border-left: 3px solid var(--accent);
-  padding-left: 12px;
-  font-style: italic;
-}
-
-/* ── Ảnh minh hoạ: thu vừa khung, không cắt mất phần nào của ảnh ─────── */
-
-.songpic img {
-  display: block;
-  width: auto;
-  height: auto;
-  max-width: 100%;
-  max-height: 420px;
-  margin-inline: auto;
-  border-radius: 14px;
-  border: 1px solid var(--line);
-}
-
-.picrow img {
-  display: block;
-  width: auto;
-  height: auto;
-  max-width: 100%;
-  max-height: 300px;
-  margin-inline: auto;
-  border-radius: 12px;
-  border: 1px solid var(--line);
-}
-
-/* ── Sân khấu lời: cuộn mềm ──────────────────────────────────────────── */
-
-@media (prefers-reduced-motion: reduce) {
-  .lyric-stage,
-  .staff-playhead,
-  .staff-note,
-  .song-card-hover {
-    transition: none !important;
-    animation: none !important;
   }
 }
 
@@ -316,24 +206,6 @@
   animation: view-in var(--dur-base) var(--ease-soft) both;
 }
 
-/* ── Thẻ hiện lần lượt: mỗi thẻ trễ thêm một nhịp ngắn ───────────────── */
-
-@keyframes rise-in {
-  from {
-    opacity: 0;
-    transform: translate3d(0, 14px, 0);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-.rise-in {
-  animation: rise-in var(--dur-slow) var(--ease-soft) both;
-  animation-delay: calc(var(--i, 0) * 45ms);
-}
-
 /* ── Cảm giác chạm: nút lún xuống rồi bật lại ────────────────────────── */
 
 .press {
@@ -354,66 +226,140 @@
   transform: scale(0.93);
 }
 
-/* ── Khung xương khi ảnh chưa tải xong ───────────────────────────────── */
-
-@keyframes skeleton-sweep {
-  from {
-    background-position: 200% 0;
-  }
-  to {
-    background-position: -200% 0;
-  }
-}
-
-.skeleton {
-  background-color: var(--sunk);
-  background-image: linear-gradient(
-    100deg,
-    transparent 20%,
-    color-mix(in srgb, var(--surface) 70%, transparent) 50%,
-    transparent 80%
-  );
-  background-size: 200% 100%;
-  animation: skeleton-sweep 1.4s linear infinite;
-}
-
-/* Ảnh mờ dần khi đã tải xong, thay vì hiện đột ngột */
-.img-fade {
-  opacity: 0;
-  transition: opacity var(--dur-base) var(--ease-soft);
-}
-
-.img-fade[data-loaded="true"] {
-  opacity: 1;
-}
-
-/* ── Lời bài hát: dòng đang hát nổi lên, dòng xa lùi ra sau ──────────── */
+/* ── Lời bài hát ─────────────────────────────────────────────────────
+   Chế độ "Lời": dòng đang hát to 27px, chữ đã hát tô màu đất nung; dòng đã
+   qua nhạt hẳn, dòng sắp tới hơi mờ. Chế độ "Trang lời": in đều 17px. */
 
 .lyric-line {
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-weight: 400;
+  line-height: 1.28;
+  color: var(--muted);
   transition:
-    transform var(--dur-slow) var(--ease-soft),
-    opacity var(--dur-slow) var(--ease-soft),
-    filter var(--dur-slow) var(--ease-soft),
-    color var(--dur-base) var(--ease-soft);
-  transform-origin: left center;
-}
-
-.lyric-line[data-state="active"] {
-  transform: scale(1.035);
-  opacity: 1;
-}
-
-.lyric-line[data-state="near"] {
-  opacity: 0.72;
-}
-
-.lyric-line[data-state="far"] {
-  opacity: 0.4;
-  filter: blur(0.6px);
+    font-size 0.3s var(--ease-soft),
+    color 0.3s var(--ease-soft);
+  -webkit-tap-highlight-color: transparent;
 }
 
 .lyric-line[data-state="past"] {
-  opacity: 0.45;
+  color: var(--subtle);
+}
+
+.lyric-line[data-state="active"] {
+  font-size: 27px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.lyric-line[data-state="active"] [data-sung] {
+  color: var(--accent);
+  transition: color 0.15s linear;
+}
+
+.lyric-line[data-state="sheet"] {
+  font-size: 17px;
+  color: var(--ink);
+}
+
+@media (hover: hover) {
+  .lyric-line:not([data-state="active"]):hover {
+    color: var(--ink);
+  }
+}
+
+/* ── Hàng trong danh sách: lún nhẹ khi bấm ───────────────────────────── */
+
+.row {
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--dur-fast) var(--ease-soft);
+}
+
+@media (hover: hover) {
+  .row:hover {
+    background-color: color-mix(in srgb, var(--sunk) 55%, transparent);
+  }
+}
+
+.row:active {
+  background-color: var(--sunk);
+}
+
+/* ── Tấm hẹn giờ: nền mờ và tấm trượt lên từ cạnh dưới ───────────────── */
+
+@keyframes sheet-up {
+  from {
+    transform: translate3d(0, 100%, 0);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.sheet-scrim {
+  background: rgba(28, 24, 20, 0.4);
+  animation: fade-in var(--dur-base) ease-out both;
+}
+
+.sheet {
+  animation: sheet-up var(--dur-base) ease-out both;
+}
+
+/* ── Màn hình chào: mặt trời mọc trên sông ───────────────────────────── */
+
+@keyframes sun-rise {
+  from {
+    transform: translateY(22px);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@keyframes splash-out {
+  to {
+    opacity: 0;
+  }
+}
+
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  background: #17130f;
+  pointer-events: none;
+  animation: splash-out 0.5s ease 2.2s forwards;
+}
+
+.splash-word {
+  margin: 0;
+  font-size: 34px;
+  font-weight: 600;
+  line-height: 1;
+  color: #efe6d8;
+  animation: fade-in 0.8s ease 0.62s both;
+}
+
+.logo-sun {
+  animation: sun-rise 1.3s cubic-bezier(0.2, 0.7, 0.2, 1) 0.12s both;
+}
+
+.logo-reflection {
+  animation: fade-in 0.8s ease 0.82s both;
 }
 
 /* ── Thanh tiến độ kéo được ──────────────────────────────────────────── */
@@ -484,35 +430,48 @@ input[type="search"]::-webkit-search-decoration {
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
+/* Thanh đầu trang: chừa tai thỏ / thanh trạng thái (10px khi không có) */
+.pt-safe {
+  padding-top: max(10px, env(safe-area-inset-top, 0px));
+}
+
+/* Thanh phát: 20px đáy như thiết kế, hoặc hơn nếu máy có vạch cử chỉ */
+.pb-safe-bar {
+  padding-bottom: max(20px, env(safe-area-inset-bottom, 0px));
+}
+
+@media (min-width: 1024px) {
+  .pb-safe-bar {
+    padding-bottom: max(12px, env(safe-area-inset-bottom, 0px));
+  }
+}
+
+.pb-safe-sheet {
+  padding-bottom: max(28px, calc(env(safe-area-inset-bottom, 0px) + 12px));
+}
+
 /* ── Tắt sạch chuyển động khi máy yêu cầu ────────────────────────────── */
+/* Màn hình chào vẫn hiện khung hình cuối rồi mờ đi, chỉ không có mặt trời mọc. */
 
 @media (prefers-reduced-motion: reduce) {
   .view-enter,
-  .rise-in,
-  .skeleton,
   .press,
   .press-lg,
   .lyric-line,
-  .img-fade,
+  .lyric-line [data-sung],
+  .row,
+  .sheet,
+  .sheet-scrim,
+  .logo-sun,
+  .logo-reflection,
+  .splash-word,
   .scrub-track,
   .scrub-thumb {
     animation: none !important;
     transition: none !important;
   }
 
-  .lyric-line[data-state="active"] {
-    transform: none;
-  }
-
-  .lyric-line[data-state="far"] {
-    filter: none;
-  }
-
   .scrub-thumb {
     transform: translateY(-50%) scale(1);
-  }
-
-  .img-fade {
-    opacity: 1;
   }
 }

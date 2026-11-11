@@ -1,32 +1,37 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
 import { Pause, Play, Shuffle, SkipBack, SkipForward } from "lucide-react";
+import { collectionOf } from "@/lib/library";
 import { usePlayer, useSong } from "@/lib/player-store";
-import { SleepTimerButton } from "@/components/sleep-timer";
-import { Cover } from "@/components/cover";
+import { SleepTimerButton, useSleepRemaining } from "@/components/sleep-timer";
 import { cn, formatTime } from "@/lib/utils";
 
 /**
- * Thanh điều khiển — nút tròn màu đất nung trên nền giấy, viền mảnh.
- * Thanh tiến độ kéo được bằng ngón tay hoặc chuột; kéo tới đâu số giờ đổi
- * tới đó, buông tay mới thực sự nhảy tới chỗ ấy.
+ * Thanh phát — luôn nằm ở đáy mọi màn hình.
+ *
+ * Điện thoại: thanh tiến độ ở trên; dưới là [ảnh + tên bài + giờ] (bấm vào để
+ * mở màn hình lời) · Lùi · Phát/Dừng · Tới · Hẹn giờ.
+ * Máy tính: ba cột 300 / phần giữa / 300 — bài đang nghe, thanh tiến độ kèm
+ * giờ hai bên, rồi các nút điều khiển.
  */
 export function PlayerBar() {
   const song = useSong();
   const playing = usePlayer((s) => s.playing);
-  const playOrder = usePlayer((s) => s.playOrder);
-  const setPlayOrder = usePlayer((s) => s.setPlayOrder);
+  const currentMs = usePlayer((s) => s.currentMs);
+  const durationMs = usePlayer((s) => s.durationMs);
   const view = usePlayer((s) => s.view);
   const setView = usePlayer((s) => s.setView);
   const play = usePlayer((s) => s.play);
   const pause = usePlayer((s) => s.pause);
   const next = usePlayer((s) => s.next);
   const prev = usePlayer((s) => s.prev);
-  const shuffling = playOrder === "shuffle";
+  const playOrder = usePlayer((s) => s.playOrder);
+  const setPlayOrder = usePlayer((s) => s.setPlayOrder);
+  const sleepLeft = useSleepRemaining();
   const barRef = useRef<HTMLDivElement>(null);
 
-  // Ghi chiều cao thật của thanh phát vào --player-h để những thứ nổi phía
-  // trên nó (biểu tượng Hương AI) luôn nằm đúng bên trên, không bị che.
+  // Ghi chiều cao thật của thanh phát vào --player-h, cho những thứ cần nằm
+  // ngay phía trên nó.
   useEffect(() => {
     const el = barRef.current;
     if (!el) return;
@@ -41,60 +46,66 @@ export function PlayerBar() {
     return () => ro.disconnect();
   }, []);
 
+  const timeText =
+    `${formatTime(currentMs)} / ${durationMs ? formatTime(durationMs) : "–:––"}` +
+    (sleepLeft != null ? ` · hẹn giờ ${formatTime(sleepLeft)}` : "");
+  const shuffling = playOrder === "shuffle";
+
   return (
     <div
       ref={barRef}
-      className="pb-safe sticky bottom-0 z-20 flex shrink-0 flex-col border-t border-line bg-surface/95 backdrop-blur-md"
+      className="pb-safe-bar relative z-20 shrink-0 border-t border-line bg-surface px-4 pt-1.5 lg:px-6 lg:pt-2.5"
+      data-player-bar
     >
-      <Scrubber />
+      <div className="mx-auto grid max-w-6xl grid-cols-[minmax(0,1fr)_auto] items-center gap-x-2 [grid-template-areas:'scrub_scrub'_'info_ctrl'] lg:grid-cols-[300px_minmax(0,1fr)_300px] lg:gap-x-6 lg:[grid-template-areas:'info_scrub_ctrl']">
+        <div className="[grid-area:scrub]">
+          <Scrubber />
+        </div>
 
-      <div className="flex items-center gap-2 px-4 pb-3 sm:gap-3 sm:px-6">
         <button
           type="button"
           onClick={() => setView("player")}
           disabled={view === "player"}
-          aria-label={`Mở màn hình bài ${song.title}`}
-          className="press flex min-w-0 items-center gap-2.5 rounded-xl text-left disabled:cursor-default"
+          aria-label={`Mở lời bài ${song.title}`}
+          className="press mt-0.5 flex min-w-0 items-center gap-2.5 text-left [grid-area:info] disabled:cursor-default lg:mt-0"
         >
-          <Cover
-            accent={song.accent}
-            trackNo={song.trackNo}
-            src={song.coverSrc}
-            alt=""
-            size="sm"
-          />
-          <span className="hidden min-w-0 sm:block">
-            <span className="block truncate font-display text-sm font-semibold text-ink">
+          <span className="size-11 shrink-0 overflow-hidden rounded-[10px] border border-line bg-sunk">
+            {song.coverSrc ? (
+              <img src={song.coverSrc} alt="" className="size-full object-cover object-[50%_15%]" />
+            ) : null}
+          </span>
+          <span className="min-w-0">
+            <span className="block truncate font-display text-sm leading-tight font-semibold text-ink" data-now-title>
               {song.title}
             </span>
-            <span className="block truncate font-sans text-xs text-muted">
-              {song.subtitle}
+            <span className="block truncate font-sans text-[11px] text-subtle tabular-nums lg:hidden" data-time>
+              {timeText}
+            </span>
+            <span className="hidden truncate font-sans text-[11px] text-subtle lg:block">
+              {collectionOf(song.id).name}
+              {sleepLeft != null ? ` · hẹn giờ ${formatTime(sleepLeft)}` : ""}
             </span>
           </span>
         </button>
 
-        <div className="ml-auto flex items-center gap-1.5 sm:gap-2">
+        <div className="mt-0.5 flex items-center gap-2 [grid-area:ctrl] lg:mt-0 lg:justify-end">
           <IconButton
-            label={
-              shuffling
-                ? "Đang phát ngẫu nhiên — chuyển sang phát theo thứ tự"
-                : "Đang phát theo thứ tự — chuyển sang phát ngẫu nhiên"
-            }
+            label="Phát ngẫu nhiên"
             onClick={() => setPlayOrder(shuffling ? "sequential" : "shuffle")}
             pressed={shuffling}
-            className="hidden sm:flex"
+            className="hidden lg:flex"
           >
             <Shuffle className="size-4" />
           </IconButton>
 
-          <IconButton label="Về đầu bài, hoặc bài trước nếu vừa mới phát" onClick={() => void prev()}>
+          <IconButton label="Bài trước" onClick={() => void prev()}>
             <SkipBack className="size-4 fill-current" />
           </IconButton>
 
           <button
             type="button"
             onClick={() => (playing ? pause() : void play())}
-            className="press press-lg flex size-13 items-center justify-center rounded-full bg-accent text-white shadow-song"
+            className="press press-lg flex size-13 shrink-0 items-center justify-center rounded-full bg-accent text-on-accent shadow-song"
             aria-label={playing ? "Tạm dừng" : "Phát"}
           >
             {playing ? (
@@ -133,9 +144,10 @@ function IconButton({
       type="button"
       onClick={onClick}
       aria-label={label}
+      title={label}
       aria-pressed={pressed}
       className={cn(
-        "press flex size-11 items-center justify-center rounded-full border",
+        "press flex size-11 shrink-0 items-center justify-center rounded-full border",
         pressed
           ? "border-accent bg-accent-soft text-accent"
           : "border-line bg-paper text-muted hover:text-ink",
@@ -147,9 +159,12 @@ function IconButton({
   );
 }
 
-/** Thanh tiến độ — kéo được, có nút tròn hiện ra khi rê chuột hoặc khi kéo. */
+/**
+ * Thanh tiến độ — kéo bằng ngón tay hoặc chuột; kéo tới đâu số giờ đổi tới
+ * đó, buông tay mới thực sự nhảy tới chỗ ấy. Dùng được cả bàn phím.
+ */
 function Scrubber() {
-  const song = useSong();
+  const durationMs = usePlayer((s) => s.durationMs);
   const currentMs = usePlayer((s) => s.currentMs);
   const seek = usePlayer((s) => s.seek);
   const railRef = useRef<HTMLDivElement>(null);
@@ -157,18 +172,18 @@ function Scrubber() {
   const dragging = dragMs !== null;
 
   const shownMs = dragMs ?? currentMs;
-  const ratio = song.durationMs > 0 ? shownMs / song.durationMs : 0;
+  const ratio = durationMs > 0 ? shownMs / durationMs : 0;
   const pct = Math.min(100, Math.max(0, ratio * 100));
 
   const msAtPointer = useCallback(
     (clientX: number) => {
       const rail = railRef.current;
-      if (!rail) return 0;
+      if (!rail || !durationMs) return 0;
       const rect = rail.getBoundingClientRect();
       const r = (clientX - rect.left) / rect.width;
-      return Math.min(song.durationMs, Math.max(0, r * song.durationMs));
+      return Math.min(durationMs, Math.max(0, r * durationMs));
     },
-    [song.durationMs],
+    [durationMs],
   );
 
   // Kéo tiếp tục cả khi ngón tay ra ngoài thanh, và buông ở bất kỳ đâu cũng nhận.
@@ -190,12 +205,15 @@ function Scrubber() {
   }, [dragging, msAtPointer, seek]);
 
   const nudge = (deltaMs: number) =>
-    seek(Math.min(song.durationMs, Math.max(0, currentMs + deltaMs)));
+    seek(Math.min(durationMs || Infinity, Math.max(0, currentMs + deltaMs)));
 
   return (
-    <div className="px-4 pt-2.5 sm:px-6">
+    <div className="flex items-center gap-3">
+      <span className="hidden w-10 text-right font-sans text-[11px] text-subtle tabular-nums lg:block">
+        {formatTime(shownMs)}
+      </span>
       <div
-        className="scrub"
+        className="scrub flex-1"
         data-dragging={dragging}
         onPointerDown={(e) => {
           e.preventDefault();
@@ -205,15 +223,15 @@ function Scrubber() {
           if (e.key === "ArrowRight") nudge(5000);
           else if (e.key === "ArrowLeft") nudge(-5000);
           else if (e.key === "Home") seek(0);
-          else if (e.key === "End") seek(song.durationMs);
+          else if (e.key === "End") seek(durationMs);
           else return;
           e.preventDefault();
         }}
         role="slider"
         aria-valuemin={0}
-        aria-valuemax={Math.round(song.durationMs / 1000)}
+        aria-valuemax={Math.round(durationMs / 1000)}
         aria-valuenow={Math.round(shownMs / 1000)}
-        aria-valuetext={`${formatTime(shownMs)} trên ${formatTime(song.durationMs)}`}
+        aria-valuetext={`${formatTime(shownMs)} trên ${formatTime(durationMs)}`}
         aria-label="Tiến độ bài hát"
         tabIndex={0}
       >
@@ -225,11 +243,9 @@ function Scrubber() {
         </div>
         <span className="scrub-thumb" style={{ left: `${pct}%` }} aria-hidden />
       </div>
-
-      <div className="mt-1 flex justify-between font-sans text-[0.68rem] tabular-nums text-subtle">
-        <span>{formatTime(shownMs)}</span>
-        <span>{formatTime(song.durationMs)}</span>
-      </div>
+      <span className="hidden w-10 font-sans text-[11px] text-subtle tabular-nums lg:block">
+        {durationMs ? formatTime(durationMs) : "–:––"}
+      </span>
     </div>
   );
 }
