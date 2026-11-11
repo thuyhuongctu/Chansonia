@@ -12,7 +12,7 @@ export const VIDEO_ROW = "[data-video-id]";
  */
 export const COUNTS = {
   huong: { songs: 9, videos: 1 },
-  bizon: { songs: 17, videos: 3 },
+  bizon: { songs: 17, videos: 8 },
   maida: { songs: 2, videos: 0 },
 } as const;
 
