@@ -39,8 +39,11 @@ jobs:
           npx tsc -b
           npx tsc -p tsconfig.test.json
 
+      # Máy Ubuntu 24.04 của GitHub đã có sẵn thư viện hệ thống Chromium cần,
+      # chỉ thiếu vài phông chữ phụ. Kho apt của Ubuntu thỉnh thoảng không
+      # truy cập được; khi đó vẫn cài trình duyệt, bỏ qua phần phông phụ.
       - name: Cài trình duyệt cho Playwright
-        run: npx playwright install --with-deps chromium
+        run: npx playwright install --with-deps chromium || npx playwright install chromium
 
       # Bản thu thật không nằm trong kho mã, nên bước này tự tạo tệp nhạc câm
       # đúng độ dài từng bài (xem tests/make-silent-audio.mjs).
