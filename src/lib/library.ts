@@ -1,6 +1,6 @@
 /**
  * ╔══════════════════════════════════════════════════════════════════════╗
- * ║  THƯ VIỆN — BA BỘ SƯU TẬP: Je m'appelle Hương · BizOn · M-AIDA        ║
+ * ║  THƯ VIỆN — BA BỘ SƯU TẬP: La maison de Madam Hương · BizOnland · M-AIDA ║
  * ╚══════════════════════════════════════════════════════════════════════╝
  *
  * Mỗi bộ sưu tập có hai danh sách: Bài hát và Video. Mục Video chỉ nhận
@@ -135,8 +135,8 @@ const ALT: Record<string, [string, Alt]> = {
 
 const HUONG: Collection = {
   id: "huong",
-  short: "Hương",
-  name: "Je m'appelle Hương",
+  short: "La maison de Madam Hương",
+  name: "La maison de Madam Hương",
   desc: "Album «La lampe, le fleuve et les couleurs» và một đĩa đơn",
   color: "var(--accent)",
   art: "art/music-cover-ba-cong-con.webp",
@@ -207,8 +207,8 @@ const bz = (
 
 const BIZON_COLLECTION: Collection = {
   id: "bizon",
-  short: "BizOn",
-  name: "BizOn",
+  short: "BizOnland",
+  name: "BizOnland",
   desc: "Bài hát của các game mô phỏng kinh doanh",
   color: "var(--accent-2)",
   songs: [
