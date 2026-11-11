@@ -1,47 +1,48 @@
 import { expect, test } from "@playwright/test";
-import {
-  openApp,
-  openFirstSong,
-  playSong,
-  SONG_CARD,
-  SONG_COUNT,
-  waitForLyrics,
-} from "./helpers";
+import { openApp, openFirstSong, SONG_COUNT, SONG_ROW, waitForLyrics } from "./helpers";
 
 test.describe("Chuyển động", () => {
-  test("bình thường thì thẻ bài hát hiện lên có chuyển động", async ({ page }) => {
+  test("bình thường thì màn hình vào có chuyển động, mặt trời mọc ở màn hình chào", async ({
+    page,
+  }) => {
     await openApp(page);
     const anim = await page
-      .locator(".rise-in")
+      .locator(".view-enter")
       .first()
       .evaluate((el) => getComputedStyle(el).animationName);
-    expect(anim).toBe("rise-in");
+    expect(anim).toBe("view-in");
+
+    await page.reload();
+    const sun = await page
+      .locator("[data-splash] .logo-sun")
+      .evaluate((el) => getComputedStyle(el).animationName);
+    expect(sun).toBe("sun-rise");
   });
 
   test.describe("khi máy đặt chế độ giảm chuyển động", () => {
     test.use({ contextOptions: { reducedMotion: "reduce" } });
 
     test("mọi hoạt hình tắt hẳn mà nội dung vẫn hiện đủ", async ({ page }) => {
+      await page.goto("/");
+      // Màn hình chào hiện thẳng khung hình cuối: mặt trời đứng yên.
+      const sun = await page
+        .locator("[data-splash] .logo-sun")
+        .evaluate((el) => getComputedStyle(el).animationName);
+      expect(sun).toBe("none");
+
       await openApp(page);
-
-      const card = page.locator(".rise-in").first();
-      const style = await card.evaluate((el) => {
+      const view = await page.locator(".view-enter").first().evaluate((el) => {
         const s = getComputedStyle(el);
-        return { anim: s.animationName, opacity: s.opacity, transform: s.transform };
+        return { anim: s.animationName, opacity: s.opacity };
       });
-
-      expect(style.anim).toBe("none");
-      // Tắt hoạt hình mà vẫn phải nhìn thấy — không được đứng yên ở trạng thái mờ.
-      expect(Number(style.opacity)).toBe(1);
-      expect(["none", "matrix(1, 0, 0, 1, 0, 0)"]).toContain(style.transform);
-
-      await expect(page.locator(SONG_CARD)).toHaveCount(SONG_COUNT);
+      expect(view.anim).toBe("none");
+      expect(Number(view.opacity)).toBe(1);
+      await expect(page.locator(SONG_ROW)).toHaveCount(SONG_COUNT);
     });
 
     test("lời hát vẫn chạy theo nhạc, chỉ là không trôi mượt", async ({ page }) => {
       await openApp(page);
       await openFirstSong(page);
-      await playSong(page);
       await waitForLyrics(page);
     });
   });

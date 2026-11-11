@@ -1,5 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <circle cx="16" cy="16" r="16" fill="#d47868"/>
-  <circle cx="16" cy="16" r="14.2" fill="none" stroke="#f6eee6" stroke-width="0.7" opacity="0.55"/>
-  <text x="16" y="20.5" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="12" font-style="italic" fill="#f6eee6">LR</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-17 -17 122 122"><rect x="-17" y="-17" width="122" height="122" rx="30.5" fill="#120e0b"/>
+  <defs>
+    <clipPath id="sky"><rect x="-40" y="-40" width="170" height="84"/></clipPath>
+    <filter id="glow" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="5.5"/></filter>
+  </defs>
+  <path d="M75.113 75.113 A44 44 0 1 1 75.113 12.887 L65.213 22.787 A30 30 0 1 0 65.213 65.213 Z" fill="#79b3a6"/>
+  <g clip-path="url(#sky)">
+    <path d="M34 46 A22 22 0 0 1 78 46 Z" fill="rgba(224,128,85,.75)" filter="url(#glow)"/>
+    <path d="M36 44 A20 20 0 0 1 76 44 Z" fill="#ffd9a0"/>
+  </g>
+  <rect x="28" y="44" width="60" height="4" rx="2" fill="#e08055"/>
+  <rect x="42" y="53" width="28" height="4" rx="2" fill="#e08055"/>
 </svg>

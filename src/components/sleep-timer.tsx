@@ -1,60 +1,42 @@
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { Moon } from "lucide-react";
-import {
-  usePlayer,
-  SLEEP_TIMER_MIN_MINUTES,
-  SLEEP_TIMER_MAX_MINUTES,
-} from "@/lib/player-store";
-import { cn } from "@/lib/utils";
+import { usePlayer, SLEEP_PRESETS } from "@/lib/player-store";
+import { cn, formatTime } from "@/lib/utils";
 
-function formatRemaining(ms: number): string {
-  const totalSec = Math.max(0, Math.round(ms / 1000));
-  const m = Math.floor(totalSec / 60);
-  const s = totalSec % 60;
-  return `${m}:${String(s).padStart(2, "0")}`;
-}
-
-/** Nút hẹn giờ tắt nhạc — chọn 5–60 phút, tự tạm dừng khi hết giờ */
-export function SleepTimerButton() {
-  const [open, setOpen] = useState(false);
-  const sleepMinutes = usePlayer((s) => s.sleepMinutes);
-  const sleepEndsAt = usePlayer((s) => s.sleepEndsAt);
-  const setSleepMinutes = usePlayer((s) => s.setSleepMinutes);
-  const startSleepTimer = usePlayer((s) => s.startSleepTimer);
-  const cancelSleepTimer = usePlayer((s) => s.cancelSleepTimer);
-
-  const active = sleepEndsAt != null;
-
+/** Thời gian còn lại của hẹn giờ tắt nhạc (ms), null khi chưa hẹn. Cập nhật mỗi giây. */
+export function useSleepRemaining(): number | null {
+  const endsAt = usePlayer((s) => s.sleepEndsAt);
   const [now, setNow] = useState(() => Date.now());
   useEffect(() => {
-    if (!active) return;
+    if (endsAt == null) return;
+    setNow(Date.now());
     const id = window.setInterval(() => setNow(Date.now()), 1000);
     return () => clearInterval(id);
-  }, [active]);
+  }, [endsAt]);
+  return endsAt == null ? null : Math.max(0, endsAt - now);
+}
 
-  const remainingMs = active ? sleepEndsAt - now : 0;
-
-  const containerRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    if (!open) return;
-    const onClick = (e: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
-        setOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", onClick);
-    return () => document.removeEventListener("mousedown", onClick);
-  }, [open]);
+/**
+ * Nút hẹn giờ tắt nhạc — tròn 44px, không bao giờ đổi bề rộng. Đang hẹn thì
+ * nền nhạt, viền và biểu tượng màu đất nung. Bấm vào mở tấm chọn giờ từ dưới
+ * lên.
+ */
+export function SleepTimerButton() {
+  const [open, setOpen] = useState(false);
+  const active = usePlayer((s) => s.sleepEndsAt != null);
 
   return (
-    <div ref={containerRef} className="relative">
+    <>
       <button
         type="button"
-        onClick={() => setOpen((v) => !v)}
+        onClick={() => setOpen(true)}
         aria-label="Hẹn giờ tắt nhạc"
+        aria-haspopup="dialog"
         aria-expanded={open}
+        data-active={active || undefined}
         className={cn(
-          "flex size-11 items-center justify-center rounded-full border transition-colors active:scale-95",
+          "press flex size-11 shrink-0 items-center justify-center rounded-full border",
           active
             ? "border-accent bg-accent-soft text-accent"
             : "border-line bg-paper text-muted hover:text-ink",
@@ -62,58 +44,84 @@ export function SleepTimerButton() {
       >
         <Moon className={cn("size-4", active && "fill-current")} />
       </button>
+      {open ? createPortal(<SleepSheet onClose={() => setOpen(false)} />, document.body) : null}
+    </>
+  );
+}
 
-      {open ? (
-        <div className="absolute right-0 bottom-full z-30 mb-2 w-64 rounded-[16px] border border-line bg-surface p-4 shadow-song">
-          <p className="font-sans text-xs font-semibold text-ink">Hẹn giờ tắt nhạc</p>
+/** Tấm chọn giờ trượt lên từ cạnh dưới: 5 / 15 / 30 / 45 / 60 phút */
+function SleepSheet({ onClose }: { onClose: () => void }) {
+  const sleepMinutes = usePlayer((s) => s.sleepMinutes);
+  const setSleepMinutes = usePlayer((s) => s.setSleepMinutes);
+  const startSleepTimer = usePlayer((s) => s.startSleepTimer);
+  const cancelSleepTimer = usePlayer((s) => s.cancelSleepTimer);
+  const remaining = useSleepRemaining();
+  const active = remaining != null;
+  const sheetRef = useRef<HTMLDivElement>(null);
 
-          {active ? (
-            <>
-              <p className="mt-2 font-display text-2xl tabular-nums text-ink">
-                {formatRemaining(remainingMs)}
-              </p>
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKey);
+    sheetRef.current?.querySelector<HTMLElement>("button[aria-pressed='true'], button")?.focus();
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
+
+  return (
+    <div className="fixed inset-0 z-40 flex items-end justify-center">
+      <div className="sheet-scrim absolute inset-0" onClick={onClose} aria-hidden />
+      <div
+        ref={sheetRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="sleep-title"
+        className="sheet pb-safe-sheet relative w-full max-w-md rounded-t-3xl bg-surface px-5 pt-2.5 shadow-lift"
+      >
+        <div className="mx-auto mb-3.5 h-1 w-10 rounded-full bg-line" aria-hidden />
+        <h2 id="sleep-title" className="font-display text-[19px] font-semibold text-ink">
+          Hẹn giờ tắt nhạc
+        </h2>
+        <p className="mt-0.5 font-sans text-[13px] text-muted">
+          {active
+            ? `Nhạc sẽ tạm dừng sau ${formatTime(remaining)}.`
+            : "Nhạc sẽ tạm dừng khi hết giờ."}
+        </p>
+
+        <div className="mt-4 grid grid-cols-5 gap-2" role="group" aria-label="Số phút">
+          {SLEEP_PRESETS.map((n) => {
+            const on = n === sleepMinutes;
+            return (
               <button
+                key={n}
                 type="button"
-                onClick={cancelSleepTimer}
-                className="mt-3 w-full rounded-full bg-accent px-3 py-2 font-sans text-sm font-semibold text-white transition-transform active:scale-[0.98]"
+                aria-pressed={on}
+                aria-label={`${n} phút`}
+                onClick={() => setSleepMinutes(n)}
+                className={cn(
+                  "press h-12 rounded-xl border font-sans text-[15px] font-semibold tabular-nums",
+                  on ? "border-accent bg-accent text-on-accent" : "border-line bg-paper text-ink",
+                )}
               >
-                Huỷ hẹn giờ
+                {n}
               </button>
-            </>
-          ) : (
-            <>
-              <div className="mt-3 flex items-center justify-between">
-                <span className="font-sans text-xs text-muted">
-                  {SLEEP_TIMER_MIN_MINUTES} phút
-                </span>
-                <span className="font-sans text-sm font-semibold tabular-nums text-ink">
-                  {sleepMinutes} phút
-                </span>
-                <span className="font-sans text-xs text-muted">
-                  {SLEEP_TIMER_MAX_MINUTES} phút
-                </span>
-              </div>
-              <input
-                type="range"
-                min={SLEEP_TIMER_MIN_MINUTES}
-                max={SLEEP_TIMER_MAX_MINUTES}
-                step={5}
-                value={sleepMinutes}
-                onChange={(e) => setSleepMinutes(Number(e.target.value))}
-                className="mt-2 w-full accent-[var(--accent)]"
-                aria-label="Số phút hẹn giờ"
-              />
-              <button
-                type="button"
-                onClick={startSleepTimer}
-                className="mt-3 w-full rounded-full border border-line bg-paper px-3 py-2 font-sans text-sm font-semibold text-ink transition-colors hover:border-accent hover:text-accent active:scale-[0.98]"
-              >
-                Bắt đầu
-              </button>
-            </>
-          )}
+            );
+          })}
         </div>
-      ) : null}
+        <p className="mt-1.5 text-center font-sans text-[11px] text-subtle">phút</p>
+
+        <button
+          type="button"
+          onClick={() => {
+            if (active) cancelSleepTimer();
+            else startSleepTimer();
+            onClose();
+          }}
+          className="press mt-3.5 h-12 w-full rounded-full bg-accent font-sans text-[15px] font-semibold text-on-accent"
+        >
+          {active ? "Huỷ hẹn giờ" : `Hẹn ${sleepMinutes} phút`}
+        </button>
+      </div>
     </div>
   );
 }
