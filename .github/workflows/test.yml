@@ -19,7 +19,9 @@ concurrency:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    # Ghim Ubuntu 24.04: "ubuntu-latest" nay đã là 26.04, mà Playwright 1.56
+    # chưa cài được Chromium lên bản đó.
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
