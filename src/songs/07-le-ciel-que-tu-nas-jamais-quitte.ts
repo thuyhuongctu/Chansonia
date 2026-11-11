@@ -17,6 +17,7 @@ export const song: RawSong = {
   title: "Le ciel que tu n'as jamais quitté",
   subtitle: "La fille aux grands yeux couleur d'eau",
   language: "Tiếng Pháp",
+  meta: "Bài tặng thêm · Tiếng Pháp",
   note: "Bài bonus · Người lớn bên ngoài, đứa trẻ bên trong",
   accent: "#4f7fa8",
   coverSrc: "photo/huong-mat-mau-nuoc.webp",

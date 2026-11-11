@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { openApp, playSong, scrollPane, SONG_CARD, SONG_COUNT } from "./helpers";
+import { openApp, openFirstSong, scrollPane, SONG_COUNT, SONG_ROW } from "./helpers";
 
 /** Chờ service worker cài xong và bắt đầu trông coi trang. */
 async function serviceWorkerSan(page: import("@playwright/test").Page) {
@@ -73,8 +73,7 @@ test.describe("Cài lên máy như một app", () => {
     await serviceWorkerSan(page);
 
     // Nghe thử một chút cho trình duyệt tải nhạc về.
-    await page.locator("[data-song-id]").first().click();
-    await playSong(page);
+    await openFirstSong(page);
     await page.waitForTimeout(2000);
 
     const daLuu: string[] = await page.evaluate(async () => {
@@ -105,10 +104,8 @@ test.describe("Cài lên máy như một app", () => {
     try {
       await page.reload({ waitUntil: "domcontentloaded" });
 
-      await expect(page.getByRole("heading", { level: 1 })).toContainText(
-        "La lampe, le fleuve et les couleurs",
-      );
-      await expect(page.locator(SONG_CARD)).toHaveCount(SONG_COUNT);
+      await expect(page.getByRole("heading", { level: 1, name: "Chansonia" })).toBeVisible();
+      await expect(page.locator(SONG_ROW)).toHaveCount(SONG_COUNT);
       await expect(page.getByRole("slider", { name: "Tiến độ bài hát" })).toBeVisible();
     } finally {
       await context.setOffline(false);

@@ -50,13 +50,13 @@ The streaming build fetches audio from a server instead, so this directory can
 stay empty:
 
 ```bash
-VITE_AUDIO_BASE=https://thuyhuongctu.github.io/JESUISHUONG_WEBSITE_2026/assets/audio npm run build
+VITE_AUDIO_BASE=https://jemappellehuong.com/assets/audio npm run build
 ```
 
 See the root `README.md` for the difference between the two builds.
 
 **One catch for the streaming build:** it only plays what is actually on that
-server. A newly added track — `track07-le-ciel.mp3` at the time of writing —
-has to be uploaded to `assets/audio/` on the
-`JESUISHUONG_WEBSITE_2026` site under exactly the filename above, or the web
-app shows the track and its lyrics but plays nothing.
+server (the songbook site, `jemappellehuong.com/assets/audio/`). A file there
+may carry a different name from the one in `public/audio/` — the bonus track is
+`track07-le-ciel.mp3` here and `le-ciel-que-tu-nas-jamais-quitte.mp3` on the
+server. Such renames are listed in `SERVER_NAME` in `src/lib/audio-source.ts`.

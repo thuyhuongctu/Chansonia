@@ -42,31 +42,32 @@ Total running time 32:35.
 
 ## What the app does
 
-- Plays each track with its lyrics scrolling **line by line**, highlighting the
-  line currently being sung.
-- Groups lyrics into named sections (verse, refrain, bridge…) with a section
-  navigator, so any part of a song can be jumped to directly.
-- Shows the full lyric sheet of a track as a static page for reading.
-- Carries an artist page with the album's epigraph, recurring motifs and links.
-- Looks and reads like the songbook page of the author's own site: warm clay
-  palette, serif headings, paper cards, and the same clay artwork for every
-  track — light or dark, following the device (or the Sáng/Tối switch).
-- Moves like an app: views fade in, cards rise in sequence, buttons sink under
-  the finger, and the sung lyric line lifts while the lines further away dim and
-  soften. Every one of those effects switches off when the device asks for
-  reduced motion.
-- Auto-advances to the next track, either in album order or shuffled.
-- **Searches the whole songbook**, lyrics included — and ignores Vietnamese
-  diacritics, so typing `den` finds *đèn* and `huong` finds *Hương*. A matching
-  lyric line is quoted right inside the song card.
-- Filters the track list by language (Vietnamese, French, English).
-- **Draggable progress bar** with a thumb, plus previous/next track buttons and
-  a mini cover in the player bar; arrow keys nudge playback by 5 seconds.
-- Sleep timer: pauses playback automatically after 5–60 minutes.
+- Opens on a short **sunrise splash**: the Mekong bends into a C and the sun
+  rises at the river mouth — the new Chansonia logo.
+- Groups the library into **three collections** — *Je m'appelle Hương*,
+  *BizOn* and *M-AIDA* — each with a **Songs** and a **Videos** list of compact
+  rows. The album tracks play from the app; BizOn and M-AIDA songs, the extra
+  Hương singles and the films stream from `jemappellehuong.com` and
+  `bizonland.com` (see [`src/lib/library.ts`](src/lib/library.ts)).
+- Karaoke view: **one active line, enlarged**, its words filling with
+  terracotta as they are sung; the line glides to the centre of the screen.
+  Tap any line to jump there. A *Trang lời* mode prints the whole lyric evenly.
+  On desktop a side column adds the cover, the style note and the song's
+  sections.
+- Videos play inside the app (MP4) or as YouTube embeds that load only when
+  tapped; opening a video pauses the music.
+- **Searches the current collection**, lyrics included — and ignores Vietnamese
+  diacritics, so typing `den` finds *đèn* and `huong` finds *Hương*.
+- **Draggable progress bar**, previous/next (previous restarts the song after
+  3 seconds), shuffle within the collection, auto-advance at the end.
+- **Sleep timer** as a bottom sheet with 5 / 15 / 30 / 45 / 60-minute presets;
+  the remaining time shows in the player bar.
+- Remembers the last song and position between visits.
+- Artist page with library statistics, the Zenodo **DOI** and links.
+- Light and dark themes following the device, with a manual switch. Every
+  animation switches off when the device asks for reduced motion.
 - **Installs as an app** (PWA): add to the home screen, open it full-screen and
   offline. See [Installing as an app](#installing-as-an-app).
-- Claymorphism ("3D đất sét") visual design across the whole app.
-- A decorative "Hương AI" mascot badge that tilts toward the pointer.
 - Optional karaoke lyric video export via Remotion — see
   [`remotion-video/`](remotion-video).
 
@@ -106,9 +107,10 @@ The first run downloads a browser: `npx playwright install --with-deps chromium`
 
 | File | What it checks |
 | --- | --- |
-| `tests/album.spec.ts` | album page, every song, cover artwork, artist page, light/dark |
-| `tests/search.spec.ts` | accent-insensitive search, lyric search, language filters, sticky search bar |
-| `tests/player.spec.ts` | opening a song, playback, lyric highlighting, tap-a-line to seek, pause, next |
+| `tests/library.spec.ts` | three collections, song and video counts, splash, cover artwork, video view, artist page (DOI), light/dark |
+| `tests/search.spec.ts` | accent-insensitive search, lyric search, empty state, video search, search reset on collection change |
+| `tests/player.spec.ts` | tap a row to play, lyric highlighting, tap-a-line to seek, sheet mode, pause, next/previous, songs without lyrics, resume after reload |
+| `tests/sleep.spec.ts` | sleep-timer sheet: presets, start, cancel, close, pause when time is up |
 | `tests/scrubber.spec.ts` | dragging the progress bar, dragging off the bar, keyboard seeking, screen-reader labels |
 | `tests/pwa.spec.ts` | manifest, icons, service worker, audio never cached, reload with the network off |
 | `tests/motion.spec.ts` | motion on by default, everything still with "reduce motion" |
@@ -154,7 +156,7 @@ network connection.
 ### Streaming build — audio fetched from a server
 
 ```bash
-VITE_AUDIO_BASE=https://thuyhuongctu.github.io/JESUISHUONG_WEBSITE_2026/assets/audio npm run build
+VITE_AUDIO_BASE=https://jemappellehuong.com/assets/audio npm run build
 ```
 
 Roughly **3.3 MB**, artwork included. Requires a connection during playback,
@@ -352,6 +354,7 @@ src/
   lib/
     artist.ts        artist and album metadata, copyright line
     catalog.ts       assembles songs, derives per-line timing
+    library.ts       the three collections (Hương · BizOn · M-AIDA): songs and videos
     audio-source.ts  offline / streaming switch
     player-store.ts  player state (Zustand)
     art.ts           clay artwork used across the app (paths under public/art)
@@ -362,7 +365,7 @@ public/
   audio/             mp3 files (never committed)
   art/               clay artwork copied from the songbook page
   photo/             photographs of Hương used by the bonus track
-  brand/             portrait, mascot image
+  brand/             portrait
   icons/             home-screen icons (192/512, maskable, Apple touch)
   manifest.webmanifest  installable-app declaration (PWA)
   sw.js              service worker: offline shell and static-file cache

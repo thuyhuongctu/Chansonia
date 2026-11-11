@@ -15,7 +15,7 @@
 /* Tăng số này lên khi muốn mọi máy dọn sạch kho cũ và lưu lại từ đầu.
    Không liên quan tới số phiên bản của ứng dụng: tệp JS/CSS đã có mã băm
    trong tên nên bản mới tự có khoá riêng, không bị lẫn với bản cũ. */
-const CACHE = "chansonia-shell-1";
+const CACHE = "chansonia-shell-2";
 
 /* Bộ khung tối thiểu để mở được ứng dụng khi ngoại tuyến. Các tệp JS/CSS có
    mã băm trong tên nên không liệt kê ở đây — chúng được lưu dần khi dùng. */

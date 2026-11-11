@@ -14,7 +14,7 @@ cd "$(dirname "$0")/.."
 GOC=$(pwd)
 
 BAN=${1:-offline}
-NGUON_NHAC=${VITE_AUDIO_BASE:-https://thuyhuongctu.github.io/JESUISHUONG_WEBSITE_2026/assets/audio}
+NGUON_NHAC=${VITE_AUDIO_BASE:-https://jemappellehuong.com/assets/audio}
 
 case "$BAN" in
   offline|truc-tuyen) ;;
