@@ -271,6 +271,15 @@
   }
 }
 
+/* Hàng cuộn ngang (nút chọn bộ sưu tập) — ẩn thanh cuộn, vẫn vuốt được */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 /* ── Hàng trong danh sách: lún nhẹ khi bấm ───────────────────────────── */
 
 .row {
@@ -520,14 +529,16 @@ input[type="search"]::-webkit-search-decoration {
   }
 }
 
+/* Lúc đứng yên không có phép biến đổi nào, để trình duyệt vẽ ảnh sắc nét
+   như ảnh thường; chỉ khi rê chuột mới nghiêng 3D. */
 .tilt {
   position: relative;
-  transform: perspective(700px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transform: none;
   transition: transform 0.5s var(--ease-soft);
-  will-change: transform;
 }
 
 .tilt[data-tilting] {
+  transform: perspective(700px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
   transition: transform 0.08s linear;
 }
 

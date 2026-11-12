@@ -66,6 +66,9 @@ Total running time 32:35.
   the remaining time shows in the player bar.
 - Remembers the last song and position between visits.
 - Artist page with library statistics, the Zenodo **DOI** and links.
+- **English by default**, with Vietnamese and French one tap away (the EN · VI ·
+  FR button); the choice is remembered and shared with the introduction page.
+  Interface text and song data are translated in [`src/lib/i18n.ts`](src/lib/i18n.ts).
 - Light and dark themes following the device, with a manual switch. Every
   animation switches off when the device asks for reduced motion.
 - **Installs as an app** (PWA): add to the home screen, open it full-screen and

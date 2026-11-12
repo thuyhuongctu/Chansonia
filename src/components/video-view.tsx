@@ -3,6 +3,7 @@ import { Play } from "lucide-react";
 import { COLLECTION_BY_ID, type Video } from "@/lib/library";
 import { usePlayer } from "@/lib/player-store";
 import { ScreenHeader } from "@/components/header";
+import { useT } from "@/lib/i18n";
 
 /**
  * Màn hình video — khung 16:9, tên và dòng phụ, rồi danh sách "Video khác"
@@ -13,6 +14,7 @@ import { ScreenHeader } from "@/components/header";
  * xem bấm vào ảnh bìa (dùng youtube-nocookie.com).
  */
 export function VideoView() {
+  const { t, td } = useT();
   const sel = usePlayer((s) => s.video);
   const openVideo = usePlayer((s) => s.openVideo);
 
@@ -24,21 +26,21 @@ export function VideoView() {
 
   return (
     <div className="view-enter flex min-h-0 flex-1 flex-col">
-      <ScreenHeader title={video.title} subtitle={`${col.name} · Video`} />
+      <ScreenHeader title={td(video.title)} subtitle={`${col.name} · ${t("Video")}`} />
       <div className="min-h-0 flex-1 overflow-y-auto p-4 lg:px-6">
         <div className="mx-auto max-w-3xl">
           <Frame key={video.id} video={video} />
           <h2 className="mt-4 font-display text-[22px] leading-tight font-semibold text-ink">
-            {video.title}
+            {td(video.title)}
           </h2>
           <p className="mt-1 font-sans text-[13px] text-muted">
-            {[video.meta, video.duration].filter(Boolean).join(" · ")}
+            {[td(video.meta), video.duration].filter(Boolean).join(" · ")}
           </p>
 
           {more.length ? (
             <>
               <p className="mt-6 mb-0.5 font-sans text-[11px] font-bold tracking-[0.18em] text-muted uppercase">
-                Video khác
+                {t("Video khác")}
               </p>
               {more.map((v) => (
                 <button
@@ -49,7 +51,7 @@ export function VideoView() {
                   className="row flex min-h-12 w-full items-center justify-between gap-3 border-b border-line py-2 text-left"
                 >
                   <span className="font-display text-[15px] leading-tight font-bold text-ink">
-                    {v.title}
+                    {td(v.title)}
                   </span>
                   <span className="shrink-0 font-sans text-xs text-subtle tabular-nums">
                     {v.duration ?? ""}
@@ -65,6 +67,7 @@ export function VideoView() {
 }
 
 function Frame({ video }: { video: Video }) {
+  const { t, td } = useT();
   const pauseMusic = usePlayer((s) => s.pause);
   const musicPlaying = usePlayer((s) => s.playing);
   const ref = useRef<HTMLVideoElement>(null);
@@ -122,7 +125,7 @@ function Frame({ video }: { video: Video }) {
         pauseMusic();
         setEmbed(true);
       }}
-      aria-label={`Phát video ${video.title} từ YouTube`}
+      aria-label={t("Phát video {t} từ YouTube", { t: td(video.title) })}
       className={`${box} press flex flex-col items-center justify-center gap-2.5 bg-cover bg-center`}
       style={video.poster ? { backgroundImage: `url(${video.poster})` } : undefined}
     >
@@ -130,7 +133,7 @@ function Frame({ video }: { video: Video }) {
         <Play className="size-6 translate-x-px fill-current" />
       </span>
       <span className="rounded-full bg-black/55 px-2.5 py-1 font-sans text-xs text-[#efe6d8]">
-        Bấm để phát · tải từ YouTube
+        {t("Bấm để phát · tải từ YouTube")}
       </span>
     </button>
   );

@@ -17,6 +17,7 @@ const COLLECTION_ART: Record<Collection["id"], string> = {
   huong: asset("art/music-cover-ba-cong-con.webp"),
   bizon: "https://bizonland.com/assets/covers/ben-phu-sa-3d.webp",
   maida: "https://jemappellehuong.com/assets/img/maida-film-poster.webp",
+  vandon: "https://thuyhuongctu.github.io/ThuyHuong_Digital-2026-Games/van-don-3d/assets/ben-cang-van-don.jpg",
 };
 
 /* ── Logo (khúc sông chữ C, mặt trời mọc ở cửa sông) ─────────────────── */
@@ -42,15 +43,18 @@ document.querySelectorAll<HTMLElement>("[data-map]").forEach((el) => (el.innerHT
 
 /* ── Ngôn ngữ ─────────────────────────────────────────────────────────── */
 
+/** Khoá ngôn ngữ dùng chung với app: chọn ở đây thì mở app cũng đúng thứ tiếng ấy */
+const APP_KEY = "chansonia-lang";
+
+/** Mặc định tiếng Anh; có lựa chọn đã lưu thì theo lựa chọn đó */
 function initialLang(): Lang {
   try {
-    const saved = localStorage.getItem(KEY) as Lang | null;
+    const saved = (localStorage.getItem(KEY) ?? localStorage.getItem(APP_KEY)) as Lang | null;
     if (saved && LANGS.includes(saved)) return saved;
   } catch {
-    /* không đọc được thì đoán theo trình duyệt */
+    /* không đọc được thì dùng mặc định */
   }
-  const nav = (navigator.language || "vi").slice(0, 2) as Lang;
-  return LANGS.includes(nav) ? nav : "vi";
+  return "en";
 }
 
 let lang: Lang = initialLang();
@@ -76,6 +80,7 @@ document.querySelectorAll<HTMLButtonElement>("[data-lang]").forEach((b) =>
     lang = b.dataset.lang as Lang;
     try {
       localStorage.setItem(KEY, lang);
+      localStorage.setItem(APP_KEY, lang);
     } catch {
       /* bỏ qua */
     }

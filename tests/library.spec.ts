@@ -14,7 +14,7 @@ test.describe("Thư viện", () => {
   test("mở lên là thấy ba bộ sưu tập và danh sách bài của Hương", async ({ page }) => {
     const errors = await openApp(page);
 
-    for (const name of ["La maison de Madam Hương", "BizOnland", "M-AIDA"] as const) {
+    for (const name of ["La maison de Madam Hương", "BizOnland", "M-AIDA", "Van Don – Vietnam’s First Trading Port"] as const) {
       await expect(collectionTab(page, name)).toBeVisible();
     }
     await expect(collectionTab(page, "La maison de Madam Hương")).toHaveAttribute("aria-selected", "true");
@@ -128,7 +128,7 @@ test.describe("Thư viện", () => {
     await page.getByRole("button", { name: "Nghệ sĩ" }).click();
     await expect(page.getByRole("heading", { name: "Je m'appelle Hương" })).toBeVisible();
 
-    const total = COUNTS.huong.songs + COUNTS.bizon.songs + COUNTS.maida.songs;
+    const total = COUNTS.huong.songs + COUNTS.bizon.songs + COUNTS.maida.songs + COUNTS.vandon.songs;
     await expect(page.locator("dl")).toContainText(String(total));
     await expect(page.getByRole("link", { name: /10\.5281\/zenodo\.22172794/ })).toHaveAttribute(
       "href",
@@ -143,6 +143,28 @@ test.describe("Thư viện", () => {
     await expect(page.locator(SONG_ROW).first()).toBeVisible();
   });
 
+  test("mục Ảnh ở trang nghệ sĩ mở ảnh lớn, chuyển ảnh và đóng được", async ({ page }) => {
+    await openApp(page);
+    await page.getByRole("button", { name: "Nghệ sĩ" }).click();
+
+    const thumbs = page.locator("[data-photos] button");
+    await expect(thumbs).toHaveCount(5);
+    for (const img of await page.locator("[data-photos] img").all()) {
+      await img.scrollIntoViewIfNeeded();
+      await expect.poll(() => img.evaluate((el: HTMLImageElement) => el.naturalWidth)).toBeGreaterThan(0);
+    }
+
+    await thumbs.first().click();
+    const dialog = page.getByRole("dialog");
+    await expect(dialog).toContainText("1 / 5");
+    await page.getByRole("button", { name: "Ảnh sau" }).click();
+    await expect(dialog).toContainText("2 / 5");
+    await page.keyboard.press("ArrowLeft");
+    await expect(dialog).toContainText("1 / 5");
+    await page.keyboard.press("Escape");
+    await expect(dialog).toHaveCount(0);
+  });
+
   test("đổi được giữa nền sáng và nền tối", async ({ page }) => {
     await openApp(page);
 
@@ -154,5 +176,22 @@ test.describe("Thư viện", () => {
 
     await page.getByRole("button", { name: /Chuyển sang nền sáng/ }).click();
     await expect.poll(paper).toBe(sang);
+  });
+
+  test("bộ sưu tập Vân Đồn 3D có bài hát của game, lời chạy theo từng phần", async ({ page }) => {
+    await openApp(page);
+    // Nhạc phát trực tuyến; ở đây chỉ kiểm giao diện, không cần mạng.
+    await page.evaluate(() => {
+      HTMLMediaElement.prototype.play = () => Promise.resolve();
+    });
+    await collectionTab(page, "Van Don – Vietnam’s First Trading Port").click();
+    await expect(page.locator(SONG_ROW)).toHaveCount(COUNTS.vandon.songs);
+    await page.locator(SONG_ROW).first().click();
+
+    await expect(page.locator("[data-screen-title]")).toHaveText("Vân Đồn – Tiếng vọng non sông");
+    const stage = page.locator(".lyric-stage");
+    await expect(stage).toContainText("Bình minh lên trên muôn trùng sóng");
+    await expect(stage).toContainText("Tiền điệp khúc", { ignoreCase: true });
+    await expect(stage).toContainText("Vọng tiếng non sông");
   });
 });
