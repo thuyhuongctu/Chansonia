@@ -22,6 +22,16 @@ export type LibraryTab = "songs" | "videos" | "favorites";
 export type RepeatMode = "off" | "all" | "one";
 
 const FAV_KEY = "chansonia-favorites";
+const VOL_KEY = "chansonia-volume";
+
+function readVolume(): number {
+  try {
+    const v = Number(localStorage.getItem(VOL_KEY));
+    return Number.isFinite(v) && v > 0 && v <= 1 ? v : 1;
+  } catch {
+    return 1;
+  }
+}
 
 function readFavorites(): string[] {
   try {
@@ -65,6 +75,13 @@ type PlayerState = {
   versionIndex: number;
   mode: ViewMode;
   playing: boolean;
+  /** Đang tải tệp nhạc (mạng chậm) hoặc tệp không tải được */
+  status: "idle" | "loading" | "error";
+  /** Âm lượng 0–1 và tắt tiếng */
+  volume: number;
+  muted: boolean;
+  /** Hẹn giờ kiểu "hết bài này thì dừng" */
+  stopAfterSong: boolean;
   currentMs: number;
   /** Độ dài bài đang mở (ms) — lấy từ danh mục, chưa có thì đọc từ tệp nhạc */
   durationMs: number;
@@ -106,6 +123,9 @@ type PlayerState = {
   setMode: (m: ViewMode) => void;
   setPlayOrder: (order: PlayOrder) => void;
   cycleRepeat: () => void;
+  setVolume: (v: number) => void;
+  toggleMute: () => void;
+  setStopAfterSong: (on: boolean) => void;
   toggleFavorite: (id: string) => void;
   play: () => Promise<void>;
   pause: () => void;
@@ -211,6 +231,10 @@ export const usePlayer = create<PlayerState>((set, get) => ({
   versionIndex: saved.version,
   mode: "karaoke",
   playing: false,
+  status: "idle",
+  volume: readVolume(),
+  muted: false,
+  stopAfterSong: false,
   currentMs: savedMs,
   durationMs: savedVersion.durationMs,
   ...indices(savedSong, saved.version, savedMs),
@@ -261,6 +285,7 @@ export const usePlayer = create<PlayerState>((set, get) => ({
     set({
       songId: song.id,
       versionIndex: 0,
+      status: "idle",
       playing: false,
       currentMs: 0,
       durationMs: songVersion(song, 0).durationMs,
@@ -279,6 +304,7 @@ export const usePlayer = create<PlayerState>((set, get) => ({
     cancelAnimationFrame(raf);
     set({
       versionIndex: i,
+      status: "idle",
       playing: false,
       currentMs: 0,
       durationMs: song.versions[i].durationMs,
@@ -290,6 +316,25 @@ export const usePlayer = create<PlayerState>((set, get) => ({
   },
 
   setMode: (mode) => set({ mode }),
+
+  setVolume: (v) => {
+    const volume = Math.min(1, Math.max(0, v));
+    engine.setVolume(volume);
+    set({ volume, muted: volume === 0 });
+    try {
+      localStorage.setItem(VOL_KEY, String(volume));
+    } catch {
+      /* bỏ qua */
+    }
+  },
+
+  toggleMute: () => {
+    const muted = !get().muted;
+    engine.setVolume(muted ? 0 : get().volume || 1);
+    set({ muted, ...(get().volume === 0 && !muted ? { volume: 1 } : {}) });
+  },
+
+  setStopAfterSong: (stopAfterSong) => set({ stopAfterSong }),
 
   cycleRepeat: () => {
     const order: RepeatMode[] = ["off", "all", "one"];
@@ -322,10 +367,28 @@ export const usePlayer = create<PlayerState>((set, get) => ({
     const fresh = engine.setTrack(resolveAudio(version.audioSrc));
     // Tệp vừa mở mà đã có vị trí (mở lại app, hoặc tua khi chưa phát) — nhảy tới đó.
     if (fresh && get().currentMs > 0) engine.seek(get().currentMs);
+    engine.setVolume(get().muted ? 0 : get().volume);
+    engine.onStatus((st) => {
+      if (st === "error") {
+        engine.pause();
+        cancelAnimationFrame(raf);
+        set({ playing: false, status: "error" });
+      } else if (st === "loading") {
+        if (get().playing) set({ status: "loading" });
+      } else if (get().status !== "error") {
+        set({ status: "idle" });
+      }
+    });
     engine.onEnded(() => {
       set({ playing: false });
       cancelAnimationFrame(raf);
       save(get(), 0, true);
+      // Hẹn giờ "hết bài này": dừng hẳn, không sang bài sau.
+      if (get().stopAfterSong) {
+        set({ stopAfterSong: false });
+        get().seek(0);
+        return;
+      }
       const { repeat, playOrder, songId } = get();
       if (repeat === "one") {
         get().seek(0);
@@ -340,14 +403,22 @@ export const usePlayer = create<PlayerState>((set, get) => ({
       }
       void get().next();
     });
-    await engine.play();
-    set({ playing: true });
+    // Báo "đang phát" ngay để nút đổi liền tay; nếu không phát được thì lùi lại.
+    set({ playing: true, status: "loading" });
     startClock(get);
+    const result = await engine.play();
+    if (result === "ok" && !engine.isPaused()) {
+      set({ status: "idle" });
+      return;
+    }
+    if (result === "ok") return; // người dùng đã tạm dừng trong lúc chờ tải
+    cancelAnimationFrame(raf);
+    set({ playing: false, status: result === "error" ? "error" : "idle" });
   },
 
   pause: () => {
     engine.pause();
-    set({ playing: false });
+    set({ playing: false, status: get().status === "loading" ? "idle" : get().status });
     cancelAnimationFrame(raf);
     save(get(), get().currentMs, true);
   },
@@ -447,4 +518,25 @@ export const usePlayer = create<PlayerState>((set, get) => ({
 export function useSong(): Song {
   const id = usePlayer((s) => s.songId);
   return songOf(id);
+}
+
+/**
+ * Bài sẽ phát tiếp theo: bài kế trong bộ sưu tập (phát lần lượt), bài đầu
+ * túi xáo trộn (ngẫu nhiên), null khi đang lặp một bài hoặc đã là bài cuối
+ * mà không lặp.
+ */
+export function useUpNext(): Song | null {
+  const songId = usePlayer((s) => s.songId);
+  const playOrder = usePlayer((s) => s.playOrder);
+  const repeat = usePlayer((s) => s.repeat);
+  const bag = usePlayer((s) => s.shuffleBag);
+  if (repeat === "one") return null;
+  const list = siblings(songId);
+  if (playOrder === "shuffle") {
+    const id = bag.find((x) => list.includes(x) && x !== songId);
+    return id ? songOf(id) : null;
+  }
+  const i = list.indexOf(songId);
+  if (i === list.length - 1 && repeat === "off") return null;
+  return songOf(list[(i + 1) % list.length]);
 }

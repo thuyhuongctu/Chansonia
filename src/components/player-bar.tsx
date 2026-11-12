@@ -1,6 +1,18 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
-import { Pause, Play, Repeat, Repeat1, Shuffle, SkipBack, SkipForward } from "lucide-react";
+import {
+  LoaderCircle,
+  Pause,
+  Play,
+  Repeat,
+  Repeat1,
+  Shuffle,
+  SkipBack,
+  SkipForward,
+  Volume1,
+  Volume2,
+  VolumeX,
+} from "lucide-react";
 import { collectionOf } from "@/lib/library";
 import { usePlayer, useSong } from "@/lib/player-store";
 import { SleepTimerButton, useSleepRemaining } from "@/components/sleep-timer";
@@ -52,6 +64,9 @@ export function PlayerBar() {
     `${formatTime(currentMs)} / ${durationMs ? formatTime(durationMs) : "–:––"}` +
     (sleepLeft != null ? ` · hẹn giờ ${formatTime(sleepLeft)}` : "");
   const shuffling = playOrder === "shuffle";
+  const status = usePlayer((s) => s.status);
+  const stopAfterSong = usePlayer((s) => s.stopAfterSong);
+  const errorText = "Không tải được bài này — kiểm tra mạng rồi bấm phát lại";
 
   return (
     <div
@@ -59,7 +74,16 @@ export function PlayerBar() {
       className="pb-safe-bar relative z-20 shrink-0 border-t border-line bg-surface px-4 pt-1.5 lg:px-6 lg:pt-2.5"
       data-player-bar
     >
-      <div className="mx-auto grid max-w-6xl grid-cols-[minmax(0,1fr)_auto] items-center gap-x-2 [grid-template-areas:'scrub_scrub'_'info_ctrl'] lg:grid-cols-[300px_minmax(0,1fr)_350px] lg:gap-x-6 lg:[grid-template-areas:'info_scrub_ctrl']">
+      {status === "error" ? (
+        <p
+          role="alert"
+          data-audio-error
+          className="absolute inset-x-0 bottom-full border-t border-accent/30 bg-accent-soft px-4 py-2 text-center font-sans text-xs font-medium text-accent"
+        >
+          {errorText}
+        </p>
+      ) : null}
+      <div className="mx-auto grid max-w-6xl grid-cols-[minmax(0,1fr)_auto] items-center gap-x-2 [grid-template-areas:'scrub_scrub'_'info_ctrl'] lg:grid-cols-[280px_minmax(0,1fr)_470px] lg:gap-x-6 lg:[grid-template-areas:'info_scrub_ctrl']">
         <div className="[grid-area:scrub]">
           <Scrubber />
         </div>
@@ -82,6 +106,7 @@ export function PlayerBar() {
             </span>
             <span className="block truncate font-sans text-[11px] text-subtle tabular-nums lg:hidden" data-time>
               {timeText}
+              {stopAfterSong ? " · dừng sau bài này" : ""}
             </span>
             <span className="hidden truncate font-sans text-[11px] text-subtle lg:block">
               {collectionOf(song.id).name}
@@ -119,7 +144,9 @@ export function PlayerBar() {
             className="press press-lg flex size-13 shrink-0 items-center justify-center rounded-full bg-accent text-on-accent shadow-song"
             aria-label={playing ? "Tạm dừng" : "Phát"}
           >
-            {playing ? (
+            {playing && status === "loading" ? (
+              <LoaderCircle className="size-5 animate-spin" aria-hidden data-loading />
+            ) : playing ? (
               <Pause className="size-5 fill-current" />
             ) : (
               <Play className="size-5 translate-x-px fill-current" />
@@ -130,6 +157,7 @@ export function PlayerBar() {
             <SkipForward className="size-4 fill-current" />
           </IconButton>
 
+          <VolumeControl />
           <SleepTimerButton />
         </div>
       </div>
@@ -257,6 +285,33 @@ function Scrubber() {
       <span className="hidden w-10 font-sans text-[11px] text-subtle tabular-nums lg:block">
         {durationMs ? formatTime(durationMs) : "–:––"}
       </span>
+    </div>
+  );
+}
+
+/** Âm lượng (chỉ trên máy tính — điện thoại dùng nút âm lượng của máy) */
+function VolumeControl() {
+  const volume = usePlayer((s) => s.volume);
+  const muted = usePlayer((s) => s.muted);
+  const setVolume = usePlayer((s) => s.setVolume);
+  const toggleMute = usePlayer((s) => s.toggleMute);
+  const level = muted ? 0 : volume;
+  const Icon = level === 0 ? VolumeX : level < 0.5 ? Volume1 : Volume2;
+  return (
+    <div className="group hidden items-center gap-1 lg:flex">
+      <IconButton label={muted ? "Bật tiếng (M)" : "Tắt tiếng (M)"} onClick={toggleMute} pressed={muted}>
+        <Icon className="size-4" />
+      </IconButton>
+      <input
+        type="range"
+        min={0}
+        max={1}
+        step={0.05}
+        value={level}
+        onChange={(e) => setVolume(Number(e.target.value))}
+        aria-label="Âm lượng"
+        className="volume w-20 accent-[var(--accent)]"
+      />
     </div>
   );
 }

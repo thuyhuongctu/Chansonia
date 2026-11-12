@@ -78,3 +78,66 @@ test.describe("Chức năng như các app nhạc", () => {
     await expect(page.getByRole("tab", { name: "Yêu thích · 1" })).toBeVisible();
   });
 });
+
+test.describe("Nâng cấp sau khi rà soát", () => {
+  test("bài không tải được thì báo rõ, không giả vờ đang phát", async ({ page }) => {
+    await page.route(/bizonland\.com\/.*\.mp3/, (r) => r.fulfill({ status: 404, body: "" }));
+    await openApp(page);
+    await page.getByRole("tab", { name: "BizOnland", exact: true }).click();
+    await page.locator(SONG_ROW).first().click();
+    await expect(page.locator("[data-audio-error]")).toBeVisible({ timeout: 15_000 });
+    await expect(page.getByRole("button", { name: "Phát", exact: true })).toBeVisible();
+  });
+
+  test("màn hình chào chỉ hiện lần đầu, tải lại trang thì vào thẳng", async ({ page }) => {
+    await page.goto("/");
+    await expect(page.locator("[data-splash]")).toHaveCount(1);
+    await page.reload();
+    await expect(page.locator(SONG_ROW).first()).toBeVisible();
+    await expect(page.locator("[data-splash]")).toHaveCount(0);
+  });
+
+  test("tìm kiếm cho thấy cả bài ở bộ sưu tập khác", async ({ page }) => {
+    await openApp(page);
+    await page.getByLabel("Tìm trong bộ sưu tập").fill("durian");
+    const khac = page.locator("[data-elsewhere]");
+    await expect(khac).toContainText("Ở bộ sưu tập khác");
+    await expect(khac.locator(SONG_ROW)).toContainText(["Durian Passport"]);
+  });
+
+  test("màn hình nghe gợi ý bài tiếp theo, bấm là chuyển", async ({ page }) => {
+    await openApp(page);
+    await openFirstSong(page);
+    const tiep = page.locator("[data-up-next]");
+    await expect(tiep).toContainText("La lampe brûle encore");
+    await tiep.click();
+    await expect.poll(() => songTitleInHeader(page)).toBe("La lampe brûle encore");
+  });
+
+  test("hẹn giờ «Dừng khi hết bài này»", async ({ page }) => {
+    await openApp(page);
+    await page.getByRole("button", { name: "Hẹn giờ tắt nhạc" }).click();
+    const nut = page.getByRole("button", { name: "Dừng khi hết bài này" });
+    await nut.click();
+    await expect(nut).toHaveAttribute("aria-pressed", "true");
+    await page.keyboard.press("Escape");
+    await expect(page.getByRole("button", { name: "Hẹn giờ tắt nhạc" })).toHaveAttribute(
+      "data-active",
+      "true",
+    );
+  });
+});
+
+test.describe("Âm lượng (máy tính)", () => {
+  test("kéo âm lượng và tắt tiếng bằng phím M", async ({ page }, info) => {
+    test.skip(info.project.name !== "máy tính", "điện thoại dùng nút âm lượng của máy");
+    await openApp(page);
+    await page.getByLabel("Âm lượng").fill("0.3");
+    expect(await page.evaluate(() => document.querySelector("audio")?.volume ?? 1)).toBeCloseTo(0.3, 1);
+
+    await page.locator("body").click({ position: { x: 5, y: 5 } });
+    await page.keyboard.press("m");
+    await expect(page.getByRole("button", { name: "Bật tiếng (M)" })).toBeVisible();
+    expect(await page.evaluate(() => document.querySelector("audio")?.volume)).toBe(0);
+  });
+});

@@ -24,11 +24,38 @@ export function setTrack(src: string): boolean {
   return true;
 }
 
-export function play() {
+export type PlayResult = "ok" | "blocked" | "error";
+
+/**
+ * Phát; trả về "blocked" khi trình duyệt chặn tự phát (cần người bấm),
+ * "error" khi tệp không tải được (mất mạng, máy chủ lỗi, tệp hỏng).
+ */
+export async function play(): Promise<PlayResult> {
   const a = ensure();
-  return a.play().catch(() => {
-    /* autoplay may be blocked until user gesture */
-  });
+  try {
+    await a.play();
+    return "ok";
+  } catch (e) {
+    if ((e as DOMException)?.name === "NotAllowedError") return "blocked";
+    // Bị ngắt vì đổi bài hay tạm dừng giữa chừng thì không phải lỗi.
+    if ((e as DOMException)?.name === "AbortError") return "ok";
+    return a.error ? "error" : "blocked";
+  }
+}
+
+export type AudioStatus = "loading" | "ready" | "error";
+
+/** Báo trạng thái tải của tệp đang mở: đang tải / sẵn sàng / lỗi */
+export function onStatus(cb: (s: AudioStatus) => void) {
+  const a = ensure();
+  a.onwaiting = () => cb("loading");
+  a.onplaying = () => cb("ready");
+  a.oncanplay = () => cb("ready");
+  a.onerror = () => cb("error");
+}
+
+export function setVolume(v: number) {
+  ensure().volume = Math.min(1, Math.max(0, v));
 }
 
 export function pause() {

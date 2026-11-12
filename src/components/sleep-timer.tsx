@@ -24,7 +24,7 @@ export function useSleepRemaining(): number | null {
  */
 export function SleepTimerButton() {
   const [open, setOpen] = useState(false);
-  const active = usePlayer((s) => s.sleepEndsAt != null);
+  const active = usePlayer((s) => s.sleepEndsAt != null || s.stopAfterSong);
 
   return (
     <>
@@ -55,6 +55,8 @@ function SleepSheet({ onClose }: { onClose: () => void }) {
   const setSleepMinutes = usePlayer((s) => s.setSleepMinutes);
   const startSleepTimer = usePlayer((s) => s.startSleepTimer);
   const cancelSleepTimer = usePlayer((s) => s.cancelSleepTimer);
+  const stopAfterSong = usePlayer((s) => s.stopAfterSong);
+  const setStopAfterSong = usePlayer((s) => s.setStopAfterSong);
   const remaining = useSleepRemaining();
   const active = remaining != null;
   const sheetRef = useRef<HTMLDivElement>(null);
@@ -109,6 +111,32 @@ function SleepSheet({ onClose }: { onClose: () => void }) {
           })}
         </div>
         <p className="mt-1.5 text-center font-sans text-[11px] text-subtle">phút</p>
+
+        <button
+          type="button"
+          aria-pressed={stopAfterSong}
+          onClick={() => setStopAfterSong(!stopAfterSong)}
+          className={cn(
+            "press mt-3 flex h-12 w-full items-center justify-between rounded-xl border px-4 font-sans text-sm",
+            stopAfterSong ? "border-accent bg-accent-soft text-accent" : "border-line bg-paper text-ink",
+          )}
+        >
+          <span className="font-semibold">Dừng khi hết bài này</span>
+          <span
+            aria-hidden
+            className={cn(
+              "relative h-6 w-10 rounded-full transition-colors",
+              stopAfterSong ? "bg-accent" : "bg-line",
+            )}
+          >
+            <span
+              className={cn(
+                "absolute top-0.5 size-5 rounded-full bg-surface shadow-song transition-[left]",
+                stopAfterSong ? "left-[18px]" : "left-0.5",
+              )}
+            />
+          </span>
+        </button>
 
         <button
           type="button"

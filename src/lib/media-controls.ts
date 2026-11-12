@@ -12,7 +12,7 @@ const abs = (src: string) => new URL(src, location.href).toString();
  *  - Màn hình khoá, thanh thông báo, nút trên tai nghe và đồng hồ thông minh
  *    (Media Session API): tên bài, ảnh bìa, phát/dừng, bài trước/sau, tua.
  *  - Phím tắt trên máy tính: Space phát/dừng · ←/→ tua 5 giây ·
- *    N bài sau · P bài trước · L yêu thích.
+ *    N bài sau · P bài trước · L yêu thích · M tắt/bật tiếng.
  */
 export function useMediaControls() {
   const song = useSong();
@@ -121,6 +121,10 @@ export function useMediaControls() {
         case "l":
         case "L":
           st.toggleFavorite(st.songId);
+          break;
+        case "m":
+        case "M":
+          st.toggleMute();
           break;
         default:
           return;
