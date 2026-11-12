@@ -1,12 +1,14 @@
 import type { ReactNode } from "react";
 import { ArrowUpRight, Mail } from "lucide-react";
-import { ARTIST, COPYRIGHT_LINE, LICENSE_NOTE } from "@/lib/artist";
+import { ARTIST, COPYRIGHT_HOLDER, COPYRIGHT_YEAR, LICENSE_NOTE } from "@/lib/artist";
+import { useT } from "@/lib/i18n";
 import { COLLECTIONS, TOTAL_SONGS, TOTAL_VIDEOS } from "@/lib/library";
 import { ScreenHeader } from "@/components/header";
 import { Tilt } from "@/components/depth";
 
 /** Trang nghệ sĩ — chân dung, số liệu thư viện, tiểu sử, DOI và các liên kết. */
 export function ArtistView() {
+  const { t } = useT();
   const initials = ARTIST.realName
     .split(/\s+/)
     .slice(-2)
@@ -14,14 +16,14 @@ export function ArtistView() {
     .join("");
 
   const stats = [
-    { k: "Bài hát", v: TOTAL_SONGS },
-    { k: "Video", v: TOTAL_VIDEOS },
-    { k: "Bộ sưu tập", v: COLLECTIONS.length },
+    { k: t("Bài hát"), v: TOTAL_SONGS },
+    { k: t("Video"), v: TOTAL_VIDEOS },
+    { k: t("Bộ sưu tập"), v: COLLECTIONS.length },
   ];
 
   return (
     <div className="view-enter flex min-h-0 flex-1 flex-col">
-      <ScreenHeader title="Nghệ sĩ" />
+      <ScreenHeader title={t("Nghệ sĩ")} />
       <div className="min-h-0 flex-1 overflow-y-auto px-5 py-5">
         <div className="mx-auto max-w-xl text-center">
           <Tilt className="relative mx-auto size-28 overflow-hidden rounded-full border border-line bg-sunk shadow-song">
@@ -76,7 +78,7 @@ export function ArtistView() {
                 key={i}
                 className="font-sans text-sm leading-relaxed text-muted"
               >
-                {para}
+                {t(para)}
               </p>
             ))}
           </div>
@@ -107,10 +109,10 @@ export function ArtistView() {
 
           <footer className="mt-6 border-t border-line pt-5 pb-4">
             <p className="font-sans text-[0.7rem] text-subtle">
-              {COPYRIGHT_LINE}
+              © {COPYRIGHT_YEAR} {COPYRIGHT_HOLDER}. {t("Mọi quyền được bảo lưu.")}
             </p>
             <p className="mt-1 font-sans text-[0.7rem] text-subtle">
-              {LICENSE_NOTE}
+              {t(LICENSE_NOTE)}
             </p>
           </footer>
         </div>

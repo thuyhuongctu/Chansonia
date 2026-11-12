@@ -17,6 +17,7 @@ import { collectionOf } from "@/lib/library";
 import { usePlayer, useSong } from "@/lib/player-store";
 import { SleepTimerButton, useSleepRemaining } from "@/components/sleep-timer";
 import { cn, formatTime } from "@/lib/utils";
+import { useT } from "@/lib/i18n";
 
 /**
  * Thanh phát — luôn nằm ở đáy mọi màn hình.
@@ -42,6 +43,7 @@ export function PlayerBar() {
   const repeat = usePlayer((s) => s.repeat);
   const cycleRepeat = usePlayer((s) => s.cycleRepeat);
   const sleepLeft = useSleepRemaining();
+  const { t } = useT();
   const barRef = useRef<HTMLDivElement>(null);
 
   // Ghi chiều cao thật của thanh phát vào --player-h, cho những thứ cần nằm
@@ -62,11 +64,11 @@ export function PlayerBar() {
 
   const timeText =
     `${formatTime(currentMs)} / ${durationMs ? formatTime(durationMs) : "–:––"}` +
-    (sleepLeft != null ? ` · hẹn giờ ${formatTime(sleepLeft)}` : "");
+    (sleepLeft != null ? ` · ${t("hẹn giờ {t}", { t: formatTime(sleepLeft) })}` : "");
   const shuffling = playOrder === "shuffle";
   const status = usePlayer((s) => s.status);
   const stopAfterSong = usePlayer((s) => s.stopAfterSong);
-  const errorText = "Không tải được bài này — kiểm tra mạng rồi bấm phát lại";
+  const errorText = t("Không tải được bài này — kiểm tra mạng rồi bấm phát lại");
 
   return (
     <div
@@ -92,7 +94,7 @@ export function PlayerBar() {
           type="button"
           onClick={() => setView("player")}
           disabled={view === "player"}
-          aria-label={`Mở lời bài ${song.title}`}
+          aria-label={t("Mở lời bài {t}", { t: song.title })}
           className="press mt-0.5 flex min-w-0 items-center gap-2.5 text-left [grid-area:info] disabled:cursor-default lg:mt-0"
         >
           <span className="size-11 shrink-0 overflow-hidden rounded-[10px] border border-line bg-sunk">
@@ -106,18 +108,18 @@ export function PlayerBar() {
             </span>
             <span className="block truncate font-sans text-[11px] text-subtle tabular-nums lg:hidden" data-time>
               {timeText}
-              {stopAfterSong ? " · dừng sau bài này" : ""}
+              {stopAfterSong ? ` · ${t("dừng sau bài này")}` : ""}
             </span>
             <span className="hidden truncate font-sans text-[11px] text-subtle lg:block">
               {collectionOf(song.id).name}
-              {sleepLeft != null ? ` · hẹn giờ ${formatTime(sleepLeft)}` : ""}
+              {sleepLeft != null ? ` · ${t("hẹn giờ {t}", { t: formatTime(sleepLeft) })}` : ""}
             </span>
           </span>
         </button>
 
         <div className="mt-0.5 flex items-center gap-2 [grid-area:ctrl] lg:mt-0 lg:justify-end">
           <IconButton
-            label="Phát ngẫu nhiên"
+            label={t("Phát ngẫu nhiên")}
             onClick={() => setPlayOrder(shuffling ? "sequential" : "shuffle")}
             pressed={shuffling}
             className="hidden lg:flex"
@@ -126,7 +128,7 @@ export function PlayerBar() {
           </IconButton>
 
           <IconButton
-            label={repeat === "one" ? "Lặp lại một bài" : repeat === "all" ? "Lặp lại cả danh sách" : "Không lặp lại"}
+            label={t(repeat === "one" ? "Lặp lại một bài" : repeat === "all" ? "Lặp lại cả danh sách" : "Không lặp lại")}
             onClick={cycleRepeat}
             pressed={repeat !== "off"}
             className="hidden lg:flex"
@@ -134,7 +136,7 @@ export function PlayerBar() {
             {repeat === "one" ? <Repeat1 className="size-4" /> : <Repeat className="size-4" />}
           </IconButton>
 
-          <IconButton label="Bài trước" onClick={() => void prev()}>
+          <IconButton label={t("Bài trước")} onClick={() => void prev()}>
             <SkipBack className="size-4 fill-current" />
           </IconButton>
 
@@ -142,7 +144,7 @@ export function PlayerBar() {
             type="button"
             onClick={() => (playing ? pause() : void play())}
             className="press press-lg flex size-13 shrink-0 items-center justify-center rounded-full bg-accent text-on-accent shadow-song"
-            aria-label={playing ? "Tạm dừng" : "Phát"}
+            aria-label={playing ? t("Tạm dừng") : t("Phát")}
           >
             {playing && status === "loading" ? (
               <LoaderCircle className="size-5 animate-spin" aria-hidden data-loading />
@@ -153,7 +155,7 @@ export function PlayerBar() {
             )}
           </button>
 
-          <IconButton label="Bài sau" onClick={() => void next()}>
+          <IconButton label={t("Bài sau")} onClick={() => void next()}>
             <SkipForward className="size-4 fill-current" />
           </IconButton>
 
@@ -203,6 +205,7 @@ function IconButton({
  * đó, buông tay mới thực sự nhảy tới chỗ ấy. Dùng được cả bàn phím.
  */
 function Scrubber() {
+  const { t } = useT();
   const durationMs = usePlayer((s) => s.durationMs);
   const currentMs = usePlayer((s) => s.currentMs);
   const seek = usePlayer((s) => s.seek);
@@ -270,8 +273,8 @@ function Scrubber() {
         aria-valuemin={0}
         aria-valuemax={Math.round(durationMs / 1000)}
         aria-valuenow={Math.round(shownMs / 1000)}
-        aria-valuetext={`${formatTime(shownMs)} trên ${formatTime(durationMs)}`}
-        aria-label="Tiến độ bài hát"
+        aria-valuetext={t("{a} trên {b}", { a: formatTime(shownMs), b: formatTime(durationMs) })}
+        aria-label={t("Tiến độ bài hát")}
         tabIndex={0}
       >
         <div ref={railRef} className="scrub-track">
@@ -291,6 +294,7 @@ function Scrubber() {
 
 /** Âm lượng (chỉ trên máy tính — điện thoại dùng nút âm lượng của máy) */
 function VolumeControl() {
+  const { t } = useT();
   const volume = usePlayer((s) => s.volume);
   const muted = usePlayer((s) => s.muted);
   const setVolume = usePlayer((s) => s.setVolume);
@@ -299,7 +303,7 @@ function VolumeControl() {
   const Icon = level === 0 ? VolumeX : level < 0.5 ? Volume1 : Volume2;
   return (
     <div className="group hidden items-center gap-1 lg:flex">
-      <IconButton label={muted ? "Bật tiếng (M)" : "Tắt tiếng (M)"} onClick={toggleMute} pressed={muted}>
+      <IconButton label={muted ? t("Bật tiếng (M)") : t("Tắt tiếng (M)")} onClick={toggleMute} pressed={muted}>
         <Icon className="size-4" />
       </IconButton>
       <input
@@ -309,7 +313,7 @@ function VolumeControl() {
         step={0.05}
         value={level}
         onChange={(e) => setVolume(Number(e.target.value))}
-        aria-label="Âm lượng"
+        aria-label={t("Âm lượng")}
         className="volume w-20 accent-[var(--accent)]"
       />
     </div>

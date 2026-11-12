@@ -13,6 +13,7 @@ import {
 } from "@/lib/library";
 import { usePlayer } from "@/lib/player-store";
 import { cn, normalizeVi } from "@/lib/utils";
+import { translateData, useT } from "@/lib/i18n";
 
 /** Phần chữ tìm được của mỗi bài: tên, dòng phụ và cả lời hát (nếu có). */
 const SONG_TEXT = new Map<string, string>(
@@ -23,6 +24,9 @@ const SONG_TEXT = new Map<string, string>(
         [
           s.title,
           songMeta(s),
+          // Tìm được cả bằng tiếng Anh và tiếng Pháp ("French", "anglais"…)
+          translateData("en", songMeta(s)),
+          translateData("fr", songMeta(s)),
           s.subtitle,
           s.lines.map((l) => l.words.map((w) => w.text).join(" ")).join("\n"),
         ].join("\n")
@@ -31,7 +35,10 @@ const SONG_TEXT = new Map<string, string>(
   )
 );
 
-const videoText = (v: Video) => normalizeVi(`${v.title}\n${v.meta}`);
+const videoText = (v: Video) =>
+  normalizeVi(
+    [v.title, v.meta, translateData("en", v.title), translateData("en", v.meta), translateData("fr", v.meta)].join("\n"),
+  );
 
 /**
  * Thư viện — ba bộ sưu tập (La maison de Madam Hương · BizOnland · M-AIDA), mỗi bộ có Bài hát và
@@ -46,6 +53,7 @@ export function LibraryView() {
   const setQuery = usePlayer((s) => s.setQuery);
   const setTab = usePlayer((s) => s.setLibraryTab);
   const favorites = usePlayer((s) => s.favorites);
+  const { t, td } = useT();
 
   const col = COLLECTION_BY_ID[collectionId];
   const needle = normalizeVi(query.trim());
@@ -104,7 +112,7 @@ export function LibraryView() {
             <h2 className="font-display text-xl leading-tight font-semibold text-ink">
               {col.name}
             </h2>
-            <p className="mt-0.5 font-sans text-xs text-muted">{col.desc}</p>
+            <p className="mt-0.5 font-sans text-xs text-muted">{td(col.desc)}</p>
           </div>
           <ShuffleToggle />
         </div>
@@ -116,15 +124,15 @@ export function LibraryView() {
               type="search"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Tìm tên bài…"
-              aria-label="Tìm trong bộ sưu tập"
+              placeholder={t("Tìm tên bài…")}
+              aria-label={t("Tìm trong bộ sưu tập")}
               className="min-w-0 flex-1 bg-transparent font-sans text-sm text-ink outline-none placeholder:text-subtle"
             />
             {query ? (
               <button
                 type="button"
                 onClick={() => setQuery("")}
-                aria-label="Xoá từ khoá"
+                aria-label={t("Xoá từ khoá")}
                 className="press -mr-1.5 flex size-8 items-center justify-center rounded-full text-subtle hover:text-ink"
               >
                 <X className="size-4" />
@@ -135,12 +143,12 @@ export function LibraryView() {
           <div
             className="flex rounded-full border border-line bg-surface p-[3px]"
             role="tablist"
-            aria-label="Loại nội dung"
+            aria-label={t("Loại nội dung")}
           >
             {(
               [
-                ["songs", `Bài hát · ${col.songs.length}`],
-                ["videos", `Video · ${col.videos.length}`],
+                ["songs", t("Bài hát · {n}", { n: col.songs.length })],
+                ["videos", t("Video · {n}", { n: col.videos.length })],
                 ["favorites", `♥ ${favorites.length}`],
               ] as const
             ).map(([id, label]) => (
@@ -149,7 +157,7 @@ export function LibraryView() {
                 type="button"
                 role="tab"
                 aria-selected={tab === id}
-                aria-label={id === "favorites" ? `Yêu thích · ${favorites.length}` : undefined}
+                aria-label={id === "favorites" ? t("Yêu thích · {n}", { n: favorites.length }) : undefined}
                 onClick={() => setTab(id)}
                 className={cn(
                   "press h-11 flex-1 rounded-full font-sans text-[13px] font-semibold",
@@ -173,9 +181,9 @@ export function LibraryView() {
                     <SongRow key={song.id} song={song} index={index} />
                   ))}
                   {elsewhere.length ? (
-                    <section aria-label="Ở bộ sưu tập khác" data-elsewhere>
+                    <section aria-label={t("Ở bộ sưu tập khác")} data-elsewhere>
                       <p className="mt-5 mb-1 font-sans text-[11px] font-bold tracking-[0.18em] text-muted uppercase">
-                        Ở bộ sưu tập khác · {elsewhere.length}
+                        {t("Ở bộ sưu tập khác · {n}", { n: elsewhere.length })}
                       </p>
                       {elsewhere.map(({ song, index }) => (
                         <SongRow key={song.id} song={song} index={index} showCollection />
@@ -196,12 +204,12 @@ export function LibraryView() {
             <div className="py-8 text-center">
               <p className="font-display text-base text-muted">
                 {query
-                  ? "Không có gì khớp."
+                  ? t("Không có gì khớp.")
                   : tab === "videos"
-                    ? "Chưa có video."
+                    ? t("Chưa có video.")
                     : tab === "favorites"
-                      ? "Chưa có bài yêu thích. Bấm ♥ ở màn hình nghe để thêm."
-                      : "Chưa có bài hát."}
+                      ? t("Chưa có bài yêu thích. Bấm ♥ ở màn hình nghe để thêm.")
+                      : t("Chưa có bài hát.")}
               </p>
               {query ? (
                 <button
@@ -209,7 +217,7 @@ export function LibraryView() {
                   onClick={() => setQuery("")}
                   className="press mt-3 rounded-full border border-line bg-surface px-4 py-2 font-sans text-xs font-semibold text-ink"
                 >
-                  Xem lại tất cả
+                  {t("Xem lại tất cả")}
                 </button>
               ) : null}
             </div>
@@ -226,11 +234,12 @@ export function LibraryView() {
 function CollectionTabs() {
   const collectionId = usePlayer((s) => s.collectionId);
   const setCollection = usePlayer((s) => s.setCollection);
+  const { t } = useT();
   return (
     <div
       className="flex gap-1.5 px-4 lg:px-0 lg:pt-1"
       role="tablist"
-      aria-label="Bộ sưu tập"
+      aria-label={t("Bộ sưu tập")}
     >
       {COLLECTIONS.map((c) => {
         const on = c.id === collectionId;
@@ -261,6 +270,7 @@ function CollectionTabs() {
 
 /** Nút phát ngẫu nhiên — bật thì bài kế tiếp là một bài bất kỳ khác trong bộ sưu tập */
 function ShuffleToggle({ withLabel = false }: { withLabel?: boolean }) {
+  const { t } = useT();
   const playOrder = usePlayer((s) => s.playOrder);
   const setPlayOrder = usePlayer((s) => s.setPlayOrder);
   const on = playOrder === "shuffle";
@@ -269,8 +279,8 @@ function ShuffleToggle({ withLabel = false }: { withLabel?: boolean }) {
       type="button"
       onClick={() => setPlayOrder(on ? "sequential" : "shuffle")}
       aria-pressed={on}
-      aria-label="Phát ngẫu nhiên"
-      title="Phát ngẫu nhiên"
+      aria-label={t("Phát ngẫu nhiên")}
+      title={t("Phát ngẫu nhiên")}
       className={cn(
         "press flex h-11 shrink-0 items-center justify-center gap-2 rounded-full border font-sans text-sm font-semibold",
         withLabel ? "px-4" : "w-11",
@@ -280,13 +290,14 @@ function ShuffleToggle({ withLabel = false }: { withLabel?: boolean }) {
       )}
     >
       <Shuffle className="size-4" />
-      {withLabel ? <span>Ngẫu nhiên</span> : null}
+      {withLabel ? <span>{t("Ngẫu nhiên")}</span> : null}
     </button>
   );
 }
 
 /** Cột trái trên máy tính: ảnh, tên và mô tả bộ sưu tập, nút phát từ đầu */
 function CollectionPanel({ col }: { col: Collection }) {
+  const { t, td } = useT();
   const playSong = usePlayer((s) => s.playSong);
   const setView = usePlayer((s) => s.setView);
   return (
@@ -311,12 +322,12 @@ function CollectionPanel({ col }: { col: Collection }) {
         className="mt-5 font-sans text-[11px] font-bold tracking-[0.18em] uppercase"
         style={{ color: col.color }}
       >
-        {col.songs.length} bài hát · {col.videos.length} video
+        {t("{s} bài hát · {v} video", { s: col.songs.length, v: col.videos.length })}
       </p>
       <h2 className="mt-1.5 font-display text-[28px] leading-tight font-semibold text-ink">
         {col.name}
       </h2>
-      <p className="mt-1.5 font-sans text-sm text-muted">{col.desc}</p>
+      <p className="mt-1.5 font-sans text-sm text-muted">{td(col.desc)}</p>
       <div className="mt-5 flex gap-2">
         <button
           type="button"
@@ -327,7 +338,7 @@ function CollectionPanel({ col }: { col: Collection }) {
           className="press flex h-11 items-center gap-2 rounded-full bg-accent px-5 font-sans text-sm font-semibold text-white shadow-song"
         >
           <Play className="size-4 fill-current" />
-          Phát từ đầu
+          {t("Phát từ đầu")}
         </button>
         <ShuffleToggle withLabel />
       </div>
@@ -345,14 +356,15 @@ function SongRow({
   showCollection?: boolean;
 }) {
   const liked = usePlayer((s) => s.favorites.includes(song.id));
+  const { t, td } = useT();
   const songId = usePlayer((s) => s.songId);
   const playing = usePlayer((s) => s.playing);
   const openSong = usePlayer((s) => s.openSong);
   const active = song.id === songId;
   const meta =
     (showCollection ? `${collectionOf(song.id).name} · ` : "") +
-    songMeta(song) +
-    (song.versions && song.versions.length > 1 ? " · 2 phiên bản" : "") +
+    td(songMeta(song)) +
+    (song.versions && song.versions.length > 1 ? ` · ${t("2 phiên bản")}` : "") +
     (liked && !showCollection ? " · ♥" : "");
 
   return (
@@ -379,7 +391,7 @@ function SongRow({
             active ? "text-accent" : "text-muted"
           )}
         >
-          {active ? (playing ? "Đang phát · " : "Tạm dừng · ") : ""}
+          {active ? `${playing ? t("Đang phát") : t("Đã tạm dừng")} · ` : ""}
           {meta}
         </span>
       </span>
@@ -398,6 +410,7 @@ function VideoRow({
   collectionId: Collection["id"];
 }) {
   const openVideo = usePlayer((s) => s.openVideo);
+  const { td } = useT();
   return (
     <button
       type="button"
@@ -408,10 +421,10 @@ function VideoRow({
       <Thumb src={video.poster} badge="▶" />
       <span className="min-w-0">
         <span className="block truncate font-display text-[15px] leading-tight font-bold text-ink">
-          {video.title}
+          {td(video.title)}
         </span>
         <span className="block truncate font-sans text-xs text-muted">
-          {video.meta}
+          {td(video.meta)}
         </span>
       </span>
       <span className="font-sans text-xs text-subtle tabular-nums">

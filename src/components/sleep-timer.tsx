@@ -3,6 +3,7 @@ import { createPortal } from "react-dom";
 import { Moon } from "lucide-react";
 import { usePlayer, SLEEP_PRESETS } from "@/lib/player-store";
 import { cn, formatTime } from "@/lib/utils";
+import { useT } from "@/lib/i18n";
 
 /** Thời gian còn lại của hẹn giờ tắt nhạc (ms), null khi chưa hẹn. Cập nhật mỗi giây. */
 export function useSleepRemaining(): number | null {
@@ -23,6 +24,7 @@ export function useSleepRemaining(): number | null {
  * lên.
  */
 export function SleepTimerButton() {
+  const { t } = useT();
   const [open, setOpen] = useState(false);
   const active = usePlayer((s) => s.sleepEndsAt != null || s.stopAfterSong);
 
@@ -31,7 +33,7 @@ export function SleepTimerButton() {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        aria-label="Hẹn giờ tắt nhạc"
+        aria-label={t("Hẹn giờ tắt nhạc")}
         aria-haspopup="dialog"
         aria-expanded={open}
         data-active={active || undefined}
@@ -51,6 +53,7 @@ export function SleepTimerButton() {
 
 /** Tấm chọn giờ trượt lên từ cạnh dưới: 5 / 15 / 30 / 45 / 60 phút */
 function SleepSheet({ onClose }: { onClose: () => void }) {
+  const { t } = useT();
   const sleepMinutes = usePlayer((s) => s.sleepMinutes);
   const setSleepMinutes = usePlayer((s) => s.setSleepMinutes);
   const startSleepTimer = usePlayer((s) => s.startSleepTimer);
@@ -82,15 +85,15 @@ function SleepSheet({ onClose }: { onClose: () => void }) {
       >
         <div className="mx-auto mb-3.5 h-1 w-10 rounded-full bg-line" aria-hidden />
         <h2 id="sleep-title" className="font-display text-[19px] font-semibold text-ink">
-          Hẹn giờ tắt nhạc
+          {t("Hẹn giờ tắt nhạc")}
         </h2>
         <p className="mt-0.5 font-sans text-[13px] text-muted">
           {active
-            ? `Nhạc sẽ tạm dừng sau ${formatTime(remaining)}.`
-            : "Nhạc sẽ tạm dừng khi hết giờ."}
+            ? t("Nhạc sẽ tạm dừng sau {t}.", { t: formatTime(remaining) })
+            : t("Nhạc sẽ tạm dừng khi hết giờ.")}
         </p>
 
-        <div className="mt-4 grid grid-cols-5 gap-2" role="group" aria-label="Số phút">
+        <div className="mt-4 grid grid-cols-5 gap-2" role="group" aria-label={t("Số phút")}>
           {SLEEP_PRESETS.map((n) => {
             const on = n === sleepMinutes;
             return (
@@ -98,7 +101,7 @@ function SleepSheet({ onClose }: { onClose: () => void }) {
                 key={n}
                 type="button"
                 aria-pressed={on}
-                aria-label={`${n} phút`}
+                aria-label={t("{n} phút", { n })}
                 onClick={() => setSleepMinutes(n)}
                 className={cn(
                   "press h-12 rounded-xl border font-sans text-[15px] font-semibold tabular-nums",
@@ -110,7 +113,7 @@ function SleepSheet({ onClose }: { onClose: () => void }) {
             );
           })}
         </div>
-        <p className="mt-1.5 text-center font-sans text-[11px] text-subtle">phút</p>
+        <p className="mt-1.5 text-center font-sans text-[11px] text-subtle">{t("phút")}</p>
 
         <button
           type="button"
@@ -121,7 +124,7 @@ function SleepSheet({ onClose }: { onClose: () => void }) {
             stopAfterSong ? "border-accent bg-accent-soft text-accent" : "border-line bg-paper text-ink",
           )}
         >
-          <span className="font-semibold">Dừng khi hết bài này</span>
+          <span className="font-semibold">{t("Dừng khi hết bài này")}</span>
           <span
             aria-hidden
             className={cn(
@@ -147,7 +150,7 @@ function SleepSheet({ onClose }: { onClose: () => void }) {
           }}
           className="press mt-3.5 h-12 w-full rounded-full bg-accent font-sans text-[15px] font-semibold text-on-accent"
         >
-          {active ? "Huỷ hẹn giờ" : `Hẹn ${sleepMinutes} phút`}
+          {active ? t("Huỷ hẹn giờ") : t("Hẹn {n} phút", { n: sleepMinutes })}
         </button>
       </div>
     </div>
