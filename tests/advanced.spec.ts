@@ -125,3 +125,37 @@ test.describe("Chức năng như các app nghe nhạc", () => {
     await expect(page.locator(`${SONG_ROW}[data-current]`)).toHaveAttribute("data-song-id", id);
   });
 });
+
+test.describe("Phát tất cả", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.addInitScript(() => {
+      HTMLMediaElement.prototype.play = function () {
+        return Promise.resolve();
+      };
+    });
+  });
+
+  test("phát cả bộ sưu tập từ bài đầu, bấm Bài sau là sang bài thứ hai", async ({ page }) => {
+    await openApp(page);
+    const ids = await page.locator(SONG_ROW).evaluateAll((els) => els.map((e) => (e as HTMLElement).dataset.songId));
+    await page.locator("[data-play-all]:visible").click();
+    await expect(page.locator("[data-screen-title]")).toBeVisible();
+    const now = () => page.evaluate(() => JSON.parse(localStorage.getItem("chansonia-player")!).songId);
+    await expect.poll(now).toBe(ids[0]);
+    await page.getByRole("button", { name: "Bài sau" }).click();
+    await expect.poll(now).toBe(ids[1]);
+  });
+
+  test("ở mục ♥ thì phát hết bài yêu thích", async ({ page }) => {
+    await openApp(page);
+    const ids = await page.locator(SONG_ROW).evaluateAll((els) => els.map((e) => (e as HTMLElement).dataset.songId!));
+    await page.evaluate((fav) => localStorage.setItem("chansonia-favorites", JSON.stringify(fav)), [ids[3], ids[1]]);
+    await page.reload();
+    await page.getByRole("tab", { name: /^Yêu thích/ }).click();
+    await page.getByRole("button", { name: "Phát tất cả bài yêu thích" }).first().click();
+    await expect
+      .poll(() => page.evaluate(() => JSON.parse(localStorage.getItem("chansonia-player")!).songId))
+      .toBe(ids[3]);
+    await expect(page.locator("[data-queue-button]")).toContainText("1");
+  });
+});
