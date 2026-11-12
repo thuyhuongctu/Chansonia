@@ -78,10 +78,10 @@ export function KaraokeStage() {
 
   const col = collectionOf(song.id);
   const sectionLabel = new Map(
-    song.sections.map((sec) => [
-      song.lines.find((l) => l.sectionId === sec.id)?.id,
-      td(sec.label),
-    ])
+    // Phần không tên là nửa sau của phần trước (tách ra chỉ để canh giờ) — không in nhãn.
+    song.sections
+      .filter((sec) => sec.label)
+      .map((sec) => [song.lines.find((l) => l.sectionId === sec.id)?.id, td(sec.label)]),
   );
 
   return (
@@ -243,7 +243,8 @@ function SongAside() {
   const currentMs = usePlayer((s) => s.currentMs);
   const seekSection = usePlayer((s) => s.seekSection);
 
-  const current = [...song.sections]
+  const named = song.sections.filter((s) => s.label);
+  const current = [...named]
     .reverse()
     .find((s) => currentMs >= s.startMs)?.id;
 
@@ -270,13 +271,13 @@ function SongAside() {
         </p>
       ) : null}
 
-      {song.sections.length ? (
+      {named.length ? (
         <>
           <p className="mt-6 font-sans text-[11px] font-bold tracking-[0.18em] text-muted uppercase">
             {t("Các phần")}
           </p>
           <div className="mt-2 flex flex-col gap-1">
-            {song.sections.map((sec) => (
+            {named.map((sec) => (
               <button
                 key={sec.id}
                 type="button"
