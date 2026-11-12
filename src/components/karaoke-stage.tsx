@@ -1,7 +1,8 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { Heart, Repeat, Repeat1, Share2 } from "lucide-react";
 import { formatTime, songMeta, songVersion } from "@/lib/catalog";
 import { collectionOf } from "@/lib/library";
-import { usePlayer, useSong } from "@/lib/player-store";
+import { shareLink, usePlayer, useSong } from "@/lib/player-store";
 import { ScreenHeader } from "@/components/header";
 import { Tilt } from "@/components/depth";
 import { cn } from "@/lib/utils";
@@ -116,35 +117,36 @@ export function KaraokeStage() {
         </div>
       </ScreenHeader>
 
-      {song.versions && song.versions.length > 1 ? (
-        <div
-          className="flex shrink-0 gap-2 overflow-x-auto border-b border-line px-4 py-2 lg:px-6"
-          role="group"
-          aria-label="Phiên bản"
-        >
-          {song.versions.map((v, i) => (
-            <button
-              key={v.label}
-              type="button"
-              aria-pressed={i === versionIndex}
-              onClick={() => void setVersion(i)}
-              className={cn(
-                "press h-11 shrink-0 rounded-full border px-4 font-sans text-[13px] font-semibold",
-                i === versionIndex
-                  ? "border-accent bg-accent-soft text-accent"
-                  : "border-line bg-surface text-muted hover:text-ink"
-              )}
-            >
-              {v.label}
-              {v.durationMs ? (
-                <span className="ml-1.5 font-normal tabular-nums opacity-70">
-                  {formatTime(v.durationMs)}
-                </span>
-              ) : null}
-            </button>
-          ))}
-        </div>
-      ) : null}
+      <div className="flex shrink-0 items-center gap-2 border-b border-line px-4 py-2 lg:px-6">
+        {song.versions && song.versions.length > 1 ? (
+          <div className="flex min-w-0 flex-1 gap-2 overflow-x-auto" role="group" aria-label="Phiên bản">
+            {song.versions.map((v, i) => (
+              <button
+                key={v.label}
+                type="button"
+                aria-pressed={i === versionIndex}
+                onClick={() => void setVersion(i)}
+                className={cn(
+                  "press h-11 shrink-0 rounded-full border px-3.5 font-sans text-[13px] font-semibold",
+                  i === versionIndex
+                    ? "border-accent bg-accent-soft text-accent"
+                    : "border-line bg-surface text-muted hover:text-ink",
+                )}
+              >
+                {v.label}
+                {v.durationMs ? (
+                  <span className="ml-1.5 hidden font-normal tabular-nums opacity-70 sm:inline">
+                    {formatTime(v.durationMs)}
+                  </span>
+                ) : null}
+              </button>
+            ))}
+          </div>
+        ) : (
+          <div className="flex-1" />
+        )}
+        <SongActions />
+      </div>
 
       <div className="mx-auto flex min-h-0 w-full max-w-6xl flex-1 lg:grid lg:grid-cols-[300px_minmax(0,1fr)] lg:gap-8 lg:px-6">
         <SongAside />
@@ -290,5 +292,76 @@ function SongAside() {
         </>
       ) : null}
     </aside>
+  );
+}
+
+/** Yêu thích · lặp lại · chia sẻ — các nút của bài đang nghe */
+function SongActions() {
+  const song = useSong();
+  const liked = usePlayer((s) => s.favorites.includes(s.songId));
+  const toggleFavorite = usePlayer((s) => s.toggleFavorite);
+  const repeat = usePlayer((s) => s.repeat);
+  const cycleRepeat = usePlayer((s) => s.cycleRepeat);
+  const [toast, setToast] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!toast) return;
+    const id = window.setTimeout(() => setToast(null), 2200);
+    return () => clearTimeout(id);
+  }, [toast]);
+
+  const share = async () => {
+    const url = shareLink(song.id);
+    const data = { title: song.title, text: `${song.title} — Chansonia`, url };
+    try {
+      if (navigator.share) {
+        await navigator.share(data);
+        return;
+      }
+      await navigator.clipboard.writeText(url);
+      setToast("Đã chép đường link của bài");
+    } catch (e) {
+      // Người dùng tự đóng bảng chia sẻ thì thôi, không báo lỗi.
+      if ((e as Error)?.name !== "AbortError") setToast("Không chia sẻ được");
+    }
+  };
+
+  const repeatLabel =
+    repeat === "one" ? "Lặp lại một bài" : repeat === "all" ? "Lặp lại cả danh sách" : "Không lặp lại";
+  const btn = "press flex size-11 shrink-0 items-center justify-center rounded-full border";
+  const off = "border-line bg-surface text-muted hover:text-ink";
+  const on = "border-accent bg-accent-soft text-accent";
+
+  return (
+    <div className="relative flex shrink-0 gap-1.5">
+      <button
+        type="button"
+        onClick={() => toggleFavorite(song.id)}
+        aria-pressed={liked}
+        aria-label={liked ? "Bỏ khỏi Yêu thích" : "Thêm vào Yêu thích"}
+        title={liked ? "Bỏ khỏi Yêu thích (L)" : "Thêm vào Yêu thích (L)"}
+        className={cn(btn, liked ? on : off)}
+      >
+        <Heart className={cn("size-4", liked && "fill-current")} />
+      </button>
+      <button
+        type="button"
+        onClick={cycleRepeat}
+        aria-label={repeatLabel}
+        title={repeatLabel}
+        data-repeat={repeat}
+        className={cn(btn, repeat === "off" ? off : on)}
+      >
+        {repeat === "one" ? <Repeat1 className="size-4" /> : <Repeat className="size-4" />}
+      </button>
+      <button type="button" onClick={() => void share()} aria-label="Chia sẻ bài này" title="Chia sẻ bài này" className={cn(btn, off)}>
+        <Share2 className="size-4" />
+      </button>
+      {toast ? (
+        <p role="status" className="absolute top-full right-0 z-30 mt-2 rounded-full bg-ink px-3.5 py-2 font-sans text-xs whitespace-nowrap text-paper shadow-song">
+          {toast}
+        </p>
+      ) : null}
+    </div>
   );
 }

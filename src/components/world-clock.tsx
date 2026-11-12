@@ -63,9 +63,7 @@ export function WorldClock() {
             data-clock={p.id}
             className="clock-card flex min-w-0 flex-1 items-center gap-2 rounded-xl border border-line bg-surface/80 px-2.5 py-1.5 backdrop-blur-sm"
           >
-            <span className="font-sans text-[10px] font-bold tracking-[0.14em] text-accent-2 uppercase">
-              {p.id}
-            </span>
+            <Flag id={p.id} />
             <span className="min-w-0">
               <span className="block font-display text-[15px] leading-tight font-semibold text-ink tabular-nums">
                 <time dateTime={now.toISOString()}>{time}</time>
@@ -79,5 +77,36 @@ export function WorldClock() {
         );
       })}
     </div>
+  );
+}
+
+/**
+ * Cờ vẽ bằng SVG (tỉ lệ 3:2) thay vì emoji: emoji cờ không hiện trên
+ * Windows, chỉ ra hai chữ cái.
+ */
+function Flag({ id }: { id: "vn" | "fr" }) {
+  return (
+    <svg
+      viewBox="0 0 30 20"
+      width="27"
+      height="18"
+      role="img"
+      aria-label={id === "vn" ? "Cờ Việt Nam" : "Cờ Pháp"}
+      data-flag={id}
+      className="shrink-0 overflow-hidden rounded-[3px] shadow-[0_0_0_1px_rgba(0,0,0,0.12)]"
+    >
+      {id === "vn" ? (
+        <>
+          <rect width="30" height="20" fill="#DA251D" />
+          <polygon points="15.00,4.00 16.35,8.15 20.71,8.15 17.18,10.71 18.53,14.85 15.00,12.29 11.47,14.85 12.82,10.71 9.29,8.15 13.65,8.15" fill="#FFFF00" />
+        </>
+      ) : (
+        <>
+          <rect width="10" height="20" fill="#0055A4" />
+          <rect x="10" width="10" height="20" fill="#FFFFFF" />
+          <rect x="20" width="10" height="20" fill="#EF4135" />
+        </>
+      )}
+    </svg>
   );
 }

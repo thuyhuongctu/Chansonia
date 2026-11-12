@@ -1,6 +1,6 @@
 {
   "appId": "com.jemappellehuong.songbook",
-  "appName": "Je m'appelle Hương",
+  "appName": "Chansonia",
   "webDir": "dist",
   "android": { "allowMixedContent": false },
   "ios": { "contentInset": "automatic" },

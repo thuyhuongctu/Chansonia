@@ -6,6 +6,8 @@ import { formatTime, songMeta, type Song } from "@/lib/catalog";
 import {
   COLLECTIONS,
   COLLECTION_BY_ID,
+  SONG_INDEX,
+  collectionOf,
   type Collection,
   type Video,
 } from "@/lib/library";
@@ -43,6 +45,7 @@ export function LibraryView() {
   const query = usePlayer((s) => s.query);
   const setQuery = usePlayer((s) => s.setQuery);
   const setTab = usePlayer((s) => s.setLibraryTab);
+  const favorites = usePlayer((s) => s.favorites);
 
   const col = COLLECTION_BY_ID[collectionId];
   const needle = normalizeVi(query.trim());
@@ -62,7 +65,19 @@ export function LibraryView() {
     [col, needle]
   );
 
-  const empty = tab === "songs" ? songs.length === 0 : videos.length === 0;
+  // Yêu thích: gom từ cả ba bộ sưu tập, bài đánh dấu gần nhất lên đầu.
+  const liked = useMemo(
+    () =>
+      favorites
+        .map((id) => SONG_INDEX[id])
+        .filter(Boolean)
+        .filter((song) => !needle || (SONG_TEXT.get(song.id) ?? "").includes(needle))
+        .map((song) => ({ song, index: collectionOf(song.id).songs.indexOf(song) })),
+    [favorites, needle],
+  );
+
+  const empty =
+    tab === "songs" ? songs.length === 0 : tab === "videos" ? videos.length === 0 : liked.length === 0;
 
   return (
     <div className="view-enter mx-auto flex min-h-0 w-full max-w-6xl flex-1 flex-col lg:grid lg:grid-cols-[360px_minmax(0,1fr)] lg:gap-8 lg:px-6 lg:pb-4">
@@ -113,6 +128,7 @@ export function LibraryView() {
               [
                 ["songs", `Bài hát · ${col.songs.length}`],
                 ["videos", `Video · ${col.videos.length}`],
+                ["favorites", `♥ ${favorites.length}`],
               ] as const
             ).map(([id, label]) => (
               <button
@@ -120,6 +136,7 @@ export function LibraryView() {
                 type="button"
                 role="tab"
                 aria-selected={tab === id}
+                aria-label={id === "favorites" ? `Yêu thích · ${favorites.length}` : undefined}
                 onClick={() => setTab(id)}
                 className={cn(
                   "press h-11 flex-1 rounded-full font-sans text-[13px] font-semibold",
@@ -140,7 +157,11 @@ export function LibraryView() {
             ? songs.map(({ song, index }) => (
                 <SongRow key={song.id} song={song} index={index} />
               ))
-            : videos.map((v) => (
+            : tab === "favorites"
+              ? liked.map(({ song, index }) => (
+                  <SongRow key={song.id} song={song} index={index} showCollection />
+                ))
+              : videos.map((v) => (
                 <VideoRow key={v.id} video={v} collectionId={col.id} />
               ))}
 
@@ -150,8 +171,10 @@ export function LibraryView() {
                 {query
                   ? "Không có gì khớp."
                   : tab === "videos"
-                  ? "Chưa có video."
-                  : "Chưa có bài hát."}
+                    ? "Chưa có video."
+                    : tab === "favorites"
+                      ? "Chưa có bài yêu thích. Bấm ♥ ở màn hình nghe để thêm."
+                      : "Chưa có bài hát."}
               </p>
               {query ? (
                 <button
@@ -285,14 +308,25 @@ function CollectionPanel({ col }: { col: Collection }) {
   );
 }
 
-function SongRow({ song, index }: { song: Song; index: number }) {
+function SongRow({
+  song,
+  index,
+  showCollection = false,
+}: {
+  song: Song;
+  index: number;
+  showCollection?: boolean;
+}) {
+  const liked = usePlayer((s) => s.favorites.includes(song.id));
   const songId = usePlayer((s) => s.songId);
   const playing = usePlayer((s) => s.playing);
   const openSong = usePlayer((s) => s.openSong);
   const active = song.id === songId;
   const meta =
+    (showCollection ? `${collectionOf(song.id).name} · ` : "") +
     songMeta(song) +
-    (song.versions && song.versions.length > 1 ? " · 2 phiên bản" : "");
+    (song.versions && song.versions.length > 1 ? " · 2 phiên bản" : "") +
+    (liked && !showCollection ? " · ♥" : "");
 
   return (
     <button
