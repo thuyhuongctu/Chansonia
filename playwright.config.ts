@@ -36,6 +36,19 @@ export default defineConfig({
 
   use: {
     baseURL: BASE_URL,
+    /* App mặc định tiếng Anh; bộ kiểm thử viết theo nhãn tiếng Việt nên chọn
+       sẵn tiếng Việt. Riêng tests/i18n.spec.ts xoá lựa chọn này để kiểm
+       giao diện mặc định. */
+    storageState: {
+      cookies: [],
+      origins: [BASE_URL, `http://127.0.0.1:${PORT + 1}`].map((origin) => ({
+        origin,
+        localStorage: [
+          { name: "chansonia-lang", value: "vi" },
+          { name: "chansonia-site-lang", value: "vi" },
+        ],
+      })),
+    },
     trace: "on-first-retry",
     screenshot: "only-on-failure",
     video: process.env.CI ? "retain-on-failure" : "off",

@@ -1,12 +1,14 @@
-import type { ReactNode } from "react";
-import { ArrowUpRight, Mail } from "lucide-react";
-import { ARTIST, COPYRIGHT_LINE, LICENSE_NOTE } from "@/lib/artist";
+import { useEffect, useState, type ReactNode } from "react";
+import { ArrowUpRight, ChevronLeft, ChevronRight, Mail, X } from "lucide-react";
+import { ARTIST, ARTIST_PHOTOS, COPYRIGHT_HOLDER, COPYRIGHT_YEAR, LICENSE_NOTE } from "@/lib/artist";
+import { useT } from "@/lib/i18n";
 import { COLLECTIONS, TOTAL_SONGS, TOTAL_VIDEOS } from "@/lib/library";
 import { ScreenHeader } from "@/components/header";
 import { Tilt } from "@/components/depth";
 
 /** Trang nghệ sĩ — chân dung, số liệu thư viện, tiểu sử, DOI và các liên kết. */
 export function ArtistView() {
+  const { t } = useT();
   const initials = ARTIST.realName
     .split(/\s+/)
     .slice(-2)
@@ -14,14 +16,14 @@ export function ArtistView() {
     .join("");
 
   const stats = [
-    { k: "Bài hát", v: TOTAL_SONGS },
-    { k: "Video", v: TOTAL_VIDEOS },
-    { k: "Bộ sưu tập", v: COLLECTIONS.length },
+    { k: t("Bài hát"), v: TOTAL_SONGS },
+    { k: t("Video"), v: TOTAL_VIDEOS },
+    { k: t("Bộ sưu tập"), v: COLLECTIONS.length },
   ];
 
   return (
     <div className="view-enter flex min-h-0 flex-1 flex-col">
-      <ScreenHeader title="Nghệ sĩ" />
+      <ScreenHeader title={t("Nghệ sĩ")} />
       <div className="min-h-0 flex-1 overflow-y-auto px-5 py-5">
         <div className="mx-auto max-w-xl text-center">
           <Tilt className="relative mx-auto size-28 overflow-hidden rounded-full border border-line bg-sunk shadow-song">
@@ -70,13 +72,15 @@ export function ArtistView() {
             ))}
           </dl>
 
+          <PhotoStrip />
+
           <div className="mt-3.5 flex flex-col gap-2.5 rounded-2xl border border-line bg-surface p-[18px] text-left shadow-song">
             {ARTIST.bio.map((para, i) => (
               <p
                 key={i}
                 className="font-sans text-sm leading-relaxed text-muted"
               >
-                {para}
+                {t(para)}
               </p>
             ))}
           </div>
@@ -107,10 +111,10 @@ export function ArtistView() {
 
           <footer className="mt-6 border-t border-line pt-5 pb-4">
             <p className="font-sans text-[0.7rem] text-subtle">
-              {COPYRIGHT_LINE}
+              © {COPYRIGHT_YEAR} {COPYRIGHT_HOLDER}. {t("Mọi quyền được bảo lưu.")}
             </p>
             <p className="mt-1 font-sans text-[0.7rem] text-subtle">
-              {LICENSE_NOTE}
+              {t(LICENSE_NOTE)}
             </p>
           </footer>
         </div>
@@ -133,5 +137,94 @@ function LinkPill({ href, children }: { href: string; children: ReactNode }) {
         aria-hidden
       />
     </a>
+  );
+}
+
+/** Mục «Ảnh»: dải ảnh cuộn ngang, chạm vào một ảnh để xem lớn */
+function PhotoStrip() {
+  const { t } = useT();
+  const [open, setOpen] = useState<number | null>(null);
+  const n = ARTIST_PHOTOS.length;
+
+  useEffect(() => {
+    if (open === null) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(null);
+      else if (e.key === "ArrowRight") setOpen((i) => (i === null ? i : (i + 1) % n));
+      else if (e.key === "ArrowLeft") setOpen((i) => (i === null ? i : (i - 1 + n) % n));
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open, n]);
+
+  return (
+    <section className="mt-5 text-left" aria-label={t("Ảnh")} data-photos>
+      <h3 className="px-0.5 font-sans text-[10px] font-bold tracking-[0.18em] text-muted uppercase">
+        {t("Ảnh")} · {n}
+      </h3>
+      <div className="no-scrollbar -mx-5 mt-2 flex snap-x gap-2.5 overflow-x-auto px-5 pb-1">
+        {ARTIST_PHOTOS.map((ph, i) => (
+          <button
+            key={ph.src}
+            type="button"
+            onClick={() => setOpen(i)}
+            aria-label={t("Xem ảnh {n}").replace("{n}", String(i + 1))}
+            className="press h-48 w-32 shrink-0 snap-start overflow-hidden rounded-2xl border border-line bg-sunk shadow-song"
+          >
+            <img src={ph.src} alt={ph.alt} loading="lazy" className="size-full object-cover object-[50%_25%]" />
+          </button>
+        ))}
+      </div>
+
+      {open !== null ? (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label={ARTIST_PHOTOS[open].alt}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4"
+          onClick={() => setOpen(null)}
+        >
+          <img
+            src={ARTIST_PHOTOS[open].src}
+            alt={ARTIST_PHOTOS[open].alt}
+            className="max-h-full max-w-full rounded-xl object-contain"
+            onClick={(e) => e.stopPropagation()}
+          />
+          <button
+            type="button"
+            aria-label={t("Đóng ảnh")}
+            onClick={() => setOpen(null)}
+            className="press absolute top-4 right-4 flex size-11 items-center justify-center rounded-full bg-white/15 text-white"
+          >
+            <X className="size-5" />
+          </button>
+          <button
+            type="button"
+            aria-label={t("Ảnh trước")}
+            onClick={(e) => {
+              e.stopPropagation();
+              setOpen((open - 1 + n) % n);
+            }}
+            className="press absolute left-3 flex size-11 items-center justify-center rounded-full bg-white/15 text-white"
+          >
+            <ChevronLeft className="size-5" />
+          </button>
+          <button
+            type="button"
+            aria-label={t("Ảnh sau")}
+            onClick={(e) => {
+              e.stopPropagation();
+              setOpen((open + 1) % n);
+            }}
+            className="press absolute right-3 flex size-11 items-center justify-center rounded-full bg-white/15 text-white"
+          >
+            <ChevronRight className="size-5" />
+          </button>
+          <p className="absolute bottom-5 font-sans text-xs text-white/80 tabular-nums">
+            {open + 1} / {n}
+          </p>
+        </div>
+      ) : null}
+    </section>
   );
 }

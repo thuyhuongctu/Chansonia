@@ -17,14 +17,15 @@ test.describe("Trang giới thiệu", () => {
 
     await page.goto(SITE);
     await expect(page.locator("h1")).toContainText("Những bài hát kể chuyện");
-    await expect(page.locator("[data-stats]")).toContainText("28");
+    await expect(page.locator("[data-stats]")).toContainText("29");
     await expect(page.locator("[data-stats]")).toContainText("9");
 
     const cards = page.locator("[data-collections] .card");
-    await expect(cards).toHaveCount(3);
+    await expect(cards).toHaveCount(4);
     await expect(cards.nth(0)).toContainText("La maison de Madam Hương");
     await expect(cards.nth(1)).toContainText("BizOnland");
     await expect(cards.nth(2)).toContainText("M-AIDA");
+    await expect(cards.nth(3)).toContainText("Van Don – Vietnam’s First Trading Port");
 
     const videos = page.locator("[data-videos] a");
     await expect(videos).toHaveCount(9);

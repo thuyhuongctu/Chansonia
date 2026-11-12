@@ -6,6 +6,7 @@ import { shareLink, usePlayer, useSong, useUpNext } from "@/lib/player-store";
 import { ScreenHeader } from "@/components/header";
 import { Tilt } from "@/components/depth";
 import { cn } from "@/lib/utils";
+import { useT } from "@/lib/i18n";
 
 /**
  * Màn hình nghe — lời hát của bài đang phát.
@@ -20,6 +21,7 @@ import { cn } from "@/lib/utils";
  */
 export function KaraokeStage() {
   const song = useSong();
+  const { t, td } = useT();
   const mode = usePlayer((s) => s.mode);
   const setMode = usePlayer((s) => s.setMode);
   const lineIndex = usePlayer((s) => s.lineIndex);
@@ -77,7 +79,7 @@ export function KaraokeStage() {
   const sectionLabel = new Map(
     song.sections.map((sec) => [
       song.lines.find((l) => l.sectionId === sec.id)?.id,
-      sec.label,
+      td(sec.label),
     ])
   );
 
@@ -85,17 +87,17 @@ export function KaraokeStage() {
     <div className="view-enter flex min-h-0 flex-1 flex-col">
       <ScreenHeader
         title={song.title}
-        subtitle={version.label ? `${col.name} · ${version.label}` : col.name}
+        subtitle={version.label ? `${col.name} · ${td(version.label)}` : col.name}
       >
         <div
           className="flex rounded-full border border-line bg-surface p-[3px]"
           role="tablist"
-          aria-label="Cách xem lời"
+          aria-label={t("Cách xem lời")}
         >
           {(
             [
-              ["karaoke", "Lời"],
-              ["sheet", "Trang lời"],
+              ["karaoke", t("Lời")],
+              ["sheet", t("Trang lời")],
             ] as const
           ).map(([id, label]) => (
             <button
@@ -119,7 +121,7 @@ export function KaraokeStage() {
 
       <div className="flex shrink-0 items-center gap-2 border-b border-line px-4 py-2 lg:px-6">
         {song.versions && song.versions.length > 1 ? (
-          <div className="flex min-w-0 flex-1 gap-2 overflow-x-auto" role="group" aria-label="Phiên bản">
+          <div className="flex min-w-0 flex-1 gap-2 overflow-x-auto" role="group" aria-label={t("Phiên bản")}>
             {song.versions.map((v, i) => (
               <button
                 key={v.label}
@@ -133,7 +135,7 @@ export function KaraokeStage() {
                     : "border-line bg-surface text-muted hover:text-ink",
                 )}
               >
-                {v.label}
+                {td(v.label)}
                 {v.durationMs ? (
                   <span className="ml-1.5 hidden font-normal tabular-nums opacity-70 sm:inline">
                     {formatTime(v.durationMs)}
@@ -162,9 +164,10 @@ export function KaraokeStage() {
                 {song.title}
               </p>
               <p className="mx-auto mt-2 max-w-sm font-sans text-sm leading-relaxed text-muted">
-                Lời của bản «{version.label}» chưa có trong ứng dụng. Lời chạy
-                theo nhạc có ở bản «
-                {song.versions?.find((v) => v.synced)?.label}».
+                {t("Lời của bản «{a}» chưa có trong ứng dụng. Lời chạy theo nhạc có ở bản «{b}».", {
+                  a: td(version.label),
+                  b: td(song.versions?.find((v) => v.synced)?.label ?? ""),
+                })}
               </p>
             </div>
           ) : song.lines.length === 0 ? (
@@ -173,8 +176,7 @@ export function KaraokeStage() {
                 {song.title}
               </p>
               <p className="mx-auto mt-2 max-w-sm font-sans text-sm leading-relaxed text-muted">
-                Lời bài này chưa có trong ứng dụng. Vẫn nghe và hẹn giờ tắt nhạc
-                được như thường.
+                {t("Lời bài này chưa có trong ứng dụng. Vẫn nghe và hẹn giờ tắt nhạc được như thường.")}
               </p>
               <UpNext />
             </div>
@@ -236,6 +238,7 @@ export function KaraokeStage() {
 /** Cột trái trên máy tính: ảnh bìa, phong cách và các phần của bài */
 function SongAside() {
   const song = useSong();
+  const { t, td } = useT();
   const currentMs = usePlayer((s) => s.currentMs);
   const seekSection = usePlayer((s) => s.seekSection);
 
@@ -258,10 +261,10 @@ function SongAside() {
           </span>
         )}
       </Tilt>
-      <p className="mt-4 font-sans text-xs text-muted">{songMeta(song)}</p>
+      <p className="mt-4 font-sans text-xs text-muted">{td(songMeta(song))}</p>
       {song.style ? (
         <p className="mt-2 font-sans text-xs leading-relaxed text-muted">
-          <span className="font-semibold text-ink">Phong cách: </span>
+          <span className="font-semibold text-ink">{t("Phong cách: ")}</span>
           {song.style}
         </p>
       ) : null}
@@ -269,7 +272,7 @@ function SongAside() {
       {song.sections.length ? (
         <>
           <p className="mt-6 font-sans text-[11px] font-bold tracking-[0.18em] text-muted uppercase">
-            Các phần
+            {t("Các phần")}
           </p>
           <div className="mt-2 flex flex-col gap-1">
             {song.sections.map((sec) => (
@@ -284,7 +287,7 @@ function SongAside() {
                     : "text-ink hover:bg-sunk"
                 )}
               >
-                <span>{sec.label}</span>
+                <span>{td(sec.label)}</span>
                 <span className="text-xs tabular-nums text-subtle">
                   {formatTime(sec.startMs)}
                 </span>
@@ -300,6 +303,7 @@ function SongAside() {
 /** Yêu thích · lặp lại · chia sẻ — các nút của bài đang nghe */
 function SongActions() {
   const song = useSong();
+  const { t } = useT();
   const liked = usePlayer((s) => s.favorites.includes(s.songId));
   const toggleFavorite = usePlayer((s) => s.toggleFavorite);
   const repeat = usePlayer((s) => s.repeat);
@@ -321,15 +325,15 @@ function SongActions() {
         return;
       }
       await navigator.clipboard.writeText(url);
-      setToast("Đã chép đường link của bài");
+      setToast(t("Đã chép đường link của bài"));
     } catch (e) {
       // Người dùng tự đóng bảng chia sẻ thì thôi, không báo lỗi.
-      if ((e as Error)?.name !== "AbortError") setToast("Không chia sẻ được");
+      if ((e as Error)?.name !== "AbortError") setToast(t("Không chia sẻ được"));
     }
   };
 
   const repeatLabel =
-    repeat === "one" ? "Lặp lại một bài" : repeat === "all" ? "Lặp lại cả danh sách" : "Không lặp lại";
+    t(repeat === "one" ? "Lặp lại một bài" : repeat === "all" ? "Lặp lại cả danh sách" : "Không lặp lại");
   const btn = "press flex size-11 shrink-0 items-center justify-center rounded-full border";
   const off = "border-line bg-surface text-muted hover:text-ink";
   const on = "border-accent bg-accent-soft text-accent";
@@ -340,8 +344,8 @@ function SongActions() {
         type="button"
         onClick={() => toggleFavorite(song.id)}
         aria-pressed={liked}
-        aria-label={liked ? "Bỏ khỏi Yêu thích" : "Thêm vào Yêu thích"}
-        title={liked ? "Bỏ khỏi Yêu thích (L)" : "Thêm vào Yêu thích (L)"}
+        aria-label={liked ? t("Bỏ khỏi Yêu thích") : t("Thêm vào Yêu thích")}
+        title={`${liked ? t("Bỏ khỏi Yêu thích") : t("Thêm vào Yêu thích")} (L)`}
         className={cn(btn, liked ? on : off)}
       >
         <Heart className={cn("size-4", liked && "fill-current")} />
@@ -356,7 +360,7 @@ function SongActions() {
       >
         {repeat === "one" ? <Repeat1 className="size-4" /> : <Repeat className="size-4" />}
       </button>
-      <button type="button" onClick={() => void share()} aria-label="Chia sẻ bài này" title="Chia sẻ bài này" className={cn(btn, off)}>
+      <button type="button" onClick={() => void share()} aria-label={t("Chia sẻ bài này")} title={t("Chia sẻ bài này")} className={cn(btn, off)}>
         <Share2 className="size-4" />
       </button>
       {toast ? (
@@ -370,6 +374,7 @@ function SongActions() {
 
 /** "Tiếp theo: …" — bấm để chuyển ngay sang bài đó */
 function UpNext() {
+  const { t } = useT();
   const next = useUpNext();
   const playSong = usePlayer((s) => s.playSong);
   if (!next) return null;
@@ -389,7 +394,7 @@ function UpNext() {
       </span>
       <span className="min-w-0">
         <span className="block font-sans text-[10px] font-bold tracking-[0.18em] text-accent uppercase">
-          Tiếp theo
+          {t("Tiếp theo")}
         </span>
         <span className="block truncate font-display text-[15px] font-semibold text-ink">{next.title}</span>
       </span>

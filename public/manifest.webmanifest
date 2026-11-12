@@ -1,8 +1,8 @@
 {
   "name": "Chansonia",
   "short_name": "Chansonia",
-  "description": "Nghe nhạc và xem MV của Je m'appelle Hương: album «La lampe, le fleuve et les couleurs» với lời chạy theo nhạc, cùng bài hát của BizOnland và M-AIDA.",
-  "lang": "vi",
+  "description": "Songs, word-by-word lyrics and music videos by Je m'appelle Hương — the album «La lampe, le fleuve et les couleurs», BizOnland and M-AIDA.",
+  "lang": "en",
   "dir": "ltr",
   "start_url": "./",
   "scope": "./",

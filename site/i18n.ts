@@ -29,8 +29,8 @@ export const T: Record<Lang, Dict> = {
     "stat.videos": "MV",
     "stat.collections": "bộ sưu tập",
     "stat.langs": "ngôn ngữ",
-    "col.kicker": "Ba bộ sưu tập",
-    "col.title": "Một thư viện, ba câu chuyện",
+    "col.kicker": "Bốn bộ sưu tập",
+    "col.title": "Một thư viện, bốn câu chuyện",
     "col.lead":
       "Mỗi bộ sưu tập có danh sách Bài hát và MV riêng. Bấm vào để mở thẳng trong app.",
     "col.huong.desc":
@@ -38,6 +38,7 @@ export const T: Record<Lang, Dict> = {
     "col.bizon.desc":
       "Bài hát của các game mô phỏng kinh doanh: Bến Phù Sa, Bật Nghiệp, Hộ Chiếu Thương Hiệu, Hộ Chiếu Sầu Riêng.",
     "col.maida.desc": "Nhạc nền của M-AIDA 8.0, phần mềm nghiên cứu dữ liệu.",
+    "col.vandon.desc": "Nhạc của game «Vân Đồn Đệ Nhất Thương Cảng»: bản hùng ca «Vân Đồn – Tiếng vọng non sông», có lời chạy theo nhạc.",
     "col.songs": "bài",
     "col.videos": "MV",
     "col.open": "Mở bộ sưu tập →",
@@ -94,14 +95,15 @@ export const T: Record<Lang, Dict> = {
     "stat.videos": "music videos",
     "stat.collections": "collections",
     "stat.langs": "languages",
-    "col.kicker": "Three collections",
-    "col.title": "One library, three stories",
+    "col.kicker": "Four collections",
+    "col.title": "One library, four stories",
     "col.lead": "Each collection has its own songs and music videos. Open one straight in the app.",
     "col.huong.desc":
       "The album «La lampe, le fleuve et les couleurs» — a mini song-cycle about absence, growing up and dreams that change their brush — plus two singles.",
     "col.bizon.desc":
       "Songs from the business-simulation games: Bến Phù Sa, Bật Nghiệp, Brand Passport and Durian Passport.",
     "col.maida.desc": "The score of M-AIDA 8.0, a research data platform.",
+    "col.vandon.desc": "Music from the game «Van Don – Vietnam’s First Trading Port»: the anthem «Vân Đồn – Tiếng vọng non sông», with synced lyrics.",
     "col.songs": "songs",
     "col.songs.one": "song",
     "col.videos": "videos",
@@ -159,14 +161,15 @@ export const T: Record<Lang, Dict> = {
     "stat.videos": "clips",
     "stat.collections": "collections",
     "stat.langs": "langues",
-    "col.kicker": "Trois collections",
-    "col.title": "Une bibliothèque, trois histoires",
+    "col.kicker": "Quatre collections",
+    "col.title": "Une bibliothèque, quatre histoires",
     "col.lead": "Chaque collection a ses chansons et ses clips. Ouvrez-la directement dans l'app.",
     "col.huong.desc":
       "L'album «La lampe, le fleuve et les couleurs» — un mini cycle de chansons sur l'absence, le fait de grandir et les rêves qui changent de pinceau — et deux singles.",
     "col.bizon.desc":
       "Les chansons des jeux de simulation d'entreprise : Bến Phù Sa, Bật Nghiệp, Passeport de Marque, Passeport Durian.",
     "col.maida.desc": "La musique de M-AIDA 8.0, une plateforme de données de recherche.",
+    "col.vandon.desc": "La musique du jeu «Vân Đồn – premier port de commerce du Viêt Nam» : l'hymne «Vân Đồn – Tiếng vọng non sông», avec paroles synchronisées.",
     "col.songs": "chansons",
     "col.songs.one": "chanson",
     "col.videos": "clips",

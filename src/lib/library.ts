@@ -20,8 +20,9 @@
  */
 
 import { compile, SONGS, type RawSong, type Song, type SongVersion } from "@/lib/catalog";
+import { song as vanDonSong } from "@/songs/games/van-don-tieng-vong-non-song";
 
-export type CollectionId = "huong" | "bizon" | "maida";
+export type CollectionId = "huong" | "bizon" | "maida" | "vandon";
 
 export type Video = {
   id: string;
@@ -350,7 +351,24 @@ const MAIDA: Collection = {
 
 /* ── Tra cứu ─────────────────────────────────────────────────────────── */
 
-export const COLLECTIONS: Collection[] = [HUONG, BIZON_COLLECTION, MAIDA];
+/* ── Vân Đồn 3D ──────────────────────────────────────────────────────── */
+/* Nhạc của game «Vân Đồn Đệ Nhất Thương Cảng» (repo ThuyHuong_Digital-2026-Games).
+   Tệp nhạc và ảnh phát thẳng từ GitHub Pages của repo game. */
+
+const GAMES = "https://thuyhuongctu.github.io/ThuyHuong_Digital-2026-Games/van-don-3d/assets";
+
+const VANDON: Collection = {
+  id: "vandon",
+  short: "Van Don – Vietnam’s First Trading Port",
+  name: "Van Don – Vietnam’s First Trading Port",
+  desc: "Nhạc của game Vân Đồn Đệ Nhất Thương Cảng",
+  color: "#2f6f8f",
+  art: `${GAMES}/ben-cang-van-don.jpg`,
+  songs: [compile(vanDonSong)],
+  videos: [],
+};
+
+export const COLLECTIONS: Collection[] = [HUONG, BIZON_COLLECTION, MAIDA, VANDON];
 
 export const COLLECTION_BY_ID = Object.fromEntries(
   COLLECTIONS.map((c) => [c.id, c]),

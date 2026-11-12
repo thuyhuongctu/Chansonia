@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
+import { LOCALE, useT } from "@/lib/i18n";
 
 /**
  * Đồng hồ hai nơi: giờ và ngày ở Việt Nam (Asia/Ho_Chi_Minh) và ở Pháp
  * (Europe/Paris). Pháp tự đổi giờ mùa hè / mùa đông theo trình duyệt.
  */
 const PLACES = [
-  { id: "vn", label: "Việt Nam", zone: "Asia/Ho_Chi_Minh", locale: "vi-VN" },
-  { id: "fr", label: "Pháp", zone: "Europe/Paris", locale: "fr-FR" },
+  { id: "vn", label: "Việt Nam", zone: "Asia/Ho_Chi_Minh" },
+  { id: "fr", label: "Pháp", zone: "Europe/Paris" },
 ] as const;
 
 function useNow(stepMs = 1000) {
@@ -37,11 +38,12 @@ function offsetHours(now: Date): number {
 }
 
 export function WorldClock() {
+  const { t, lang } = useT();
   const now = useNow();
   const diff = offsetHours(now);
 
   return (
-    <div className="flex gap-1.5" role="group" aria-label={`Giờ Việt Nam và Pháp (lệch ${diff} giờ)`}>
+    <div className="flex gap-1.5" role="group" aria-label={t("Giờ Việt Nam và Pháp (lệch {n} giờ)", { n: diff })}>
       {PLACES.map((p) => {
         const time = new Intl.DateTimeFormat("vi-VN", {
           timeZone: p.zone,
@@ -50,13 +52,14 @@ export function WorldClock() {
           second: "2-digit",
           hourCycle: "h23",
         }).format(now);
-        const date = new Intl.DateTimeFormat(p.locale, {
+        // Ngày viết theo ngôn ngữ giao diện, giờ thì theo múi giờ từng nơi.
+        const date = new Intl.DateTimeFormat(LOCALE[lang], {
           timeZone: p.zone,
           weekday: "short",
           day: "2-digit",
           month: "2-digit",
         }).format(now);
-        const year = new Intl.DateTimeFormat(p.locale, { timeZone: p.zone, year: "numeric" }).format(now);
+        const year = new Intl.DateTimeFormat(LOCALE[lang], { timeZone: p.zone, year: "numeric" }).format(now);
         return (
           <div
             key={p.id}
@@ -69,7 +72,7 @@ export function WorldClock() {
                 <time dateTime={now.toISOString()}>{time}</time>
               </span>
               <span className="block truncate font-sans text-[10.5px] leading-tight text-muted">
-                {p.label} · {date}
+                {t(p.label)} · {date}
                 <span className="hidden sm:inline">/{year}</span>
               </span>
             </span>
@@ -85,13 +88,14 @@ export function WorldClock() {
  * Windows, chỉ ra hai chữ cái.
  */
 function Flag({ id }: { id: "vn" | "fr" }) {
+  const { t } = useT();
   return (
     <svg
       viewBox="0 0 30 20"
       width="27"
       height="18"
       role="img"
-      aria-label={id === "vn" ? "Cờ Việt Nam" : "Cờ Pháp"}
+      aria-label={id === "vn" ? t("Cờ Việt Nam") : t("Cờ Pháp")}
       data-flag={id}
       className="shrink-0 overflow-hidden rounded-[3px] shadow-[0_0_0_1px_rgba(0,0,0,0.12)]"
     >

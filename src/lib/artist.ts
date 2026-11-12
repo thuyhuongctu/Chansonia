@@ -73,3 +73,12 @@ export const COPYRIGHT_YEAR = 2026;
 export const COPYRIGHT_HOLDER = "Đỗ Thùy Hương";
 export const COPYRIGHT_LINE = `© ${COPYRIGHT_YEAR} ${COPYRIGHT_HOLDER}. Mọi quyền được bảo lưu.`;
 export const LICENSE_NOTE = "Phần mềm và tác phẩm độc quyền — không phát hành mã nguồn mở.";
+
+/** Ảnh của nghệ sĩ — hiện ở mục «Ảnh» trên trang Nghệ sĩ, chạm để xem lớn */
+export const ARTIST_PHOTOS: { src: string; alt: string }[] = [
+  { src: "art/huong-guitar-sofa.webp", alt: "Hương cười, ôm đàn guitar giữa hai người bạn trên ghế sofa" },
+  { src: "art/huong-vuon-hoa.webp", alt: "Hương ngồi trên ghế đá giữa vườn hoa, bướm bay quanh" },
+  { src: "art/huong-guitar-cuoi.webp", alt: "Hương ôm đàn guitar, cười trên ghế sofa trước kệ sách" },
+  { src: "art/huong-guitar-hat.webp", alt: "Hương nhắm mắt đàn hát, bạn bè vỗ tay" },
+  { src: "art/huong-guitar-ban-be.webp", alt: "Hương đàn guitar cho hai người bạn nghe trong phòng khách" },
+];
