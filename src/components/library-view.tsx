@@ -65,6 +65,19 @@ export function LibraryView() {
     [col, needle]
   );
 
+  // Đang tìm thì cho thấy cả bài khớp ở hai bộ sưu tập còn lại.
+  const elsewhere = useMemo(
+    () =>
+      !needle
+        ? []
+        : COLLECTIONS.filter((c) => c.id !== col.id).flatMap((c) =>
+            c.songs
+              .map((song, index) => ({ song, index }))
+              .filter(({ song }) => (SONG_TEXT.get(song.id) ?? "").includes(needle)),
+          ),
+    [col, needle],
+  );
+
   // Yêu thích: gom từ cả ba bộ sưu tập, bài đánh dấu gần nhất lên đầu.
   const liked = useMemo(
     () =>
@@ -77,7 +90,7 @@ export function LibraryView() {
   );
 
   const empty =
-    tab === "songs" ? songs.length === 0 : tab === "videos" ? videos.length === 0 : liked.length === 0;
+    tab === "songs" ? songs.length === 0 && elsewhere.length === 0 : tab === "videos" ? videos.length === 0 : liked.length === 0;
 
   return (
     <div className="view-enter mx-auto flex min-h-0 w-full max-w-6xl flex-1 flex-col lg:grid lg:grid-cols-[360px_minmax(0,1fr)] lg:gap-8 lg:px-6 lg:pb-4">
@@ -154,9 +167,23 @@ export function LibraryView() {
           data-library-list
         >
           {tab === "songs"
-            ? songs.map(({ song, index }) => (
-                <SongRow key={song.id} song={song} index={index} />
-              ))
+            ? (
+                <>
+                  {songs.map(({ song, index }) => (
+                    <SongRow key={song.id} song={song} index={index} />
+                  ))}
+                  {elsewhere.length ? (
+                    <section aria-label="Ở bộ sưu tập khác" data-elsewhere>
+                      <p className="mt-5 mb-1 font-sans text-[11px] font-bold tracking-[0.18em] text-muted uppercase">
+                        Ở bộ sưu tập khác · {elsewhere.length}
+                      </p>
+                      {elsewhere.map(({ song, index }) => (
+                        <SongRow key={song.id} song={song} index={index} showCollection />
+                      ))}
+                    </section>
+                  ) : null}
+                </>
+              )
             : tab === "favorites"
               ? liked.map(({ song, index }) => (
                   <SongRow key={song.id} song={song} index={index} showCollection />

@@ -12,8 +12,10 @@ test.describe("Chuyển động", () => {
       .evaluate((el) => getComputedStyle(el).animationName);
     expect(anim).toBe("view-in");
 
-    await page.reload();
-    const sun = await page
+    // Màn hình chào chỉ hiện một lần mỗi lượt mở, nên mở một tab mới hẳn.
+    const tab = await page.context().browser()!.newPage();
+    await tab.goto(page.url());
+    const sun = await tab
       .locator("[data-splash] .logo-sun")
       .evaluate((el) => getComputedStyle(el).animationName);
     expect(sun).toBe("sun-rise");
