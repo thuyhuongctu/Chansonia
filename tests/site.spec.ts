@@ -8,7 +8,7 @@ const SITE = `http://127.0.0.1:${Number(process.env.PORT ?? 4173) + 1}/`;
 
 test.describe("Trang giới thiệu", () => {
   test.beforeEach(async ({ page }) => {
-    await page.addInitScript(() => localStorage.setItem("chansonia-site-lang", "vi"));
+    await page.addInitScript(() => localStorage.setItem("chansonia-ui-lang", "vi"));
   });
 
   test("mở lên đủ các phần, số liệu lấy từ thư viện của app", async ({ page }) => {
@@ -51,7 +51,7 @@ test.describe("Trang giới thiệu", () => {
     await expect(page.locator("h1")).toContainText("Des chansons qui racontent");
     await expect(page.locator("[data-collections] .card").nth(2)).toContainText("2 chansons · 0 clips");
 
-    expect(await page.evaluate(() => localStorage.getItem("chansonia-site-lang"))).toBe("fr");
+    expect(await page.evaluate(() => localStorage.getItem("chansonia-ui-lang"))).toBe("fr");
   });
 
   test("nút «Nghe ngay» mở app nghe nhạc ở app/", async ({ page }) => {

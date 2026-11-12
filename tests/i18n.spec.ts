@@ -51,4 +51,35 @@ test.describe("Ngôn ngữ giao diện", () => {
     await expect(page.locator("html")).toHaveAttribute("lang", "en");
     await expect(page.locator("h1")).toContainText("Songs that tell stories");
   });
+
+  test("lựa chọn tiếng Việt lưu từ bản cũ không còn giữ app và trang giới thiệu ở tiếng Việt", async ({ page }) => {
+    const site = `http://127.0.0.1:${Number(process.env.PORT ?? 4173) + 1}/`;
+    for (const url of ["/", site]) {
+      await page.addInitScript(() => {
+        localStorage.setItem("chansonia-lang", "vi");
+        localStorage.setItem("chansonia-site-lang", "vi");
+      });
+      await page.goto(url);
+      await expect(page.locator("html")).toHaveAttribute("lang", "en");
+    }
+  });
+
+  test("chọn tiếng Việt ở trang giới thiệu thì mở app cũng là tiếng Việt", async ({ page }) => {
+    const site = `http://127.0.0.1:${Number(process.env.PORT ?? 4173) + 1}/`;
+    await page.goto(site);
+    await page.locator('button[data-lang="vi"]').click();
+    await expect(page.locator("html")).toHaveAttribute("lang", "vi");
+    const vi = await page.evaluate(() => localStorage.getItem("chansonia-ui-lang"));
+    expect(vi).toBe("vi");
+  });
+
+  test("trang giới thiệu không còn dấu gạch dài trong chữ", async ({ page }) => {
+    const site = `http://127.0.0.1:${Number(process.env.PORT ?? 4173) + 1}/`;
+    for (const lang of ["en", "vi", "fr"]) {
+      await page.goto(site);
+      await page.locator(`button[data-lang="${lang}"]`).click();
+      const text = await page.locator("main").innerText();
+      expect(text.includes("—"), lang).toBe(false);
+    }
+  });
 });

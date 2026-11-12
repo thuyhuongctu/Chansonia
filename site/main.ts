@@ -8,7 +8,8 @@ import { COLLECTIONS, TOTAL_SONGS, TOTAL_VIDEOS, type Collection } from "@/lib/l
 import { LANGS, T, type Lang } from "./i18n";
 
 const APP = "./app/";
-const KEY = "chansonia-site-lang";
+/** Khoá lưu ngôn ngữ, dùng chung với app: chọn ở đây thì mở app cũng đúng thứ tiếng ấy */
+const KEY = "chansonia-ui-lang";
 
 /** Ảnh của app nằm trong thư mục app/; địa chỉ đầy đủ (https) giữ nguyên */
 const asset = (src: string) => (/^https?:/.test(src) ? src : APP + src);
@@ -44,13 +45,10 @@ document.querySelectorAll<HTMLElement>("[data-map]").forEach((el) => (el.innerHT
 
 /* ── Ngôn ngữ ─────────────────────────────────────────────────────────── */
 
-/** Khoá ngôn ngữ dùng chung với app: chọn ở đây thì mở app cũng đúng thứ tiếng ấy */
-const APP_KEY = "chansonia-lang";
-
 /** Mặc định tiếng Anh; có lựa chọn đã lưu thì theo lựa chọn đó */
 function initialLang(): Lang {
   try {
-    const saved = (localStorage.getItem(KEY) ?? localStorage.getItem(APP_KEY)) as Lang | null;
+    const saved = localStorage.getItem(KEY) as Lang | null;
     if (saved && LANGS.includes(saved)) return saved;
   } catch {
     /* không đọc được thì dùng mặc định */
@@ -81,7 +79,6 @@ document.querySelectorAll<HTMLButtonElement>("[data-lang]").forEach((b) =>
     lang = b.dataset.lang as Lang;
     try {
       localStorage.setItem(KEY, lang);
-      localStorage.setItem(APP_KEY, lang);
     } catch {
       /* bỏ qua */
     }

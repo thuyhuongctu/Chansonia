@@ -12,9 +12,9 @@ export const ARTIST = {
   tagline: "Lecturer & Researcher · Songwriter",
 
   bio: [
-    "Je m'appelle Hương là nghệ danh của Đỗ Thùy Hương — giảng viên, nhà nghiên cứu và người viết bài hát từ đồng bằng sông Cửu Long. Hương viết bằng tiếng Việt, tiếng Anh và tiếng Pháp, về gia đình, ký ức và những dòng sông.",
-    "«La lampe, le fleuve et les couleurs» là mini song-cycle sáu chương về sự vắng mặt, sự trưởng thành và những giấc mơ thay hình đổi dạng — viết trong bảy ngày, từ 07 đến 13/8/2026, quanh ngọn đèn còn cháy, dòng sông chở đêm đi và hộp màu của một cô bé từng muốn làm họa sĩ.",
-    "Chansonia gom các bài hát ấy cùng nhạc BizOnland, phim M-AIDA và bài hát của game «Vân Đồn Đệ Nhất Thương Cảng» về một nơi: nghe với lời chạy theo nhạc, xem MV, và trích dẫn được bằng mã DOI. Hai mươi sáu năm sau, cô bé ấy vẽ tiếp giấc mơ của mình — lần này bằng những dòng code.",
+    "Je m'appelle Hương là nghệ danh của Đỗ Thùy Hương, giảng viên, nhà nghiên cứu và người viết bài hát từ đồng bằng sông Cửu Long. Hương viết bằng tiếng Việt, tiếng Anh và tiếng Pháp, về gia đình, ký ức và những dòng sông.",
+    "«La lampe, le fleuve et les couleurs» là mini song-cycle sáu chương về sự vắng mặt, sự trưởng thành và những giấc mơ thay hình đổi dạng, viết trong bảy ngày, từ 07 đến 13/8/2026, quanh ngọn đèn còn cháy, dòng sông chở đêm đi và hộp màu của một cô bé từng muốn làm họa sĩ.",
+    "Chansonia gom các bài hát ấy cùng nhạc BizOnland, phim M-AIDA và nhạc của hai game «Vân Đồn Đệ Nhất Thương Cảng», «Bắc Hải Đảo» về một nơi: nghe với lời chạy theo nhạc, xem MV, và trích dẫn được bằng mã DOI. Hai mươi sáu năm sau, cô bé ấy vẽ tiếp giấc mơ của mình, lần này bằng những dòng code.",
   ],
 
   /** DOI của phần mềm Chansonia trên Zenodo (concept DOI — trỏ tới bản mới nhất) */
@@ -72,7 +72,7 @@ export const ALBUM = {
 export const COPYRIGHT_YEAR = 2026;
 export const COPYRIGHT_HOLDER = "Đỗ Thùy Hương";
 export const COPYRIGHT_LINE = `© ${COPYRIGHT_YEAR} ${COPYRIGHT_HOLDER}. Mọi quyền được bảo lưu.`;
-export const LICENSE_NOTE = "Phần mềm và tác phẩm độc quyền — không phát hành mã nguồn mở.";
+export const LICENSE_NOTE = "Phần mềm và tác phẩm độc quyền, không phát hành mã nguồn mở.";
 
 /** Ảnh của nghệ sĩ — hiện ở mục «Ảnh» trên trang Nghệ sĩ, chạm để xem lớn */
 export const ARTIST_PHOTOS: { src: string; alt: string }[] = [

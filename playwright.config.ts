@@ -44,8 +44,7 @@ export default defineConfig({
       origins: [BASE_URL, `http://127.0.0.1:${PORT + 1}`].map((origin) => ({
         origin,
         localStorage: [
-          { name: "chansonia-lang", value: "vi" },
-          { name: "chansonia-site-lang", value: "vi" },
+          { name: "chansonia-ui-lang", value: "vi" },
         ],
       })),
     },
