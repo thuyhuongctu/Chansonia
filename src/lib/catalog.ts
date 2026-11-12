@@ -80,7 +80,7 @@ export type RawSong = {
 
 export type LineRole = "title" | "whisper" | "normal";
 export type ViewMode = "karaoke" | "sheet";
-export type AppView = "library" | "player" | "video" | "artist";
+export type AppView = "library" | "player" | "video" | "artist" | "about";
 
 export type LyricWord = { text: string; startMs: number; endMs: number };
 

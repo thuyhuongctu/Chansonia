@@ -231,6 +231,7 @@ export function LibraryView() {
             </div>
           ) : null}
 
+          <AboutLink />
           <DoiLink />
         </div>
       </section>
@@ -497,6 +498,22 @@ function Thumb({
         badge
       )}
     </span>
+  );
+}
+
+/** Lối vào màn hình «Giới thiệu» ở cuối danh sách */
+function AboutLink() {
+  const { t } = useT();
+  const setView = usePlayer((s) => s.setView);
+  return (
+    <button
+      type="button"
+      onClick={() => setView("about")}
+      className="press mx-auto mt-5 flex h-11 items-center gap-2 rounded-full border border-line bg-surface px-4 font-sans text-[13px] font-semibold text-ink"
+    >
+      {t("Giới thiệu Chansonia")}
+      <ArrowUpRight className="size-3.5" aria-hidden />
+    </button>
   );
 }
 

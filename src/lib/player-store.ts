@@ -287,6 +287,33 @@ function save(state: { songId: string; versionIndex: number }, ms: number, force
 }
 
 const linked = songFromLink();
+
+/**
+ * Mở màn hình «Giới thiệu» trước thư viện khi: vào từ địa chỉ gốc của trang
+ * web (…/app/?gioi-thieu), hoặc lần đầu mở app trên máy này. Lần sau mở
+ * thẳng thư viện; vẫn vào lại được bằng nút logo ở đầu app.
+ */
+const ABOUT_SEEN = "chansonia-about-seen";
+function aboutFirst(): boolean {
+  try {
+    const params = new URLSearchParams(location.search);
+    if (params.has("gioi-thieu")) {
+      params.delete("gioi-thieu");
+      const url = new URL(location.href);
+      url.search = params.toString();
+      history.replaceState(null, "", url.toString());
+      return true;
+    }
+    if (!localStorage.getItem(ABOUT_SEEN)) {
+      localStorage.setItem(ABOUT_SEEN, "1");
+      return true;
+    }
+  } catch {
+    /* không đọc được thì vào thư viện như thường */
+  }
+  return false;
+}
+const startOnAbout = aboutFirst();
 const saved = linked ? { songId: linked, version: 0, ms: 0 } : restore();
 if (linked) {
   // Bỏ ?bai=… khỏi thanh địa chỉ để tải lại trang không mở lại bài cũ.
@@ -311,7 +338,7 @@ function indices(song: Song, version: number, ms: number) {
 }
 
 export const usePlayer = create<PlayerState>((set, get) => ({
-  view: linked ? "player" : "library",
+  view: linked ? "player" : startOnAbout ? "about" : "library",
   songId: savedSong.id,
   versionIndex: saved.version,
   mode: "karaoke",

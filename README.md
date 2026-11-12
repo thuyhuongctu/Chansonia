@@ -8,10 +8,10 @@ A lyrics-synchronised music player for the album
 
 One codebase, multiple targets:
 
-- **Web** — a trilingual (VI · EN · FR) introduction page at
-  **[thuyhuongctu.github.io/Chansonia](https://thuyhuongctu.github.io/Chansonia/)**,
-  with the player itself at **[/Chansonia/app/](https://thuyhuongctu.github.io/Chansonia/app/)**,
-  redeployed automatically on every push to `main`.
+- **Web** — one app at **[thuyhuongctu.github.io/Chansonia/app/](https://thuyhuongctu.github.io/Chansonia/app/)**;
+  the root address forwards there and opens the trilingual **About** screen
+  (collections, features, music videos, artist, citation). Redeployed
+  automatically on every push to `main`.
 - **Android** — packaged with Capacitor, submitted to Google Play as an `.aab`.
 - **iOS** — Capacitor project scaffolded under `ios/`, ready to open in Xcode
   and submit via TestFlight/App Store once signed with an Apple Developer
@@ -77,7 +77,10 @@ Total running time 32:35.
   address bar.
 - Artist page with library statistics, the Zenodo **DOI** and links.
 - **English by default**, with Vietnamese and French one tap away (the EN · VI ·
-  FR button); the choice is remembered and shared with the introduction page.
+  FR button); the choice is remembered.
+- **About** screen inside the app (what used to be a separate introduction
+  page): opens on the first visit and from the root web address, and any time
+  from the logo at the top. Text in [`src/lib/about-text.ts`](src/lib/about-text.ts).
   Interface text and song data are translated in [`src/lib/i18n.ts`](src/lib/i18n.ts).
 - Light and dark themes following the device, with a manual switch. Every
   animation switches off when the device asks for reduced motion.
@@ -376,8 +379,9 @@ src/
     theme.ts         light / dark switch, mirrors the website's Sáng·Tối button
   songs/             one file per track: lyrics, timings, artwork, style note
   components/        user interface
-site/                introduction page (VI · EN · FR): index.html, main.ts, i18n.ts, style.css
-                     — built with `npm run build:site`, which also places the app under app/
+scripts/gop-trang-web.mjs
+                     assembles GitHub Pages (`npm run build:site`): the app under app/,
+                     a root index.html that forwards to app/?gioi-thieu, chinh-sach.html
 public/
   audio/             mp3 files (never committed)
   art/               clay artwork copied from the songbook page
