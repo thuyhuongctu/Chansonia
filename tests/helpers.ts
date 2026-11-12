@@ -14,6 +14,7 @@ export const COUNTS = {
   huong: { songs: 9, videos: 1 },
   bizon: { songs: 17, videos: 8 },
   maida: { songs: 2, videos: 0 },
+  vandon: { songs: 1, videos: 0 },
 } as const;
 
 /** Số bài của bộ sưu tập mở sẵn khi vào app (Hương). */
@@ -54,7 +55,7 @@ export async function songCount(page: Page): Promise<number> {
 }
 
 /** Nút chọn bộ sưu tập. */
-export function collectionTab(page: Page, name: "La maison de Madam Hương" | "BizOnland" | "M-AIDA") {
+export function collectionTab(page: Page, name: "La maison de Madam Hương" | "BizOnland" | "M-AIDA" | "Van Don – Vietnam’s First Trading Port") {
   return page.getByRole("tab", { name, exact: true });
 }
 

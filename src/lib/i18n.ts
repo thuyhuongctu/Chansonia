@@ -150,6 +150,11 @@ const UI: Record<string, Row> = {
   "Phát video {t} từ YouTube": { en: "Play {t} from YouTube", fr: "Lire {t} depuis YouTube" },
   // Nghệ sĩ
   "Bài hát": { en: "Songs", fr: "Chansons" },
+  "Ảnh": { en: "Photos", fr: "Photos" },
+  "Xem ảnh {n}": { en: "View photo {n}", fr: "Voir la photo {n}" },
+  "Ảnh trước": { en: "Previous photo", fr: "Photo précédente" },
+  "Ảnh sau": { en: "Next photo", fr: "Photo suivante" },
+  "Đóng ảnh": { en: "Close photo", fr: "Fermer la photo" },
   "Mọi quyền được bảo lưu.": { en: "All rights reserved.", fr: "Tous droits réservés." },
   "Phần mềm và tác phẩm độc quyền — không phát hành mã nguồn mở.": {
     en: "Proprietary software and works — not released as open source.",
@@ -182,6 +187,11 @@ const DATA: Record<string, Row> = {
     fr: "Chansons des jeux de simulation d'entreprise",
   },
   "Nhạc nền của M-AIDA 8.0": { en: "The score of M-AIDA 8.0", fr: "La musique de M-AIDA 8.0" },
+  "Nhạc của game Vân Đồn Đệ Nhất Thương Cảng": {
+    en: "Music from the game Van Don – Vietnam’s First Trading Port",
+    fr: "Musique du jeu Vân Đồn – premier port de commerce du Viêt Nam",
+  },
+  "Bài hát của game": { en: "Game song", fr: "Chanson du jeu" },
   // Ngôn ngữ
   "Tiếng Việt": { en: "Vietnamese", fr: "Vietnamien" },
   "Tiếng Anh": { en: "English", fr: "Anglais" },
@@ -228,6 +238,10 @@ const DATA: Record<string, Row> = {
   // Phần của bài
   "Điệp khúc": { en: "Chorus", fr: "Refrain" },
   "Điệp khúc cuối": { en: "Final chorus", fr: "Dernier refrain" },
+  "Tiền điệp khúc": { en: "Pre-chorus", fr: "Pré-refrain" },
+  "Nhạc dạo giữa": { en: "Interlude", fr: "Interlude" },
+  "Câu cuối": { en: "Final line", fr: "Dernière phrase" },
+  "Nhạc kết": { en: "Instrumental outro", fr: "Final instrumental" },
   "Chuyển khúc": { en: "Bridge", fr: "Pont" },
   "Cầu nối": { en: "Bridge", fr: "Pont" },
   "Đoạn nói": { en: "Spoken", fr: "Parlé" },

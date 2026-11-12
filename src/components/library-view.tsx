@@ -237,7 +237,7 @@ function CollectionTabs() {
   const { t } = useT();
   return (
     <div
-      className="flex gap-1.5 px-4 lg:px-0 lg:pt-1"
+      className="no-scrollbar flex gap-1.5 overflow-x-auto px-4 lg:px-0 lg:pt-1"
       role="tablist"
       aria-label={t("Bộ sưu tập")}
     >
@@ -249,9 +249,12 @@ function CollectionTabs() {
             type="button"
             role="tab"
             aria-selected={on}
-            onClick={() => setCollection(c.id)}
+            onClick={(e) => {
+              setCollection(c.id);
+              e.currentTarget.scrollIntoView({ block: "nearest", inline: "nearest", behavior: "smooth" });
+            }}
             className={cn(
-              "press min-h-11 flex-1 rounded-xl border px-1.5 py-1 font-sans text-[13px] leading-tight font-semibold",
+              "press h-11 shrink-0 rounded-xl border px-4 font-sans text-[13px] font-semibold whitespace-nowrap lg:flex-1 lg:px-2",
               on
                 ? "text-white"
                 : "border-line bg-surface text-muted hover:text-ink"

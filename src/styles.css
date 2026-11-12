@@ -271,6 +271,15 @@
   }
 }
 
+/* Hàng cuộn ngang (nút chọn bộ sưu tập) — ẩn thanh cuộn, vẫn vuốt được */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 /* ── Hàng trong danh sách: lún nhẹ khi bấm ───────────────────────────── */
 
 .row {

@@ -17,6 +17,7 @@ const COLLECTION_ART: Record<Collection["id"], string> = {
   huong: asset("art/music-cover-ba-cong-con.webp"),
   bizon: "https://bizonland.com/assets/covers/ben-phu-sa-3d.webp",
   maida: "https://jemappellehuong.com/assets/img/maida-film-poster.webp",
+  vandon: "https://thuyhuongctu.github.io/ThuyHuong_Digital-2026-Games/van-don-3d/assets/ben-cang-van-don.jpg",
 };
 
 /* ── Logo (khúc sông chữ C, mặt trời mọc ở cửa sông) ─────────────────── */
