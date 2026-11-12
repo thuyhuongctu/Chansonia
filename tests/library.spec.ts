@@ -14,7 +14,7 @@ test.describe("Thư viện", () => {
   test("mở lên là thấy ba bộ sưu tập và danh sách bài của Hương", async ({ page }) => {
     const errors = await openApp(page);
 
-    for (const name of ["La maison de Madam Hương", "BizOnland", "M-AIDA", "Van Don – Vietnam’s First Trading Port"] as const) {
+    for (const name of ["La maison de Madam Hương", "BizOnland", "M-AIDA", "Van Don – Vietnam’s First Trading Port", "Bac Hai Dao – Pirates of the Gulf of Tonkin"] as const) {
       await expect(collectionTab(page, name)).toBeVisible();
     }
     await expect(collectionTab(page, "La maison de Madam Hương")).toHaveAttribute("aria-selected", "true");
@@ -128,7 +128,7 @@ test.describe("Thư viện", () => {
     await page.getByRole("button", { name: "Nghệ sĩ" }).click();
     await expect(page.getByRole("heading", { name: "Je m'appelle Hương" })).toBeVisible();
 
-    const total = COUNTS.huong.songs + COUNTS.bizon.songs + COUNTS.maida.songs + COUNTS.vandon.songs;
+    const total = COUNTS.huong.songs + COUNTS.bizon.songs + COUNTS.maida.songs + COUNTS.vandon.songs + COUNTS.bachai.songs;
     await expect(page.locator("dl")).toContainText(String(total));
     await expect(page.getByRole("link", { name: /10\.5281\/zenodo\.22172794/ })).toHaveAttribute(
       "href",
@@ -193,5 +193,22 @@ test.describe("Thư viện", () => {
     await expect(stage).toContainText("Bình minh lên trên muôn trùng sóng");
     await expect(stage).toContainText("Tiền điệp khúc", { ignoreCase: true });
     await expect(stage).toContainText("Vọng tiếng non sông");
+  });
+
+  test("bộ sưu tập Bắc Hải Đảo có bài hát của game và lyric video", async ({ page }) => {
+    await openApp(page);
+    await page.evaluate(() => {
+      HTMLMediaElement.prototype.play = () => Promise.resolve();
+    });
+    await collectionTab(page, "Bac Hai Dao – Pirates of the Gulf of Tonkin").click();
+    await expect(page.getByRole("tab", { name: `Video · ${COUNTS.bachai.videos}` })).toBeVisible();
+    await expect(page.locator(SONG_ROW)).toHaveCount(COUNTS.bachai.songs);
+    await page.locator(SONG_ROW).first().click();
+
+    await expect(page.locator("[data-screen-title]")).toHaveText("Bắc Hải Đảo – Theo cánh buồm quê hương");
+    const stage = page.locator(".lyric-stage");
+    await expect(stage).toContainText("Gió đưa buồm qua cửa biển xa");
+    await expect(stage).toContainText("Bắc Hải Đảo, căng buồm đón gió");
+    await expect(stage).toContainText("Lại theo người về giữa bình yên");
   });
 });

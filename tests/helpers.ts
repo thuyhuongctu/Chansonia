@@ -15,6 +15,7 @@ export const COUNTS = {
   bizon: { songs: 17, videos: 8 },
   maida: { songs: 2, videos: 0 },
   vandon: { songs: 1, videos: 0 },
+  bachai: { songs: 1, videos: 1 },
 } as const;
 
 /** Số bài của bộ sưu tập mở sẵn khi vào app (Hương). */
@@ -55,7 +56,7 @@ export async function songCount(page: Page): Promise<number> {
 }
 
 /** Nút chọn bộ sưu tập. */
-export function collectionTab(page: Page, name: "La maison de Madam Hương" | "BizOnland" | "M-AIDA" | "Van Don – Vietnam’s First Trading Port") {
+export function collectionTab(page: Page, name: "La maison de Madam Hương" | "BizOnland" | "M-AIDA" | "Van Don – Vietnam’s First Trading Port" | "Bac Hai Dao – Pirates of the Gulf of Tonkin") {
   return page.getByRole("tab", { name, exact: true });
 }
 

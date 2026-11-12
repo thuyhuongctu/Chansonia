@@ -17,18 +17,19 @@ test.describe("Trang giới thiệu", () => {
 
     await page.goto(SITE);
     await expect(page.locator("h1")).toContainText("Những bài hát kể chuyện");
-    await expect(page.locator("[data-stats]")).toContainText("29");
-    await expect(page.locator("[data-stats]")).toContainText("9");
+    await expect(page.locator("[data-stats]")).toContainText("30");
+    await expect(page.locator("[data-stats]")).toContainText("10");
 
     const cards = page.locator("[data-collections] .card");
-    await expect(cards).toHaveCount(4);
+    await expect(cards).toHaveCount(5);
     await expect(cards.nth(0)).toContainText("La maison de Madam Hương");
     await expect(cards.nth(1)).toContainText("BizOnland");
     await expect(cards.nth(2)).toContainText("M-AIDA");
     await expect(cards.nth(3)).toContainText("Van Don – Vietnam’s First Trading Port");
+    await expect(cards.nth(4)).toContainText("Bac Hai Dao – Pirates of the Gulf of Tonkin");
 
     const videos = page.locator("[data-videos] a");
-    await expect(videos).toHaveCount(9);
+    await expect(videos).toHaveCount(10);
     expect(await videos.first().getAttribute("href")).toMatch(/^https:\/\/www\.youtube\.com\//);
 
     await expect(page.locator('meta[name="citation_doi"]')).toHaveAttribute(

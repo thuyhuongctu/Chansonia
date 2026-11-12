@@ -1,6 +1,6 @@
 /**
  * ╔══════════════════════════════════════════════════════════════════════╗
- * ║  THƯ VIỆN — BA BỘ SƯU TẬP: La maison de Madam Hương · BizOnland · M-AIDA ║
+ * ║  THƯ VIỆN — các bộ sưu tập: Hương · BizOnland · M-AIDA · nhạc game    ║
  * ╚══════════════════════════════════════════════════════════════════════╝
  *
  * Mỗi bộ sưu tập có hai danh sách: Bài hát và Video. Mục Video chỉ nhận
@@ -21,8 +21,9 @@
 
 import { compile, SONGS, type RawSong, type Song, type SongVersion } from "@/lib/catalog";
 import { song as vanDonSong } from "@/songs/games/van-don-tieng-vong-non-song";
+import { song as bacHaiSong } from "@/songs/games/bac-hai-dao-theo-canh-buom-que-huong";
 
-export type CollectionId = "huong" | "bizon" | "maida" | "vandon";
+export type CollectionId = "huong" | "bizon" | "maida" | "vandon" | "bachai";
 
 export type Video = {
   id: string;
@@ -368,7 +369,32 @@ const VANDON: Collection = {
   videos: [],
 };
 
-export const COLLECTIONS: Collection[] = [HUONG, BIZON_COLLECTION, MAIDA, VANDON];
+/* ── Bắc Hải Đảo ─────────────────────────────────────────────────────── */
+/* Nhạc của game «Bắc Hải Đảo — Hải Tặc Vịnh Bắc Bộ», cùng repo game với Vân Đồn. */
+
+const BACHAI_NHAC = "https://thuyhuongctu.github.io/ThuyHuong_Digital-2026-Games/bac-hai-dao/assets/nhac";
+
+const BACHAI: Collection = {
+  id: "bachai",
+  short: "Bac Hai Dao – Pirates of the Gulf of Tonkin",
+  name: "Bac Hai Dao – Pirates of the Gulf of Tonkin",
+  desc: "Nhạc của game Bắc Hải Đảo — Hải Tặc Vịnh Bắc Bộ",
+  color: "#3d6b7a",
+  art: `${BACHAI_NHAC}/bac-hai-dao-bia.jpg`,
+  songs: [compile(bacHaiSong)],
+  videos: [
+    {
+      id: "bac-hai-dao-lyric-video",
+      title: "Bắc Hải Đảo – Theo cánh buồm quê hương",
+      meta: "Lyric video",
+      duration: "5:48",
+      mp4: `${BACHAI_NHAC}/bac-hai-dao-theo-canh-buom-que-huong.mp4`,
+      poster: `${BACHAI_NHAC}/bac-hai-dao-bia.jpg`,
+    },
+  ],
+};
+
+export const COLLECTIONS: Collection[] = [HUONG, BIZON_COLLECTION, MAIDA, VANDON, BACHAI];
 
 export const COLLECTION_BY_ID = Object.fromEntries(
   COLLECTIONS.map((c) => [c.id, c]),
