@@ -37,3 +37,4 @@ android/keystore.properties
 .idea/
 .DS_Store
 *.log
+dist-site/

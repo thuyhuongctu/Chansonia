@@ -5,7 +5,9 @@
 
 Chạy được ở nhiều nơi từ cùng một mã nguồn:
 
-- **Web** — đang chạy tại **[thuyhuongctu.github.io/Chansonia](https://thuyhuongctu.github.io/Chansonia/)**,
+- **Web** — trang giới thiệu ba thứ tiếng (Việt · Anh · Pháp) tại
+  **[thuyhuongctu.github.io/Chansonia](https://thuyhuongctu.github.io/Chansonia/)**,
+  còn app nghe nhạc ở **[/Chansonia/app/](https://thuyhuongctu.github.io/Chansonia/app/)**,
   tự động triển khai lại mỗi khi push vào nhánh `main` (xem mục 3).
 - **Android** — đóng gói bằng Capacitor, nộp lên CH Play dưới dạng `.aab`.
 - **iOS** — dự án Capacitor đã được tạo tại `ios/`, sẵn sàng mở bằng Xcode và gửi qua TestFlight/App Store sau khi cấu hình Apple Developer.
