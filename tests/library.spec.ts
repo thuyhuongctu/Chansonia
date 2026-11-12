@@ -38,6 +38,8 @@ test.describe("Thư viện", () => {
     await expect(page.locator('[data-clock="vn"]')).toContainText("12/11");
     await expect(page.locator('[data-clock="fr"]')).toContainText("23:30:00");
     await expect(page.locator('[data-clock="fr"]')).toContainText("11/11");
+    await expect(page.locator('[data-clock="vn"]').getByRole("img", { name: "Cờ Việt Nam" })).toBeVisible();
+    await expect(page.locator('[data-clock="fr"]').getByRole("img", { name: "Cờ Pháp" })).toBeVisible();
   });
 
   test("bản đồ Việt Nam chìm dưới nền, không chặn tay bấm", async ({ page }) => {
