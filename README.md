@@ -8,7 +8,9 @@ A lyrics-synchronised music player for the album
 
 One codebase, multiple targets:
 
-- **Web** — live at **[thuyhuongctu.github.io/Chansonia](https://thuyhuongctu.github.io/Chansonia/)**,
+- **Web** — a trilingual (VI · EN · FR) introduction page at
+  **[thuyhuongctu.github.io/Chansonia](https://thuyhuongctu.github.io/Chansonia/)**,
+  with the player itself at **[/Chansonia/app/](https://thuyhuongctu.github.io/Chansonia/app/)**,
   redeployed automatically on every push to `main`.
 - **Android** — packaged with Capacitor, submitted to Google Play as an `.aab`.
 - **iOS** — Capacitor project scaffolded under `ios/`, ready to open in Xcode
@@ -361,6 +363,8 @@ src/
     theme.ts         light / dark switch, mirrors the website's Sáng·Tối button
   songs/             one file per track: lyrics, timings, artwork, style note
   components/        user interface
+site/                introduction page (VI · EN · FR): index.html, main.ts, i18n.ts, style.css
+                     — built with `npm run build:site`, which also places the app under app/
 public/
   audio/             mp3 files (never committed)
   art/               clay artwork copied from the songbook page
