@@ -378,7 +378,7 @@ const BACHAI: Collection = {
   id: "bachai",
   short: "Bac Hai Dao – Pirates of the Gulf of Tonkin",
   name: "Bac Hai Dao – Pirates of the Gulf of Tonkin",
-  desc: "Nhạc của game Bắc Hải Đảo — Hải Tặc Vịnh Bắc Bộ",
+  desc: "Nhạc của game Bắc Hải Đảo, Hải Tặc Vịnh Bắc Bộ",
   color: "#3d6b7a",
   art: `${BACHAI_NHAC}/bac-hai-dao-bia.jpg`,
   songs: [compile(bacHaiSong)],

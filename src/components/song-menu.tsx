@@ -53,7 +53,7 @@ export async function shareSong(song: Song, t: (k: string) => string) {
   const url = shareLink(song.id);
   try {
     if (navigator.share) {
-      await navigator.share({ title: song.title, text: `${song.title} — Chansonia`, url });
+      await navigator.share({ title: song.title, text: `${song.title} · Chansonia`, url });
       return;
     }
     await navigator.clipboard.writeText(url);

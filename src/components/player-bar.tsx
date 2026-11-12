@@ -68,7 +68,7 @@ export function PlayerBar() {
   const shuffling = playOrder === "shuffle";
   const status = usePlayer((s) => s.status);
   const stopAfterSong = usePlayer((s) => s.stopAfterSong);
-  const errorText = t("Không tải được bài này — kiểm tra mạng rồi bấm phát lại");
+  const errorText = t("Không tải được bài này. Kiểm tra mạng rồi bấm phát lại");
 
   return (
     <div
