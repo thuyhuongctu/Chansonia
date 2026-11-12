@@ -45,9 +45,12 @@ export function searchBox(page: Page) {
   return page.getByLabel("Tìm trong bộ sưu tập");
 }
 
-/** Số hàng bài hát đang hiện. */
+/**
+ * Số hàng bài hát của bộ sưu tập đang xem — không tính các hàng «Ở bộ sưu
+ * tập khác» hiện thêm khi đang tìm.
+ */
 export async function songCount(page: Page): Promise<number> {
-  return page.locator(SONG_ROW).count();
+  return page.locator(`[data-library-list] > ${SONG_ROW}`).count();
 }
 
 /** Nút chọn bộ sưu tập. */

@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Heart, Repeat, Repeat1, Share2 } from "lucide-react";
 import { formatTime, songMeta, songVersion } from "@/lib/catalog";
 import { collectionOf } from "@/lib/library";
-import { shareLink, usePlayer, useSong } from "@/lib/player-store";
+import { shareLink, usePlayer, useSong, useUpNext } from "@/lib/player-store";
 import { ScreenHeader } from "@/components/header";
 import { Tilt } from "@/components/depth";
 import { cn } from "@/lib/utils";
@@ -176,6 +176,7 @@ export function KaraokeStage() {
                 Lời bài này chưa có trong ứng dụng. Vẫn nghe và hẹn giờ tắt nhạc
                 được như thường.
               </p>
+              <UpNext />
             </div>
           ) : (
             <div className="mx-auto max-w-2xl pb-[40vh] lg:pt-[12vh]">
@@ -223,6 +224,7 @@ export function KaraokeStage() {
                   </div>
                 );
               })}
+              <UpNext />
             </div>
           )}
         </div>
@@ -363,5 +365,34 @@ function SongActions() {
         </p>
       ) : null}
     </div>
+  );
+}
+
+/** "Tiếp theo: …" — bấm để chuyển ngay sang bài đó */
+function UpNext() {
+  const next = useUpNext();
+  const playSong = usePlayer((s) => s.playSong);
+  if (!next) return null;
+  return (
+    <button
+      type="button"
+      onClick={() => void playSong(next.id)}
+      data-up-next
+      className="press mx-auto mt-10 flex max-w-sm items-center gap-3 rounded-2xl border border-line bg-surface/80 p-2.5 pr-4 text-left shadow-song backdrop-blur-sm"
+    >
+      <span className="flex size-11 shrink-0 items-center justify-center overflow-hidden rounded-[10px] bg-sunk font-display text-[13px] font-semibold text-subtle">
+        {next.coverSrc ? (
+          <img src={next.coverSrc} alt="" className="size-full object-cover object-[50%_15%]" />
+        ) : (
+          String(next.trackNo).padStart(2, "0")
+        )}
+      </span>
+      <span className="min-w-0">
+        <span className="block font-sans text-[10px] font-bold tracking-[0.18em] text-accent uppercase">
+          Tiếp theo
+        </span>
+        <span className="block truncate font-display text-[15px] font-semibold text-ink">{next.title}</span>
+      </span>
+    </button>
   );
 }
