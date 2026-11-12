@@ -46,6 +46,7 @@ test.describe("Chức năng như các app nhạc", () => {
     });
     await openApp(page);
     await openFirstSong(page);
+    await page.getByRole("button", { name: /^Thêm thao tác cho/ }).click();
     await page.getByRole("button", { name: "Chia sẻ bài này" }).click();
     await expect(page.getByRole("status")).toHaveText("Đã chép đường link của bài");
     const link = await page.evaluate(() => navigator.clipboard.readText());

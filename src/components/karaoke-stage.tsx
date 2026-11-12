@@ -1,8 +1,9 @@
-import { useEffect, useRef, useState } from "react";
-import { Heart, Repeat, Repeat1, Share2 } from "lucide-react";
+import { useEffect, useRef } from "react";
+import { Heart, Repeat, Repeat1 } from "lucide-react";
 import { formatTime, songMeta, songVersion } from "@/lib/catalog";
 import { collectionOf } from "@/lib/library";
-import { shareLink, usePlayer, useSong, useUpNext } from "@/lib/player-store";
+import { usePlayer, useSong, useUpNext } from "@/lib/player-store";
+import { QueueButton, SongMenuButton } from "@/components/song-menu";
 import { ScreenHeader } from "@/components/header";
 import { Tilt } from "@/components/depth";
 import { cn } from "@/lib/utils";
@@ -308,30 +309,6 @@ function SongActions() {
   const toggleFavorite = usePlayer((s) => s.toggleFavorite);
   const repeat = usePlayer((s) => s.repeat);
   const cycleRepeat = usePlayer((s) => s.cycleRepeat);
-  const [toast, setToast] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (!toast) return;
-    const id = window.setTimeout(() => setToast(null), 2200);
-    return () => clearTimeout(id);
-  }, [toast]);
-
-  const share = async () => {
-    const url = shareLink(song.id);
-    const data = { title: song.title, text: `${song.title} — Chansonia`, url };
-    try {
-      if (navigator.share) {
-        await navigator.share(data);
-        return;
-      }
-      await navigator.clipboard.writeText(url);
-      setToast(t("Đã chép đường link của bài"));
-    } catch (e) {
-      // Người dùng tự đóng bảng chia sẻ thì thôi, không báo lỗi.
-      if ((e as Error)?.name !== "AbortError") setToast(t("Không chia sẻ được"));
-    }
-  };
-
   const repeatLabel =
     t(repeat === "one" ? "Lặp lại một bài" : repeat === "all" ? "Lặp lại cả danh sách" : "Không lặp lại");
   const btn = "press flex size-11 shrink-0 items-center justify-center rounded-full border";
@@ -360,14 +337,8 @@ function SongActions() {
       >
         {repeat === "one" ? <Repeat1 className="size-4" /> : <Repeat className="size-4" />}
       </button>
-      <button type="button" onClick={() => void share()} aria-label={t("Chia sẻ bài này")} title={t("Chia sẻ bài này")} className={cn(btn, off)}>
-        <Share2 className="size-4" />
-      </button>
-      {toast ? (
-        <p role="status" className="absolute top-full right-0 z-30 mt-2 rounded-full bg-ink px-3.5 py-2 font-sans text-xs whitespace-nowrap text-paper shadow-song">
-          {toast}
-        </p>
-      ) : null}
+      <QueueButton className={off} />
+      <SongMenuButton song={song} className={cn(btn, off)} />
     </div>
   );
 }
@@ -376,12 +347,12 @@ function SongActions() {
 function UpNext() {
   const { t } = useT();
   const next = useUpNext();
-  const playSong = usePlayer((s) => s.playSong);
+  const goNext = usePlayer((s) => s.next);
   if (!next) return null;
   return (
     <button
       type="button"
-      onClick={() => void playSong(next.id)}
+      onClick={() => void goNext()}
       data-up-next
       className="press mx-auto mt-10 flex max-w-sm items-center gap-3 rounded-2xl border border-line bg-surface/80 p-2.5 pr-4 text-left shadow-song backdrop-blur-sm"
     >
