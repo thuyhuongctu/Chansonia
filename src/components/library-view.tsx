@@ -118,6 +118,7 @@ export function LibraryView() {
             </h2>
             <p className="mt-0.5 font-sans text-xs text-muted">{td(col.desc)}</p>
           </div>
+          <PlayAllButton />
           <ShuffleToggle />
         </div>
 
@@ -305,11 +306,42 @@ function ShuffleToggle({ withLabel = false }: { withLabel?: boolean }) {
   );
 }
 
+/**
+ * Nút «Phát tất cả»: ở mục Bài hát là cả bộ sưu tập (theo thứ tự, hoặc ngẫu
+ * nhiên nếu đang bật), ở mục ♥ là toàn bộ bài yêu thích.
+ */
+function PlayAllButton({ withLabel = false }: { withLabel?: boolean }) {
+  const { t } = useT();
+  const collectionId = usePlayer((s) => s.collectionId);
+  const tab = usePlayer((s) => s.libraryTab);
+  const favorites = usePlayer((s) => s.favorites);
+  const playCollection = usePlayer((s) => s.playCollection);
+  const playList = usePlayer((s) => s.playList);
+  const liked = tab === "favorites";
+  const disabled = liked ? favorites.length === 0 : COLLECTION_BY_ID[collectionId].songs.length === 0;
+  const label = liked ? t("Phát tất cả bài yêu thích") : t("Phát tất cả");
+  return (
+    <button
+      type="button"
+      disabled={disabled}
+      data-play-all
+      onClick={() => void (liked ? playList(favorites) : playCollection(collectionId))}
+      aria-label={label}
+      title={label}
+      className={cn(
+        "press flex h-11 shrink-0 items-center justify-center gap-2 rounded-full bg-accent font-sans text-sm font-semibold text-on-accent shadow-song disabled:opacity-40",
+        withLabel ? "px-5" : "w-11",
+      )}
+    >
+      <Play className="size-4 fill-current" />
+      {withLabel ? <span>{t("Phát tất cả")}</span> : null}
+    </button>
+  );
+}
+
 /** Cột trái trên máy tính: ảnh, tên và mô tả bộ sưu tập, nút phát từ đầu */
 function CollectionPanel({ col }: { col: Collection }) {
   const { t, td } = useT();
-  const playSong = usePlayer((s) => s.playSong);
-  const setView = usePlayer((s) => s.setView);
   return (
     <aside className="hidden min-h-0 flex-col overflow-y-auto pt-1 lg:flex">
       <Tilt
@@ -339,17 +371,7 @@ function CollectionPanel({ col }: { col: Collection }) {
       </h2>
       <p className="mt-1.5 font-sans text-sm text-muted">{td(col.desc)}</p>
       <div className="mt-5 flex gap-2">
-        <button
-          type="button"
-          onClick={() => {
-            setView("player");
-            void playSong(col.songs[0].id);
-          }}
-          className="press flex h-11 items-center gap-2 rounded-full bg-accent px-5 font-sans text-sm font-semibold text-white shadow-song"
-        >
-          <Play className="size-4 fill-current" />
-          {t("Phát từ đầu")}
-        </button>
+        <PlayAllButton withLabel />
         <ShuffleToggle withLabel />
       </div>
     </aside>

@@ -86,6 +86,8 @@ const UI: Record<string, Row> = {
   "Ngẫu nhiên": { en: "Shuffle", fr: "Aléatoire" },
   "{s} bài hát · {v} video": { en: "{s} songs · {v} videos", fr: "{s} chansons · {v} clips" },
   "Phát từ đầu": { en: "Play from start", fr: "Tout écouter" },
+  "Phát tất cả": { en: "Play all", fr: "Tout lire" },
+  "Phát tất cả bài yêu thích": { en: "Play all favourites", fr: "Lire tous les favoris" },
   "2 phiên bản": { en: "2 versions", fr: "2 versions" },
   "Đang phát": { en: "Now playing", fr: "En lecture" },
   "Tạm dừng": { en: "Pause", fr: "Pause" },

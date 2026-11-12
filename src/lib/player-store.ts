@@ -9,6 +9,7 @@ import {
 } from "@/lib/catalog";
 import {
   ALL_SONGS,
+  COLLECTIONS,
   SONG_INDEX,
   collectionOf,
   type CollectionId,
@@ -210,6 +211,8 @@ type PlayerState = {
   removeFromQueue: (index: number) => void;
   moveInQueue: (from: number, to: number) => void;
   clearQueue: () => void;
+  /** Phát tất cả bài của một bộ sưu tập (theo thứ tự, hoặc ngẫu nhiên nếu đang bật) */
+  playCollection: (id: CollectionId) => Promise<void>;
   /** Phát một danh sách: bài đầu phát ngay, các bài sau vào hàng chờ */
   playList: (ids: string[]) => Promise<void>;
   createPlaylist: (name: string) => string;
@@ -652,6 +655,16 @@ export const usePlayer = create<PlayerState>((set, get) => ({
   clearQueue: () => {
     set({ queue: [] });
     writeJson(QUEUE_KEY, []);
+  },
+
+  playCollection: async (id) => {
+    const list = COLLECTIONS.find((c) => c.id === id)?.songs.map((s) => s.id) ?? [];
+    if (!list.length) return;
+    const first = get().playOrder === "shuffle" ? list[Math.floor(Math.random() * list.length)] : list[0];
+    set({ view: "player", collectionId: id });
+    await get().playSong(first);
+    // Túi xáo trộn mới cho cả bộ sưu tập, trừ bài vừa phát
+    if (get().playOrder === "shuffle") set({ shuffleBag: shuffle(list.filter((x) => x !== first)), history: [] });
   },
 
   playList: async (ids) => {
