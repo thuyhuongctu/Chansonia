@@ -17,7 +17,39 @@ import * as engine from "@/lib/audio-engine";
 import { resolveAudio } from "@/lib/audio-source";
 
 export type PlayOrder = "sequential" | "shuffle";
-export type LibraryTab = "songs" | "videos";
+export type LibraryTab = "songs" | "videos" | "favorites";
+/** Lặp lại: tắt · cả bộ sưu tập · một bài */
+export type RepeatMode = "off" | "all" | "one";
+
+const FAV_KEY = "chansonia-favorites";
+
+function readFavorites(): string[] {
+  try {
+    const v = JSON.parse(localStorage.getItem(FAV_KEY) ?? "[]");
+    return Array.isArray(v) ? v.filter((id) => typeof id === "string" && SONG_INDEX[id]) : [];
+  } catch {
+    return [];
+  }
+}
+
+/** Bài được mở thẳng từ đường link chia sẻ (…?bai=ma-bai) */
+function songFromLink(): string | null {
+  try {
+    const id = new URLSearchParams(location.search).get("bai");
+    return id && SONG_INDEX[id] ? id : null;
+  } catch {
+    return null;
+  }
+}
+
+/** Đường link chia sẻ một bài: mở app là vào thẳng bài ấy */
+export function shareLink(songId: string): string {
+  const url = new URL(location.href);
+  url.search = "";
+  url.hash = "";
+  url.searchParams.set("bai", songId);
+  return url.toString();
+}
 
 /** Các mức hẹn giờ tắt nhạc, tính bằng phút */
 export const SLEEP_PRESETS = [5, 15, 30, 45, 60] as const;
@@ -48,6 +80,9 @@ type PlayerState = {
 
   /** "sequential" = lần lượt trong bộ sưu tập, "shuffle" = ngẫu nhiên trong bộ sưu tập */
   playOrder: PlayOrder;
+  repeat: RepeatMode;
+  /** Mã các bài được đánh dấu yêu thích, mới nhất trước */
+  favorites: string[];
   /** Các bài còn lại trong lượt xáo trộn hiện tại (không lặp lại cho tới khi hết vòng) */
   shuffleBag: string[];
   /** Lịch sử các bài đã phát, dùng để lùi bài khi đang ở chế độ ngẫu nhiên */
@@ -70,6 +105,8 @@ type PlayerState = {
   setVersion: (i: number) => Promise<void>;
   setMode: (m: ViewMode) => void;
   setPlayOrder: (order: PlayOrder) => void;
+  cycleRepeat: () => void;
+  toggleFavorite: (id: string) => void;
   play: () => Promise<void>;
   pause: () => void;
   toggle: () => void;
@@ -144,7 +181,18 @@ function save(state: { songId: string; versionIndex: number }, ms: number, force
   }
 }
 
-const saved = restore();
+const linked = songFromLink();
+const saved = linked ? { songId: linked, version: 0, ms: 0 } : restore();
+if (linked) {
+  // Bỏ ?bai=… khỏi thanh địa chỉ để tải lại trang không mở lại bài cũ.
+  try {
+    const url = new URL(location.href);
+    url.searchParams.delete("bai");
+    history.replaceState(null, "", url.toString());
+  } catch {
+    /* bỏ qua */
+  }
+}
 const savedSong = songOf(saved.songId);
 const savedVersion = songVersion(savedSong, saved.version);
 const savedMs = Math.min(saved.ms, savedVersion.durationMs || saved.ms);
@@ -158,7 +206,7 @@ function indices(song: Song, version: number, ms: number) {
 }
 
 export const usePlayer = create<PlayerState>((set, get) => ({
-  view: "library",
+  view: linked ? "player" : "library",
   songId: savedSong.id,
   versionIndex: saved.version,
   mode: "karaoke",
@@ -173,6 +221,8 @@ export const usePlayer = create<PlayerState>((set, get) => ({
   video: null,
 
   playOrder: "sequential",
+  repeat: "off",
+  favorites: readFavorites(),
   shuffleBag: [],
   history: [],
 
@@ -241,6 +291,22 @@ export const usePlayer = create<PlayerState>((set, get) => ({
 
   setMode: (mode) => set({ mode }),
 
+  cycleRepeat: () => {
+    const order: RepeatMode[] = ["off", "all", "one"];
+    set({ repeat: order[(order.indexOf(get().repeat) + 1) % order.length] });
+  },
+
+  toggleFavorite: (id) => {
+    const has = get().favorites.includes(id);
+    const favorites = has ? get().favorites.filter((x) => x !== id) : [id, ...get().favorites];
+    set({ favorites });
+    try {
+      localStorage.setItem(FAV_KEY, JSON.stringify(favorites));
+    } catch {
+      /* không ghi được thì giữ trong phiên này */
+    }
+  },
+
   setPlayOrder: (order) => {
     if (order === "shuffle") {
       const rest = siblings(get().songId).filter((id) => id !== get().songId);
@@ -260,6 +326,18 @@ export const usePlayer = create<PlayerState>((set, get) => ({
       set({ playing: false });
       cancelAnimationFrame(raf);
       save(get(), 0, true);
+      const { repeat, playOrder, songId } = get();
+      if (repeat === "one") {
+        get().seek(0);
+        void get().play();
+        return;
+      }
+      // Không lặp và đang phát lần lượt: hết bài cuối của bộ sưu tập thì dừng.
+      const list = siblings(songId);
+      if (repeat === "off" && playOrder === "sequential" && list.indexOf(songId) === list.length - 1) {
+        get().seek(0);
+        return;
+      }
       void get().next();
     });
     await engine.play();

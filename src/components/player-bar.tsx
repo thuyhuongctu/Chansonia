@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
-import { Pause, Play, Shuffle, SkipBack, SkipForward } from "lucide-react";
+import { Pause, Play, Repeat, Repeat1, Shuffle, SkipBack, SkipForward } from "lucide-react";
 import { collectionOf } from "@/lib/library";
 import { usePlayer, useSong } from "@/lib/player-store";
 import { SleepTimerButton, useSleepRemaining } from "@/components/sleep-timer";
@@ -27,6 +27,8 @@ export function PlayerBar() {
   const prev = usePlayer((s) => s.prev);
   const playOrder = usePlayer((s) => s.playOrder);
   const setPlayOrder = usePlayer((s) => s.setPlayOrder);
+  const repeat = usePlayer((s) => s.repeat);
+  const cycleRepeat = usePlayer((s) => s.cycleRepeat);
   const sleepLeft = useSleepRemaining();
   const barRef = useRef<HTMLDivElement>(null);
 
@@ -57,7 +59,7 @@ export function PlayerBar() {
       className="pb-safe-bar relative z-20 shrink-0 border-t border-line bg-surface px-4 pt-1.5 lg:px-6 lg:pt-2.5"
       data-player-bar
     >
-      <div className="mx-auto grid max-w-6xl grid-cols-[minmax(0,1fr)_auto] items-center gap-x-2 [grid-template-areas:'scrub_scrub'_'info_ctrl'] lg:grid-cols-[300px_minmax(0,1fr)_300px] lg:gap-x-6 lg:[grid-template-areas:'info_scrub_ctrl']">
+      <div className="mx-auto grid max-w-6xl grid-cols-[minmax(0,1fr)_auto] items-center gap-x-2 [grid-template-areas:'scrub_scrub'_'info_ctrl'] lg:grid-cols-[300px_minmax(0,1fr)_350px] lg:gap-x-6 lg:[grid-template-areas:'info_scrub_ctrl']">
         <div className="[grid-area:scrub]">
           <Scrubber />
         </div>
@@ -96,6 +98,15 @@ export function PlayerBar() {
             className="hidden lg:flex"
           >
             <Shuffle className="size-4" />
+          </IconButton>
+
+          <IconButton
+            label={repeat === "one" ? "Lặp lại một bài" : repeat === "all" ? "Lặp lại cả danh sách" : "Không lặp lại"}
+            onClick={cycleRepeat}
+            pressed={repeat !== "off"}
+            className="hidden lg:flex"
+          >
+            {repeat === "one" ? <Repeat1 className="size-4" /> : <Repeat className="size-4" />}
           </IconButton>
 
           <IconButton label="Bài trước" onClick={() => void prev()}>
