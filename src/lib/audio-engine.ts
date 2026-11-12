@@ -85,3 +85,12 @@ export function onEnded(cb: () => void) {
   const a = ensure();
   a.onended = cb;
 }
+
+/** Tốc độ phát (0.5–2); giữ cả khi đổi sang tệp khác */
+export function setRate(r: number) {
+  const a = ensure();
+  a.defaultPlaybackRate = r;
+  a.playbackRate = r;
+  // Giữ cao độ giọng hát khi nghe nhanh/chậm
+  a.preservesPitch = true;
+}

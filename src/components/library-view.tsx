@@ -1,5 +1,7 @@
 import { useMemo } from "react";
 import { ArrowUpRight, Play, Search, Shuffle, X } from "lucide-react";
+import { SongMenuButton } from "@/components/song-menu";
+import { MineView } from "@/components/mine-view";
 import { ARTIST } from "@/lib/artist";
 import { Tilt } from "@/components/depth";
 import { formatTime, songMeta, type Song } from "@/lib/catalog";
@@ -98,7 +100,9 @@ export function LibraryView() {
   );
 
   const empty =
-    tab === "songs" ? songs.length === 0 && elsewhere.length === 0 : tab === "videos" ? videos.length === 0 : liked.length === 0;
+    tab === "mine"
+      ? false
+      : tab === "songs" ? songs.length === 0 && elsewhere.length === 0 : tab === "videos" ? videos.length === 0 : liked.length === 0;
 
   return (
     <div className="view-enter mx-auto flex min-h-0 w-full max-w-6xl flex-1 flex-col lg:grid lg:grid-cols-[360px_minmax(0,1fr)] lg:gap-8 lg:px-6 lg:pb-4">
@@ -150,6 +154,7 @@ export function LibraryView() {
                 ["songs", t("Bài hát · {n}", { n: col.songs.length })],
                 ["videos", t("Video · {n}", { n: col.videos.length })],
                 ["favorites", `♥ ${favorites.length}`],
+                ["mine", t("Của tôi")],
               ] as const
             ).map(([id, label]) => (
               <button
@@ -174,7 +179,9 @@ export function LibraryView() {
           className="min-h-0 flex-1 overflow-y-auto px-4 pt-1 pb-2 lg:px-0"
           data-library-list
         >
-          {tab === "songs"
+          {tab === "mine" ? (
+            <MineView />
+          ) : tab === "songs"
             ? (
                 <>
                   {songs.map(({ song, index }) => (
@@ -349,7 +356,7 @@ function CollectionPanel({ col }: { col: Collection }) {
   );
 }
 
-function SongRow({
+export function SongRow({
   song,
   index,
   showCollection = false,
@@ -371,13 +378,14 @@ function SongRow({
     (liked && !showCollection ? " · ♥" : "");
 
   return (
+    <div className="flex items-center border-b border-line" data-row>
     <button
       type="button"
       onClick={() => void openSong(song.id)}
       data-song-id={song.id}
       data-current={active || undefined}
       aria-current={active ? "true" : undefined}
-      className="row grid w-full grid-cols-[44px_minmax(0,1fr)_auto] items-center gap-3 border-b border-line py-2 text-left"
+      className="row grid min-w-0 flex-1 grid-cols-[44px_minmax(0,1fr)_auto] items-center gap-3 py-2 text-left"
     >
       <Thumb
         src={song.coverSrc}
@@ -402,6 +410,8 @@ function SongRow({
         {song.durationMs ? formatTime(song.durationMs) : ""}
       </span>
     </button>
+    <SongMenuButton song={song} className="-mr-2" />
+    </div>
   );
 }
 

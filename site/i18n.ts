@@ -61,10 +61,11 @@ export const T: Record<Lang, Dict> = {
     "art.kicker": "Nghệ sĩ",
     "art.role": "Giảng viên & Nhà nghiên cứu · Người viết bài hát",
     "art.p1":
-      "Một mini song-cycle gồm sáu chương về sự vắng mặt, sự trưởng thành, và những giấc mơ thay hình đổi dạng.",
+      "Je m'appelle Hương là nghệ danh của Đỗ Thùy Hương — giảng viên, nhà nghiên cứu và người viết bài hát từ đồng bằng sông Cửu Long. Hương viết bằng tiếng Việt, tiếng Anh và tiếng Pháp, về gia đình, ký ức và những dòng sông.",
     "art.p2":
-      "Album được sáng tác trong bảy ngày, từ 07 đến 13 tháng 8 năm 2026, xoay quanh ngọn đèn còn cháy, dòng sông chở đêm đi, và hộp màu của một cô bé từng muốn trở thành họa sĩ.",
-    "art.p3": "Hai mươi sáu năm sau, cô bé ấy vẽ tiếp giấc mơ của mình — lần này bằng những dòng code.",
+      "«La lampe, le fleuve et les couleurs» là mini song-cycle sáu chương về sự vắng mặt, sự trưởng thành và những giấc mơ thay hình đổi dạng — viết trong bảy ngày, từ 07 đến 13/8/2026, quanh ngọn đèn còn cháy, dòng sông chở đêm đi và hộp màu của một cô bé từng muốn làm họa sĩ.",
+    "art.p3":
+      "Chansonia gom các bài hát ấy cùng nhạc BizOnland, phim M-AIDA và bài hát của game «Vân Đồn Đệ Nhất Thương Cảng» về một nơi: nghe với lời chạy theo nhạc, xem MV, và trích dẫn được bằng mã DOI. Hai mươi sáu năm sau, cô bé ấy vẽ tiếp giấc mơ của mình — lần này bằng những dòng code.",
     "cite.kicker": "Trích dẫn",
     "cite.title": "Dùng Chansonia trong nghiên cứu hay bài giảng?",
     "cite.lead":
@@ -128,10 +129,11 @@ export const T: Record<Lang, Dict> = {
     "art.kicker": "Artist",
     "art.role": "Lecturer & Researcher · Songwriter",
     "art.p1":
-      "A mini song-cycle in six chapters about absence, growing up, and dreams that change their shape.",
+      "Je m'appelle Hương is the stage name of Đỗ Thùy Hương — lecturer, researcher and songwriter from the Mekong Delta. She writes in Vietnamese, English and French, about family, memory and rivers.",
     "art.p2":
-      "Written in seven days, 7–13 August 2026, around a lamp still burning, a river carrying the night away, and the colour box of a girl who once wanted to be a painter.",
-    "art.p3": "Twenty-six years later she paints the same dream, this time in lines of code.",
+      "«La lampe, le fleuve et les couleurs» is a six-chapter mini song-cycle about absence, growing up and dreams that change their shape — written in seven days, 7–13 August 2026, around a lamp still burning, a river carrying the night away and the colour box of a girl who once wanted to be a painter.",
+    "art.p3":
+      "Chansonia brings those songs together with BizOnland's music, the M-AIDA films and the song of the game «Van Don – Vietnam’s First Trading Port»: listen with lyrics that follow the music, watch the videos, and cite it all through a DOI. Twenty-six years later, that girl paints the same dream — this time in lines of code.",
     "cite.kicker": "Cite",
     "cite.title": "Using Chansonia in research or teaching?",
     "cite.lead": "Chansonia is archived on Zenodo with a permanent DOI. Please cite it as below.",
@@ -194,10 +196,11 @@ export const T: Record<Lang, Dict> = {
     "art.kicker": "Artiste",
     "art.role": "Enseignante-chercheuse · Autrice-compositrice",
     "art.p1":
-      "Un mini cycle de chansons en six chapitres sur l'absence, le fait de grandir et les rêves qui changent de forme.",
+      "Je m'appelle Hương est le nom de scène de Đỗ Thùy Hương — enseignante-chercheuse et autrice-compositrice du delta du Mékong. Elle écrit en vietnamien, en anglais et en français, sur la famille, la mémoire et les fleuves.",
     "art.p2":
-      "Écrit en sept jours, du 7 au 13 août 2026, autour d'une lampe qui brûle encore, d'un fleuve qui emporte la nuit et de la boîte de couleurs d'une fillette qui voulait devenir peintre.",
-    "art.p3": "Vingt-six ans plus tard, elle peint le même rêve — cette fois en lignes de code.",
+      "«La lampe, le fleuve et les couleurs» est un mini cycle de chansons en six chapitres sur l'absence, le fait de grandir et les rêves qui changent de forme — écrit en sept jours, du 7 au 13 août 2026, autour d'une lampe qui brûle encore, d'un fleuve qui emporte la nuit et de la boîte de couleurs d'une fillette qui voulait devenir peintre.",
+    "art.p3":
+      "Chansonia réunit ces chansons, la musique de BizOnland, les films M-AIDA et la chanson du jeu «Vân Đồn – premier port de commerce du Viêt Nam» : écouter avec des paroles qui suivent la musique, regarder les clips, et tout citer grâce à un DOI. Vingt-six ans plus tard, la fillette peint le même rêve — cette fois en lignes de code.",
     "cite.kicker": "Citer",
     "cite.title": "Vous utilisez Chansonia en recherche ou en cours ?",
     "cite.lead": "Chansonia est archivée sur Zenodo avec un DOI pérenne. Merci de la citer ainsi.",

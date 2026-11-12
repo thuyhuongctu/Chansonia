@@ -51,7 +51,7 @@ export function searchBox(page: Page) {
  * tập khác» hiện thêm khi đang tìm.
  */
 export async function songCount(page: Page): Promise<number> {
-  return page.locator(`[data-library-list] > ${SONG_ROW}`).count();
+  return page.locator(`[data-library-list] > [data-row] > ${SONG_ROW}`).count();
 }
 
 /** Nút chọn bộ sưu tập. */

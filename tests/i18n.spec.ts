@@ -35,7 +35,7 @@ test.describe("Ngôn ngữ giao diện", () => {
   test("tìm bằng tiếng Anh vẫn ra bài", async ({ page }) => {
     await page.goto("/");
     await page.getByLabel("Search the collection").fill("french");
-    await expect(page.locator(`[data-library-list] > ${SONG_ROW}`).first()).toBeVisible();
+    await expect(page.locator(`[data-library-list] > [data-row] > ${SONG_ROW}`).first()).toBeVisible();
   });
 
   test("màn hình nghe bằng tiếng Anh: tên phần và nút", async ({ page }) => {

@@ -5,6 +5,7 @@ import { KaraokeStage } from "@/components/karaoke-stage";
 import { VideoView } from "@/components/video-view";
 import { PlayerBar } from "@/components/player-bar";
 import { Splash } from "@/components/splash";
+import { Toaster } from "@/components/song-menu";
 import { MapBackdrop } from "@/components/depth";
 import { usePlayer } from "@/lib/player-store";
 import { useMediaControls } from "@/lib/media-controls";
@@ -45,6 +46,7 @@ export default function App() {
       )}
 
       <PlayerBar />
+      <Toaster />
       <Splash />
     </div>
   );
