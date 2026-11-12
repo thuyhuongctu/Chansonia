@@ -24,4 +24,6 @@ for (const dir of [app, site]) {
 
 rmSync(join(site, "app"), { recursive: true, force: true });
 cpSync(app, join(site, "app"), { recursive: true });
+// Trang chính sách quyền riêng tư của bản Google Play cũng có ở địa chỉ gốc (dist-site/chinh-sach.html).
+cpSync(join(app, "chinh-sach.html"), join(site, "chinh-sach.html"));
 console.log("Đã ghép: dist-site/ (giới thiệu) + dist-site/app/ (app nghe nhạc)");
