@@ -27,7 +27,8 @@ export const ARTIST = {
   ] as SocialLink[],
 
   contactEmail: "thuyhuongctu@gmail.com",
-  portrait: "brand/artist.jpg",
+  /** Chân dung (cắt riêng khuôn mặt từ tờ thiết kế nhân vật brand/artist.jpg) */
+  portrait: "brand/artist-face.jpg",
 } as const;
 
 export const ALBUM = {
