@@ -1,6 +1,6 @@
 /**
- * Nội dung chữ của trang giới thiệu, ba thứ tiếng: Việt · Anh · Pháp.
- * Sửa câu chữ ở đây; bố cục nằm trong index.html, kiểu dáng trong style.css.
+ * Chữ của màn hình «Giới thiệu» trong app (trước là trang giới thiệu riêng), ba thứ tiếng.
+ * Sửa câu chữ ở đây; bố cục nằm trong src/components/about-view.tsx.
  */
 
 export type Lang = "vi" | "en" | "fr";

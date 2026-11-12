@@ -18,17 +18,27 @@ export function LibraryHeader() {
   return (
     <header className="pt-safe mx-auto flex w-full max-w-6xl shrink-0 flex-col gap-2 px-4 pb-2.5 lg:flex-row lg:items-center lg:gap-6 lg:px-6">
       <div className="flex min-w-0 flex-1 items-center gap-2.5">
-        <span className="logo-3d shrink-0 overflow-hidden rounded-[10px]">
-          <Logo size={36} />
-        </span>
-        <div className="min-w-0 flex-1">
-          <h1 className="font-display text-base leading-tight font-semibold text-ink">
-            Chansonia
-          </h1>
-          <p className="truncate font-sans text-[11px] text-muted">
-            {ARTIST.name} · {t("bài hát và phim")}
-          </p>
-        </div>
+        <h1 className="min-w-0 flex-1">
+          <button
+            type="button"
+            onClick={() => setView("about")}
+            title={t("Giới thiệu Chansonia")}
+            data-about-open
+            className="press flex w-full min-w-0 items-center gap-2.5 text-left"
+          >
+            <span className="logo-3d shrink-0 overflow-hidden rounded-[10px]">
+              <Logo size={36} />
+            </span>
+            <span className="min-w-0 flex-1">
+              <span className="block font-display text-base leading-tight font-semibold text-ink">
+                Chansonia
+              </span>
+              <span className="block truncate font-sans text-[11px] font-normal text-muted">
+                {ARTIST.name} · {t("bài hát và phim")}
+              </span>
+            </span>
+          </button>
+        </h1>
         <button
           type="button"
           onClick={() => setView("artist")}

@@ -159,6 +159,7 @@ const UI: Record<string, Row> = {
   // Nghệ sĩ
   "Bài hát": { en: "Songs", fr: "Chansons" },
   "Ảnh": { en: "Photos", fr: "Photos" },
+  "Giới thiệu Chansonia": { en: "About Chansonia", fr: "À propos de Chansonia" },
   // Hàng chờ, playlist, của tôi
   "Bài đã có trong «{n}»": { en: "Already in «{n}»", fr: "Déjà dans «{n}»" },
   "Bấm lần nữa để xoá": { en: "Tap again to delete", fr: "Touchez encore pour supprimer" },

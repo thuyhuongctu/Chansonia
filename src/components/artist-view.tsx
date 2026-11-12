@@ -4,11 +4,13 @@ import { ARTIST, ARTIST_PHOTOS, COPYRIGHT_HOLDER, COPYRIGHT_YEAR, LICENSE_NOTE }
 import { useT } from "@/lib/i18n";
 import { COLLECTIONS, TOTAL_SONGS, TOTAL_VIDEOS } from "@/lib/library";
 import { ScreenHeader } from "@/components/header";
+import { usePlayer } from "@/lib/player-store";
 import { Tilt } from "@/components/depth";
 
 /** Trang nghệ sĩ — chân dung, số liệu thư viện, tiểu sử, DOI và các liên kết. */
 export function ArtistView() {
   const { t } = useT();
+  const setView = usePlayer((s) => s.setView);
   const initials = ARTIST.realName
     .split(/\s+/)
     .slice(-2)
@@ -86,6 +88,14 @@ export function ArtistView() {
           </div>
 
           <div className="mt-3.5 flex flex-col gap-2">
+            <button
+              type="button"
+              onClick={() => setView("about")}
+              className="press flex h-12 items-center gap-2 rounded-full border border-accent bg-accent-soft px-4 text-left font-sans text-[13px] font-semibold text-accent"
+            >
+              {t("Giới thiệu Chansonia")}
+              <ArrowUpRight className="ml-auto size-4 shrink-0" aria-hidden />
+            </button>
             <LinkPill href={`https://doi.org/${ARTIST.doi}`}>
               <span className="font-sans text-[10px] font-bold tracking-[0.14em] text-accent-2">
                 DOI

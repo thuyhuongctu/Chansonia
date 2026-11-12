@@ -45,6 +45,8 @@ export default defineConfig({
         origin,
         localStorage: [
           { name: "chansonia-ui-lang", value: "vi" },
+          // Lần đầu mở app là màn hình «Giới thiệu»; bộ kiểm thử bắt đầu ở thư viện.
+          { name: "chansonia-about-seen", value: "1" },
         ],
       })),
     },
