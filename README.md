@@ -46,8 +46,8 @@ Total running time 32:35.
 
 - Opens on a short **sunrise splash**: the Mekong bends into a C and the sun
   rises at the river mouth — the new Chansonia logo.
-- Groups the library into **three collections** — *La maison de Madam Hương*,
-  *BizOnland* and *M-AIDA* — each with a **Songs** and a **Videos** list of compact
+- Groups the library into **four collections** — *La maison de Madam Hương*,
+  *BizOnland*, *M-AIDA* and *Van Don – Vietnam’s First Trading Port* — each with a **Songs** and a **Videos** list of compact
   rows. The album tracks play from the app; BizOn and M-AIDA songs, the extra
   Hương singles and the films stream from `jemappellehuong.com` and
   `bizonland.com` (see [`src/lib/library.ts`](src/lib/library.ts)).
@@ -65,6 +65,15 @@ Total running time 32:35.
 - **Sleep timer** as a bottom sheet with 5 / 15 / 30 / 45 / 60-minute presets;
   the remaining time shows in the player bar.
 - Remembers the last song and position between visits.
+- **Queue**: every song has a ⋯ menu with *Play next* and *Add to queue*; the
+  queue sheet in the player reorders, removes and clears songs, and *Next*
+  always takes the queue first.
+- **Playlists** of your own: create, rename, delete, add from the ⋯ menu, play
+  a whole playlist. **Recently played** and **Most played** are recorded on the
+  device, under the *Mine* tab, and can be cleared.
+- **Playback speed** 0.75× / 1× / 1.25× / 1.5× (pitch kept), remembered.
+- A **refresh** button in the header, for the installed app that has no
+  address bar.
 - Artist page with library statistics, the Zenodo **DOI** and links.
 - **English by default**, with Vietnamese and French one tap away (the EN · VI ·
   FR button); the choice is remembered and shared with the introduction page.

@@ -17,12 +17,65 @@ import * as engine from "@/lib/audio-engine";
 import { resolveAudio } from "@/lib/audio-source";
 
 export type PlayOrder = "sequential" | "shuffle";
-export type LibraryTab = "songs" | "videos" | "favorites";
+export type LibraryTab = "songs" | "videos" | "favorites" | "mine";
 /** Lặp lại: tắt · cả bộ sưu tập · một bài */
 export type RepeatMode = "off" | "all" | "one";
 
 const FAV_KEY = "chansonia-favorites";
 const VOL_KEY = "chansonia-volume";
+const QUEUE_KEY = "chansonia-queue";
+const LISTS_KEY = "chansonia-playlists";
+const RECENT_KEY = "chansonia-recent";
+const PLAYS_KEY = "chansonia-plays";
+const RATE_KEY = "chansonia-rate";
+
+/** Các mức tốc độ phát */
+export const RATES = [0.75, 1, 1.25, 1.5] as const;
+/** Số bài giữ trong mục «Nghe gần đây» */
+const RECENT_MAX = 20;
+
+export type Playlist = { id: string; name: string; songs: string[] };
+
+function readJson<T>(key: string, fallback: T): T {
+  try {
+    const v = JSON.parse(localStorage.getItem(key) ?? "null");
+    return v ?? fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+function writeJson(key: string, value: unknown) {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch {
+    /* không ghi được thì giữ trong phiên này */
+  }
+}
+
+const knownIds = (v: unknown): string[] =>
+  Array.isArray(v) ? v.filter((id): id is string => typeof id === "string" && Boolean(SONG_INDEX[id])) : [];
+
+function readPlaylists(): Playlist[] {
+  const v = readJson<unknown>(LISTS_KEY, []);
+  if (!Array.isArray(v)) return [];
+  return v
+    .filter((p) => p && typeof p.id === "string" && typeof p.name === "string")
+    .map((p) => ({ id: p.id, name: p.name.slice(0, 60), songs: knownIds(p.songs) }));
+}
+
+function readPlays(): Record<string, number> {
+  const v = readJson<Record<string, unknown>>(PLAYS_KEY, {});
+  const out: Record<string, number> = {};
+  if (v && typeof v === "object")
+    for (const [id, n] of Object.entries(v)) if (SONG_INDEX[id] && Number(n) > 0) out[id] = Math.floor(Number(n));
+  return out;
+}
+
+function readRate(): number {
+  const r = Number(readJson<unknown>(RATE_KEY, 1));
+  return (RATES as readonly number[]).includes(r) ? r : 1;
+}
 
 function readVolume(): number {
   try {
@@ -105,6 +158,17 @@ type PlayerState = {
   /** Lịch sử các bài đã phát, dùng để lùi bài khi đang ở chế độ ngẫu nhiên */
   history: string[];
 
+  /** Hàng chờ: các bài người nghe tự xếp, phát trước bài kế trong bộ sưu tập */
+  queue: string[];
+  /** Playlist người nghe tự tạo */
+  playlists: Playlist[];
+  /** Nghe gần đây, mới nhất trước */
+  recent: string[];
+  /** Số lần đã phát mỗi bài */
+  plays: Record<string, number>;
+  /** Tốc độ phát */
+  rate: number;
+
   /** Số phút đã chọn cho hẹn giờ tắt nhạc */
   sleepMinutes: number;
   /** Thời điểm (epoch ms) hẹn giờ sẽ tắt nhạc — null nghĩa là chưa bật */
@@ -138,6 +202,24 @@ type PlayerState = {
   setSleepMinutes: (minutes: number) => void;
   startSleepTimer: () => void;
   cancelSleepTimer: () => void;
+
+  /** Chen bài vào đầu hàng chờ */
+  playNext: (id: string) => void;
+  /** Thêm bài vào cuối hàng chờ */
+  addToQueue: (id: string) => void;
+  removeFromQueue: (index: number) => void;
+  moveInQueue: (from: number, to: number) => void;
+  clearQueue: () => void;
+  /** Phát một danh sách: bài đầu phát ngay, các bài sau vào hàng chờ */
+  playList: (ids: string[]) => Promise<void>;
+  createPlaylist: (name: string) => string;
+  renamePlaylist: (id: string, name: string) => void;
+  deletePlaylist: (id: string) => void;
+  /** Thêm bài vào playlist; trả về false nếu bài đã có sẵn */
+  addToPlaylist: (playlistId: string, songId: string) => boolean;
+  removeFromPlaylist: (playlistId: string, songId: string) => void;
+  clearRecent: () => void;
+  setRate: (r: number) => void;
 };
 
 let raf = 0;
@@ -253,6 +335,12 @@ export const usePlayer = create<PlayerState>((set, get) => ({
   sleepMinutes: SLEEP_TIMER_DEFAULT_MINUTES,
   sleepEndsAt: null,
 
+  queue: knownIds(readJson(QUEUE_KEY, [])),
+  playlists: readPlaylists(),
+  recent: knownIds(readJson(RECENT_KEY, [])).slice(0, RECENT_MAX),
+  plays: readPlays(),
+  rate: readRate(),
+
   setView: (view) => set({ view }),
 
   setCollection: (collectionId) => set({ collectionId, query: "" }),
@@ -294,6 +382,11 @@ export const usePlayer = create<PlayerState>((set, get) => ({
       ...(sameCollection ? {} : { shuffleBag: [], history: [] }),
     });
     save(get(), 0, true);
+    const recent = [song.id, ...get().recent.filter((x) => x !== song.id)].slice(0, RECENT_MAX);
+    const plays = { ...get().plays, [song.id]: (get().plays[song.id] ?? 0) + 1 };
+    set({ recent, plays });
+    writeJson(RECENT_KEY, recent);
+    writeJson(PLAYS_KEY, plays);
     await get().play();
   },
 
@@ -368,6 +461,7 @@ export const usePlayer = create<PlayerState>((set, get) => ({
     // Tệp vừa mở mà đã có vị trí (mở lại app, hoặc tua khi chưa phát) — nhảy tới đó.
     if (fresh && get().currentMs > 0) engine.seek(get().currentMs);
     engine.setVolume(get().muted ? 0 : get().volume);
+    engine.setRate(get().rate);
     engine.onStatus((st) => {
       if (st === "error") {
         engine.pause();
@@ -397,7 +491,12 @@ export const usePlayer = create<PlayerState>((set, get) => ({
       }
       // Không lặp và đang phát lần lượt: hết bài cuối của bộ sưu tập thì dừng.
       const list = siblings(songId);
-      if (repeat === "off" && playOrder === "sequential" && list.indexOf(songId) === list.length - 1) {
+      if (
+        get().queue.length === 0 &&
+        repeat === "off" &&
+        playOrder === "sequential" &&
+        list.indexOf(songId) === list.length - 1
+      ) {
         get().seek(0);
         return;
       }
@@ -449,6 +548,15 @@ export const usePlayer = create<PlayerState>((set, get) => ({
     const currentId = get().songId;
     const list = siblings(currentId);
     const history = [...get().history, currentId].slice(-list.length);
+
+    // Hàng chờ đi trước: bài người nghe tự xếp phát trước bài kế trong bộ sưu tập.
+    const [queued, ...rest] = get().queue;
+    if (queued) {
+      set({ history, queue: rest });
+      writeJson(QUEUE_KEY, rest);
+      await get().playSong(queued);
+      return;
+    }
 
     if (get().playOrder === "sequential" || list.length < 2) {
       const i = list.indexOf(currentId);
@@ -513,6 +621,101 @@ export const usePlayer = create<PlayerState>((set, get) => ({
     clearTimeout(sleepTimeout);
     set({ sleepEndsAt: null });
   },
+
+  playNext: (id) => {
+    const queue = [id, ...get().queue];
+    set({ queue });
+    writeJson(QUEUE_KEY, queue);
+  },
+
+  addToQueue: (id) => {
+    const queue = [...get().queue, id];
+    set({ queue });
+    writeJson(QUEUE_KEY, queue);
+  },
+
+  removeFromQueue: (index) => {
+    const queue = get().queue.filter((_, i) => i !== index);
+    set({ queue });
+    writeJson(QUEUE_KEY, queue);
+  },
+
+  moveInQueue: (from, to) => {
+    const queue = get().queue.slice();
+    if (from < 0 || from >= queue.length || to < 0 || to >= queue.length) return;
+    const [x] = queue.splice(from, 1);
+    queue.splice(to, 0, x);
+    set({ queue });
+    writeJson(QUEUE_KEY, queue);
+  },
+
+  clearQueue: () => {
+    set({ queue: [] });
+    writeJson(QUEUE_KEY, []);
+  },
+
+  playList: async (ids) => {
+    const list = ids.filter((id) => SONG_INDEX[id]);
+    if (!list.length) return;
+    const [first, ...rest] = list;
+    set({ queue: rest, view: "player" });
+    writeJson(QUEUE_KEY, rest);
+    await get().playSong(first);
+  },
+
+  createPlaylist: (name) => {
+    const id = `pl-${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
+    const playlists = [...get().playlists, { id, name: name.trim().slice(0, 60) || "Playlist", songs: [] }];
+    set({ playlists });
+    writeJson(LISTS_KEY, playlists);
+    return id;
+  },
+
+  renamePlaylist: (id, name) => {
+    const clean = name.trim().slice(0, 60);
+    if (!clean) return;
+    const playlists = get().playlists.map((p) => (p.id === id ? { ...p, name: clean } : p));
+    set({ playlists });
+    writeJson(LISTS_KEY, playlists);
+  },
+
+  deletePlaylist: (id) => {
+    const playlists = get().playlists.filter((p) => p.id !== id);
+    set({ playlists });
+    writeJson(LISTS_KEY, playlists);
+  },
+
+  addToPlaylist: (playlistId, songId) => {
+    const pl = get().playlists.find((p) => p.id === playlistId);
+    if (!pl || pl.songs.includes(songId)) return false;
+    const playlists = get().playlists.map((p) =>
+      p.id === playlistId ? { ...p, songs: [...p.songs, songId] } : p,
+    );
+    set({ playlists });
+    writeJson(LISTS_KEY, playlists);
+    return true;
+  },
+
+  removeFromPlaylist: (playlistId, songId) => {
+    const playlists = get().playlists.map((p) =>
+      p.id === playlistId ? { ...p, songs: p.songs.filter((x) => x !== songId) } : p,
+    );
+    set({ playlists });
+    writeJson(LISTS_KEY, playlists);
+  },
+
+  clearRecent: () => {
+    set({ recent: [], plays: {} });
+    writeJson(RECENT_KEY, []);
+    writeJson(PLAYS_KEY, {});
+  },
+
+  setRate: (r) => {
+    const rate = (RATES as readonly number[]).includes(r) ? r : 1;
+    engine.setRate(rate);
+    set({ rate });
+    writeJson(RATE_KEY, rate);
+  },
 }));
 
 export function useSong(): Song {
@@ -530,7 +733,9 @@ export function useUpNext(): Song | null {
   const playOrder = usePlayer((s) => s.playOrder);
   const repeat = usePlayer((s) => s.repeat);
   const bag = usePlayer((s) => s.shuffleBag);
+  const queued = usePlayer((s) => s.queue[0]);
   if (repeat === "one") return null;
+  if (queued) return songOf(queued);
   const list = siblings(songId);
   if (playOrder === "shuffle") {
     const id = bag.find((x) => list.includes(x) && x !== songId);

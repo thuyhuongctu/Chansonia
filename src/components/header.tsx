@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { ChevronLeft, Moon, Sun } from "lucide-react";
+import { ChevronLeft, Moon, RotateCw, Sun } from "lucide-react";
 import { ARTIST } from "@/lib/artist";
 import { usePlayer } from "@/lib/player-store";
 import { useTheme } from "@/lib/theme";
@@ -37,6 +37,7 @@ export function LibraryHeader() {
           className="press size-11 shrink-0 rounded-full border border-line bg-surface bg-cover bg-center"
           style={{ backgroundImage: `url(${ARTIST.portrait})` }}
         />
+        <RefreshButton />
         <LangButton />
         <ThemeButton />
       </div>
@@ -44,6 +45,37 @@ export function LibraryHeader() {
         <WorldClock />
       </div>
     </header>
+  );
+}
+
+/**
+ * Nút làm mới trang — cần khi app được cài ra màn hình chính (không có thanh
+ * địa chỉ để tải lại). Lưu vị trí đang nghe, hỏi service worker xem có bản
+ * mới chưa, rồi tải lại.
+ */
+export function RefreshButton() {
+  const { t } = useT();
+  const refresh = async () => {
+    usePlayer.getState().pause();
+    try {
+      const reg = await navigator.serviceWorker?.getRegistration();
+      await reg?.update();
+    } catch {
+      /* không có service worker thì tải lại thường */
+    }
+    location.reload();
+  };
+  return (
+    <button
+      type="button"
+      onClick={() => void refresh()}
+      aria-label={t("Làm mới trang")}
+      title={t("Làm mới trang")}
+      data-refresh
+      className="press flex size-11 shrink-0 items-center justify-center rounded-full border border-line bg-surface text-muted hover:text-ink"
+    >
+      <RotateCw className="size-4" />
+    </button>
   );
 }
 

@@ -12,9 +12,9 @@ export const ARTIST = {
   tagline: "Lecturer & Researcher · Songwriter",
 
   bio: [
-    "Một mini song-cycle gồm 6 chương về sự vắng mặt, sự trưởng thành, và những giấc mơ thay hình đổi dạng.",
-    "Album được sáng tác trong bảy ngày, từ 07 đến 13 tháng 8 năm 2026, xoay quanh hình ảnh ngọn đèn còn cháy, dòng sông chở đêm đi, và chiếc hộp màu của một cô bé từng muốn trở thành họa sĩ.",
-    "Hai mươi sáu năm sau, cô bé ấy vẽ tiếp giấc mơ của mình — lần này bằng những dòng code.",
+    "Je m'appelle Hương là nghệ danh của Đỗ Thùy Hương — giảng viên, nhà nghiên cứu và người viết bài hát từ đồng bằng sông Cửu Long. Hương viết bằng tiếng Việt, tiếng Anh và tiếng Pháp, về gia đình, ký ức và những dòng sông.",
+    "«La lampe, le fleuve et les couleurs» là mini song-cycle sáu chương về sự vắng mặt, sự trưởng thành và những giấc mơ thay hình đổi dạng — viết trong bảy ngày, từ 07 đến 13/8/2026, quanh ngọn đèn còn cháy, dòng sông chở đêm đi và hộp màu của một cô bé từng muốn làm họa sĩ.",
+    "Chansonia gom các bài hát ấy cùng nhạc BizOnland, phim M-AIDA và bài hát của game «Vân Đồn Đệ Nhất Thương Cảng» về một nơi: nghe với lời chạy theo nhạc, xem MV, và trích dẫn được bằng mã DOI. Hai mươi sáu năm sau, cô bé ấy vẽ tiếp giấc mơ của mình — lần này bằng những dòng code.",
   ],
 
   /** DOI của phần mềm Chansonia trên Zenodo (concept DOI — trỏ tới bản mới nhất) */
