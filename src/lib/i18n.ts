@@ -287,6 +287,11 @@ const DATA: Record<string, Row> = {
   "Điệp khúc cuối": { en: "Final chorus", fr: "Dernier refrain" },
   "Tiền điệp khúc": { en: "Pre-chorus", fr: "Pré-refrain" },
   "Nhạc dạo giữa": { en: "Interlude", fr: "Interlude" },
+  "Nhạc của game Bắc Hải Đảo — Hải Tặc Vịnh Bắc Bộ": {
+    en: "Music from the game Bac Hai Dao – Pirates of the Gulf of Tonkin",
+    fr: "La musique du jeu Bắc Hải Đảo – Pirates du golfe du Tonkin",
+  },
+  "Lyric video": { en: "Lyric video", fr: "Clip de paroles" },
   "Câu cuối": { en: "Final line", fr: "Dernière phrase" },
   "Nhạc kết": { en: "Instrumental outro", fr: "Final instrumental" },
   "Chuyển khúc": { en: "Bridge", fr: "Pont" },
