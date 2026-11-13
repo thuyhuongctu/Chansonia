@@ -62,4 +62,27 @@ test.describe("Giới thiệu", () => {
     await page.locator("[data-library-list]").getByRole("button", { name: "Giới thiệu Chansonia" }).click();
     await expect(page.locator("[data-about]")).toBeVisible();
   });
+
+  test("mỗi bộ sưu tập có link trang gốc và mã DOI", async ({ page }) => {
+    await openApp(page);
+    await page.locator("[data-about-open]").click();
+    const expected: Record<string, string> = {
+      huong: "10.5281/zenodo.22003853",
+      bizon: "10.5281/zenodo.23325489",
+      maida: "10.5281/zenodo.21850575",
+      vandon: "10.5281/zenodo.21850564",
+      bachai: "10.5281/zenodo.21850564",
+    };
+    for (const [id, doi] of Object.entries(expected)) {
+      const box = page.locator(`[data-about] [data-collection-links="${id}"]`);
+      await expect(box.locator("[data-collection-doi]")).toHaveAttribute("href", `https://doi.org/${doi}`);
+      await expect(box.locator("[data-collection-link]")).toHaveAttribute("href", /^https:\/\//);
+    }
+    // Ở thư viện cũng có, ngay dưới tên bộ sưu tập đang xem
+    await page.getByRole("button", { name: "Quay lại" }).click();
+    await expect(page.locator('[data-collection-links="huong"] [data-collection-doi]').first()).toHaveAttribute(
+      "href",
+      "https://doi.org/10.5281/zenodo.22003853",
+    );
+  });
 });
