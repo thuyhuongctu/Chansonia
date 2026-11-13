@@ -15,7 +15,8 @@ export const COUNTS = {
   bizon: { songs: 17, videos: 8 },
   maida: { songs: 2, videos: 0 },
   vandon: { songs: 1, videos: 0 },
-  bachai: { songs: 1, videos: 1 },
+  bachai: { songs: 1, videos: 0 },   // lyric video .mp4 đã bị gỡ khỏi kho trò chơi
+  chantroi: { songs: 1, videos: 0 },
 } as const;
 
 /** Số bài của bộ sưu tập mở sẵn khi vào app (Hương). */

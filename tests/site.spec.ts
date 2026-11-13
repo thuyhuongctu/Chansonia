@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { COUNTS } from "./helpers";
 
 /**
  * Trang giới thiệu (site/) — dựng cùng lúc với app trong `npm run test:serve`
@@ -17,19 +18,23 @@ test.describe("Trang giới thiệu", () => {
 
     await page.goto(SITE);
     await expect(page.locator("h1")).toContainText("Những bài hát kể chuyện");
-    await expect(page.locator("[data-stats]")).toContainText("30");
-    await expect(page.locator("[data-stats]")).toContainText("10");
+    // Tính từ COUNTS, đừng ghi cứng: thêm hay bớt một bài là phép thử lệch.
+    const tongBai = Object.values(COUNTS).reduce((n, c) => n + c.songs, 0);
+    const tongMV = Object.values(COUNTS).reduce((n, c) => n + c.videos, 0);
+    await expect(page.locator("[data-stats]")).toContainText(String(tongBai));
+    await expect(page.locator("[data-stats]")).toContainText(String(tongMV));
 
     const cards = page.locator("[data-collections] .card");
-    await expect(cards).toHaveCount(5);
+    await expect(cards).toHaveCount(Object.keys(COUNTS).length);
     await expect(cards.nth(0)).toContainText("La maison de Madam Hương");
     await expect(cards.nth(1)).toContainText("BizOnland");
     await expect(cards.nth(2)).toContainText("M-AIDA");
     await expect(cards.nth(3)).toContainText("Van Don – Vietnam’s First Trading Port");
     await expect(cards.nth(4)).toContainText("Bac Hai Dao – Pirates of the Gulf of Tonkin");
+    await expect(cards.nth(5)).toContainText("Người trao ta chân trời");
 
     const videos = page.locator("[data-videos] a");
-    await expect(videos).toHaveCount(10);
+    await expect(videos).toHaveCount(tongMV);
     expect(await videos.first().getAttribute("href")).toMatch(/^https:\/\/www\.youtube\.com\//);
 
     await expect(page.locator('meta[name="citation_doi"]')).toHaveAttribute(

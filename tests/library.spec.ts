@@ -128,7 +128,7 @@ test.describe("Thư viện", () => {
     await page.getByRole("button", { name: "Nghệ sĩ" }).click();
     await expect(page.getByRole("heading", { name: "Je m'appelle Hương" })).toBeVisible();
 
-    const total = COUNTS.huong.songs + COUNTS.bizon.songs + COUNTS.maida.songs + COUNTS.vandon.songs + COUNTS.bachai.songs;
+    const total = Object.values(COUNTS).reduce((n, c) => n + c.songs, 0);
     await expect(page.locator("dl")).toContainText(String(total));
     await expect(page.getByRole("link", { name: /10\.5281\/zenodo\.22172794/ })).toHaveAttribute(
       "href",
@@ -195,7 +195,7 @@ test.describe("Thư viện", () => {
     await expect(stage).toContainText("Vọng tiếng non sông");
   });
 
-  test("bộ sưu tập Bắc Hải Đảo có bài hát của game và lyric video", async ({ page }) => {
+  test("bộ sưu tập Bắc Hải Đảo có bài hát của game", async ({ page }) => {
     await openApp(page);
     await page.evaluate(() => {
       HTMLMediaElement.prototype.play = () => Promise.resolve();
