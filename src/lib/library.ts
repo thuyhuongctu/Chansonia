@@ -423,6 +423,13 @@ const SUVIET: Collection = {
       youtube: "RaACW3fvrQM",
       poster: "https://i.ytimg.com/vi/RaACW3fvrQM/hqdefault.jpg",
     },
+    {
+      id: "trong-toi-co-mot-nuoc-nam-mv",
+      title: "Trong tôi có một nước Nam (A Homeland Within Me)",
+      meta: "MV 3D · YouTube",
+      youtube: "if4-UFUJGiQ",
+      poster: "https://i.ytimg.com/vi/if4-UFUJGiQ/hqdefault.jpg",
+    },
   ],
 };
 
