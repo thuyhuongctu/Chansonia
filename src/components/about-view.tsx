@@ -7,6 +7,7 @@ import { COLLECTIONS, TOTAL_SONGS, TOTAL_VIDEOS, type Collection } from "@/lib/l
 import { usePlayer } from "@/lib/player-store";
 import { LangButton, ScreenHeader } from "@/components/header";
 import { Tilt } from "@/components/depth";
+import { CollectionLinks } from "@/components/collection-links";
 import { cn } from "@/lib/utils";
 
 /** Ảnh của từng bộ sưu tập trên thẻ (bộ nào có `art` riêng thì dùng ảnh đó) */
@@ -167,8 +168,8 @@ function Collections() {
         {COLLECTIONS.map((c) => {
           const art = c.art ?? CARD_ART[c.id];
           return (
+            <div key={c.id} className="flex flex-col overflow-hidden rounded-2xl border border-line bg-surface shadow-song">
             <button
-              key={c.id}
               type="button"
               data-about-collection={c.id}
               onClick={() => {
@@ -176,7 +177,7 @@ function Collections() {
                 setTab("songs");
                 setView("library");
               }}
-              className="press flex items-stretch gap-3.5 overflow-hidden rounded-2xl border border-line bg-surface p-2.5 text-left shadow-song"
+              className="press flex items-stretch gap-3.5 p-2.5 text-left"
             >
               <span className="size-24 shrink-0 overflow-hidden rounded-xl bg-sunk">
                 {art ? (
@@ -196,6 +197,8 @@ function Collections() {
                 <span className="mt-1 line-clamp-3 font-sans text-xs leading-snug text-muted">{a(`col.${c.id}.desc`)}</span>
               </span>
             </button>
+              <CollectionLinks col={c} className="border-t border-line px-2.5 py-2.5" />
+            </div>
           );
         })}
       </div>

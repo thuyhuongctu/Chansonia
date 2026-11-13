@@ -52,6 +52,10 @@ export type Collection = {
   color: string;
   /** Ảnh lớn ở cột trái trên máy tính (tuỳ chọn) */
   art?: string;
+  /** Trang web của dự án gốc */
+  link: { label: string; url: string };
+  /** Mã DOI (concept DOI trên Zenodo) của dự án gốc — lấy từ CITATION.cff của repo đó */
+  doi: string;
   songs: Song[];
   videos: Video[];
 };
@@ -136,6 +140,8 @@ const ALT: Record<string, [string, Alt]> = {
 /* ── Je m'appelle Hương ──────────────────────────────────────────────── */
 
 const HUONG: Collection = {
+  link: { label: "jemappellehuong.com", url: "https://jemappellehuong.com/" },
+  doi: "10.5281/zenodo.22003853",
   id: "huong",
   short: "La maison de Madam Hương",
   name: "La maison de Madam Hương",
@@ -208,6 +214,8 @@ const bz = (
   );
 
 const BIZON_COLLECTION: Collection = {
+  link: { label: "bizonland.com", url: "https://bizonland.com/" },
+  doi: "10.5281/zenodo.23325489",
   id: "bizon",
   short: "BizOnland",
   name: "BizOnland",
@@ -324,6 +332,8 @@ const BIZON_COLLECTION: Collection = {
 /* ── M-AIDA ──────────────────────────────────────────────────────────── */
 
 const MAIDA: Collection = {
+  link: { label: "github.com/thuyhuongctu/M-AIDA", url: "https://github.com/thuyhuongctu/M-AIDA" },
+  doi: "10.5281/zenodo.21850575",
   id: "maida",
   short: "M-AIDA",
   name: "M-AIDA",
@@ -359,6 +369,8 @@ const MAIDA: Collection = {
 const GAMES = "https://thuyhuongctu.github.io/ThuyHuong_Digital-2026-Games/van-don-3d/assets";
 
 const VANDON: Collection = {
+  link: { label: "Chơi game Vân Đồn 3D", url: "https://thuyhuongctu.github.io/ThuyHuong_Digital-2026-Games/van-don-3d/" },
+  doi: "10.5281/zenodo.21850564",
   id: "vandon",
   short: "Van Don – Vietnam’s First Trading Port",
   name: "Van Don – Vietnam’s First Trading Port",
@@ -375,6 +387,8 @@ const VANDON: Collection = {
 const BACHAI_NHAC = "https://thuyhuongctu.github.io/ThuyHuong_Digital-2026-Games/bac-hai-dao/assets/nhac";
 
 const BACHAI: Collection = {
+  link: { label: "Chơi game Bắc Hải Đảo", url: "https://thuyhuongctu.github.io/ThuyHuong_Digital-2026-Games/bac-hai-dao/" },
+  doi: "10.5281/zenodo.21850564",
   id: "bachai",
   short: "Bac Hai Dao – Pirates of the Gulf of Tonkin",
   name: "Bac Hai Dao – Pirates of the Gulf of Tonkin",
@@ -382,16 +396,7 @@ const BACHAI: Collection = {
   color: "#3d6b7a",
   art: `${BACHAI_NHAC}/bac-hai-dao-bia.jpg`,
   songs: [compile(bacHaiSong)],
-  videos: [
-    {
-      id: "bac-hai-dao-lyric-video",
-      title: "Bắc Hải Đảo – Theo cánh buồm quê hương",
-      meta: "Lyric video",
-      duration: "5:48",
-      mp4: `${BACHAI_NHAC}/bac-hai-dao-theo-canh-buom-que-huong.mp4`,
-      poster: `${BACHAI_NHAC}/bac-hai-dao-bia.jpg`,
-    },
-  ],
+  videos: [],
 };
 
 export const COLLECTIONS: Collection[] = [HUONG, BIZON_COLLECTION, MAIDA, VANDON, BACHAI];

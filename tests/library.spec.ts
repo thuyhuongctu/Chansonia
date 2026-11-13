@@ -195,7 +195,7 @@ test.describe("Thư viện", () => {
     await expect(stage).toContainText("Vọng tiếng non sông");
   });
 
-  test("bộ sưu tập Bắc Hải Đảo có bài hát của game và lyric video", async ({ page }) => {
+  test("bộ sưu tập Bắc Hải Đảo có bài hát của game (mp3), không có video", async ({ page }) => {
     await openApp(page);
     await page.evaluate(() => {
       HTMLMediaElement.prototype.play = () => Promise.resolve();

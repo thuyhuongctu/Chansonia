@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { ArrowUpRight, Play, Search, Shuffle, X } from "lucide-react";
 import { SongMenuButton } from "@/components/song-menu";
 import { MineView } from "@/components/mine-view";
+import { CollectionLinks } from "@/components/collection-links";
 import { ARTIST } from "@/lib/artist";
 import { Tilt } from "@/components/depth";
 import { formatTime, songMeta, type Song } from "@/lib/catalog";
@@ -117,6 +118,7 @@ export function LibraryView() {
               {col.name}
             </h2>
             <p className="mt-0.5 font-sans text-xs text-muted">{td(col.desc)}</p>
+            <CollectionLinks col={col} className="mt-2" />
           </div>
           <PlayAllButton />
           <ShuffleToggle />
@@ -371,6 +373,7 @@ function CollectionPanel({ col }: { col: Collection }) {
         {col.name}
       </h2>
       <p className="mt-1.5 font-sans text-sm text-muted">{td(col.desc)}</p>
+      <CollectionLinks col={col} className="mt-3" />
       <div className="mt-5 flex gap-2">
         <PlayAllButton withLabel />
         <ShuffleToggle withLabel />
