@@ -375,10 +375,10 @@ const MAIDA: Collection = {
 
 /* ── Game sử Việt ───────────────────────────────────────────────────── */
 /* Nhạc của các game trên «Cổng Trò Chơi Sử Việt» (Vietnamese History Game
-   Portal, repo ThuyHuong_Digital-2026-Games), mỗi game một album. Tệp nhạc
+   Portal, repo Vietnamese-History-Games), mỗi game một album. Tệp nhạc
    và ảnh phát thẳng từ GitHub Pages của repo game. */
 
-const GAMES_SITE = "https://thuyhuongctu.github.io/ThuyHuong_Digital-2026-Games";
+const GAMES_SITE = "https://thuyhuongctu.github.io/Vietnamese-History-Games";
 
 const vanDon = compile(vanDonSong);
 const bacHai = compile(bacHaiSong);

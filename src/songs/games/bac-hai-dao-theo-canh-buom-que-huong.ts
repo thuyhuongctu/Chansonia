@@ -4,7 +4,7 @@ import type { RawSong } from "@/lib/catalog";
  * Bài hát của game «Bắc Hải Đảo — Hải Tặc Vịnh Bắc Bộ»
  * (Bac Hai Dao – Pirates of the Gulf of Tonkin).
  *
- * Tệp nhạc, MV và ảnh bìa nằm ở repo trò chơi (thuyhuongctu/ThuyHuong_Digital-2026-Games,
+ * Tệp nhạc, MV và ảnh bìa nằm ở repo trò chơi (thuyhuongctu/Vietnamese-History-Games,
  * bac-hai-dao/assets/nhac/) và phát thẳng từ GitHub Pages của repo đó.
  *
  * LỜI: chép từ lyric video của bài. MỐC THỜI GIAN: dò từ bản mp3 (bản thu khác
@@ -20,11 +20,11 @@ export const song: RawSong = {
   meta: "Bài hát của game · Tiếng Việt",
   accent: "#3d6b7a",
   coverSrc:
-    "https://thuyhuongctu.github.io/ThuyHuong_Digital-2026-Games/bac-hai-dao/assets/nhac/bac-hai-dao-bia.jpg",
+    "https://thuyhuongctu.github.io/Vietnamese-History-Games/bac-hai-dao/assets/nhac/bac-hai-dao-bia.jpg",
   style:
     "Nhạc giao hưởng biển cả lịch sử Việt Nam · giọng nam trung ấm, hợp xướng ở điệp khúc · sáo trúc, đàn bầu, đàn tranh, trống lễ, dàn dây · nhịp 6/8, 80 BPM",
   audioSrc:
-    "https://thuyhuongctu.github.io/ThuyHuong_Digital-2026-Games/bac-hai-dao/assets/nhac/bac-hai-dao-theo-canh-buom-que-huong.mp3",
+    "https://thuyhuongctu.github.io/Vietnamese-History-Games/bac-hai-dao/assets/nhac/bac-hai-dao-theo-canh-buom-que-huong.mp3",
   durationMs: 346824,
   sections: [
     { id: "intro", label: "Dạo đầu", startMs: 0, lines: [] },
