@@ -23,7 +23,17 @@ import { compile, SONGS, type RawSong, type Song, type SongVersion } from "@/lib
 import { song as vanDonSong } from "@/songs/games/van-don-tieng-vong-non-song";
 import { song as bacHaiSong } from "@/songs/games/bac-hai-dao-theo-canh-buom-que-huong";
 
-export type CollectionId = "huong" | "bizon" | "maida" | "vandon" | "bachai";
+export type CollectionId = "huong" | "bizon" | "maida" | "suviet";
+
+/** Một album trong bộ sưu tập (ví dụ mỗi game một album) */
+export type Album = {
+  id: string;
+  title: string;
+  /** Trang của album (ví dụ trang chơi game) */
+  link?: { label: string; url: string };
+  /** Mã bài thuộc album, theo thứ tự */
+  songIds: string[];
+};
 
 export type Video = {
   id: string;
@@ -52,10 +62,12 @@ export type Collection = {
   color: string;
   /** Ảnh lớn ở cột trái trên máy tính (tuỳ chọn) */
   art?: string;
-  /** Trang web của dự án gốc */
-  link: { label: string; url: string };
+  /** Trang web của dự án gốc — bỏ trống khi dự án chưa có trang riêng (chỉ hiện DOI) */
+  link?: { label: string; url: string };
   /** Mã DOI (concept DOI trên Zenodo) của dự án gốc — lấy từ CITATION.cff của repo đó */
   doi: string;
+  /** Chia bài thành các album (tuỳ chọn): danh sách bài hiện theo từng album */
+  albums?: Album[];
   songs: Song[];
   videos: Video[];
 };
@@ -332,7 +344,6 @@ const BIZON_COLLECTION: Collection = {
 /* ── M-AIDA ──────────────────────────────────────────────────────────── */
 
 const MAIDA: Collection = {
-  link: { label: "github.com/thuyhuongctu/M-AIDA", url: "https://github.com/thuyhuongctu/M-AIDA" },
   doi: "10.5281/zenodo.21850575",
   id: "maida",
   short: "M-AIDA",
@@ -362,44 +373,44 @@ const MAIDA: Collection = {
 
 /* ── Tra cứu ─────────────────────────────────────────────────────────── */
 
-/* ── Vân Đồn 3D ──────────────────────────────────────────────────────── */
-/* Nhạc của game «Vân Đồn Đệ Nhất Thương Cảng» (repo ThuyHuong_Digital-2026-Games).
-   Tệp nhạc và ảnh phát thẳng từ GitHub Pages của repo game. */
+/* ── Game sử Việt ───────────────────────────────────────────────────── */
+/* Nhạc của các game trên «Cổng Trò Chơi Sử Việt» (Vietnamese History Game
+   Portal, repo ThuyHuong_Digital-2026-Games), mỗi game một album. Tệp nhạc
+   và ảnh phát thẳng từ GitHub Pages của repo game. */
 
-const GAMES = "https://thuyhuongctu.github.io/ThuyHuong_Digital-2026-Games/van-don-3d/assets";
+const GAMES_SITE = "https://thuyhuongctu.github.io/ThuyHuong_Digital-2026-Games";
 
-const VANDON: Collection = {
-  link: { label: "Chơi game Vân Đồn 3D", url: "https://thuyhuongctu.github.io/ThuyHuong_Digital-2026-Games/van-don-3d/" },
-  doi: "10.5281/zenodo.21850564",
-  id: "vandon",
-  short: "Van Don – Vietnam’s First Trading Port",
-  name: "Van Don – Vietnam’s First Trading Port",
-  desc: "Nhạc của game Vân Đồn Đệ Nhất Thương Cảng",
+const vanDon = compile(vanDonSong);
+const bacHai = compile(bacHaiSong);
+
+const SUVIET: Collection = {
+  id: "suviet",
+  short: "Vietnamese History Game Portal",
+  name: "Vietnamese History Game Portal",
+  desc: "Nhạc của các game trên Cổng Trò Chơi Sử Việt, mỗi game một album",
   color: "#2f6f8f",
-  art: `${GAMES}/ben-cang-van-don.jpg`,
-  songs: [compile(vanDonSong)],
-  videos: [],
-};
-
-/* ── Bắc Hải Đảo ─────────────────────────────────────────────────────── */
-/* Nhạc của game «Bắc Hải Đảo — Hải Tặc Vịnh Bắc Bộ», cùng repo game với Vân Đồn. */
-
-const BACHAI_NHAC = "https://thuyhuongctu.github.io/ThuyHuong_Digital-2026-Games/bac-hai-dao/assets/nhac";
-
-const BACHAI: Collection = {
-  link: { label: "Chơi game Bắc Hải Đảo", url: "https://thuyhuongctu.github.io/ThuyHuong_Digital-2026-Games/bac-hai-dao/" },
+  art: `${GAMES_SITE}/van-don-3d/assets/ben-cang-van-don.jpg`,
+  link: { label: "Cổng Trò Chơi Sử Việt", url: `${GAMES_SITE}/` },
   doi: "10.5281/zenodo.21850564",
-  id: "bachai",
-  short: "Bac Hai Dao – Pirates of the Gulf of Tonkin",
-  name: "Bac Hai Dao – Pirates of the Gulf of Tonkin",
-  desc: "Nhạc của game Bắc Hải Đảo, Hải Tặc Vịnh Bắc Bộ",
-  color: "#3d6b7a",
-  art: `${BACHAI_NHAC}/bac-hai-dao-bia.jpg`,
-  songs: [compile(bacHaiSong)],
+  albums: [
+    {
+      id: "van-don",
+      title: "Van Don – Vietnam’s First Trading Port",
+      link: { label: "Chơi game Vân Đồn 3D", url: `${GAMES_SITE}/van-don-3d/` },
+      songIds: [vanDon.id],
+    },
+    {
+      id: "bac-hai-dao",
+      title: "Bac Hai Dao – Pirates of the Gulf of Tonkin",
+      link: { label: "Chơi game Bắc Hải Đảo", url: `${GAMES_SITE}/bac-hai-dao/` },
+      songIds: [bacHai.id],
+    },
+  ],
+  songs: [vanDon, bacHai],
   videos: [],
 };
 
-export const COLLECTIONS: Collection[] = [HUONG, BIZON_COLLECTION, MAIDA, VANDON, BACHAI];
+export const COLLECTIONS: Collection[] = [HUONG, BIZON_COLLECTION, MAIDA, SUVIET];
 
 export const COLLECTION_BY_ID = Object.fromEntries(
   COLLECTIONS.map((c) => [c.id, c]),

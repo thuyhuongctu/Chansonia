@@ -197,7 +197,7 @@ function Collections() {
                 <span className="mt-1 line-clamp-3 font-sans text-xs leading-snug text-muted">{a(`col.${c.id}.desc`)}</span>
               </span>
             </button>
-              <CollectionLinks col={c} className="border-t border-line px-2.5 py-2.5" />
+              <CollectionLinks col={c} withAlbums className="border-t border-line px-2.5 py-2.5" />
             </div>
           );
         })}
