@@ -70,8 +70,7 @@ test.describe("Giới thiệu", () => {
       huong: "10.5281/zenodo.22003853",
       bizon: "10.5281/zenodo.23325489",
       maida: "10.5281/zenodo.21850575",
-      vandon: "10.5281/zenodo.21850564",
-      bachai: "10.5281/zenodo.21850564",
+      suviet: "10.5281/zenodo.21850564",
     };
     for (const [id, doi] of Object.entries(expected)) {
       const box = page.locator(`[data-about] [data-collection-links="${id}"]`);

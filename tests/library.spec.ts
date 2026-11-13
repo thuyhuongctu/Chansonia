@@ -14,7 +14,7 @@ test.describe("Thư viện", () => {
   test("mở lên là thấy ba bộ sưu tập và danh sách bài của Hương", async ({ page }) => {
     const errors = await openApp(page);
 
-    for (const name of ["La maison de Madam Hương", "BizOnland", "M-AIDA", "Van Don – Vietnam’s First Trading Port", "Bac Hai Dao – Pirates of the Gulf of Tonkin"] as const) {
+    for (const name of ["La maison de Madam Hương", "BizOnland", "M-AIDA", "Vietnamese History Game Portal"] as const) {
       await expect(collectionTab(page, name)).toBeVisible();
     }
     await expect(collectionTab(page, "La maison de Madam Hương")).toHaveAttribute("aria-selected", "true");
@@ -128,7 +128,7 @@ test.describe("Thư viện", () => {
     await page.getByRole("button", { name: "Nghệ sĩ" }).click();
     await expect(page.getByRole("heading", { name: "Je m'appelle Hương" })).toBeVisible();
 
-    const total = COUNTS.huong.songs + COUNTS.bizon.songs + COUNTS.maida.songs + COUNTS.vandon.songs + COUNTS.bachai.songs;
+    const total = COUNTS.huong.songs + COUNTS.bizon.songs + COUNTS.maida.songs + COUNTS.suviet.songs;
     await expect(page.locator("dl")).toContainText(String(total));
     await expect(page.getByRole("link", { name: /10\.5281\/zenodo\.22172794/ })).toHaveAttribute(
       "href",
@@ -184,9 +184,11 @@ test.describe("Thư viện", () => {
     await page.evaluate(() => {
       HTMLMediaElement.prototype.play = () => Promise.resolve();
     });
-    await collectionTab(page, "Van Don – Vietnam’s First Trading Port").click();
-    await expect(page.locator(SONG_ROW)).toHaveCount(COUNTS.vandon.songs);
-    await page.locator(SONG_ROW).first().click();
+    await collectionTab(page, "Vietnamese History Game Portal").click();
+    await expect(page.locator(SONG_ROW)).toHaveCount(COUNTS.suviet.songs);
+    // Hai album, mỗi game một album, có tiêu đề riêng
+    await expect(page.locator("[data-album]")).toHaveText([/Van Don – Vietnam’s First Trading Port/, /Bac Hai Dao – Pirates of the Gulf of Tonkin/]);
+    await page.locator('[data-song-id="van-don-tieng-vong-non-song"]').click();
 
     await expect(page.locator("[data-screen-title]")).toHaveText("Vân Đồn – Tiếng vọng non sông");
     const stage = page.locator(".lyric-stage");
@@ -200,10 +202,9 @@ test.describe("Thư viện", () => {
     await page.evaluate(() => {
       HTMLMediaElement.prototype.play = () => Promise.resolve();
     });
-    await collectionTab(page, "Bac Hai Dao – Pirates of the Gulf of Tonkin").click();
-    await expect(page.getByRole("tab", { name: `Video · ${COUNTS.bachai.videos}` })).toBeVisible();
-    await expect(page.locator(SONG_ROW)).toHaveCount(COUNTS.bachai.songs);
-    await page.locator(SONG_ROW).first().click();
+    await collectionTab(page, "Vietnamese History Game Portal").click();
+    await expect(page.getByRole("tab", { name: `Video · ${COUNTS.suviet.videos}` })).toBeVisible();
+    await page.locator('[data-song-id="bac-hai-dao-theo-canh-buom-que-huong"]').click();
 
     await expect(page.locator("[data-screen-title]")).toHaveText("Bắc Hải Đảo – Theo cánh buồm quê hương");
     const stage = page.locator(".lyric-stage");

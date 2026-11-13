@@ -46,9 +46,10 @@ Total running time 32:35.
 
 - Opens on a short **sunrise splash**: the Mekong bends into a C and the sun
   rises at the river mouth — the new Chansonia logo.
-- Groups the library into **five collections** — *La maison de Madam Hương*,
-  *BizOnland*, *M-AIDA*, *Van Don – Vietnam’s First Trading Port* and
-  *Bac Hai Dao – Pirates of the Gulf of Tonkin* — each with a **Songs** and a **Videos** list of compact
+- Groups the library into **four collections** — *La maison de Madam Hương*,
+  *BizOnland*, *M-AIDA* and the *Vietnamese History Game Portal* (one album per
+  game: *Van Don – Vietnam’s First Trading Port*, *Bac Hai Dao – Pirates of the
+  Gulf of Tonkin*) — each with a **Songs** and a **Videos** list of compact
   rows. The album tracks play from the app; BizOn and M-AIDA songs, the extra
   Hương singles and the films stream from `jemappellehuong.com` and
   `bizonland.com` (see [`src/lib/library.ts`](src/lib/library.ts)).

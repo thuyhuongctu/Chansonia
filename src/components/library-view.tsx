@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { Fragment, useMemo } from "react";
 import { ArrowUpRight, Play, Search, Shuffle, X } from "lucide-react";
 import { SongMenuButton } from "@/components/song-menu";
 import { MineView } from "@/components/mine-view";
@@ -187,9 +187,22 @@ export function LibraryView() {
           ) : tab === "songs"
             ? (
                 <>
-                  {songs.map(({ song, index }) => (
-                    <SongRow key={song.id} song={song} index={index} />
-                  ))}
+                  {col.albums
+                    ? col.albums.map((album) => {
+                        const rows = songs.filter(({ song }) => album.songIds.includes(song.id));
+                        if (!rows.length) return null;
+                        return (
+                          <Fragment key={album.id}>
+                            <AlbumHeader title={album.title} link={album.link} count={rows.length} />
+                            {rows.map(({ song }) => (
+                              <SongRow key={song.id} song={song} index={album.songIds.indexOf(song.id)} />
+                            ))}
+                          </Fragment>
+                        );
+                      })
+                    : songs.map(({ song, index }) => (
+                        <SongRow key={song.id} song={song} index={index} />
+                      ))}
                   {elsewhere.length ? (
                     <section aria-label={t("Ở bộ sưu tập khác")} data-elsewhere>
                       <p className="mt-5 mb-1 font-sans text-[11px] font-bold tracking-[0.18em] text-muted uppercase">
@@ -501,6 +514,30 @@ function Thumb({
         badge
       )}
     </span>
+  );
+}
+
+/** Tiêu đề album trong danh sách bài (bộ sưu tập chia theo album) */
+function AlbumHeader({ title, link, count }: { title: string; link?: { label: string; url: string }; count: number }) {
+  const { t } = useT();
+  return (
+    <div className="mt-5 mb-1 first:mt-2" data-album={title}>
+      <p className="font-sans text-[10px] font-bold tracking-[0.18em] text-muted uppercase">
+        {t("Album")} · {count === 1 ? t("1 bài") : t("{n} bài", { n: count })}
+      </p>
+      <h3 className="mt-0.5 font-display text-base leading-tight font-semibold text-ink">{title}</h3>
+      {link ? (
+        <a
+          href={link.url}
+          target="_blank"
+          rel="noreferrer noopener"
+          className="press mt-1.5 inline-flex h-9 items-center gap-1 rounded-full border border-line bg-surface px-3 font-sans text-xs text-ink hover:border-accent"
+        >
+          {t(link.label)}
+          <ArrowUpRight className="size-3.5 text-muted" aria-hidden />
+        </a>
+      ) : null}
+    </div>
   );
 }
 

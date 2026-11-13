@@ -161,6 +161,13 @@ const UI: Record<string, Row> = {
   "Ảnh": { en: "Photos", fr: "Photos" },
   "Chơi game Vân Đồn 3D": { en: "Play the Van Don 3D game", fr: "Jouer à Vân Đồn 3D" },
   "Chơi game Bắc Hải Đảo": { en: "Play the Bac Hai Dao game", fr: "Jouer à Bắc Hải Đảo" },
+  "Album": { en: "Album", fr: "Album" },
+  "1 bài": { en: "1 song", fr: "1 titre" },
+  "Cổng Trò Chơi Sử Việt": { en: "Vietnamese History Game Portal", fr: "Portail de jeux d'histoire du Viêt Nam" },
+  "Nhạc của các game trên Cổng Trò Chơi Sử Việt, mỗi game một album": {
+    en: "Music from the Vietnamese History Game Portal, one album per game",
+    fr: "La musique du portail de jeux d'histoire du Viêt Nam, un album par jeu",
+  },
   "Giới thiệu Chansonia": { en: "About Chansonia", fr: "À propos de Chansonia" },
   // Hàng chờ, playlist, của tôi
   "Bài đã có trong «{n}»": { en: "Already in «{n}»", fr: "Déjà dans «{n}»" },
