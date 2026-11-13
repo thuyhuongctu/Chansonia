@@ -407,7 +407,15 @@ const SUVIET: Collection = {
     },
   ],
   songs: [vanDon, bacHai],
-  videos: [],
+  videos: [
+    {
+      id: "van-don-lyric-video",
+      title: "Vân Đồn – Tiếng vọng non sông",
+      meta: "Lyric video · Van Don – Vietnam’s First Trading Port · YouTube",
+      youtube: "RaACW3fvrQM",
+      poster: "https://i.ytimg.com/vi/RaACW3fvrQM/hqdefault.jpg",
+    },
+  ],
 };
 
 export const COLLECTIONS: Collection[] = [HUONG, BIZON_COLLECTION, MAIDA, SUVIET];

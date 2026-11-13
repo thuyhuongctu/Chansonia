@@ -197,13 +197,15 @@ test.describe("Thư viện", () => {
     await expect(stage).toContainText("Vọng tiếng non sông");
   });
 
-  test("bộ sưu tập Bắc Hải Đảo có bài hát của game (mp3), không có video", async ({ page }) => {
+  test("bộ sưu tập game: bài Bắc Hải Đảo (mp3) và lyric video Vân Đồn trên YouTube", async ({ page }) => {
     await openApp(page);
     await page.evaluate(() => {
       HTMLMediaElement.prototype.play = () => Promise.resolve();
     });
     await collectionTab(page, "Vietnamese History Game Portal").click();
-    await expect(page.getByRole("tab", { name: `Video · ${COUNTS.suviet.videos}` })).toBeVisible();
+    await page.getByRole("tab", { name: `Video · ${COUNTS.suviet.videos}` }).click();
+    await expect(page.locator('[data-video-id="van-don-lyric-video"]')).toContainText("Vân Đồn – Tiếng vọng non sông");
+    await page.getByRole("tab", { name: /^Bài hát ·/ }).click();
     await page.locator('[data-song-id="bac-hai-dao-theo-canh-buom-que-huong"]').click();
 
     await expect(page.locator("[data-screen-title]")).toHaveText("Bắc Hải Đảo – Theo cánh buồm quê hương");

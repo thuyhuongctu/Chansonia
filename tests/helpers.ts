@@ -14,7 +14,7 @@ export const COUNTS = {
   huong: { songs: 9, videos: 1 },
   bizon: { songs: 17, videos: 8 },
   maida: { songs: 2, videos: 0 },
-  suviet: { songs: 2, videos: 0 },
+  suviet: { songs: 2, videos: 1 },
 } as const;
 
 /** Số bài của bộ sưu tập mở sẵn khi vào app (Hương). */
