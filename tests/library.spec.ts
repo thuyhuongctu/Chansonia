@@ -186,8 +186,12 @@ test.describe("Thư viện", () => {
     });
     await collectionTab(page, "Vietnamese History Game Portal").click();
     await expect(page.locator(SONG_ROW)).toHaveCount(COUNTS.suviet.songs);
-    // Hai album, mỗi game một album, có tiêu đề riêng
-    await expect(page.locator("[data-album]")).toHaveText([/Van Don – Vietnam’s First Trading Port/, /Bac Hai Dao – Pirates of the Gulf of Tonkin/]);
+    // Mỗi game một album, cộng một album cho bài chung của cả hai game
+    await expect(page.locator("[data-album]")).toHaveText([
+      /Van Don – Vietnam’s First Trading Port/,
+      /Bac Hai Dao – Pirates of the Gulf of Tonkin/,
+      /Người trao ta chân trời/,
+    ]);
     await page.locator('[data-song-id="van-don-tieng-vong-non-song"]').click();
 
     await expect(page.locator("[data-screen-title]")).toHaveText("Vân Đồn – Tiếng vọng non sông");
