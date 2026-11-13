@@ -22,8 +22,9 @@
 import { compile, SONGS, type RawSong, type Song, type SongVersion } from "@/lib/catalog";
 import { song as vanDonSong } from "@/songs/games/van-don-tieng-vong-non-song";
 import { song as bacHaiSong } from "@/songs/games/bac-hai-dao-theo-canh-buom-que-huong";
+import { song as chanTroiSong } from "@/songs/games/nguoi-trao-ta-chan-troi";
 
-export type CollectionId = "huong" | "bizon" | "maida" | "vandon" | "bachai";
+export type CollectionId = "huong" | "bizon" | "maida" | "vandon" | "bachai" | "chantroi";
 
 export type Video = {
   id: string;
@@ -353,10 +354,10 @@ const MAIDA: Collection = {
 /* ── Tra cứu ─────────────────────────────────────────────────────────── */
 
 /* ── Vân Đồn 3D ──────────────────────────────────────────────────────── */
-/* Nhạc của game «Vân Đồn Đệ Nhất Thương Cảng» (repo ThuyHuong_Digital-2026-Games).
+/* Nhạc của game «Vân Đồn Đệ Nhất Thương Cảng» (repo Vietnamese-History-Games).
    Tệp nhạc và ảnh phát thẳng từ GitHub Pages của repo game. */
 
-const GAMES = "https://thuyhuongctu.github.io/ThuyHuong_Digital-2026-Games/van-don-3d/assets";
+const GAMES = "https://thuyhuongctu.github.io/Vietnamese-History-Games/van-don-3d/assets";
 
 const VANDON: Collection = {
   id: "vandon",
@@ -372,7 +373,7 @@ const VANDON: Collection = {
 /* ── Bắc Hải Đảo ─────────────────────────────────────────────────────── */
 /* Nhạc của game «Bắc Hải Đảo — Hải Tặc Vịnh Bắc Bộ», cùng repo game với Vân Đồn. */
 
-const BACHAI_NHAC = "https://thuyhuongctu.github.io/ThuyHuong_Digital-2026-Games/bac-hai-dao/assets/nhac";
+const BACHAI_NHAC = "https://thuyhuongctu.github.io/Vietnamese-History-Games/bac-hai-dao/assets/nhac";
 
 const BACHAI: Collection = {
   id: "bachai",
@@ -382,19 +383,27 @@ const BACHAI: Collection = {
   color: "#3d6b7a",
   art: `${BACHAI_NHAC}/bac-hai-dao-bia.jpg`,
   songs: [compile(bacHaiSong)],
-  videos: [
-    {
-      id: "bac-hai-dao-lyric-video",
-      title: "Bắc Hải Đảo – Theo cánh buồm quê hương",
-      meta: "Lyric video",
-      duration: "5:48",
-      mp4: `${BACHAI_NHAC}/bac-hai-dao-theo-canh-buom-que-huong.mp4`,
-      poster: `${BACHAI_NHAC}/bac-hai-dao-bia.jpg`,
-    },
-  ],
+  /* Lyric video .mp4 đã bị gỡ khỏi kho trò chơi, nên không khai nữa. */
+  videos: [],
 };
 
-export const COLLECTIONS: Collection[] = [HUONG, BIZON_COLLECTION, MAIDA, VANDON, BACHAI];
+/* ── Người trao ta chân trời ─────────────────────────────────────────── */
+/* Bài chung của hai trò chơi: lời nhắc đích danh cả Vân Đồn lẫn Bắc Hải Đảo,
+   nên không xếp vào bộ nào trong hai bộ trên mà đứng riêng. Nhạc phát từ máy
+   chủ nhạc của trang (cùng cách bảy bài album), không từ kho trò chơi. */
+
+const CHANTROI: Collection = {
+  id: "chantroi",
+  short: "Người trao ta chân trời",
+  name: "Người trao ta chân trời",
+  desc: "Bài chung của hai trò chơi lịch sử",
+  color: "#3f6f68",
+  art: "art/nguoi-trao-ta-chan-troi.webp",
+  songs: [compile(chanTroiSong)],
+  videos: [],
+};
+
+export const COLLECTIONS: Collection[] = [HUONG, BIZON_COLLECTION, MAIDA, VANDON, BACHAI, CHANTROI];
 
 export const COLLECTION_BY_ID = Object.fromEntries(
   COLLECTIONS.map((c) => [c.id, c]),

@@ -3,7 +3,7 @@ import type { RawSong } from "@/lib/catalog";
 /**
  * Bài hát của game «Vân Đồn Đệ Nhất Thương Cảng» (Vân Đồn 3D).
  *
- * Tệp nhạc nằm ở repo trò chơi (thuyhuongctu/ThuyHuong_Digital-2026-Games,
+ * Tệp nhạc nằm ở repo trò chơi (thuyhuongctu/Vietnamese-History-Games,
  * van-don-3d/assets/nhac/) và phát thẳng từ GitHub Pages của repo đó.
  *
  * MỐC THỜI GIAN: dò từ chính bản thu — nhận dạng giọng hát (Whisper) cho đầu
@@ -20,11 +20,11 @@ export const song: RawSong = {
   meta: "Bài hát của game · Tiếng Việt",
   accent: "#2f6f8f",
   coverSrc:
-    "https://thuyhuongctu.github.io/ThuyHuong_Digital-2026-Games/van-don-3d/assets/ben-cang-van-don.jpg",
+    "https://thuyhuongctu.github.io/Vietnamese-History-Games/van-don-3d/assets/ben-cang-van-don.jpg",
   style:
     "Hùng ca dân tộc · sáo trúc, đàn bầu, trống trầm, dàn dây và hợp xướng · sóng biển mở đầu và khép lại",
   audioSrc:
-    "https://thuyhuongctu.github.io/ThuyHuong_Digital-2026-Games/van-don-3d/assets/nhac/van-don-tieng-vong-non-song.mp3",
+    "https://thuyhuongctu.github.io/Vietnamese-History-Games/van-don-3d/assets/nhac/van-don-tieng-vong-non-song.mp3",
   durationMs: 317232,
   sections: [
     { id: "intro", label: "Dạo đầu", startMs: 0, lines: [] },
