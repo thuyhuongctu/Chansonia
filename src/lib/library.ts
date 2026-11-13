@@ -22,6 +22,7 @@
 import { compile, SONGS, type RawSong, type Song, type SongVersion } from "@/lib/catalog";
 import { song as vanDonSong } from "@/songs/games/van-don-tieng-vong-non-song";
 import { song as bacHaiSong } from "@/songs/games/bac-hai-dao-theo-canh-buom-que-huong";
+import { song as chanTroiSong } from "@/songs/games/nguoi-trao-ta-chan-troi";
 
 export type CollectionId = "huong" | "bizon" | "maida" | "suviet";
 
@@ -375,13 +376,14 @@ const MAIDA: Collection = {
 
 /* ── Game sử Việt ───────────────────────────────────────────────────── */
 /* Nhạc của các game trên «Cổng Trò Chơi Sử Việt» (Vietnamese History Game
-   Portal, repo ThuyHuong_Digital-2026-Games), mỗi game một album. Tệp nhạc
+   Portal, repo Vietnamese-History-Games, tên cũ ThuyHuong_Digital-2026-Games), mỗi game một album. Tệp nhạc
    và ảnh phát thẳng từ GitHub Pages của repo game. */
 
-const GAMES_SITE = "https://thuyhuongctu.github.io/ThuyHuong_Digital-2026-Games";
+const GAMES_SITE = "https://thuyhuongctu.github.io/Vietnamese-History-Games";
 
 const vanDon = compile(vanDonSong);
 const bacHai = compile(bacHaiSong);
+const chanTroi = compile(chanTroiSong);
 
 const SUVIET: Collection = {
   id: "suviet",
@@ -405,8 +407,14 @@ const SUVIET: Collection = {
       link: { label: "Chơi game Bắc Hải Đảo", url: `${GAMES_SITE}/bac-hai-dao/` },
       songIds: [bacHai.id],
     },
+    {
+      id: "chung",
+      title: "Van Don & Bac Hai Dao – A Shared Song",
+      link: { label: "Cổng Trò Chơi Sử Việt", url: `${GAMES_SITE}/` },
+      songIds: [chanTroi.id],
+    },
   ],
-  songs: [vanDon, bacHai],
+  songs: [vanDon, bacHai, chanTroi],
   videos: [
     {
       id: "van-don-lyric-video",
