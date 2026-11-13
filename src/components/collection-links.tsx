@@ -10,11 +10,13 @@ export function CollectionLinks({ col, className }: { col: Collection; className
     "press inline-flex h-9 max-w-full items-center gap-1.5 rounded-full border border-line bg-surface px-3 font-sans text-xs text-ink hover:border-accent";
   return (
     <div className={cn("flex flex-wrap gap-2", className)} data-collection-links={col.id}>
-      <a href={col.link.url} target="_blank" rel="noreferrer noopener" className={pill} data-collection-link>
-        <Globe className="size-3.5 shrink-0 text-muted" aria-hidden />
-        <span className="truncate">{t(col.link.label)}</span>
-        <ArrowUpRight className="size-3.5 shrink-0 text-muted" aria-hidden />
-      </a>
+      {col.link ? (
+        <a href={col.link.url} target="_blank" rel="noreferrer noopener" className={pill} data-collection-link>
+          <Globe className="size-3.5 shrink-0 text-muted" aria-hidden />
+          <span className="truncate">{t(col.link.label)}</span>
+          <ArrowUpRight className="size-3.5 shrink-0 text-muted" aria-hidden />
+        </a>
+      ) : null}
       <a
         href={`https://doi.org/${col.doi}`}
         target="_blank"

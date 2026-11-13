@@ -76,7 +76,9 @@ test.describe("Giới thiệu", () => {
     for (const [id, doi] of Object.entries(expected)) {
       const box = page.locator(`[data-about] [data-collection-links="${id}"]`);
       await expect(box.locator("[data-collection-doi]")).toHaveAttribute("href", `https://doi.org/${doi}`);
-      await expect(box.locator("[data-collection-link]")).toHaveAttribute("href", /^https:\/\//);
+      // M-AIDA chưa có trang riêng: chỉ có DOI
+      if (id === "maida") await expect(box.locator("[data-collection-link]")).toHaveCount(0);
+      else await expect(box.locator("[data-collection-link]")).toHaveAttribute("href", /^https:\/\//);
     }
     // Ở thư viện cũng có, ngay dưới tên bộ sưu tập đang xem
     await page.getByRole("button", { name: "Quay lại" }).click();

@@ -52,8 +52,8 @@ export type Collection = {
   color: string;
   /** Ảnh lớn ở cột trái trên máy tính (tuỳ chọn) */
   art?: string;
-  /** Trang web của dự án gốc */
-  link: { label: string; url: string };
+  /** Trang web của dự án gốc — bỏ trống khi dự án chưa có trang riêng (chỉ hiện DOI) */
+  link?: { label: string; url: string };
   /** Mã DOI (concept DOI trên Zenodo) của dự án gốc — lấy từ CITATION.cff của repo đó */
   doi: string;
   songs: Song[];
@@ -332,7 +332,6 @@ const BIZON_COLLECTION: Collection = {
 /* ── M-AIDA ──────────────────────────────────────────────────────────── */
 
 const MAIDA: Collection = {
-  link: { label: "github.com/thuyhuongctu/M-AIDA", url: "https://github.com/thuyhuongctu/M-AIDA" },
   doi: "10.5281/zenodo.21850575",
   id: "maida",
   short: "M-AIDA",
