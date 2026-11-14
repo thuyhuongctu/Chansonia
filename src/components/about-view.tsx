@@ -12,7 +12,6 @@ import { cn } from "@/lib/utils";
 
 /** Ảnh của từng bộ sưu tập trên thẻ (bộ nào có `art` riêng thì dùng ảnh đó) */
 const CARD_ART: Partial<Record<Collection["id"], string>> = {
-  bizon: "https://bizonland.com/assets/covers/ben-phu-sa-3d.webp",
   maida: "https://jemappellehuong.com/assets/img/maida-film-poster.webp",
 };
 
