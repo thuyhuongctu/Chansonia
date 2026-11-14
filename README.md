@@ -1,30 +1,81 @@
+<div align="center">
+
+<img src="public/icons/icon-192.png" width="96" height="96" alt="Chansonia logo" />
+
 # Chansonia
 
+**Songs that tell stories. Listen, read along and watch, in one app.**
+
+A lyrics-synchronised music player for the songs of **Je m'appelle Hương** (Đỗ Thùy Hương):
+the album *«La lampe, le fleuve et les couleurs»*, BizOnland, M-AIDA and the music of two
+Vietnamese history games.
+
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22172794.svg)](https://doi.org/10.5281/zenodo.22172794)
+[![Tests](https://github.com/thuyhuongctu/Chansonia/actions/workflows/test.yml/badge.svg)](https://github.com/thuyhuongctu/Chansonia/actions/workflows/test.yml)
+[![Deploy](https://github.com/thuyhuongctu/Chansonia/actions/workflows/deploy-pages.yml/badge.svg)](https://github.com/thuyhuongctu/Chansonia/actions/workflows/deploy-pages.yml)
+![Licence: proprietary](https://img.shields.io/badge/licence-proprietary-c45c3a)
+![Languages: EN · VI · FR](https://img.shields.io/badge/UI-EN%20%C2%B7%20VI%20%C2%B7%20FR-3f6f68)
 
-A lyrics-synchronised music player for the album
-**«La lampe, le fleuve et les couleurs»** — a six-track mini song-cycle (plus a bonus track) by
-**Je m'appelle Hương** (Đỗ Thùy Hương), written between 7 and 13 August 2026.
+**[Open the app](https://thuyhuongctu.github.io/Chansonia/app/)** ·
+[Tiếng Việt](README.vi.md) ·
+[Cite](#cite) ·
+[Develop](#develop)
 
-One codebase, multiple targets:
-
-- **Web** — one app at **[thuyhuongctu.github.io/Chansonia/app/](https://thuyhuongctu.github.io/Chansonia/app/)**;
-  the root address forwards there and opens the trilingual **About** screen
-  (collections, features, music videos, artist, citation). Redeployed
-  automatically on every push to `main`.
-- **Android** — packaged with Capacitor, submitted to Google Play as an `.aab`.
-- **iOS** — Capacitor project scaffolded under `ios/`, ready to open in Xcode
-  and submit via TestFlight/App Store once signed with an Apple Developer
-  account. See [docs/app-store-todo.md](docs/app-store-todo.md).
-
-> **This is proprietary software.** It is published here for the author's own
-> use and record. No open-source licence is granted — see [LICENSE](LICENSE).
-
-A Vietnamese version of this document is at [README.vi.md](README.vi.md).
+</div>
 
 ---
 
-## The album
+## At a glance
+
+| | |
+|---|---|
+| **Web** | [thuyhuongctu.github.io/Chansonia/app/](https://thuyhuongctu.github.io/Chansonia/app/). The root address forwards to the app and opens its **About** screen. Redeployed on every push to `main`. |
+| **Android** | Capacitor project in `android/`, shipped to Google Play as an `.aab` (`com.jemappellehuong.songbook`, v1.2.0). |
+| **iOS** | Capacitor project in `ios/`, ready for Xcode, TestFlight and the App Store. |
+| **Library** | 4 collections · 31 songs · 12 videos |
+| **Interface** | English by default, Vietnamese and French one tap away |
+| **Privacy** | No account, no backend, no analytics, no tracking |
+
+> [!IMPORTANT]
+> **Proprietary software.** Published for the author's own use and record. No open-source
+> licence is granted. See [LICENSE](LICENSE) and [Copyright](#copyright).
+
+---
+
+## Contents
+
+- [The library](#the-library)
+- [Features](#features)
+- [Develop](#develop)
+- [Tests](#tests)
+- [Build and ship](#build-and-ship)
+- [Project structure](#project-structure)
+- [Adding a song](#adding-a-song)
+- [Privacy and security](#privacy-and-security)
+- [Cite](#cite)
+- [Copyright](#copyright)
+
+---
+
+## The library
+
+| Collection | Songs | Videos | Synced lyrics | Source | DOI |
+|---|:-:|:-:|:-:|---|---|
+| **La maison de Madam Hương** | 9 | 1 | 7 | [jemappellehuong.com](https://jemappellehuong.com/) | [10.5281/zenodo.22003853](https://doi.org/10.5281/zenodo.22003853) |
+| **BizOnland** | 17 | 8 | | [bizonland.com](https://bizonland.com/) | [10.5281/zenodo.23325489](https://doi.org/10.5281/zenodo.23325489) |
+| **M-AIDA** | 2 | | | | [10.5281/zenodo.21850575](https://doi.org/10.5281/zenodo.21850575) |
+| **Vietnamese History Game Portal** | 3 | 3 | 3 | [Vietnamese-History-Games](https://thuyhuongctu.github.io/Vietnamese-History-Games/) | [10.5281/zenodo.21850564](https://doi.org/10.5281/zenodo.21850564) |
+
+The **Vietnamese History Game Portal** collection is split into albums, one per game, each
+with a link to play it: *Van Don – Vietnam’s First Trading Port*, *Bac Hai Dao – Pirates of
+the Gulf of Tonkin*, and the song both games share, *Người trao ta chân trời*.
+
+Collections, songs and videos are declared in [`src/lib/library.ts`](src/lib/library.ts).
+Album tracks play from the app; the other songs, the game music and the films stream from
+the author's sites, from the games' GitHub Pages and from YouTube.
+
+<details>
+<summary><b>The album «La lampe, le fleuve et les couleurs»</b> (7 tracks, 32:35)</summary>
 
 | # | Title | Language | Length |
 |---|---|---|---|
@@ -36,284 +87,206 @@ A Vietnamese version of this document is at [README.vi.md](README.vi.md).
 | 6 | Je m'appelle Hương | French · Vietnamese | 6:14 |
 | 7 | Le ciel que tu n'as jamais quitté *(bonus)* | French | 5:53 |
 
-Total running time 32:35.
+A six-chapter mini song-cycle (plus a bonus track) written between 7 and 13 August 2026.
 
 > *Some dreams don't disappear. They change their brush.*
 
----
-
-## What the app does
-
-- Opens on a short **sunrise splash**: the Mekong bends into a C and the sun
-  rises at the river mouth — the new Chansonia logo.
-- Groups the library into **four collections** — *La maison de Madam Hương*,
-  *BizOnland*, *M-AIDA* and the *Vietnamese History Game Portal* (one album per
-  game: *Van Don – Vietnam’s First Trading Port*, *Bac Hai Dao – Pirates of the
-  Gulf of Tonkin*) — each with a **Songs** and a **Videos** list of compact
-  rows. The album tracks play from the app; BizOn and M-AIDA songs, the extra
-  Hương singles and the films stream from `jemappellehuong.com` and
-  `bizonland.com` (see [`src/lib/library.ts`](src/lib/library.ts)).
-- Karaoke view: **one active line, enlarged**, its words filling with
-  terracotta as they are sung; the line glides to the centre of the screen.
-  Tap any line to jump there. A *Trang lời* mode prints the whole lyric evenly.
-  On desktop a side column adds the cover, the style note and the song's
-  sections.
-- Videos play inside the app (MP4) or as YouTube embeds that load only when
-  tapped; opening a video pauses the music.
-- **Searches the current collection**, lyrics included — and ignores Vietnamese
-  diacritics, so typing `den` finds *đèn* and `huong` finds *Hương*.
-- **Draggable progress bar**, previous/next (previous restarts the song after
-  3 seconds), shuffle within the collection, auto-advance at the end.
-- **Sleep timer** as a bottom sheet with 5 / 15 / 30 / 45 / 60-minute presets;
-  the remaining time shows in the player bar.
-- Remembers the last song and position between visits.
-- **Queue**: every song has a ⋯ menu with *Play next* and *Add to queue*; the
-  queue sheet in the player reorders, removes and clears songs, and *Next*
-  always takes the queue first.
-- **Playlists** of your own: create, rename, delete, add from the ⋯ menu, play
-  a whole playlist. **Recently played** and **Most played** are recorded on the
-  device, under the *Mine* tab, and can be cleared.
-- **Playback speed** 0.75× / 1× / 1.25× / 1.5× (pitch kept), remembered.
-- A **refresh** button in the header, for the installed app that has no
-  address bar.
-- Artist page with library statistics, the Zenodo **DOI** and links.
-- **English by default**, with Vietnamese and French one tap away (the EN · VI ·
-  FR button); the choice is remembered.
-- **About** screen inside the app (what used to be a separate introduction
-  page): opens on the first visit and from the root web address, and any time
-  from the logo at the top. Text in [`src/lib/about-text.ts`](src/lib/about-text.ts).
-  Interface text and song data are translated in [`src/lib/i18n.ts`](src/lib/i18n.ts).
-- Light and dark themes following the device, with a manual switch. Every
-  animation switches off when the device asks for reduced motion.
-- **Installs as an app** (PWA): add to the home screen, open it full-screen and
-  offline. See [Installing as an app](#installing-as-an-app).
-- Optional karaoke lyric video export via Remotion — see
-  [`remotion-video/`](remotion-video).
-
-No account, no login, no analytics, no advertising, no tracking of any kind —
-the app has no backend and no server-side state at all (see
-[Security](#security) below).
+</details>
 
 ---
 
-## Running locally
+## Features
+
+### Listen
+
+- **Karaoke view**: the active line is enlarged and glides to the centre, its words fill with
+  terracotta as they are sung. Tap any line to jump there. *Sheet* mode prints the whole lyric.
+- **Two versions per song** where they exist (Vietnamese and English, or original and remix),
+  switchable in the player.
+- **Play all** for a collection or for your favourites, **shuffle**, **repeat** (off, all, one),
+  and a **draggable progress bar** with keyboard seeking.
+- **Playback speed** 0.75× to 1.5×, pitch kept, remembered.
+- **Sleep timer** (5 to 60 minutes, or *stop after this song*).
+- **Lock screen and headphone controls** through the Media Session API.
+
+### Organise
+
+- **Queue**: every song has a ⋯ menu with *Play next* and *Add to queue*; reorder, remove or
+  clear the queue from the player. *Next* always takes the queue first.
+- **Favourites** (♥) gathered across every collection.
+- **Mine** tab: your own **playlists** (create, rename, delete, play), **Most played** and
+  **Recently played**. Everything stays on the device.
+- **Search** across titles and lyrics, accent-insensitive (`den` finds *đèn*), with matches from
+  other collections shown underneath.
+- **Share** a song: the system share sheet, or a copied link (`…/app/?bai=song-id`) that opens
+  straight on that song.
+
+### Discover
+
+- **About** screen: the introduction that used to be a separate website, now inside the app.
+  Collections with their links and DOIs, features, music videos, the artist and citation
+  templates (APA, BibTeX) with a copy button. It opens on the first visit, from the root web
+  address, and from the logo at any time.
+- **Artist** page with a photo gallery, library statistics and links.
+- **Music videos** play inside the app; YouTube embeds load only when tapped.
+
+### Feel at home
+
+- **English by default**, Vietnamese and French one tap away; the choice is remembered.
+- **Light and dark** themes following the device, with a manual switch.
+- **Vietnam and France clocks** with flags in the header.
+- **Installs as an app** (PWA): full screen, offline shell, and a refresh button for the
+  installed app that has no address bar.
+- Every animation switches off when the device asks for reduced motion.
+
+---
+
+## Develop
 
 ```bash
 npm install
-npm run dev          # http://localhost:5173
+npm run dev
 ```
 
-To hear audio while developing, drop the seven mp3 files into `public/audio/`.
-The exact filenames are listed in [`public/audio/README.md`](public/audio/README.md).
-Without them the app still runs and displays every lyric — only playback is silent.
+The dev server runs at <http://localhost:5173>.
+
+To hear the album while developing, put the seven mp3 files into `public/audio/` (names in
+[`public/audio/README.md`](public/audio/README.md)). Without them the app still runs and shows
+every lyric; only album playback is silent.
+
+| Script | What it does |
+|---|---|
+| `npm run dev` | Development server with hot reload |
+| `npm run build` | Type-check and build the app into `dist/` |
+| `npm run build:site` | Build, then assemble GitHub Pages in `dist-site/` |
+| `npm test` | Playwright suite, phone and desktop widths |
+| `npm run test:ui` | Step through the tests visually |
+| `npm run test:report` | Open the report of the last run |
+
+**Stack:** Vite 6 · React 19 · TypeScript 5.7 · Tailwind CSS 4 · Zustand 5 · Capacitor 8 ·
+Playwright · lucide-react.
 
 ---
 
-## Automated tests
+## Tests
 
-A Playwright suite drives the real app in a real browser — it opens the album,
-types in the search box, plays a track, drags the progress bar and pulls the
-network out from under it — so a broken interface is caught before release,
-not after.
+A Playwright suite drives the real production build in a real browser, at phone and desktop
+widths: it taps, types, drags the progress bar and pulls the network away, so a broken
+interface is caught before release. **161 tests** run on every push and pull request
+([`test.yml`](.github/workflows/test.yml)); the HTML report is kept for two weeks.
 
 ```bash
-npm test             # run everything (mobile and desktop widths)
-npm run test:ui      # step through the tests visually
-npm run test:report  # open the report from the last run
+npx playwright install --with-deps chromium   # first run only
+npm test
 ```
 
-The first run downloads a browser: `npx playwright install --with-deps chromium`.
+| Spec | Covers |
+|---|---|
+| `library` | collections and counts, albums, splash, artwork, videos, artist page and gallery, themes |
+| `player` | playback, lyric highlighting, tap-to-seek, sheet mode, next/previous, resume after reload |
+| `advanced` | queue, playlists, *Mine* tab, playback speed, refresh, *Play all* |
+| `features` | favourites, repeat, sharing, Media Session, keyboard shortcuts |
+| `about` | About screen, root redirect, collection links and DOIs, citation copy |
+| `search` | accent-insensitive and lyric search, empty state, other collections |
+| `i18n` | English default, language switching, no leftover dashes |
+| `sleep` · `scrubber` · `motion` · `pwa` | sleep timer, progress bar, reduced motion, offline install |
 
-| File | What it checks |
-| --- | --- |
-| `tests/library.spec.ts` | three collections, song and video counts, splash, cover artwork, video view, artist page (DOI), light/dark |
-| `tests/search.spec.ts` | accent-insensitive search, lyric search, empty state, video search, search reset on collection change |
-| `tests/player.spec.ts` | tap a row to play, lyric highlighting, tap-a-line to seek, sheet mode, pause, next/previous, songs without lyrics, resume after reload |
-| `tests/sleep.spec.ts` | sleep-timer sheet: presets, start, cancel, close, pause when time is up |
-| `tests/scrubber.spec.ts` | dragging the progress bar, dragging off the bar, keyboard seeking, screen-reader labels |
-| `tests/pwa.spec.ts` | manifest, icons, service worker, audio never cached, reload with the network off |
-| `tests/motion.spec.ts` | motion on by default, everything still with "reduce motion" |
-
-The recordings are proprietary and are not in the repository, so
-`tests/make-silent-audio.mjs` writes a silent mp3 of the right length for every
-track that is missing. It never touches a real recording that is already there.
-
-Every push and pull request runs the whole suite on GitHub Actions
-([`.github/workflows/test.yml`](.github/workflows/test.yml)); the report is kept
-as a build artifact for two weeks.
+The recordings are not in the repository, so [`tests/make-silent-audio.mjs`](tests/make-silent-audio.mjs)
+writes silent mp3 files of the right length for any track that is missing. It never overwrites
+a real recording.
 
 ---
 
-## Two ways to package
+## Build and ship
 
-A single environment variable, `VITE_AUDIO_BASE`, selects where the audio
-comes from. Nothing else changes between the two builds.
+<details>
+<summary><b>Web (GitHub Pages)</b></summary>
 
-### Offline build — audio bundled inside the app
+[`deploy-pages.yml`](.github/workflows/deploy-pages.yml) runs `npm run build:site` on every push
+to `main` and publishes `dist-site/`:
 
-```bash
-# copy the seven mp3 files into public/audio/ first
-npm run build
-```
+| Path | Content |
+|---|---|
+| `app/` | the app (streaming build, audio from `jemappellehuong.com`) |
+| `index.html` | forwards to `app/?gioi-thieu`, keeping `?bai=…` links working |
+| `chinh-sach.html` | privacy policy (used by Google Play) |
+| `sw.js` | removes the service worker an older root page registered |
 
-Roughly **37 MB** (≈ 3.3 MB of app, ≈ 34 MB of recordings). Plays with no
-network connection.
+Pages must be enabled once (Settings → Pages → Source: *GitHub Actions*). A deploy can also be
+started by hand from the Actions tab.
 
-> Check what is actually in `public/audio/` first:
->
-> ```bash
-> node scripts/kiem-tra-nhac.mjs
-> ```
->
-> On a machine that has never held the recordings, `npm test` leaves behind
-> silent placeholder files with the right names and plausible sizes (see
-> [`tests/make-silent-audio.mjs`](tests/make-silent-audio.mjs)). An offline build
-> made over those ships an app that shows every lyric and plays nothing. The
-> command above tells the two apart and the packaging script refuses to continue
-> over placeholders.
+</details>
 
-### Streaming build — audio fetched from a server
+<details>
+<summary><b>Offline or streaming audio</b></summary>
 
-```bash
-VITE_AUDIO_BASE=https://jemappellehuong.com/assets/audio npm run build
-```
+One variable, `VITE_AUDIO_BASE`, decides where album audio comes from.
 
-Roughly **3.3 MB**, artwork included. Requires a connection during playback,
-and does not need the mp3 files present at build time. This is the variant
-GitHub Pages deploys.
+| Build | Command | Size | Needs network |
+|---|---|---|---|
+| Offline | `npm run build` (mp3 files in `public/audio/`) | ≈ 37 MB | No |
+| Streaming | `VITE_AUDIO_BASE=https://jemappellehuong.com/assets/audio npm run build` | ≈ 3.3 MB | Yes |
 
-`VITE_AUDIO_BASE` only changes where the app *looks* for audio — Vite still
-copies the whole of `public/` into `dist/`, so on a machine that holds the
-recordings a "streaming" build quietly carries them too. The packaging script
-drops them for this variant.
+Check what is really in `public/audio/` with `node scripts/kiem-tra-nhac.mjs`: an offline build
+made over the silent test files would ship an app that shows lyrics and plays nothing. The
+packaging script refuses to continue over placeholders.
 
-Point `VITE_AUDIO_BASE` at a different host to move the audio elsewhere — no
-source change needed, just rebuild.
+> [!NOTE]
+> Audio on a public static host can be downloaded directly by URL. Use the offline build, or a
+> host with access control, if the recordings must stay restricted.
 
-> Audio served from a public static host can be downloaded directly by URL,
-> outside the app. Choose the offline build, or a host with access control, if
-> the recordings need to stay restricted.
+</details>
 
----
-
-## Installing as an app
-
-The web build is a Progressive Web App. On the deployed site (or any HTTPS
-host), the browser offers **Add to Home screen** / **Install**; the app then
-opens full-screen with its own icon, and keeps working without a network.
-
-What makes that work:
+<details>
+<summary><b>Installable web app (PWA)</b></summary>
 
 | File | Role |
-| --- | --- |
+|---|---|
 | `public/manifest.webmanifest` | name, icons, colours, `display: standalone` |
-| `public/sw.js` | service worker: caches the app shell and static files |
-| `public/icons/` | 192/512 px icons, a maskable one, and the Apple touch icon |
+| `public/sw.js` | service worker: app shell and static files |
+| `public/icons/` | 192/512 px, maskable and Apple touch icons |
 
-Notes worth knowing before changing any of it:
+- The service worker registers only in a production build over `https:` or `localhost`; the
+  native builds skip it.
+- **Audio is never cached by the service worker**, so range requests (seeking) reach the server.
+- Pages are network-first, static files cache-first. Bump `CACHE` in `public/sw.js` to make
+  every device start over.
 
-- The service worker is registered only in a production build served over
-  `https:` (or `localhost`). Opening `dist/index.html` straight from disk, and
-  the Android/iOS builds, skip it entirely.
-- **Audio is never cached by the service worker.** Recordings are large, and
-  range requests — the thing that makes seeking work — must reach the server
-  untouched.
-- Pages use network-first (so a deploy shows up immediately), static files
-  cache-first. Bump `CACHE` in `public/sw.js` to make every device drop its
-  stored copies and start over.
-- Icons are generated from `public/art/lr-seal-round.webp`; regenerate them with
-  `sharp` if the seal ever changes.
+</details>
 
----
-
-## Deploying the web app
-
-`.github/workflows/deploy-pages.yml` builds the streaming variant and
-publishes `dist/` to GitHub Pages on every push to `main`, via the official
-`actions/deploy-pages` flow. GitHub Pages must be enabled once, under repo
-Settings → Pages → Source: "GitHub Actions" — after that, pushing to `main`
-is the only step needed to update the live site.
-
-To trigger a deploy manually, run the workflow from the Actions tab
-("Deploy web app to GitHub Pages" → Run workflow).
-
----
-
-## Building for Android
-
-One command does the whole run — build the web bundle, copy it into the native
-project, produce the `.aab`, and report whether the result is signed:
+<details>
+<summary><b>Android</b></summary>
 
 ```bash
-scripts/dong-goi-android.sh            # offline build (audio inside the app)
-scripts/dong-goi-android.sh truc-tuyen # streaming build (audio from a server)
+scripts/dong-goi-android.sh            # offline build, audio inside the app
+scripts/dong-goi-android.sh truc-tuyen # streaming build
 ```
 
-It refuses to make an offline build over silent placeholder audio, and it says
-up front when the signing keystore is missing rather than after the build.
-
-The same steps by hand:
+The script builds the web bundle, syncs it into `android/`, produces the `.aab` and says whether
+it is signed. By hand:
 
 ```bash
-npm run build                       # or the streaming variant above
-npx cap sync android                # copies dist/ into the native project
-cd android
-./gradlew bundleRelease             # -> app/build/outputs/bundle/release/app-release.aab
-./gradlew assembleRelease           # -> app/build/outputs/apk/release/app-release.apk
-./gradlew assembleDebug             # -> app/build/outputs/apk/debug/app-debug.apk
+npm run build
+npx cap sync android
+cd android && ./gradlew bundleRelease
 ```
-
-The debug APK is signed with the local debug key and installs straight onto a
-phone (`adb install -r app-debug.apk`) — handy for checking a build without
-touching the upload keystore.
 
 | | |
 |---|---|
 | Application ID | `com.jemappellehuong.songbook` |
 | Version | 1.2.0 (versionCode 3) |
 | min / target SDK | 24 / 36 |
+| Toolchain | JDK 21, Android SDK platform 36, build-tools 36.0.0 |
 
-Release builds are signed from `android/upload-keystore.jks` with credentials in
-`android/keystore.properties`. **Neither file is in this repository** — both are
-excluded by `.gitignore` and must be kept privately. Losing the keystore means
-losing the ability to publish updates under this application ID.
+Release builds are signed from `android/upload-keystore.jks` with `android/keystore.properties`.
+**Neither file is in the repository.** Without them the build still runs and produces an
+unsigned bundle. Store submission steps: [docs/huong-dan-phat-hanh.md](docs/huong-dan-phat-hanh.md)
+(Vietnamese).
 
-Without `keystore.properties` the release task still runs, but produces an
-**unsigned** `app-release.aab` / `app-release-unsigned.apk`: good enough to
-verify that packaging works, not uploadable to Google Play. Sign it afterwards
-with the real keystore, or rebuild on a machine that has it.
+</details>
 
-Building for Android requires JDK 21 and the Android SDK (platform 36,
-build-tools 36.0.0) — installed automatically by Android Studio, or on a
-headless machine with the command line tools:
-
-```bash
-sdkmanager --licenses
-sdkmanager "platform-tools" "platforms;android-36" "build-tools;36.0.0"
-echo "sdk.dir=$ANDROID_HOME" > android/local.properties
-```
-
-`local.properties` is machine-specific and excluded by `.gitignore`.
-
-### What a packaging run produces
-
-| Artefact | Size | Notes |
-|---|---|---|
-| `dist/` (streaming) | ≈ 3.3 MB | web bundle, also what GitHub Pages serves |
-| `dist/` (offline) | ≈ 37 MB | the same bundle plus the seven recordings |
-| `app-release.aab` (streaming) | ≈ 11 MB | Play upload format; unsigned unless the keystore is present |
-| `app-release.aab` (offline) | ≈ 37 MB | mp3 is already compressed, so the bundle barely shrinks |
-| `app-release-unsigned.apk` | ≈ 11 MB | streaming build as a raw APK |
-
-Version 1.2.0 (versionCode 3). The APK is larger than the web bundle because it
-carries the Capacitor runtime and the full set of splash-screen densities.
-
-Google Play submission steps are written up in
-[docs/huong-dan-phat-hanh.md](docs/huong-dan-phat-hanh.md) (Vietnamese).
-
----
-
-## Building for iOS
+<details>
+<summary><b>iOS</b></summary>
 
 ```bash
 npm run build
@@ -321,150 +294,111 @@ npx cap sync ios
 npx cap open ios
 ```
 
-Open `ios/App/App.xcworkspace` in Xcode (not the bare `.xcodeproj`), select an
-Apple Developer Team under Signing & Capabilities, confirm the Bundle
-Identifier is `com.jemappellehuong.songbook`, then archive with
-`Any iOS Device (arm64)`, validate, and upload via the Organizer. Signing and
-submitting requires macOS and an Apple Developer account — this can't be done
-from a Linux environment.
+Open `ios/App/App.xcworkspace`, choose an Apple Developer team, keep the bundle ID
+`com.jemappellehuong.songbook`, archive for *Any iOS Device (arm64)* and upload from the
+Organizer. Requires macOS and an Apple Developer account. Checklist:
+[docs/app-store-todo.md](docs/app-store-todo.md).
 
-Full checklist in [docs/app-store-todo.md](docs/app-store-todo.md).
+</details>
 
 ---
 
-## Adding or editing a song
-
-Each track is one file under `src/songs/`. The full procedure is in
-[`src/songs/README.md`](src/songs/README.md); in short:
-
-1. Create `src/songs/07-title.ts` from an existing file as a template.
-2. Set `audioSrc: "audio/filename.mp3"` — always relative. `resolveAudio()`
-   rewrites it to an absolute URL when building in streaming mode.
-3. Register the file in `src/lib/catalog.ts`.
-
-`durationMs` must match the mp3 exactly, or the lyrics will drift out of sync.
-
-A track may also carry the songbook fields: `coverSrc` (cover art),
-`style` (the *Style:* line — genre, BPM, instrumentation), `signature` (the
-representative line, shown in italics) and `pictures` (clay illustrations with
-captions). Artwork files live in `public/art/` and are listed in
-`src/lib/art.ts`.
-
----
-
-## Artwork and interface
-
-Every image in the app comes from the songbook page of the author's site,
-[`Je-mappelle-Huong/music.html`](https://thuyhuongctu.github.io/Je-mappelle-Huong/music.html),
-and is bundled under `public/art/` so the app stays fully offline. Each track
-carries **the same frames, in the same order, with the same captions** as its
-section on that page — including the opening frames of the short films. The
-interface uses the same design tokens as that page — paper `#f6f1e7`,
-terracotta `#c45c3a`, river teal `#3f6f68`, serif headings, 16px paper cards
-with a thin rule and a soft shadow — with a dark variant that follows the
-system setting or the Sáng/Tối button in the header.
-
----
-
-## Layout
+## Project structure
 
 ```
 src/
+  App.tsx              views: library, player, video, artist, about
+  components/          interface (library, karaoke stage, player bar, song menu,
+                       queue, Mine tab, About screen, artist page, sleep timer…)
   lib/
-    artist.ts        artist and album metadata, copyright line
-    catalog.ts       assembles songs, derives per-line timing
-    library.ts       the three collections (La maison de Madam Hương · BizOnland · M-AIDA): songs and videos
-    audio-source.ts  offline / streaming switch
-    player-store.ts  player state (Zustand)
-    art.ts           clay artwork used across the app (paths under public/art)
-    theme.ts         light / dark switch, mirrors the website's Sáng·Tối button
-  songs/             one file per track: lyrics, timings, artwork, style note
-  components/        user interface
-scripts/gop-trang-web.mjs
-                     assembles GitHub Pages (`npm run build:site`): the app under app/,
-                     a root index.html that forwards to app/?gioi-thieu, chinh-sach.html
-public/
-  audio/             mp3 files (never committed)
-  art/               clay artwork copied from the songbook page
-  photo/             photographs of Hương used by the bonus track
-  brand/             portrait
-  icons/             home-screen icons (192/512, maskable, Apple touch)
-  manifest.webmanifest  installable-app declaration (PWA)
-  sw.js              service worker: offline shell and static-file cache
-android/             Capacitor project (Android)
-ios/                 Capacitor project (iOS)
-remotion-video/      karaoke lyric video composition (optional export)
-docs/                release checklists (Android, iOS)
-tests/               Playwright suite; make-silent-audio.mjs builds test audio
-playwright.config.ts test runner: builds the app and previews it on :4173
+    library.ts         collections, albums, songs, videos, links and DOIs
+    catalog.ts         song model; turns sections into timed lines and words
+    player-store.ts    player state (Zustand): queue, playlists, history, speed…
+    audio-engine.ts    the HTMLAudioElement wrapper
+    audio-source.ts    offline / streaming switch
+    i18n.ts            interface and song-data translations (EN · VI · FR)
+    about-text.ts      About screen text (EN · VI · FR)
+    artist.ts          artist, album, photo gallery, copyright line
+    media-controls.ts  lock-screen controls (Media Session)
+  songs/               one file per song: lyrics, timings, artwork, style note
+    games/             songs of the history games
+public/                artwork, photos, icons, manifest, service worker
+scripts/               packaging, Pages assembly, audio checks
+tests/                 Playwright suite
+android/  ios/         Capacitor projects
+remotion-video/        optional karaoke lyric-video export
+docs/                  release checklists
 ```
 
-Built with Vite 6, React 19, TypeScript 5.7, Tailwind CSS 4, Zustand 5 and
-Capacitor 8.
+---
+
+## Adding a song
+
+Each song is a `RawSong` in its own file under `src/songs/` (see
+[`src/songs/README.md`](src/songs/README.md)):
+
+1. Copy an existing song file and set `id`, `title`, `audioSrc`, `durationMs` and `sections`.
+2. Give each section a `startMs`; lines inside a section are spread by text length. Split a long
+   section, or set `endMs`, where the singer pauses.
+3. Register the song in a collection in [`src/lib/library.ts`](src/lib/library.ts), and add any
+   new interface text to [`src/lib/i18n.ts`](src/lib/i18n.ts).
+4. Update `COUNTS` in [`tests/helpers.ts`](tests/helpers.ts) and run `npm test`.
+
+> [!TIP]
+> `durationMs` must match the recording exactly, or the lyrics drift. A video only needs an
+> entry in the collection's `videos` list (`youtube` id or `mp4` URL, title, poster).
 
 ---
 
-## Security
+## Privacy and security
 
-This is a static, client-only app: there is no backend, no database, no
-accounts and no login. Every visitor gets a read-only copy of the same
-build served from GitHub Pages.
+Chansonia is a static, client-only app: no backend, no database, no account, no login.
 
-- **Nothing a visitor does can change the live site.** Preferences (shuffle,
-  sleep timer, theme) are stored with `zustand/persist` in that visitor's own
-  browser (`localStorage`) — private to their device, never sent anywhere,
-  and invisible to other visitors.
-- **No write access is granted to anyone but the repository owner.** Only
-  `thuyhuongctu` has push/merge rights; third-party GitHub Apps (ImgBot,
-  ecc-tools, CodeRabbit) can only leave comments or open pull requests from
-  their own branch — nothing they do reaches `main` without the owner
-  reviewing and merging it by hand.
-- **No secrets are stored in this repository.** The Android signing keystore
-  (`android/upload-keystore.jks`, `android/keystore.properties`) is excluded
-  by `.gitignore` and kept only on the machine that builds releases — see
-  [Building for Android](#building-for-android).
-- Recommended, optional hardening on GitHub: enable **Settings → Branches →
-  branch protection on `main`** (require a pull request before merging) as a
-  second line of defence, and review **Settings → Integrations → GitHub
-  Apps** periodically to revoke any automation no longer wanted.
+- **Preferences stay on the device.** Language, theme, favourites, playlists, queue, history and
+  playback speed live in the browser's `localStorage`. Nothing is sent anywhere.
+- **No analytics, advertising or tracking.** YouTube is contacted only when a video is tapped.
+- **No secrets in the repository.** The Android keystore and its properties are excluded by
+  `.gitignore` and kept only on the release machine.
+- **Only the owner can change `main`.** Third-party apps can comment or open pull requests,
+  nothing more.
+
+Recommended on GitHub: branch protection on `main`, and a periodic review of installed GitHub Apps.
 
 ---
 
-## Archived on Zenodo
+## Cite
 
-Every GitHub release of this repository is archived on Zenodo, which mints a
-DOI for it. Cite the **concept DOI** — it always resolves to the newest
-version:
+Every GitHub release is archived on Zenodo. Cite the **concept DOI**, which always resolves to
+the newest version: **[10.5281/zenodo.22172794](https://doi.org/10.5281/zenodo.22172794)**.
 
-| | |
-|---|---|
-| Concept DOI (all versions) | [10.5281/zenodo.22172794](https://doi.org/10.5281/zenodo.22172794) |
-| v.1.0 (30 Aug 2026) | [10.5281/zenodo.22172795](https://doi.org/10.5281/zenodo.22172795) |
+```bibtex
+@software{do_2026_chansonia,
+  author    = {Đỗ, Thùy Hương},
+  title     = {Chansonia},
+  year      = {2026},
+  publisher = {Zenodo},
+  doi       = {10.5281/zenodo.22172794},
+  url       = {https://doi.org/10.5281/zenodo.22172794}
+}
+```
 
-Citation metadata lives in two files at the repository root:
-[`CITATION.cff`](CITATION.cff) — which GitHub reads for its "Cite this
-repository" button — and [`.zenodo.json`](.zenodo.json), which Zenodo reads at
-the tagged commit, so title, author, ORCID, keywords and the *restricted*
-access condition are set without editing anything by hand.
+Metadata lives in [`CITATION.cff`](CITATION.cff) (GitHub's *Cite this repository*) and
+[`.zenodo.json`](.zenodo.json) (read by Zenodo at the tagged commit). Access on Zenodo is
+**restricted**: the record is public, the files are released on request.
 
-### Publishing a new version
-
-No new repository is needed — a new version belongs to the same Zenodo record:
+<details>
+<summary><b>Publishing a new version</b></summary>
 
 1. Merge the work into `main`.
-2. Bump the version in `package.json`, `android/app/build.gradle`
-   (`versionCode` **and** `versionName`), `ios/App/App.xcodeproj`
-   (`MARKETING_VERSION`), `.zenodo.json` and `CITATION.cff`.
-3. Draft a GitHub release with a new tag (`v1.1.0`, …).
+2. Bump the version in `package.json`, `android/app/build.gradle` (`versionCode` and
+   `versionName`), `ios/App/App.xcodeproj` (`MARKETING_VERSION`), `.zenodo.json` and
+   `CITATION.cff`.
+3. Draft a GitHub release with a new tag.
 
-Zenodo picks the release up through its GitHub webhook and adds a new version
-under the same concept DOI. The webhook is switched on per repository at
-[zenodo.org/account/settings/github](https://zenodo.org/account/settings/github)
-— only the account owner can do that, and only releases created *after* it is
-switched on are archived.
+Zenodo picks up the release through its GitHub webhook and adds a version under the same
+concept DOI.
 
-Access on Zenodo is **restricted**, matching the licence below: the record and
-its metadata are public, the files are released by the author on request.
+</details>
 
 ---
 
@@ -472,9 +406,8 @@ its metadata are public, the files are released by the author on request.
 
 © 2026 Đỗ Thùy Hương. All rights reserved.
 
-The software, the lyrics, the music, the recordings and the album and artist
-names are all proprietary. They are not released under any open-source licence.
-Third-party libraries retain their own licences; their presence does not make
-this work open source.
+The software, lyrics, music, recordings, artwork and the album and artist names are
+proprietary and not released under any open-source licence. Third-party libraries keep their
+own licences.
 
-Enquiries about use: thuyhuongctu@gmail.com
+Enquiries: thuyhuongctu@gmail.com
