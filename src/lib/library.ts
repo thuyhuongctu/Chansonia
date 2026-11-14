@@ -434,8 +434,8 @@ const SUVIET: Collection = {
       id: "nguoi-trao-ta-chan-troi-mv",
       title: "Người trao ta chân trời (Those Who Gave Us the Horizon)",
       meta: "MV 3D · YouTube",
-      youtube: "vmCjT4VGmXQ",
-      poster: "https://i.ytimg.com/vi/vmCjT4VGmXQ/hqdefault.jpg",
+      youtube: "4ltivmM8B34",
+      poster: "https://i.ytimg.com/vi/4ltivmM8B34/hqdefault.jpg",
     },
   ],
 };
