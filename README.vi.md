@@ -1,369 +1,400 @@
-# Je m'appelle Hương — Songbook
+<div align="center">
 
-Ứng dụng nghe nhạc kèm lời cho album **«La lampe, le fleuve et les couleurs»**
-(mini song-cycle · EP, 6 bài, sáng tác 07–13/08/2026).
+<img src="public/icons/icon-192.png" width="96" height="96" alt="Logo Chansonia" />
 
-Chạy được ở nhiều nơi từ cùng một mã nguồn:
+# Chansonia
 
-- **Web** — trang giới thiệu ba thứ tiếng (Việt · Anh · Pháp) tại
-  **[thuyhuongctu.github.io/Chansonia](https://thuyhuongctu.github.io/Chansonia/)**,
-  còn app nghe nhạc ở **[/Chansonia/app/](https://thuyhuongctu.github.io/Chansonia/app/)**,
-  tự động triển khai lại mỗi khi push vào nhánh `main` (xem mục 3).
-- **Android** — đóng gói bằng Capacitor, nộp lên CH Play dưới dạng `.aab`.
-- **iOS** — dự án Capacitor đã được tạo tại `ios/`, sẵn sàng mở bằng Xcode và gửi qua TestFlight/App Store sau khi cấu hình Apple Developer.
+**Những bài hát kể chuyện. Nghe, đọc lời và xem phim trong một app.**
 
-Xem quy trình chi tiết tại [docs/app-store-todo.md](docs/app-store-todo.md).
+Ứng dụng nghe nhạc có lời chạy theo nhạc cho các bài hát của **Je m'appelle Hương**
+(Đỗ Thùy Hương): album *«La lampe, le fleuve et les couleurs»*, BizOnland, M-AIDA và nhạc
+của hai game lịch sử Việt Nam.
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22172794.svg)](https://doi.org/10.5281/zenodo.22172794)
+[![Kiểm thử](https://github.com/thuyhuongctu/Chansonia/actions/workflows/test.yml/badge.svg)](https://github.com/thuyhuongctu/Chansonia/actions/workflows/test.yml)
+[![Triển khai](https://github.com/thuyhuongctu/Chansonia/actions/workflows/deploy-pages.yml/badge.svg)](https://github.com/thuyhuongctu/Chansonia/actions/workflows/deploy-pages.yml)
+![Giấy phép: độc quyền](https://img.shields.io/badge/gi%E1%BA%A5y%20ph%C3%A9p-%C4%91%E1%BB%99c%20quy%E1%BB%81n-c45c3a)
+![Giao diện: EN · VI · FR](https://img.shields.io/badge/giao%20di%E1%BB%87n-EN%20%C2%B7%20VI%20%C2%B7%20FR-3f6f68)
+
+**[Mở app](https://thuyhuongctu.github.io/Chansonia/app/)** ·
+[English](README.md) ·
+[Trích dẫn](#trích-dẫn) ·
+[Phát triển](#phát-triển)
+
+</div>
 
 ---
 
-## 1. Chạy thử trên máy
+## Tóm tắt
+
+| | |
+|---|---|
+| **Web** | [thuyhuongctu.github.io/Chansonia/app/](https://thuyhuongctu.github.io/Chansonia/app/). Địa chỉ gốc chuyển thẳng vào app và mở màn hình **Giới thiệu**. Tự triển khai lại mỗi lần đẩy lên `main`. |
+| **Android** | Dự án Capacitor trong `android/`, nộp lên Google Play dạng `.aab` (`com.jemappellehuong.songbook`, v1.2.0). |
+| **iOS** | Dự án Capacitor trong `ios/`, sẵn sàng mở bằng Xcode, gửi TestFlight và App Store. |
+| **Thư viện** | 4 bộ sưu tập · 31 bài · 12 video |
+| **Giao diện** | Mặc định tiếng Anh, chuyển tiếng Việt và tiếng Pháp bằng một nút |
+| **Quyền riêng tư** | Không tài khoản, không máy chủ, không thống kê, không theo dõi |
+
+> [!IMPORTANT]
+> **Phần mềm độc quyền.** Công bố để tác giả sử dụng và lưu trữ. Không cấp giấy phép mã nguồn
+> mở. Xem [LICENSE](LICENSE) và mục [Bản quyền](#bản-quyền).
+
+---
+
+## Mục lục
+
+- [Thư viện](#thư-viện)
+- [Tính năng](#tính-năng)
+- [Phát triển](#phát-triển)
+- [Kiểm thử](#kiểm-thử)
+- [Đóng gói và phát hành](#đóng-gói-và-phát-hành)
+- [Cấu trúc thư mục](#cấu-trúc-thư-mục)
+- [Thêm bài hát](#thêm-bài-hát)
+- [Quyền riêng tư và bảo mật](#quyền-riêng-tư-và-bảo-mật)
+- [Trích dẫn](#trích-dẫn)
+- [Bản quyền](#bản-quyền)
+
+---
+
+## Thư viện
+
+| Bộ sưu tập | Bài | Video | Có lời chạy | Trang gốc | DOI |
+|---|:-:|:-:|:-:|---|---|
+| **La maison de Madam Hương** | 9 | 1 | 7 | [jemappellehuong.com](https://jemappellehuong.com/) | [10.5281/zenodo.22003853](https://doi.org/10.5281/zenodo.22003853) |
+| **BizOnland** | 17 | 8 | | [bizonland.com](https://bizonland.com/) | [10.5281/zenodo.23325489](https://doi.org/10.5281/zenodo.23325489) |
+| **M-AIDA** | 2 | | | | [10.5281/zenodo.21850575](https://doi.org/10.5281/zenodo.21850575) |
+| **Vietnamese History Game Portal** | 3 | 3 | 3 | [Vietnamese-History-Games](https://thuyhuongctu.github.io/Vietnamese-History-Games/) | [10.5281/zenodo.21850564](https://doi.org/10.5281/zenodo.21850564) |
+
+Bộ sưu tập **Vietnamese History Game Portal** (Cổng Trò Chơi Sử Việt) chia theo album, mỗi game
+một album, có link vào chơi: *Van Don – Vietnam’s First Trading Port*, *Bac Hai Dao – Pirates of
+the Gulf of Tonkin*, và bài chung của hai game *Người trao ta chân trời*.
+
+Bộ sưu tập, bài hát và video khai báo trong [`src/lib/library.ts`](src/lib/library.ts). Bài của
+album phát từ app; các bài khác, nhạc game và phim phát trực tuyến từ trang của tác giả, từ
+GitHub Pages của repo game và từ YouTube.
+
+<details>
+<summary><b>Album «La lampe, le fleuve et les couleurs»</b> (7 bài, 32:35)</summary>
+
+| # | Tên bài | Ngôn ngữ | Độ dài |
+|---|---|---|---|
+| 1 | Je voudrais te parler | Tiếng Pháp | 2:51 |
+| 2 | La lampe brûle encore | Việt · Pháp | 5:13 |
+| 3 | The Lamp Still Burns | Tiếng Anh | 2:04 |
+| 4 | 26 Năm Sau *(bài chủ đề)* | Tiếng Việt | 5:03 |
+| 5 | A Father's Song to His Little Girl | Tiếng Anh | 5:17 |
+| 6 | Je m'appelle Hương | Pháp · Việt | 6:14 |
+| 7 | Le ciel que tu n'as jamais quitté *(bài tặng thêm)* | Tiếng Pháp | 5:53 |
+
+Mini song-cycle sáu chương (cùng một bài tặng thêm), sáng tác từ 07 đến 13/8/2026.
+
+> *Có những ước mơ không biến mất. Chúng chỉ đổi cây cọ.*
+
+</details>
+
+---
+
+## Tính năng
+
+### Nghe
+
+- **Lời chạy theo nhạc**: dòng đang hát phóng to và trôi vào giữa, chữ đã hát đổi màu đất nung.
+  Chạm vào dòng nào là nhạc nhảy tới đó. Chế độ *Trang lời* in cả bài.
+- **Hai phiên bản mỗi bài** khi có (tiếng Việt và tiếng Anh, hoặc bản gốc và bản phối).
+- **Phát tất cả** một bộ sưu tập hoặc bài yêu thích, **ngẫu nhiên**, **lặp lại** (tắt, cả danh
+  sách, một bài), **thanh tiến độ kéo được** và tua bằng bàn phím.
+- **Tốc độ phát** 0.75× đến 1.5×, giữ cao độ giọng, app nhớ lựa chọn.
+- **Hẹn giờ tắt nhạc** (5 đến 60 phút, hoặc *dừng khi hết bài này*).
+- **Điều khiển ở màn hình khoá và tai nghe** (Media Session).
+
+### Sắp xếp
+
+- **Hàng chờ**: menu ⋯ ở mỗi bài có *Phát tiếp theo* và *Thêm vào hàng chờ*; đổi thứ tự, bỏ bớt
+  hoặc xoá hàng chờ ngay ở màn hình nghe. *Bài sau* luôn lấy từ hàng chờ trước.
+- **Yêu thích** (♥) gom từ mọi bộ sưu tập.
+- Mục **Của tôi**: **playlist** tự tạo (tạo, đổi tên, xoá, phát), **nghe nhiều nhất** và **nghe
+  gần đây**. Mọi thứ lưu ngay trong máy.
+- **Tìm kiếm** theo tên bài và lời, không cần gõ dấu (`den` ra *đèn*), kèm kết quả ở bộ sưu tập khác.
+- **Chia sẻ** bài: bảng chia sẻ của máy, hoặc link (`…/app/?bai=ma-bai`) mở thẳng vào bài đó.
+
+### Khám phá
+
+- Màn hình **Giới thiệu**: trước là trang web riêng, nay nằm trong app. Có các bộ sưu tập kèm link
+  và DOI, tính năng, MV, nghệ sĩ, mẫu trích dẫn (APA, BibTeX) có nút chép. Tự mở lần đầu dùng app,
+  khi vào từ địa chỉ gốc, và bất cứ lúc nào bằng logo.
+- Trang **Nghệ sĩ** có bộ ảnh, số liệu thư viện và các link.
+- **MV** phát ngay trong app; video YouTube chỉ tải khi bấm vào.
+
+### Dễ chịu
+
+- **Mặc định tiếng Anh**, chuyển tiếng Việt và tiếng Pháp bằng một nút; app nhớ lựa chọn.
+- **Nền sáng và nền tối** theo máy, có nút đổi tay.
+- **Đồng hồ Việt Nam và Pháp** có cờ ở đầu app.
+- **Cài như app** (PWA): toàn màn hình, mở được khi mất mạng, có nút làm mới cho bản cài không có
+  thanh địa chỉ.
+- Mọi hiệu ứng chuyển động tắt khi máy yêu cầu giảm chuyển động.
+
+---
+
+## Phát triển
 
 ```bash
 npm install
-npm run dev          # mở http://localhost:5173
+npm run dev
 ```
 
-Muốn nghe nhạc khi chạy thử thì chép 7 tệp mp3 vào `public/audio/`
-(xem `public/audio/README.md` để biết tên tệp chính xác).
+Máy chủ chạy thử ở <http://localhost:5173>.
+
+Muốn nghe album khi chạy thử thì chép 7 tệp mp3 vào `public/audio/` (tên tệp trong
+[`public/audio/README.md`](public/audio/README.md)). Thiếu tệp thì app vẫn chạy và hiện đủ lời,
+chỉ không phát được nhạc album.
+
+| Lệnh | Việc làm |
+|---|---|
+| `npm run dev` | Chạy thử, tự tải lại khi sửa mã |
+| `npm run build` | Kiểm tra kiểu và dựng app vào `dist/` |
+| `npm run build:site` | Dựng app rồi ghép bản GitHub Pages vào `dist-site/` |
+| `npm test` | Bộ kiểm thử Playwright, khổ điện thoại và máy tính |
+| `npm run test:ui` | Xem từng bước kiểm thử |
+| `npm run test:report` | Mở báo cáo lần chạy gần nhất |
+
+**Công nghệ:** Vite 6 · React 19 · TypeScript 5.7 · Tailwind CSS 4 · Zustand 5 · Capacitor 8 ·
+Playwright · lucide-react.
 
 ---
 
-## 1b. Bộ kiểm thử tự động
+## Kiểm thử
 
-Một bộ kiểm thử Playwright mở ứng dụng bằng trình duyệt thật rồi làm đúng
-những việc người nghe vẫn làm: xem trang album, gõ vào ô tìm kiếm, bấm phát
-một bài, kéo thanh tiến độ, rồi ngắt mạng xem có mở lại được không. Sửa mã mà
-làm vỡ chỗ nào là biết ngay, không phải đợi tới lúc phát hành mới lộ.
+Bộ kiểm thử Playwright mở bản dựng thật trong trình duyệt thật, ở khổ điện thoại và máy tính:
+chạm, gõ, kéo thanh tiến độ, ngắt mạng, để giao diện hỏng bị phát hiện trước khi phát hành.
+**161 bài kiểm thử** chạy mỗi lần đẩy mã và mỗi PR ([`test.yml`](.github/workflows/test.yml)); báo
+cáo HTML giữ hai tuần.
 
 ```bash
-npm test             # chạy toàn bộ, cả khổ điện thoại lẫn khổ máy tính
-npm run test:ui      # chạy có giao diện, xem lại từng bước
-npm run test:report  # mở báo cáo của lần chạy gần nhất
+npx playwright install --with-deps chromium   # chỉ lần đầu
+npm test
 ```
 
-Lần đầu cần tải trình duyệt về: `npx playwright install --with-deps chromium`.
+| Tệp | Kiểm tra |
+|---|---|
+| `library` | bộ sưu tập và số lượng, album, màn hình chào, ảnh bìa, video, trang nghệ sĩ và bộ ảnh, nền sáng/tối |
+| `player` | phát nhạc, tô lời, chạm để tua, trang lời, bài trước/sau, nghe tiếp sau khi tải lại |
+| `advanced` | hàng chờ, playlist, mục *Của tôi*, tốc độ phát, nút làm mới, *Phát tất cả* |
+| `features` | yêu thích, lặp lại, chia sẻ, Media Session, phím tắt |
+| `about` | màn hình Giới thiệu, chuyển hướng từ địa chỉ gốc, link và DOI, chép trích dẫn |
+| `search` | tìm không dấu, tìm theo lời, khi không có kết quả, bộ sưu tập khác |
+| `i18n` | mặc định tiếng Anh, đổi ngôn ngữ, không còn dấu gạch dài |
+| `sleep` · `scrubber` · `motion` · `pwa` | hẹn giờ, thanh tiến độ, giảm chuyển động, cài đặt và chạy offline |
 
-| Tệp | Kiểm những gì |
-| --- | --- |
-| `tests/library.spec.ts` | ba bộ sưu tập, số bài và số video, màn hình chào, ảnh bìa, màn hình video, trang nghệ sĩ (DOI), nền sáng/tối |
-| `tests/search.spec.ts` | tìm không dấu, tìm theo lời, báo không khớp, tìm video, đổi bộ sưu tập thì xoá từ khoá |
-| `tests/player.spec.ts` | bấm hàng để phát, lời sáng theo dòng, bấm dòng lời để tua, chế độ Trang lời, tạm dừng, bài trước/sau, bài chưa có lời, mở lại nghe tiếp |
-| `tests/sleep.spec.ts` | tấm hẹn giờ: chọn phút, bắt đầu, huỷ, đóng, hết giờ thì dừng nhạc |
-| `tests/scrubber.spec.ts` | kéo thanh tiến độ, kéo ra ngoài thanh, tua bằng bàn phím, nhãn cho máy đọc màn hình |
-| `tests/pwa.spec.ts` | manifest, biểu tượng, service worker, không lưu tệp nhạc, mất mạng vẫn mở được |
-| `tests/motion.spec.ts` | có chuyển động khi bình thường, tắt hẳn khi máy đặt giảm chuyển động |
-
-Bản thu là tài sản riêng, không nằm trong kho mã, nên
-`tests/make-silent-audio.mjs` tự tạo tệp mp3 im lặng đúng độ dài từng bài cho
-những tệp còn thiếu. Máy nào đã có bản thu thật thì tệp thật giữ nguyên, không
-bị ghi đè.
-
-Mỗi lần đẩy mã và mỗi lần mở pull request, GitHub Actions chạy lại toàn bộ bộ
-kiểm thử ([`.github/workflows/test.yml`](.github/workflows/test.yml)); báo cáo
-được giữ lại hai tuần để xem khi cần.
+Bản thu không có trong repo, nên [`tests/make-silent-audio.mjs`](tests/make-silent-audio.mjs) tạo
+tệp mp3 im lặng đúng độ dài cho bài nào còn thiếu. Tệp này không bao giờ ghi đè bản thu thật.
 
 ---
 
-## 2. Hai cách đóng gói
+## Đóng gói và phát hành
 
-Ứng dụng có công tắc `VITE_AUDIO_BASE` để chọn nguồn nhạc.
+<details>
+<summary><b>Web (GitHub Pages)</b></summary>
 
-### 2.1 Bản OFFLINE — nhạc nằm trong app
+[`deploy-pages.yml`](.github/workflows/deploy-pages.yml) chạy `npm run build:site` mỗi lần đẩy lên
+`main` rồi đăng `dist-site/`:
+
+| Đường dẫn | Nội dung |
+|---|---|
+| `app/` | app (bản phát trực tuyến, nhạc lấy từ `jemappellehuong.com`) |
+| `index.html` | chuyển vào `app/?gioi-thieu`, giữ nguyên link `?bai=…` cũ |
+| `chinh-sach.html` | chính sách quyền riêng tư (cho Google Play) |
+| `sw.js` | gỡ service worker cũ từng đăng ký ở thư mục gốc |
+
+Cần bật Pages một lần (Settings → Pages → Source: *GitHub Actions*). Cũng có thể chạy triển khai
+bằng tay ở tab Actions.
+
+</details>
+
+<details>
+<summary><b>Nhạc trong app hay phát trực tuyến</b></summary>
+
+Một biến `VITE_AUDIO_BASE` quyết định nhạc album lấy từ đâu.
+
+| Bản dựng | Lệnh | Dung lượng | Cần mạng |
+|---|---|---|---|
+| Offline | `npm run build` (mp3 trong `public/audio/`) | ≈ 37 MB | Không |
+| Trực tuyến | `VITE_AUDIO_BASE=https://jemappellehuong.com/assets/audio npm run build` | ≈ 3,3 MB | Có |
+
+Kiểm tra `public/audio/` bằng `node scripts/kiem-tra-nhac.mjs`: dựng bản offline trên tệp im lặng
+của bộ kiểm thử thì app chỉ hiện lời mà không phát được. Script đóng gói từ chối chạy tiếp trên
+tệp giả.
+
+> [!NOTE]
+> Nhạc đặt trên host tĩnh công khai có thể tải trực tiếp qua đường link. Dùng bản offline, hoặc host
+> có kiểm soát truy cập, nếu cần giữ bản thu riêng tư.
+
+</details>
+
+<details>
+<summary><b>Cài như app (PWA)</b></summary>
+
+| Tệp | Vai trò |
+|---|---|
+| `public/manifest.webmanifest` | tên, biểu tượng, màu, `display: standalone` |
+| `public/sw.js` | service worker: khung app và tệp tĩnh |
+| `public/icons/` | biểu tượng 192/512 px, maskable và Apple touch |
+
+- Service worker chỉ đăng ký ở bản dựng chạy qua `https:` hoặc `localhost`; bản Android/iOS bỏ qua.
+- **Service worker không lưu nhạc**, để yêu cầu tua (range request) tới thẳng máy chủ.
+- Trang lấy mạng trước, tệp tĩnh lấy bộ nhớ trước. Tăng `CACHE` trong `public/sw.js` để mọi máy
+  tải lại từ đầu.
+
+</details>
+
+<details>
+<summary><b>Android</b></summary>
 
 ```bash
-# chép 7 tệp mp3 vào public/audio/ trước
+scripts/dong-goi-android.sh            # bản offline, nhạc nằm trong app
+scripts/dong-goi-android.sh truc-tuyen # bản phát trực tuyến
+```
+
+Script dựng bản web, chép vào `android/`, tạo `.aab` và báo đã ký hay chưa. Làm tay:
+
+```bash
 npm run build
+npx cap sync android
+cd android && ./gradlew bundleRelease
 ```
 
-- App khoảng **37 MB** (≈ 3,3 MB phần ứng dụng + ≈ 34 MB nhạc), phát không cần mạng.
-- Dùng khi muốn người nghe không phụ thuộc đường truyền.
+| | |
+|---|---|
+| Application ID | `com.jemappellehuong.songbook` |
+| Phiên bản | 1.2.0 (versionCode 3) |
+| SDK tối thiểu / đích | 24 / 36 |
+| Công cụ | JDK 21, Android SDK platform 36, build-tools 36.0.0 |
 
-> Xem trong `public/audio/` đang là gì trước đã:
->
-> ```bash
-> node scripts/kiem-tra-nhac.mjs
-> ```
->
-> Máy nào chưa từng có bản thu mà đã chạy `npm test` thì
-> [`tests/make-silent-audio.mjs`](tests/make-silent-audio.mjs) để lại sẵn bảy tệp
-> **im lặng**, đúng tên và đúng cỡ vài MB, nhìn y như thật. Đóng gói bản offline
-> lúc đó sẽ ra ứng dụng hiện đủ lời hát mà không có tiếng. Lệnh trên phân biệt
-> được hai loại, và script đóng gói sẽ dừng nếu gặp tệp im lặng.
+Bản phát hành được ký bằng `android/upload-keystore.jks` và `android/keystore.properties`. **Hai tệp
+này không có trong repo.** Thiếu chúng thì vẫn dựng được, nhưng ra bản chưa ký. Các bước nộp lên
+cửa hàng: [docs/huong-dan-phat-hanh.md](docs/huong-dan-phat-hanh.md).
 
-### 2.2 Bản TRỰC TUYẾN — nhạc tải từ máy chủ
+</details>
 
-```bash
-VITE_AUDIO_BASE=https://jemappellehuong.com/assets/audio npm run build
-```
-
-- App khoảng **3,3 MB** (đã gồm ảnh), cần mạng khi phát.
-- Không cần chép mp3 vào `public/audio/`.
-- Đây là bản GitHub Pages đang chạy.
-
-`VITE_AUDIO_BASE` chỉ đổi chỗ ứng dụng **đi tìm** nhạc; Vite vẫn chép cả thư mục
-`public/` sang `dist/`, nên máy nào đang giữ bản thu thì bản «trực tuyến» vẫn vô
-tình gói kèm mấy chục MB nhạc. Script đóng gói tự bỏ chúng ra ở bản này.
-
-Đổi `VITE_AUDIO_BASE` sang địa chỉ khác nếu sau này chuyển nhạc sang máy chủ
-khác — không phải sửa mã nguồn, chỉ đổi biến môi trường rồi build lại.
-
----
-
-## 3. Triển khai bản web
-
-`.github/workflows/deploy-pages.yml` tự động build bản trực tuyến và đưa
-`dist/` lên GitHub Pages mỗi khi push vào `main`. Chỉ cần bật một lần ở
-Settings → Pages → Source: "GitHub Actions" trên GitHub — sau đó push vào
-`main` là đủ để cập nhật trang đang chạy.
-
-Muốn chạy tay: vào tab Actions → "Deploy web app to GitHub Pages" → Run workflow.
-
----
-
-## 4. Đóng gói Android
-
-Một lệnh chạy hết: dựng bản web, chép sang dự án Android, ra tệp `.aab`, rồi cho
-biết tệp đã ký hay chưa.
+<details>
+<summary><b>iOS</b></summary>
 
 ```bash
-scripts/dong-goi-android.sh            # bản offline (nhạc nằm trong app)
-scripts/dong-goi-android.sh truc-tuyen # bản trực tuyến (nhạc tải từ máy chủ)
-```
-
-Script từ chối làm bản offline nếu nhạc trong `public/audio/` là tệp im lặng, và
-báo thiếu khoá ký ngay từ đầu chứ không để build xong mới biết.
-
-Làm tay thì đúng các bước này:
-
-```bash
-npm run build                       # hoặc bản trực tuyến ở mục 2.2
-npx cap sync android                # chép dist/ vào dự án Android
-cd android
-./gradlew bundleRelease             # -> app/build/outputs/bundle/release/app-release.aab
-./gradlew assembleRelease           # -> app/build/outputs/apk/release/app-release.apk
-./gradlew assembleDebug             # -> app/build/outputs/apk/debug/app-debug.apk
-```
-
-- `.aab` là tệp nộp lên CH Play.
-- `.apk` release để cài thử trực tiếp lên điện thoại (`adb install -r app-release.apk`).
-- `.apk` debug đã được ký bằng khoá debug của máy, cài thẳng lên điện thoại được
-  ngay mà không cần đụng tới khoá ký chính thức.
-
-Nếu máy build **không có** `android/keystore.properties`, lệnh release vẫn chạy
-nhưng cho ra tệp **chưa ký** (`app-release.aab`, `app-release-unsigned.apk`):
-đủ để kiểm tra việc đóng gói, chưa nộp lên CH Play được. Muốn nộp thì ký lại
-bằng khoá thật, hoặc build trên máy có sẵn khoá.
-
-Xem chi tiết nộp CH Play tại [docs/huong-dan-phat-hanh.md](docs/huong-dan-phat-hanh.md).
-
-Khoá ký nằm ở `android/upload-keystore.jks`, mật khẩu ghi trong
-`android/keystore.properties`. **Hai tệp này không được đưa lên kho công khai**
-(`.gitignore` đã chặn sẵn) và cũng **không được làm mất** — mất khoá là mất
-quyền cập nhật ứng dụng trên CH Play.
-
-Cần JDK 21 và Android SDK (platform 36, build-tools 36.0.0) để build — Android
-Studio tự cài sẵn, hoặc trên máy không có giao diện thì dùng bộ công cụ dòng lệnh:
-
-```bash
-sdkmanager --licenses
-sdkmanager "platform-tools" "platforms;android-36" "build-tools;36.0.0"
-echo "sdk.dir=$ANDROID_HOME" > android/local.properties
-```
-
-Tệp `local.properties` phụ thuộc từng máy nên đã bị `.gitignore` chặn.
-
-### Một lần đóng gói cho ra những gì
-
-| Tệp | Dung lượng | Ghi chú |
-|---|---|---|
-| `dist/` (bản trực tuyến) | ≈ 2,3 MB | bản web, cũng là bản đưa lên GitHub Pages |
-| `app-release.aab` | ≈ 9,6 MB | tệp nộp CH Play; chưa ký nếu máy không có khoá |
-| `app-release-unsigned.apk` | ≈ 9,8 MB | cùng bản build, dạng APK |
-| `app-debug.apk` | ≈ 11,2 MB | ký bằng khoá debug, cài thử được ngay |
-
-Phiên bản 1.1.0 (versionCode 2). APK nặng hơn bản web vì mang theo phần chạy
-Capacitor và trọn bộ ảnh splash cho mọi mật độ màn hình.
-
----
-
-## 5. Đóng gói iOS và App Store
-
-```bash
-npm install
 npm run build
 npx cap sync ios
 npx cap open ios
 ```
 
-Mở `ios/App/App.xcworkspace` bằng Xcode, chọn Team Apple Developer trong Signing & Capabilities, kiểm tra Bundle Identifier `com.jemappellehuong.songbook`, archive với `Any iOS Device (arm64)`, validate và upload bằng Organizer. Phần ký và gửi build cần thực hiện trên macOS với tài khoản Apple Developer; môi trường Linux không thể tạo archive iOS production.
+Mở `ios/App/App.xcworkspace`, chọn team Apple Developer, giữ bundle ID
+`com.jemappellehuong.songbook`, archive cho *Any iOS Device (arm64)* rồi tải lên từ Organizer. Cần
+máy Mac và tài khoản Apple Developer. Danh sách việc: [docs/app-store-todo.md](docs/app-store-todo.md).
 
-Xem checklist đầy đủ tại [docs/app-store-todo.md](docs/app-store-todo.md).
-
----
-
-## 6. Thêm hoặc sửa bài hát
-
-Xem `src/songs/README.md`. Tóm tắt ba bước:
-
-1. Tạo tệp `src/songs/07-ten-bai.ts` theo mẫu.
-2. Khai báo `audioSrc: "audio/ten-tep.mp3"` — luôn viết dạng tương đối,
-   hàm `resolveAudio()` tự đổi sang địa chỉ đầy đủ khi build bản trực tuyến.
-3. Thêm tệp vào danh sách trong `src/lib/catalog.ts`.
-
-Thời lượng (`durationMs`) phải khớp với tệp mp3, nếu lệch thì lời chạy sai nhịp.
-
-Mỗi bài còn có thể khai báo các trường như trang songbook: `coverSrc` (ảnh bìa),
-`style` (dòng *Style:* — thể loại, BPM, nhạc cụ), `signature` (câu hát đại diện,
-in nghiêng) và `pictures` (ảnh đất sét kèm chú thích). Ảnh để trong
-`public/art/`, liệt kê ở `src/lib/art.ts`.
+</details>
 
 ---
 
-## 6b. Hình ảnh và giao diện
-
-Toàn bộ hình trong ứng dụng lấy từ trang songbook cá nhân
-[`Je-mappelle-Huong/music.html`](https://thuyhuongctu.github.io/Je-mappelle-Huong/music.html)
-và được đóng gói sẵn trong `public/art/` nên mở offline vẫn thấy đủ. Mỗi bài
-mang **đúng những khung hình của bài đó trên trang, đúng thứ tự và đúng lời chú
-thích** — kể cả khung hình mở đầu các đoạn phim ngắn. Giao diện
-dùng đúng bộ màu của trang đó: giấy `#f6f1e7`, đất nung `#c45c3a`, xanh sông
-`#3f6f68`, tiêu đề chữ serif, thẻ giấy bo 16px có viền mảnh và bóng mềm; kèm
-bản nền tối theo cài đặt máy hoặc nút Sáng/Tối ở đầu trang.
-
----
-
-## 6c. Tìm kiếm, chuyển động và cài lên máy
-
-**Tìm kiếm** ở trang album tìm cả trong lời hát và **bỏ qua dấu tiếng Việt** —
-gõ `den` ra *đèn*, gõ `huong` ra *Hương*. Câu lời khớp được trích ngay trong thẻ
-bài hát. Cạnh ô tìm kiếm là bộ lọc theo ngôn ngữ (Việt · Pháp · Anh).
-
-**Thanh tiến độ kéo được** bằng ngón tay hoặc chuột, có nút tròn; phím mũi tên
-trái/phải tua 5 giây. Thanh phát có thêm nút bài trước / bài sau và ảnh bìa nhỏ.
-
-**Chuyển động**: trang hiện mờ dần, các thẻ nổi lên lần lượt, nút lún xuống khi
-bấm, dòng lời đang hát nhô lên còn dòng ở xa mờ đi. Tất cả tự tắt khi máy đặt
-chế độ giảm chuyển động.
-
-**Cài lên máy như một ứng dụng (PWA)**: mở bản web trên điện thoại rồi chọn
-*Thêm vào màn hình chính*. App có biểu tượng riêng, mở toàn màn hình và **chạy
-được cả khi mất mạng**.
-
-| Tệp | Việc |
-| --- | --- |
-| `public/manifest.webmanifest` | tên, biểu tượng, màu nền, mở toàn màn hình |
-| `public/sw.js` | service worker: lưu sẵn khung ứng dụng và tệp tĩnh |
-| `public/icons/` | biểu tượng 192/512 px, bản maskable và bản cho iPhone |
-
-Vài điều cần nhớ trước khi sửa:
-
-- Service worker chỉ chạy ở bản dựng thật, mở qua `https:` (hoặc `localhost`).
-  Mở thẳng `dist/index.html` từ đĩa và bản Android/iOS đều bỏ qua.
-- **Tệp nhạc không bao giờ được lưu vào bộ nhớ đệm** — tệp rất nặng, và các yêu
-  cầu tải từng đoạn (thao tác tua) phải đi thẳng tới máy chủ.
-- Trang ưu tiên mạng (đăng bản mới là thấy ngay), tệp tĩnh ưu tiên bản đã lưu.
-  Đổi số trong `CACHE` ở `public/sw.js` là mọi máy dọn kho cũ, lưu lại từ đầu.
-- Biểu tượng sinh từ `public/art/lr-seal-round.webp` bằng `sharp`; đổi dấu triện
-  thì sinh lại.
-
----
-
-## 7. Cấu trúc
+## Cấu trúc thư mục
 
 ```
 src/
+  App.tsx              các màn hình: thư viện, nghe, video, nghệ sĩ, giới thiệu
+  components/          giao diện (thư viện, màn hình lời, thanh phát, menu bài,
+                       hàng chờ, mục Của tôi, Giới thiệu, nghệ sĩ, hẹn giờ…)
   lib/
-    artist.ts        thông tin nghệ sĩ, album, dòng bản quyền
-    catalog.ts       gom các bài, tính mốc thời gian cho từng dòng lời
-    audio-source.ts  công tắc offline / trực tuyến
-    player-store.ts  trạng thái trình phát (Zustand)
-    art.ts           kho ảnh đất sét dùng chung (đường dẫn trong public/art)
-    theme.ts         chuyển nền sáng/tối, giống nút Sáng·Tối của trang web
-  songs/             mỗi bài một tệp: lời, mốc thời gian, ảnh, dòng Style
-  components/        giao diện
-public/
-  audio/             mp3 (không commit)
-  art/               ảnh đất sét chép từ trang songbook
-  photo/             ảnh chụp Hương, dùng cho bài bonus
-  brand/             ảnh chân dung, ảnh linh vật
-  icons/             biểu tượng để cài lên màn hình chính
-  manifest.webmanifest  khai báo ứng dụng cài được (PWA)
-  sw.js              service worker: mở được khi mất mạng
-android/             dự án Capacitor (Android)
-ios/                 dự án Capacitor (iOS)
-remotion-video/      video lời bài hát (Remotion, tuỳ chọn xuất video)
-docs/                checklist phát hành (Android, iOS)
-tests/               bộ kiểm thử Playwright; make-silent-audio.mjs tạo nhạc thử
-playwright.config.ts cách chạy kiểm thử: dựng app rồi mở thử ở cổng 4173
+    library.ts         bộ sưu tập, album, bài, video, link và DOI
+    catalog.ts         mô hình bài hát; chia phần thành dòng và chữ có mốc giờ
+    player-store.ts    trạng thái phát (Zustand): hàng chờ, playlist, lịch sử, tốc độ…
+    audio-engine.ts    lớp bọc HTMLAudioElement
+    audio-source.ts    chuyển giữa nhạc trong app và phát trực tuyến
+    i18n.ts            bản dịch giao diện và dữ liệu bài (EN · VI · FR)
+    about-text.ts      chữ của màn hình Giới thiệu (EN · VI · FR)
+    artist.ts          nghệ sĩ, album, bộ ảnh, dòng bản quyền
+    media-controls.ts  điều khiển ở màn hình khoá (Media Session)
+  songs/               mỗi bài một tệp: lời, mốc giờ, ảnh, phong cách
+    games/             bài hát của các game lịch sử
+public/                ảnh, biểu tượng, manifest, service worker
+scripts/               đóng gói, ghép GitHub Pages, kiểm tra nhạc
+tests/                 bộ kiểm thử Playwright
+android/  ios/         dự án Capacitor
+remotion-video/        xuất video lời bài hát (tuỳ chọn)
+docs/                  hướng dẫn phát hành
 ```
 
 ---
 
-## 8. Bảo mật
+## Thêm bài hát
 
-Đây là app tĩnh, chạy hoàn toàn phía trình duyệt — **không có máy chủ, không
-có cơ sở dữ liệu, không tài khoản, không đăng nhập**. Mọi người ghé trang đều
-chỉ nhận đúng một bản dựng như nhau từ GitHub Pages, chỉ đọc.
+Mỗi bài là một `RawSong` trong tệp riêng ở `src/songs/` (xem [`src/songs/README.md`](src/songs/README.md)):
 
-- **Không ai ghé trang có thể sửa được nội dung trang chung.** Các tuỳ chọn cá
-  nhân (phát ngẫu nhiên, hẹn giờ ngủ, giao diện sáng/tối) được lưu bằng
-  `zustand/persist` ngay trên trình duyệt của người đó (`localStorage`) — chỉ
-  riêng máy họ, không gửi đi đâu cả, người khác không thấy được.
-- **Không ai ngoài chủ repo có quyền ghi.** Chỉ tài khoản `thuyhuongctu` có
-  quyền push/merge; các GitHub App bên thứ ba (ImgBot, ecc-tools, CodeRabbit)
-  chỉ có thể bình luận hoặc mở pull request từ nhánh riêng của họ — không có
-  gì vào được `main` nếu chủ repo không tự tay duyệt và gộp.
-- **Không có thông tin bí mật nào nằm trong repo.** Khoá ký Android
-  (`android/upload-keystore.jks`, `android/keystore.properties`) đã bị
-  `.gitignore` chặn, chỉ giữ trên máy dùng để build bản phát hành.
-- Khuyến nghị thêm (tuỳ chọn) trên GitHub: bật **Settings → Branches →
-  branch protection** cho nhánh `main` (bắt buộc phải qua pull request mới
-  được gộp) để có thêm một lớp phòng vệ, và thỉnh thoảng kiểm tra lại
-  **Settings → Integrations → GitHub Apps** để thu hồi quyền của app nào
-  không còn cần dùng.
+1. Chép một tệp bài có sẵn, đặt `id`, `title`, `audioSrc`, `durationMs` và `sections`.
+2. Mỗi phần có `startMs`; các dòng trong phần tự chia theo độ dài chữ. Phần dài thì tách đôi, hoặc
+   đặt `endMs` ở chỗ ca sĩ nghỉ.
+3. Đưa bài vào một bộ sưu tập trong [`src/lib/library.ts`](src/lib/library.ts), thêm bản dịch cho chữ
+   giao diện mới vào [`src/lib/i18n.ts`](src/lib/i18n.ts).
+4. Sửa `COUNTS` trong [`tests/helpers.ts`](tests/helpers.ts) rồi chạy `npm test`.
+
+> [!TIP]
+> `durationMs` phải khớp đúng bản thu, nếu không lời sẽ lệch dần. Video chỉ cần thêm một mục vào
+> danh sách `videos` của bộ sưu tập (mã `youtube` hoặc link `mp4`, tên, ảnh xem trước).
 
 ---
 
-## 9. Lưu trữ trên Zenodo
+## Quyền riêng tư và bảo mật
 
-Mỗi bản phát hành (release) trên GitHub đều được Zenodo lưu lại và cấp một DOI.
-Khi trích dẫn, dùng **concept DOI** — địa chỉ này luôn trỏ tới bản mới nhất:
+Chansonia là app tĩnh, chạy hoàn toàn trên máy người dùng: không máy chủ, không cơ sở dữ liệu,
+không tài khoản, không đăng nhập.
 
-| | |
-|---|---|
-| Concept DOI (mọi phiên bản) | [10.5281/zenodo.22172794](https://doi.org/10.5281/zenodo.22172794) |
-| Bản v.1.0 (30/08/2026) | [10.5281/zenodo.22172795](https://doi.org/10.5281/zenodo.22172795) |
+- **Lựa chọn nằm trong máy.** Ngôn ngữ, nền, yêu thích, playlist, hàng chờ, lịch sử và tốc độ phát
+  lưu trong `localStorage` của trình duyệt. Không gửi đi đâu.
+- **Không thống kê, quảng cáo hay theo dõi.** Chỉ kết nối YouTube khi bấm vào video.
+- **Không có bí mật trong repo.** Keystore Android và tệp thuộc tính của nó bị `.gitignore` loại ra,
+  chỉ nằm trên máy dựng bản phát hành.
+- **Chỉ chủ repo được thay đổi `main`.** Ứng dụng bên thứ ba chỉ bình luận hoặc mở PR.
 
-Thông tin trích dẫn nằm ở hai tệp tại gốc kho: [`CITATION.cff`](CITATION.cff)
-— GitHub đọc tệp này để hiện nút "Cite this repository" — và
-[`.zenodo.json`](.zenodo.json), Zenodo đọc tại đúng commit được gắn thẻ, nhờ
-vậy tên, tác giả, ORCID, từ khoá và chế độ truy cập *restricted* được đặt sẵn,
-không phải sửa tay trên trang Zenodo.
-
-### Phát hành một phiên bản mới
-
-**Không cần tạo kho mới** — phiên bản mới nằm trong cùng một bản ghi Zenodo:
-
-1. Gộp phần việc vào nhánh `main`.
-2. Nâng số phiên bản ở `package.json`, `android/app/build.gradle`
-   (cả `versionCode` **và** `versionName`), `ios/App/App.xcodeproj`
-   (`MARKETING_VERSION`), `.zenodo.json` và `CITATION.cff`.
-3. Tạo release mới trên GitHub kèm thẻ mới (`v1.1.0`, …).
-
-Zenodo nhận release qua webhook GitHub rồi thêm một phiên bản mới vào cùng
-concept DOI. Webhook bật riêng cho từng kho tại
-[zenodo.org/account/settings/github](https://zenodo.org/account/settings/github)
-— chỉ chủ tài khoản bật được, và chỉ những release tạo **sau** khi bật mới
-được lưu.
-
-Chế độ truy cập trên Zenodo là **restricted**, đúng với giấy phép độc quyền:
-bản ghi và phần mô tả thì công khai, còn tệp thì tác giả cấp khi có người xin.
+Nên bật trên GitHub: bảo vệ nhánh `main`, và định kỳ rà các GitHub App đã cài.
 
 ---
 
-## 10. Bản quyền
+## Trích dẫn
 
-© 2026 Đỗ Thùy Hương. Giữ toàn bộ quyền — xem `LICENSE`.
+Mỗi bản phát hành trên GitHub được lưu trữ trên Zenodo. Hãy trích dẫn **concept DOI**, luôn trỏ tới
+bản mới nhất: **[10.5281/zenodo.22172794](https://doi.org/10.5281/zenodo.22172794)**.
 
-Phần mềm, phần lời, bản ghi âm và tên album/nghệ sĩ đều thuộc sở hữu độc quyền,
-không phát hành theo giấy phép mã nguồn mở.
+```bibtex
+@software{do_2026_chansonia,
+  author    = {Đỗ, Thùy Hương},
+  title     = {Chansonia},
+  year      = {2026},
+  publisher = {Zenodo},
+  doi       = {10.5281/zenodo.22172794},
+  url       = {https://doi.org/10.5281/zenodo.22172794}
+}
+```
+
+Thông tin trích dẫn nằm trong [`CITATION.cff`](CITATION.cff) (nút *Cite this repository* của GitHub)
+và [`.zenodo.json`](.zenodo.json) (Zenodo đọc tại commit được gắn thẻ). Quyền truy cập trên Zenodo là
+**hạn chế**: bản ghi công khai, tệp được tác giả cấp khi có yêu cầu.
+
+<details>
+<summary><b>Phát hành phiên bản mới</b></summary>
+
+1. Gộp thay đổi vào `main`.
+2. Tăng số phiên bản trong `package.json`, `android/app/build.gradle` (`versionCode` và
+   `versionName`), `ios/App/App.xcodeproj` (`MARKETING_VERSION`), `.zenodo.json` và `CITATION.cff`.
+3. Tạo bản phát hành GitHub với thẻ mới.
+
+Zenodo nhận bản phát hành qua webhook GitHub và thêm phiên bản mới dưới cùng concept DOI.
+
+</details>
+
+---
+
+## Bản quyền
+
+© 2026 Đỗ Thùy Hương. Mọi quyền được bảo lưu.
+
+Phần mềm, lời, nhạc, bản thu, hình ảnh, tên album và tên nghệ sĩ đều là tài sản độc quyền, không
+phát hành theo bất kỳ giấy phép mã nguồn mở nào. Thư viện bên thứ ba giữ giấy phép riêng của chúng.
+
+Liên hệ: thuyhuongctu@gmail.com
