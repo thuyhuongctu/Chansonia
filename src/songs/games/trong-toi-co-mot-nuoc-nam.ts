@@ -1,0 +1,230 @@
+import type { RawSong } from "@/lib/catalog";
+
+/**
+ * Bài hát của Cổng Trò Chơi Sử Việt (Vietnamese History Game Portal).
+ *
+ * Tệp nhạc và ảnh bìa nằm ở repo trò chơi (thuyhuongctu/Vietnamese-History-Games,
+ * assets/nhac/) và phát thẳng từ GitHub Pages của repo đó.
+ *
+ * LỜI và MỐC CÁC PHẦN: do tác giả gửi (chương mục của MV trên YouTube), đối chiếu
+ * lại với bản thu bằng nhận dạng giọng hát (Whisper): lệch dưới 1 giây. Lời chạy
+ * lệch ở phần nào thì sửa `startMs` của đúng phần đó.
+ */
+export const song: RawSong = {
+  id: "trong-toi-co-mot-nuoc-nam",
+  trackNo: 1,
+  title: "Trong tôi có một nước Nam",
+  subtitle: "A Homeland Within Me",
+  language: "Tiếng Việt",
+  meta: "Bài hát của Cổng Trò Chơi Sử Việt · Tiếng Việt · Tiếng Pháp",
+  accent: "#8a3b2e",
+  coverSrc: "https://thuyhuongctu.github.io/Vietnamese-History-Games/assets/nhac/trong-toi-co-mot-nuoc-nam.webp",
+  style: "Lời và nhạc: Đỗ Thùy Hương · có đoạn lời tiếng Pháp",
+  audioSrc: "https://thuyhuongctu.github.io/Vietnamese-History-Games/assets/nhac/trong-toi-co-mot-nuoc-nam.mp3",
+  durationMs: 393012,
+  sections: [
+    {
+      id: "intro",
+      label: "Dạo đầu",
+      startMs: 0,
+      lines: [],
+    },
+    {
+      id: "verse1",
+      label: "Khổ 1",
+      startMs: 30300,
+      lines: [
+        "Tôi sinh ra khi tiếng bom đã lặng",
+        "Lớn lên cùng tiếng trống buổi trường tan",
+        "Chuyện năm cũ nghe qua lời kể lại",
+        "Có đôi lần câu chuyện bỗng dở dang",
+        "Sau mới hiểu những người không trở lại",
+        "Cũng từng mong một mái ấm riêng mình",
+        "Cũng có những lời yêu chưa kịp nói",
+        "Đã lên đường cho đất nước bình yên",
+      ],
+    },
+    {
+      id: "pre1",
+      label: "Tiền điệp khúc",
+      startMs: 61500,
+      endMs: 80500,
+      lines: [
+        "Tôi chưa sống những tháng ngày khói lửa",
+        "Nào dám rằng hiểu hết nỗi đau xưa",
+        "Chỉ biết quý những bình minh đang có",
+        "Và mang ơn bao người chẳng về nữa",
+      ],
+    },
+    {
+      id: "chorus1",
+      label: "Điệp khúc",
+      startMs: 80800,
+      endMs: 111000,
+      lines: [
+        "Trong tôi có một nước Nam",
+        "Từ lời ru đã âm thầm lớn dậy",
+        "Dẫu đi xa, dẫu bao mùa đổi thay",
+        "Vẫn trong lòng một tiếng gọi quê hương",
+        "Tôi cũng ước một mái nhà đầm ấm",
+        "Một bàn tay cùng đi hết con đường",
+        "Nhưng khi phải gác tình riêng ở lại",
+        "Tôi chọn quê hương, dẫu lòng còn thương",
+      ],
+    },
+    {
+      id: "interlude",
+      label: "Nhạc dạo giữa",
+      startMs: 111000,
+      lines: [],
+    },
+    {
+      id: "verse2",
+      label: "Khổ 2",
+      startMs: 139500,
+      lines: [
+        "Tôi ngồi dựng từng mái nhà, bến cũ",
+        "Cho cánh buồm căng gió giữa trời xanh",
+        "Mong người trẻ qua một lần gặp gỡ",
+        "Thấy người xưa gần lại với đời mình",
+        "Rồi mở những chuyến hàng xuôi ngược sóng",
+        "Cho ước mơ được thử bước ban đầu",
+        "Qua được mất, vẫn bền lòng đứng dậy",
+        "Biết quê nhà là nơi để bắt đầu",
+      ],
+    },
+    {
+      id: "pre2",
+      label: "Tiền điệp khúc",
+      startMs: 171500,
+      endMs: 187500,
+      lines: [
+        "Có những tối sửa từng dòng, từng nét",
+        "Ngẩng đầu lên, trời đã sáng bên thềm",
+        "Chỉ mong những điều âm thầm bé nhỏ",
+        "Giúp một người yêu đất nước nhiều thêm",
+      ],
+    },
+    {
+      id: "chorus2",
+      label: "Điệp khúc 2",
+      startMs: 187800,
+      endMs: 216000,
+      lines: [
+        "Trong tôi có một nước Nam",
+        "Từ lời ru đã âm thầm lớn dậy",
+        "Dẫu đi xa, dẫu bao mùa đổi thay",
+        "Vẫn trong lòng một tiếng gọi quê hương",
+        "Tôi cũng ước một mái nhà đầm ấm",
+        "Một bàn tay cùng đi hết con đường",
+        "Nhưng khi phải gác tình riêng ở lại",
+        "Tôi chọn quê hương, dẫu lòng còn thương",
+      ],
+    },
+    {
+      id: "bridge",
+      label: "Cầu nối",
+      startMs: 216500,
+      endMs: 248300,
+      lines: [
+        "Có lời hẹn chưa thành ngày gặp lại",
+        "Có tình yêu nằm giữa một dòng thư",
+        "Bao người đã gửi đời mình ở đó",
+        "Cho hôm nay còn tiếng mẹ ầu ơ",
+        "Tôi không nhận những đau thương chưa trải",
+        "Như chính mình từng đi giữa đạn bom",
+        "Chỉ tự hỏi trước bình yên đang có",
+        "Đã làm gì ngoài hai tiếng biết ơn",
+      ],
+    },
+    {
+      id: "french",
+      label: "Lời tiếng Pháp",
+      startMs: 248700,
+      endMs: 255800,
+      lines: [
+        "Je suis née dans la paix",
+        "Votre espoir demeure en moi",
+      ],
+    },
+    {
+      id: "build",
+      label: "Cao trào",
+      startMs: 256100,
+      endMs: 279500,
+      lines: [
+        "Không chỉ nhớ bằng một lần rơi lệ",
+        "Không chỉ thương qua hai tiếng nghẹn ngào",
+        "Xin đem những tháng năm mình đang có",
+        "Góp sức mình cùng đất nước vươn cao",
+      ],
+    },
+    {
+      id: "chorus3",
+      label: "Điệp khúc cuối",
+      startMs: 279800,
+      endMs: 310500,
+      lines: [
+        "Trong tôi có một nước Nam",
+        "Từ lời ru đến những điều tôi viết",
+        "Qua bàn tay, qua bao điều tâm huyết",
+        "Tình quê hương thành công việc mỗi ngày",
+        "Tôi vẫn ước một mái nhà đầm ấm",
+        "Vẫn nâng niu từng hạnh phúc đời thường",
+        "Nhưng mái ấm đâu nằm ngoài đất nước",
+        "Giữ quê nhà, cũng giữ những yêu thương",
+      ],
+    },
+    {
+      id: "refrain",
+      label: "Điệp khúc kết",
+      startMs: 310800,
+      endMs: 333500,
+      lines: [
+        "Mang ơn xưa, xin bền lòng tiếp bước",
+        "Góp hôm nay cho tươi sáng ngày sau",
+        "Từ việc nhỏ, giữ trong mình nguyện ước",
+        "Một nước Nam vững bước ngẩng cao đầu",
+      ],
+    },
+    {
+      id: "outro",
+      label: "Kết",
+      startMs: 333800,
+      endMs: 353000,
+      lines: [
+        "Từng trò chơi, tôi gửi một chút lòng",
+        "Mong ai đó thêm thương dòng sông cũ",
+        "Thêm tin vào con đường mình đã chọn",
+        "Thì những đêm dài cũng hóa bình yên",
+      ],
+    },
+    {
+      id: "signature",
+      label: "Lời ký tên",
+      startMs: 356400,
+      endMs: 368500,
+      lines: [
+        "Je m’appelle Hương",
+        "Je crée pour ne pas oublier",
+        "Et pour demain",
+      ],
+    },
+    {
+      id: "final",
+      label: "Câu cuối",
+      startMs: 369500,
+      endMs: 382000,
+      lines: [
+        "Trong tôi…",
+        "Có một nước Nam…",
+      ],
+    },
+    {
+      id: "outro-music",
+      label: "Nhạc kết",
+      startMs: 382000,
+      lines: [],
+    },
+  ],
+};

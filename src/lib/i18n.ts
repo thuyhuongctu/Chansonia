@@ -319,6 +319,11 @@ const DATA: Record<string, Row> = {
   tiếp: { en: "cont.", fr: "suite" },
   Lời: { en: "Lyrics", fr: "Paroles" },
   "Cao trào": { en: "Climax", fr: "Apogée" },
+  "Lời tiếng Pháp": { en: "French reflection", fr: "Réflexion en français" },
+  "Điệp khúc kết": { en: "Final refrain", fr: "Refrain final" },
+  "Lời ký tên": { en: "Signature", fr: "Signature" },
+  "Bài hát của Cổng Trò Chơi Sử Việt": { en: "Song of the Vietnamese History Game Portal", fr: "Chanson du portail de jeux d'histoire du Viêt Nam" },
+  "Lời và nhạc: Đỗ Thùy Hương": { en: "Words & music: Đỗ Thùy Hương", fr: "Paroles et musique : Đỗ Thùy Hương" },
 };
 
 /** Mẫu có số: "Khổ 2" → "Verse 2", "Điệp khúc 2" → "Chorus 2", "Dẫn 2" → "Lead-in 2" */
