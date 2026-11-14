@@ -424,6 +424,13 @@ const SUVIET: Collection = {
       poster: "https://i.ytimg.com/vi/RaACW3fvrQM/hqdefault.jpg",
     },
     {
+      id: "bac-hai-dao-mv",
+      title: "Theo cánh buồm quê hương (Following the Sails of Home)",
+      meta: "MV · Bac Hai Dao – Pirates of the Gulf of Tonkin · YouTube",
+      youtube: "36X6H42gkHY",
+      poster: "https://i.ytimg.com/vi/36X6H42gkHY/hqdefault.jpg",
+    },
+    {
       id: "trong-toi-co-mot-nuoc-nam-mv",
       title: "Trong tôi có một nước Nam (A Homeland Within Me)",
       meta: "MV 3D · YouTube",
