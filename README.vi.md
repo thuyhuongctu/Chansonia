@@ -32,7 +32,7 @@ của hai game lịch sử Việt Nam.
 | **Web** | [thuyhuongctu.github.io/Chansonia/app/](https://thuyhuongctu.github.io/Chansonia/app/). Địa chỉ gốc chuyển thẳng vào app và mở màn hình **Giới thiệu**. Tự triển khai lại mỗi lần đẩy lên `main`. |
 | **Android** | Dự án Capacitor trong `android/`, nộp lên Google Play dạng `.aab` (`com.jemappellehuong.songbook`, v1.2.0). |
 | **iOS** | Dự án Capacitor trong `ios/`, sẵn sàng mở bằng Xcode, gửi TestFlight và App Store. |
-| **Thư viện** | 4 bộ sưu tập · 31 bài · 13 video |
+| **Thư viện** | 4 bộ sưu tập · 32 bài · 13 video |
 | **Giao diện** | Mặc định tiếng Anh, chuyển tiếng Việt và tiếng Pháp bằng một nút |
 | **Quyền riêng tư** | Không tài khoản, không máy chủ, không thống kê, không theo dõi |
 
@@ -64,11 +64,12 @@ của hai game lịch sử Việt Nam.
 | **La maison de Madam Hương** | 9 | 1 | 7 | [jemappellehuong.com](https://jemappellehuong.com/) | [10.5281/zenodo.22003853](https://doi.org/10.5281/zenodo.22003853) |
 | **BizOnland** | 17 | 8 | | [bizonland.com](https://bizonland.com/) | [10.5281/zenodo.23325489](https://doi.org/10.5281/zenodo.23325489) |
 | **M-AIDA** | 2 | | | | [10.5281/zenodo.21850575](https://doi.org/10.5281/zenodo.21850575) |
-| **Vietnamese History Game Portal** | 3 | 4 | 3 | [Vietnamese-History-Games](https://thuyhuongctu.github.io/Vietnamese-History-Games/) | [10.5281/zenodo.21850564](https://doi.org/10.5281/zenodo.21850564) |
+| **Vietnamese History Game Portal** | 4 | 4 | 4 | [Vietnamese-History-Games](https://thuyhuongctu.github.io/Vietnamese-History-Games/) | [10.5281/zenodo.21850564](https://doi.org/10.5281/zenodo.21850564) |
 
 Bộ sưu tập **Vietnamese History Game Portal** (Cổng Trò Chơi Sử Việt) chia theo album, mỗi game
 một album, có link vào chơi: *Van Don – Vietnam’s First Trading Port*, *Bac Hai Dao – Pirates of
-the Gulf of Tonkin*, và bài chung của hai game *Người trao ta chân trời*.
+the Gulf of Tonkin*, bài chung của hai game *Người trao ta chân trời*, và bài của cổng game
+*Trong tôi có một nước Nam*.
 
 Bộ sưu tập, bài hát và video khai báo trong [`src/lib/library.ts`](src/lib/library.ts). Bài của
 album phát từ app; các bài khác, nhạc game và phim phát trực tuyến từ trang của tác giả, từ

@@ -23,6 +23,7 @@ import { compile, SONGS, type RawSong, type Song, type SongVersion } from "@/lib
 import { song as vanDonSong } from "@/songs/games/van-don-tieng-vong-non-song";
 import { song as bacHaiSong } from "@/songs/games/bac-hai-dao-theo-canh-buom-que-huong";
 import { song as chanTroiSong } from "@/songs/games/nguoi-trao-ta-chan-troi";
+import { song as nuocNamSong } from "@/songs/games/trong-toi-co-mot-nuoc-nam";
 
 export type CollectionId = "huong" | "bizon" | "maida" | "suviet";
 
@@ -384,6 +385,7 @@ const GAMES_SITE = "https://thuyhuongctu.github.io/Vietnamese-History-Games";
 const vanDon = compile(vanDonSong);
 const bacHai = compile(bacHaiSong);
 const chanTroi = compile(chanTroiSong);
+const nuocNam = compile(nuocNamSong);
 
 const SUVIET: Collection = {
   id: "suviet",
@@ -413,8 +415,14 @@ const SUVIET: Collection = {
       link: { label: "Cổng Trò Chơi Sử Việt", url: `${GAMES_SITE}/` },
       songIds: [chanTroi.id],
     },
+    {
+      id: "cong-game",
+      title: "Vietnamese History Game Portal – Portal Song",
+      link: { label: "Cổng Trò Chơi Sử Việt", url: `${GAMES_SITE}/` },
+      songIds: [nuocNam.id],
+    },
   ],
-  songs: [vanDon, bacHai, chanTroi],
+  songs: [vanDon, bacHai, chanTroi, nuocNam],
   videos: [
     {
       id: "van-don-lyric-video",

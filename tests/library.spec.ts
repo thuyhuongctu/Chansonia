@@ -186,11 +186,12 @@ test.describe("Thư viện", () => {
     });
     await collectionTab(page, "Vietnamese History Game Portal").click();
     await expect(page.locator(SONG_ROW)).toHaveCount(COUNTS.suviet.songs);
-    // Mỗi game một album, cộng một album cho bài chung của hai game
+    // Mỗi game một album, một album cho bài chung của hai game, một cho bài của cổng game
     await expect(page.locator("[data-album]")).toHaveText([
       /Van Don – Vietnam’s First Trading Port/,
       /Bac Hai Dao – Pirates of the Gulf of Tonkin/,
       /Van Don & Bac Hai Dao – A Shared Song/,
+      /Vietnamese History Game Portal – Portal Song/,
     ]);
     await page.locator('[data-song-id="van-don-tieng-vong-non-song"]').click();
 
@@ -217,5 +218,20 @@ test.describe("Thư viện", () => {
     await expect(stage).toContainText("Gió đưa buồm qua cửa biển xa");
     await expect(stage).toContainText("Bắc Hải Đảo, căng buồm đón gió");
     await expect(stage).toContainText("Lại theo người về giữa bình yên");
+  });
+
+  test("bài «Trong tôi có một nước Nam» của cổng game có lời chạy theo nhạc, kể cả đoạn tiếng Pháp", async ({ page }) => {
+    await openApp(page);
+    await page.evaluate(() => {
+      HTMLMediaElement.prototype.play = () => Promise.resolve();
+    });
+    await collectionTab(page, "Vietnamese History Game Portal").click();
+    await expect(page.locator("[data-album]").last()).toContainText("Portal Song");
+    await page.locator('[data-song-id="trong-toi-co-mot-nuoc-nam"]').click();
+    await expect(page.locator("[data-screen-title]")).toHaveText("Trong tôi có một nước Nam");
+    const stage = page.locator(".lyric-stage");
+    await expect(stage).toContainText("Tôi sinh ra khi tiếng bom đã lặng");
+    await expect(stage).toContainText("Je suis née dans la paix");
+    await expect(stage).toContainText("Lời tiếng Pháp", { ignoreCase: true });
   });
 });
