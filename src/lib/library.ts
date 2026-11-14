@@ -235,6 +235,7 @@ const BIZON_COLLECTION: Collection = {
   name: "BizOnland",
   desc: "Bài hát của các game mô phỏng kinh doanh",
   color: "var(--accent-2)",
+  art: "art/bizonland-rong-ban-do.webp",
   songs: [
     bz("lesprit-du-mekong", 1, "BizOn – L’Esprit du Mékong", "Bài hát chính · Pháp · Anh · Việt", "bizon-lesprit-du-mekong", "5:13"),
     bz("huong-on-return", 2, "Hương on Return", "Bài hát chính đầu tiên", "huong-on-return", "2:30", [
