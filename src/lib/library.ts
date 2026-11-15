@@ -207,7 +207,7 @@ const HUONG: Collection = {
       title: "Trở về bờ",
       meta: "MV đất sét 3D · Tiếng Việt",
       duration: "4:16",
-      mp4: "video/tro-ve-bo-dat-set.mp4",
+      youtube: "YQceFyelLMg",
       poster: "video/tro-ve-bo-dat-set.webp",
     },
     {
@@ -215,7 +215,7 @@ const HUONG: Collection = {
       title: "Returning to Shore",
       meta: "MV đất sét 3D · English",
       duration: "3:58",
-      mp4: "video/returning-to-shore-dat-set.mp4",
+      youtube: "hkUvU0YbwDA",
       poster: "video/returning-to-shore-dat-set.webp",
     },
   ],
