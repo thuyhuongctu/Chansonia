@@ -53,6 +53,28 @@ test.describe("Chức năng như các app nhạc", () => {
     expect(link).toMatch(/\?bai=je-voudrais-te-parler$/);
   });
 
+  test("chia sẻ gửi kèm ảnh logo Chansonia khi máy chia sẻ được ảnh", async ({ page }) => {
+    await page.addInitScript(() => {
+      const w = window as unknown as { __shared?: { text: string; files: string[] } };
+      Object.defineProperty(navigator, "canShare", { value: () => true, configurable: true });
+      Object.defineProperty(navigator, "share", {
+        value: async (d: ShareData) => {
+          w.__shared = { text: d.text ?? "", files: (d.files ?? []).map((f) => `${f.name}|${f.type}|${f.size}`) };
+        },
+        configurable: true,
+      });
+    });
+    await openApp(page);
+    await openFirstSong(page);
+    await page.getByRole("button", { name: /^Thêm thao tác cho/ }).click();
+    await page.getByRole("button", { name: "Chia sẻ bài này" }).click();
+    const shared = await page.waitForFunction(() => (window as unknown as { __shared?: unknown }).__shared);
+    const { text, files } = (await shared.jsonValue()) as { text: string; files: string[] };
+    expect(files).toHaveLength(1);
+    expect(files[0]).toMatch(/^chansonia\.png\|image\/png\|[1-9]\d+$/);
+    expect(text).toMatch(/\?bai=je-voudrais-te-parler$/);
+  });
+
   test("màn hình khoá và tai nghe nhận đúng tên bài", async ({ page }) => {
     await openApp(page);
     await openFirstSong(page);

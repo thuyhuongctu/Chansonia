@@ -48,11 +48,32 @@ export function Toaster() {
   );
 }
 
-/** Chia sẻ một bài: bảng chia sẻ của máy, hoặc chép đường link */
+/**
+ * Ảnh logo Chansonia gửi kèm khi chia sẻ. Nhờ có ảnh, ô xem trước của bảng chia
+ * sẻ (Android) hiện logo Chansonia thay vì biểu tượng của trang khác cùng tên
+ * miền thuyhuongctu.github.io. Tải sẵn khi mở menu, để lúc bấm chia sẻ không phải
+ * chờ mạng (trình duyệt chỉ cho mở bảng chia sẻ ngay sau cú bấm).
+ */
+let shareCard: Promise<File | null> | null = null;
+export function preloadShareCard(): Promise<File | null> {
+  shareCard ??= fetch("share-card.png")
+    .then((r) => (r.ok ? r.blob() : null))
+    .then((b) => (b ? new File([b], "chansonia.png", { type: "image/png" }) : null))
+    .catch(() => null);
+  return shareCard;
+}
+
+/** Chia sẻ một bài: bảng chia sẻ của máy (kèm ảnh logo nếu được), hoặc chép đường link */
 export async function shareSong(song: Song, t: (k: string) => string) {
   const url = shareLink(song.id);
   try {
     if (navigator.share) {
+      const card = await preloadShareCard();
+      const withCard = { title: song.title, text: `${song.title} · Chansonia\n${url}`, files: card ? [card] : [] };
+      if (card && navigator.canShare?.(withCard)) {
+        await navigator.share(withCard);
+        return;
+      }
       await navigator.share({ title: song.title, text: `${song.title} · Chansonia`, url });
       return;
     }
@@ -177,6 +198,9 @@ export function SongMenuButton({ song, className }: { song: Song; className?: st
 }
 
 function SongMenu({ song, onClose }: { song: Song; onClose: () => void }) {
+  useEffect(() => {
+    void preloadShareCard();
+  }, []);
   const { t } = useT();
   const [page, setPage] = useState<"main" | "playlists">("main");
   const liked = usePlayer((s) => s.favorites.includes(song.id));
