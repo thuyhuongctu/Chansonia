@@ -39,6 +39,8 @@ writeFileSync(
     <title>Chansonia: songs, lyrics and films by Je m'appelle Hương</title>
     <meta name="description" content="Chansonia: listen to Je m'appelle Hương, BizOnland, M-AIDA and history-game songs with word-by-word lyrics, watch the music videos, install it as an app." />
     <meta name="theme-color" content="#17130f" />
+    <link rel="icon" type="image/png" sizes="192x192" href="./app/icons/icon-192.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="./app/icons/favicon-32.png" />
     <link rel="icon" type="image/svg+xml" href="./app/favicon.svg" />
     <meta name="citation_title" content="Chansonia" />
     <meta name="citation_author" content="Đỗ, Thùy Hương" />
@@ -47,7 +49,10 @@ writeFileSync(
     <link rel="cite-as" href="https://doi.org/${DOI}" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Chansonia · Je m'appelle Hương" />
-    <meta property="og:image" content="./app/art/music-cover-ba-cong-con.webp" />
+    <meta property="og:image" content="https://thuyhuongctu.github.io/Chansonia/app/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
     <link rel="canonical" href="./app/" />
     <meta http-equiv="refresh" content="0; url=./app/?gioi-thieu" />
     <script>
