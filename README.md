@@ -16,7 +16,7 @@ Vietnamese history games.
 ![Licence: proprietary](https://img.shields.io/badge/licence-proprietary-c45c3a)
 ![Languages: EN · VI · FR](https://img.shields.io/badge/UI-EN%20%C2%B7%20VI%20%C2%B7%20FR-3f6f68)
 
-**[Open the app](https://thuyhuongctu.github.io/Chansonia/app/)** ·
+**[Open the app](https://chansonia.jemappellehuong.com/app/)** ·
 [Tiếng Việt](README.vi.md) ·
 [Cite](#cite) ·
 [Develop](#develop)
@@ -29,7 +29,7 @@ Vietnamese history games.
 
 | | |
 |---|---|
-| **Web** | [thuyhuongctu.github.io/Chansonia/app/](https://thuyhuongctu.github.io/Chansonia/app/). The root address forwards to the app and opens its **About** screen. Redeployed on every push to `main`. |
+| **Web** | [chansonia.jemappellehuong.com/app/](https://chansonia.jemappellehuong.com/app/). The root address forwards to the app and opens its **About** screen. Redeployed on every push to `main`. |
 | **Android** | Capacitor project in `android/`, shipped to Google Play as an `.aab` (`com.jemappellehuong.songbook`, v1.2.0). |
 | **iOS** | Capacitor project in `ios/`, ready for Xcode, TestFlight and the App Store. |
 | **Library** | 4 collections · 32 songs · 13 videos |
@@ -213,7 +213,12 @@ to `main` and publishes `dist-site/`:
 | `chinh-sach.html` | privacy policy (used by Google Play) |
 | `sw.js` | removes the service worker an older root page registered |
 
-Pages must be enabled once (Settings → Pages → Source: *GitHub Actions*). A deploy can also be
+Pages must be enabled once (Settings → Pages → Source: *GitHub Actions*).
+
+**Custom domain:** `chansonia.jemappellehuong.com`. The DNS zone (PA Vietnam) holds a
+`CNAME` record `chansonia → thuyhuongctu.github.io`, and the same name is set under
+Settings → Pages → Custom domain, with *Enforce HTTPS* on. GitHub then redirects the old
+`thuyhuongctu.github.io/Chansonia/…` addresses to the new domain. A deploy can also be
 started by hand from the Actions tab.
 
 </details>
