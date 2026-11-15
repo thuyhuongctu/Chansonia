@@ -6,6 +6,7 @@ import { usePlayer, type Playlist } from "@/lib/player-store";
 import { SongRow } from "@/components/library-view";
 import { toast } from "@/components/song-menu";
 import { useT } from "@/lib/i18n";
+import { offlineSupported, useOffline } from "@/lib/offline";
 
 /** Số bài hiện trong «Nghe gần đây» và «Nghe nhiều nhất» */
 const SHOW = 5;
@@ -27,6 +28,7 @@ export function MineView() {
   const playlists = usePlayer((s) => s.playlists);
   const clearRecent = usePlayer((s) => s.clearRecent);
   const openId = useOpenPlaylist((s) => s.id);
+  const offline = useOffline((s) => s.ids);
 
   const top = useMemo(
     () =>
@@ -60,6 +62,16 @@ export function MineView() {
           </button>
         ))}
       </Section>
+
+      {offlineSupported() ? (
+        <Section title={t("Nghe offline")} label="offline">
+          {offline.length ? (
+            offline.map((id) => <SongRow key={id} song={SONG_INDEX[id]} index={indexOf(id)} showCollection />)
+          ) : (
+            <Empty>{t("Bấm ⋯ ở một bài rồi chọn «Tải về nghe offline» để nghe khi không có mạng.")}</Empty>
+          )}
+        </Section>
+      ) : null}
 
       <Section
         title={t("Nghe nhiều nhất")}

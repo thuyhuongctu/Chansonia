@@ -8,6 +8,7 @@ import { ScreenHeader } from "@/components/header";
 import { Tilt } from "@/components/depth";
 import { cn } from "@/lib/utils";
 import { useT } from "@/lib/i18n";
+import { useAnnounce } from "@/lib/announce";
 
 /**
  * Màn hình nghe — lời hát của bài đang phát.
@@ -151,6 +152,8 @@ export function KaraokeStage() {
         <SongActions />
       </div>
 
+      <LineAnnouncer active={active} />
+
       <div className="mx-auto flex min-h-0 w-full max-w-6xl flex-1 lg:grid lg:grid-cols-[300px_minmax(0,1fr)] lg:gap-8 lg:px-6">
         <SongAside />
 
@@ -204,6 +207,7 @@ export function KaraokeStage() {
                       type="button"
                       data-state={state}
                       data-line={i}
+                      aria-current={isActive ? "true" : undefined}
                       onClick={() => {
                         seek(line.startMs + 1);
                         if (!playing) void play();
@@ -233,6 +237,22 @@ export function KaraokeStage() {
         </div>
       </div>
     </div>
+  );
+}
+
+/**
+ * Đọc dòng đang hát cho trình đọc màn hình — chỉ khi người nghe bật trong
+ * menu «⋯» của bài (mặc định tắt, vì đọc liên tục sẽ lấn tiếng nhạc và cắt
+ * ngang khi đang dò các nút khác).
+ */
+function LineAnnouncer({ active }: { active: number }) {
+  const song = useSong();
+  const on = useAnnounce((s) => s.on);
+  const text = on && active >= 0 ? song.lines[active]?.words.map((w) => w.text).join(" ") ?? "" : "";
+  return (
+    <p className="sr-only" aria-live="polite" aria-atomic="true" data-announcer>
+      {text}
+    </p>
   );
 }
 
@@ -324,6 +344,7 @@ function SongActions() {
         aria-pressed={liked}
         aria-label={liked ? t("Bỏ khỏi Yêu thích") : t("Thêm vào Yêu thích")}
         title={`${liked ? t("Bỏ khỏi Yêu thích") : t("Thêm vào Yêu thích")} (L)`}
+        aria-keyshortcuts="L"
         className={cn(btn, liked ? on : off)}
       >
         <Heart className={cn("size-4", liked && "fill-current")} />

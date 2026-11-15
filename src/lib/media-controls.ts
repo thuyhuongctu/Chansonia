@@ -91,47 +91,5 @@ export function useMediaControls() {
     return () => clearInterval(id);
   }, [playing, song.id, versionIndex]);
 
-  // Phím tắt
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.defaultPrevented || e.ctrlKey || e.metaKey || e.altKey) return;
-      const el = e.target as HTMLElement | null;
-      if (el?.closest("input, textarea, select, [contenteditable], [role='slider'], [role='dialog']")) return;
-      const st = usePlayer.getState();
-      switch (e.key) {
-        case " ":
-          // Đang đứng trên một nút thì để Space bấm nút đó.
-          if (el?.closest("button, a")) return;
-          st.toggle();
-          break;
-        case "ArrowRight":
-          st.seek(st.currentMs + 5000);
-          break;
-        case "ArrowLeft":
-          st.seek(st.currentMs - 5000);
-          break;
-        case "n":
-        case "N":
-          void st.next();
-          break;
-        case "p":
-        case "P":
-          void st.prev();
-          break;
-        case "l":
-        case "L":
-          st.toggleFavorite(st.songId);
-          break;
-        case "m":
-        case "M":
-          st.toggleMute();
-          break;
-        default:
-          return;
-      }
-      e.preventDefault();
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, []);
+  // Phím tắt: xem src/lib/shortcuts.ts
 }

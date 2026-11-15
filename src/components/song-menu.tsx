@@ -4,6 +4,10 @@ import { create } from "zustand";
 import {
   ArrowDown,
   ArrowUp,
+  Captions,
+  CloudOff,
+  Download,
+  FileText,
   Gauge,
   Heart,
   ListEnd,
@@ -12,6 +16,7 @@ import {
   ListStart,
   MoreHorizontal,
   Plus,
+  LoaderCircle,
   Share2,
   X,
 } from "lucide-react";
@@ -20,6 +25,9 @@ import { SONG_INDEX, collectionOf } from "@/lib/library";
 import { RATES, shareLink, usePlayer, useUpNext } from "@/lib/player-store";
 import { cn } from "@/lib/utils";
 import { useT } from "@/lib/i18n";
+import { downloadLrc, hasLrc } from "@/lib/lrc";
+import { offlineSupported, useOffline } from "@/lib/offline";
+import { useAnnounce } from "@/lib/announce";
 
 /* ── Thông báo nhỏ ở cạnh dưới ("Đã thêm vào hàng chờ") ─────────────── */
 
@@ -157,6 +165,57 @@ function MenuItem({
   );
 }
 
+/* ── Tải về nghe offline ────────────────────────────────────────────── */
+
+function OfflineItem({ song, onDone }: { song: Song; onDone: (msg: string) => void }) {
+  const { t } = useT();
+  const saved = useOffline((s) => s.ids.includes(song.id));
+  const busy = useOffline((s) => s.busy.includes(song.id));
+  if (!offlineSupported()) return null;
+  if (busy) {
+    return (
+      <MenuItem icon={<LoaderCircle className="size-5 animate-spin" />} onClick={() => {}}>
+        {t("Đang tải về…")}
+      </MenuItem>
+    );
+  }
+  return saved ? (
+    <MenuItem
+      icon={<CloudOff className="size-5" />}
+      onClick={() => {
+        void useOffline.getState().remove(song.id);
+        onDone(t("Đã xoá bản tải về"));
+      }}
+    >
+      {t("Xoá bản tải về")}
+    </MenuItem>
+  ) : (
+    <MenuItem
+      icon={<Download className="size-5" />}
+      onClick={() => {
+        onDone(t("Đang tải về…"));
+        void useOffline
+          .getState()
+          .download(song.id)
+          .then((ok) => toast(ok ? t("Đã tải về, nghe được khi không có mạng") : t("Không tải về được, thử lại khi có mạng")));
+      }}
+    >
+      {t("Tải về nghe offline")}
+    </MenuItem>
+  );
+}
+
+function AnnounceItem() {
+  const { t } = useT();
+  const on = useAnnounce((s) => s.on);
+  const toggle = useAnnounce((s) => s.toggle);
+  return (
+    <MenuItem icon={<Captions className="size-5" />} pressed={on} onClick={toggle}>
+      {t("Đọc dòng đang hát cho trình đọc màn hình")}
+    </MenuItem>
+  );
+}
+
 /* ── Menu "⋯" của một bài ───────────────────────────────────────────── */
 
 export function SongMenuButton({ song, className }: { song: Song; className?: string }) {
@@ -226,6 +285,19 @@ function SongMenu({ song, onClose }: { song: Song; onClose: () => void }) {
           <MenuItem icon={<Share2 className="size-5" />} onClick={() => { onClose(); void shareSong(song, t); }}>
             {t("Chia sẻ bài này")}
           </MenuItem>
+          <OfflineItem song={song} onDone={done} />
+          {hasLrc(song) ? (
+            <MenuItem
+              icon={<FileText className="size-5" />}
+              onClick={() => {
+                downloadLrc(song);
+                done(t("Đã tải lời có mốc thời gian (.lrc)"));
+              }}
+            >
+              {t("Tải lời có mốc thời gian (.lrc)")}
+            </MenuItem>
+          ) : null}
+          {isCurrent && hasLrc(song) ? <AnnounceItem /> : null}
 
           {isCurrent ? (
             <div className="mt-2 border-t border-line pt-3" data-rate>

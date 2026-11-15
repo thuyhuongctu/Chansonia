@@ -19,8 +19,7 @@ export const song: RawSong = {
   language: "Tiếng Việt",
   meta: "Bài hát của game · Tiếng Việt",
   accent: "#2f6f8f",
-  coverSrc:
-    "https://games.jemappellehuong.com/van-don-3d/assets/ben-cang-van-don.jpg",
+  coverSrc: "art/game-van-don-ben-cang.webp",
   style:
     "Hùng ca dân tộc · sáo trúc, đàn bầu, trống trầm, dàn dây và hợp xướng · sóng biển mở đầu và khép lại",
   audioSrc:

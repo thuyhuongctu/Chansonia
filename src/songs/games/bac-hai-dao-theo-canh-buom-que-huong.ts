@@ -19,8 +19,7 @@ export const song: RawSong = {
   language: "Tiếng Việt",
   meta: "Bài hát của game · Tiếng Việt",
   accent: "#3d6b7a",
-  coverSrc:
-    "https://games.jemappellehuong.com/bac-hai-dao/assets/nhac/bac-hai-dao-bia.jpg",
+  coverSrc: "art/game-bac-hai-dao-bien-dao.webp",
   style:
     "Nhạc giao hưởng biển cả lịch sử Việt Nam · giọng nam trung ấm, hợp xướng ở điệp khúc · sáo trúc, đàn bầu, đàn tranh, trống lễ, dàn dây · nhịp 6/8, 80 BPM",
   audioSrc:

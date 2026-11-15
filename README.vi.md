@@ -108,6 +108,10 @@ Mini song-cycle sáu chương (cùng một bài tặng thêm), sáng tác từ 0
 - **Tốc độ phát** 0.75× đến 1.5×, giữ cao độ giọng, app nhớ lựa chọn.
 - **Hẹn giờ tắt nhạc** (5 đến 60 phút, hoặc *dừng khi hết bài này*).
 - **Điều khiển ở màn hình khoá và tai nghe** (Media Session).
+- **Tải về nghe offline**: menu ⋯ cất bài (mọi phiên bản, kèm ảnh bìa) vào máy; sau đó phát và
+  tua được khi không có mạng. Bài đã tải nằm trong mục *Của tôi*.
+- **Xuất lời có mốc thời gian**: menu ⋯ lưu tệp `.lrc` chuẩn, mở được bằng VLC, foobar2000,
+  Poweramp và các công cụ làm phụ đề.
 
 ### Sắp xếp
 
@@ -135,6 +139,10 @@ Mini song-cycle sáu chương (cùng một bài tặng thêm), sáng tác từ 0
 - **Cài như app** (PWA): toàn màn hình, mở được khi mất mạng, có nút làm mới cho bản cài không có
   thanh địa chỉ.
 - Mọi hiệu ứng chuyển động tắt khi máy yêu cầu giảm chuyển động.
+- **Dễ tiếp cận**: màu chữ đạt tương phản WCAG 2.2 AA (4,5:1) ở cả nền sáng lẫn nền tối; dòng
+  đang hát được đánh dấu `aria-current`, trình đọc màn hình đọc được dòng đó (bật trong menu ⋯).
+- **Phím tắt**: `Space`/`K` phát hoặc dừng, `←`/`→` tua 5 giây, `Shift`+`←`/`→` phần trước hoặc
+  phần sau, `P`/`N` bài trước hoặc bài sau, `M` tắt tiếng, `L` yêu thích.
 
 ---
 
@@ -169,7 +177,7 @@ Playwright · lucide-react.
 
 Bộ kiểm thử Playwright mở bản dựng thật trong trình duyệt thật, ở khổ điện thoại và máy tính:
 chạm, gõ, kéo thanh tiến độ, ngắt mạng, để giao diện hỏng bị phát hiện trước khi phát hành.
-**161 bài kiểm thử** chạy mỗi lần đẩy mã và mỗi PR ([`test.yml`](.github/workflows/test.yml)); báo
+**177 bài kiểm thử** chạy mỗi lần đẩy mã và mỗi PR ([`test.yml`](.github/workflows/test.yml)); báo
 cáo HTML giữ hai tuần.
 
 ```bash
