@@ -53,13 +53,13 @@ test.describe("Chức năng như các app nhạc", () => {
     expect(link).toMatch(/\?bai=je-voudrais-te-parler$/);
   });
 
-  test("chia sẻ gửi kèm ảnh logo Chansonia khi máy chia sẻ được ảnh", async ({ page }) => {
+  test("chia sẻ chỉ gửi chữ và đường link, không kèm ảnh (Zalo bỏ link khi có ảnh)", async ({ page }) => {
     await page.addInitScript(() => {
-      const w = window as unknown as { __shared?: { text: string; files: string[] } };
+      const w = window as unknown as { __shared?: { url: string; files: number } };
       Object.defineProperty(navigator, "canShare", { value: () => true, configurable: true });
       Object.defineProperty(navigator, "share", {
         value: async (d: ShareData) => {
-          w.__shared = { text: d.text ?? "", files: (d.files ?? []).map((f) => `${f.name}|${f.type}|${f.size}`) };
+          w.__shared = { url: d.url ?? "", files: (d.files ?? []).length };
         },
         configurable: true,
       });
@@ -69,10 +69,9 @@ test.describe("Chức năng như các app nhạc", () => {
     await page.getByRole("button", { name: /^Thêm thao tác cho/ }).click();
     await page.getByRole("button", { name: "Chia sẻ bài này" }).click();
     const shared = await page.waitForFunction(() => (window as unknown as { __shared?: unknown }).__shared);
-    const { text, files } = (await shared.jsonValue()) as { text: string; files: string[] };
-    expect(files).toHaveLength(1);
-    expect(files[0]).toMatch(/^chansonia\.png\|image\/png\|[1-9]\d+$/);
-    expect(text).toMatch(/\?bai=je-voudrais-te-parler$/);
+    const { url, files } = (await shared.jsonValue()) as { url: string; files: number };
+    expect(files).toBe(0);
+    expect(url).toMatch(/\?bai=je-voudrais-te-parler$/);
   });
 
   test("màn hình khoá và tai nghe nhận đúng tên bài", async ({ page }) => {
