@@ -20,11 +20,11 @@ export const song: RawSong = {
   meta: "Bài hát của game · Tiếng Việt",
   accent: "#2f6f8f",
   coverSrc:
-    "https://thuyhuongctu.github.io/Vietnamese-History-Games/van-don-3d/assets/ben-cang-van-don.jpg",
+    "https://games.jemappellehuong.com/van-don-3d/assets/ben-cang-van-don.jpg",
   style:
     "Hùng ca dân tộc · sáo trúc, đàn bầu, trống trầm, dàn dây và hợp xướng · sóng biển mở đầu và khép lại",
   audioSrc:
-    "https://thuyhuongctu.github.io/Vietnamese-History-Games/van-don-3d/assets/nhac/van-don-tieng-vong-non-song.mp3",
+    "https://games.jemappellehuong.com/van-don-3d/assets/nhac/van-don-tieng-vong-non-song.mp3",
   durationMs: 317232,
   sections: [
     { id: "intro", label: "Dạo đầu", startMs: 0, lines: [] },
