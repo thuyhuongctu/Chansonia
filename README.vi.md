@@ -16,7 +16,7 @@ của hai game lịch sử Việt Nam.
 ![Giấy phép: độc quyền](https://img.shields.io/badge/gi%E1%BA%A5y%20ph%C3%A9p-%C4%91%E1%BB%99c%20quy%E1%BB%81n-c45c3a)
 ![Giao diện: EN · VI · FR](https://img.shields.io/badge/giao%20di%E1%BB%87n-EN%20%C2%B7%20VI%20%C2%B7%20FR-3f6f68)
 
-**[Mở app](https://thuyhuongctu.github.io/Chansonia/app/)** ·
+**[Mở app](https://chansonia.jemappellehuong.com/app/)** ·
 [English](README.md) ·
 [Trích dẫn](#trích-dẫn) ·
 [Phát triển](#phát-triển)
@@ -29,7 +29,7 @@ của hai game lịch sử Việt Nam.
 
 | | |
 |---|---|
-| **Web** | [thuyhuongctu.github.io/Chansonia/app/](https://thuyhuongctu.github.io/Chansonia/app/). Địa chỉ gốc chuyển thẳng vào app và mở màn hình **Giới thiệu**. Tự triển khai lại mỗi lần đẩy lên `main`. |
+| **Web** | [chansonia.jemappellehuong.com/app/](https://chansonia.jemappellehuong.com/app/). Địa chỉ gốc chuyển thẳng vào app và mở màn hình **Giới thiệu**. Tự triển khai lại mỗi lần đẩy lên `main`. |
 | **Android** | Dự án Capacitor trong `android/`, nộp lên Google Play dạng `.aab` (`com.jemappellehuong.songbook`, v1.2.0). |
 | **iOS** | Dự án Capacitor trong `ios/`, sẵn sàng mở bằng Xcode, gửi TestFlight và App Store. |
 | **Thư viện** | 4 bộ sưu tập · 32 bài · 13 video |
@@ -208,7 +208,12 @@ tệp mp3 im lặng đúng độ dài cho bài nào còn thiếu. Tệp này kh�
 | `chinh-sach.html` | chính sách quyền riêng tư (cho Google Play) |
 | `sw.js` | gỡ service worker cũ từng đăng ký ở thư mục gốc |
 
-Cần bật Pages một lần (Settings → Pages → Source: *GitHub Actions*). Cũng có thể chạy triển khai
+Cần bật Pages một lần (Settings → Pages → Source: *GitHub Actions*).
+
+**Tên miền riêng:** `chansonia.jemappellehuong.com`. Vùng DNS (PA Vietnam) có bản ghi
+`CNAME` `chansonia → thuyhuongctu.github.io`, và cùng tên này được điền ở Settings → Pages →
+Custom domain, bật *Enforce HTTPS*. Khi đó GitHub tự chuyển các địa chỉ cũ
+`thuyhuongctu.github.io/Chansonia/…` sang tên miền mới. Cũng có thể chạy triển khai
 bằng tay ở tab Actions.
 
 </details>

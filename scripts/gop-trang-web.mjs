@@ -49,7 +49,7 @@ writeFileSync(
     <link rel="cite-as" href="https://doi.org/${DOI}" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Chansonia · Je m'appelle Hương" />
-    <meta property="og:image" content="https://thuyhuongctu.github.io/Chansonia/app/og-image.png" />
+    <meta property="og:image" content="https://chansonia.jemappellehuong.com/app/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
