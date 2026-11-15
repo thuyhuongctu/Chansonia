@@ -394,7 +394,7 @@ const SUVIET: Collection = {
   name: "Vietnamese History Game Portal",
   desc: "Nhạc của các game trên Cổng Trò Chơi Sử Việt, mỗi game một album",
   color: "#2f6f8f",
-  art: `${GAMES_SITE}/van-don-3d/assets/ben-cang-van-don.jpg`,
+  art: "art/suviet-ha-long.webp",
   link: { label: "Cổng Trò Chơi Sử Việt", url: `${GAMES_SITE}/` },
   doi: "10.5281/zenodo.21850564",
   albums: [

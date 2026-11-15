@@ -19,7 +19,7 @@ export const song: RawSong = {
   language: "Tiếng Việt",
   meta: "Bài hát của game · Tiếng Việt",
   accent: "#2f6f8f",
-  coverSrc: "art/game-van-don-ben-cang.webp",
+  coverSrc: "art/game-van-don-khung-cua.webp",
   style:
     "Hùng ca dân tộc · sáo trúc, đàn bầu, trống trầm, dàn dây và hợp xướng · sóng biển mở đầu và khép lại",
   audioSrc:
