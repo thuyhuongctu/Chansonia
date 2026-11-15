@@ -11,7 +11,7 @@ export const VIDEO_ROW = "[data-video-id]";
  * này, đừng rải con số ra khắp các tệp kiểm thử.
  */
 export const COUNTS = {
-  huong: { songs: 9, videos: 1 },
+  huong: { songs: 9, videos: 3 },
   bizon: { songs: 17, videos: 8 },
   maida: { songs: 2, videos: 0 },
   suviet: { songs: 4, videos: 4 },

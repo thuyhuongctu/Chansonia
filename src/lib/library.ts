@@ -185,6 +185,7 @@ const HUONG: Collection = {
       "4:16",
       {
         accent: "#3f6f68",
+        coverSrc: "art/tro-ve-bo-dat-set.webp",
         ...twoVersions([
           ["Tiếng Việt", sb("tro-ve-bo-4.mp3"), "4:16"],
           ["English", sb("tro-ve-bo-5.mp3"), "3:58"],
@@ -200,6 +201,22 @@ const HUONG: Collection = {
       duration: "7:19",
       youtube: "Hr70nStSOMs",
       poster: "art/ba-cong-con-tren-vai.webp",
+    },
+    {
+      id: "tro-ve-bo-dat-set",
+      title: "Trở về bờ",
+      meta: "MV đất sét 3D · Tiếng Việt",
+      duration: "4:16",
+      mp4: "video/tro-ve-bo-dat-set.mp4",
+      poster: "video/tro-ve-bo-dat-set.webp",
+    },
+    {
+      id: "returning-to-shore-dat-set",
+      title: "Returning to Shore",
+      meta: "MV đất sét 3D · English",
+      duration: "3:58",
+      mp4: "video/returning-to-shore-dat-set.mp4",
+      poster: "video/returning-to-shore-dat-set.webp",
     },
   ],
 };
