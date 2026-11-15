@@ -18,8 +18,7 @@ export const song: RawSong = {
   language: "Tiếng Việt",
   meta: "Bài hát chung của hai game · Tiếng Việt",
   accent: "#3a6f7d",
-  coverSrc:
-    "https://games.jemappellehuong.com/van-don-3d/assets/ben-hoang-hon.jpg",
+  coverSrc: "art/game-nguoi-trao-ta-chan-troi.webp",
   style:
     "Hùng ca biển cả · sáo trúc, đàn tranh, đàn bầu, trống trầm, dàn dây và hợp xướng · sóng biển mở đầu và khép lại",
   audioSrc:
