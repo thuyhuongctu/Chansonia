@@ -109,6 +109,10 @@ A six-chapter mini song-cycle (plus a bonus track) written between 7 and 13 Augu
 - **Playback speed** 0.75× to 1.5×, pitch kept, remembered.
 - **Sleep timer** (5 to 60 minutes, or *stop after this song*).
 - **Lock screen and headphone controls** through the Media Session API.
+- **Download for offline**: the ⋯ menu stores a song (every version, and its cover) on the
+  device; it then plays and seeks with no connection. Downloads are listed under *Mine*.
+- **Timed lyrics export**: the ⋯ menu saves a standard `.lrc` file that VLC, foobar2000,
+  Poweramp and subtitle tools can read.
 
 ### Organise
 
@@ -139,6 +143,10 @@ A six-chapter mini song-cycle (plus a bonus track) written between 7 and 13 Augu
 - **Installs as an app** (PWA): full screen, offline shell, and a refresh button for the
   installed app that has no address bar.
 - Every animation switches off when the device asks for reduced motion.
+- **Accessible**: text colours meet WCAG 2.2 AA contrast (4.5:1) in both themes; the line being
+  sung is marked `aria-current`, and screen readers can announce it (opt-in from the ⋯ menu).
+- **Keyboard shortcuts**: `Space`/`K` play or pause, `←`/`→` seek 5 s, `Shift`+`←`/`→` previous
+  or next section, `P`/`N` previous or next song, `M` mute, `L` favourite.
 
 ---
 
@@ -173,7 +181,7 @@ Playwright · lucide-react.
 
 A Playwright suite drives the real production build in a real browser, at phone and desktop
 widths: it taps, types, drags the progress bar and pulls the network away, so a broken
-interface is caught before release. **161 tests** run on every push and pull request
+interface is caught before release. **177 tests** run on every push and pull request
 ([`test.yml`](.github/workflows/test.yml)); the HTML report is kept for two weeks.
 
 ```bash

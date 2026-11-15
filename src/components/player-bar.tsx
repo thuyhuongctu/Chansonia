@@ -145,6 +145,7 @@ export function PlayerBar() {
             onClick={() => (playing ? pause() : void play())}
             className="press press-lg flex size-13 shrink-0 items-center justify-center rounded-full bg-accent text-on-accent shadow-song"
             aria-label={playing ? t("Tạm dừng") : t("Phát")}
+            aria-keyshortcuts="Space K"
           >
             {playing && status === "loading" ? (
               <LoaderCircle className="size-5 animate-spin" aria-hidden data-loading />

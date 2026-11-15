@@ -12,10 +12,12 @@
   --surface: #fffcf5;
   --sunk: #efe8dc;
   --ink: #1c1814;
-  --muted: #6f6459;
-  --subtle: #8c8073;
+  /* Chữ phụ và màu nhấn đạt tương phản WCAG 2.2 AA (≥ 4,5:1) trên nền giấy,
+     nền nổi và nền lõm; chữ trắng trên nền đất nung cũng ≥ 4,5:1. */
+  --muted: #645a50;
+  --subtle: #70665c;
   --line: #e2d8c7;
-  --accent: #c45c3a;
+  --accent: #a74e31;
   --accent-2: #3f6f68;
   --accent-soft: #f3e4da;
   --on-accent: #ffffff;
@@ -34,7 +36,7 @@
     --sunk: #120e0b;
     --ink: #efe6d8;
     --muted: #a6998a;
-    --subtle: #877b6d;
+    --subtle: #8e8173;
     --line: #332a22;
     --accent: #e08055;
     --accent-2: #79b3a6;
@@ -55,7 +57,7 @@
   --sunk: #120e0b;
   --ink: #efe6d8;
   --muted: #a6998a;
-  --subtle: #877b6d;
+  --subtle: #8e8173;
   --line: #332a22;
   --accent: #e08055;
   --accent-2: #79b3a6;

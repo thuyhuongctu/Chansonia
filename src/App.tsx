@@ -10,6 +10,8 @@ import { Toaster } from "@/components/song-menu";
 import { MapBackdrop } from "@/components/depth";
 import { usePlayer } from "@/lib/player-store";
 import { useMediaControls } from "@/lib/media-controls";
+import { useShortcuts } from "@/lib/shortcuts";
+import { useOffline } from "@/lib/offline";
 import { useLang } from "@/lib/i18n";
 import { useEffect } from "react";
 
@@ -17,6 +19,11 @@ export default function App() {
   const view = usePlayer((s) => s.view);
   const mode = usePlayer((s) => s.mode);
   useMediaControls();
+  useShortcuts();
+  // Người dùng có thể đã xoá dữ liệu trang: đối chiếu danh sách bài tải về với kho thật.
+  useEffect(() => {
+    void useOffline.getState().verify();
+  }, []);
   const lang = useLang((s) => s.lang);
   // Báo ngôn ngữ của trang cho trình đọc màn hình và công cụ dịch.
   useEffect(() => {
