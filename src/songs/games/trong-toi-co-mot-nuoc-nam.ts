@@ -18,9 +18,9 @@ export const song: RawSong = {
   language: "Tiếng Việt",
   meta: "Bài hát của Cổng Trò Chơi Sử Việt · Tiếng Việt · Tiếng Pháp",
   accent: "#8a3b2e",
-  coverSrc: "https://thuyhuongctu.github.io/Vietnamese-History-Games/assets/nhac/trong-toi-co-mot-nuoc-nam.webp",
+  coverSrc: "https://games.jemappellehuong.com/assets/nhac/trong-toi-co-mot-nuoc-nam.webp",
   style: "Lời và nhạc: Đỗ Thùy Hương · có đoạn lời tiếng Pháp",
-  audioSrc: "https://thuyhuongctu.github.io/Vietnamese-History-Games/assets/nhac/trong-toi-co-mot-nuoc-nam.mp3",
+  audioSrc: "https://games.jemappellehuong.com/assets/nhac/trong-toi-co-mot-nuoc-nam.mp3",
   durationMs: 393012,
   sections: [
     {

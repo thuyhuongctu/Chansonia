@@ -19,11 +19,11 @@ export const song: RawSong = {
   meta: "Bài hát chung của hai game · Tiếng Việt",
   accent: "#3a6f7d",
   coverSrc:
-    "https://thuyhuongctu.github.io/Vietnamese-History-Games/van-don-3d/assets/ben-hoang-hon.jpg",
+    "https://games.jemappellehuong.com/van-don-3d/assets/ben-hoang-hon.jpg",
   style:
     "Hùng ca biển cả · sáo trúc, đàn tranh, đàn bầu, trống trầm, dàn dây và hợp xướng · sóng biển mở đầu và khép lại",
   audioSrc:
-    "https://thuyhuongctu.github.io/Vietnamese-History-Games/assets/nhac/nguoi-trao-ta-chan-troi.mp3",
+    "https://games.jemappellehuong.com/assets/nhac/nguoi-trao-ta-chan-troi.mp3",
   durationMs: 330000,
   sections: [
     { id: "intro", label: "Dạo đầu", startMs: 0, lines: [] },

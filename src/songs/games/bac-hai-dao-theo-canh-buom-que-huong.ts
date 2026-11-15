@@ -20,11 +20,11 @@ export const song: RawSong = {
   meta: "Bài hát của game · Tiếng Việt",
   accent: "#3d6b7a",
   coverSrc:
-    "https://thuyhuongctu.github.io/Vietnamese-History-Games/bac-hai-dao/assets/nhac/bac-hai-dao-bia.jpg",
+    "https://games.jemappellehuong.com/bac-hai-dao/assets/nhac/bac-hai-dao-bia.jpg",
   style:
     "Nhạc giao hưởng biển cả lịch sử Việt Nam · giọng nam trung ấm, hợp xướng ở điệp khúc · sáo trúc, đàn bầu, đàn tranh, trống lễ, dàn dây · nhịp 6/8, 80 BPM",
   audioSrc:
-    "https://thuyhuongctu.github.io/Vietnamese-History-Games/bac-hai-dao/assets/nhac/bac-hai-dao-theo-canh-buom-que-huong.mp3",
+    "https://games.jemappellehuong.com/bac-hai-dao/assets/nhac/bac-hai-dao-theo-canh-buom-que-huong.mp3",
   durationMs: 346824,
   sections: [
     { id: "intro", label: "Dạo đầu", startMs: 0, lines: [] },

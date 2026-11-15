@@ -381,7 +381,7 @@ const MAIDA: Collection = {
    Portal, repo Vietnamese-History-Games, tên cũ ThuyHuong_Digital-2026-Games), mỗi game một album. Tệp nhạc
    và ảnh phát thẳng từ GitHub Pages của repo game. */
 
-const GAMES_SITE = "https://thuyhuongctu.github.io/Vietnamese-History-Games";
+const GAMES_SITE = "https://games.jemappellehuong.com";
 
 const vanDon = compile(vanDonSong);
 const bacHai = compile(bacHaiSong);
