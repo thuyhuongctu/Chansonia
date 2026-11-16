@@ -123,8 +123,8 @@ A six-chapter mini song-cycle (plus a bonus track) written between 7 and 13 Augu
   **Recently played**. Everything stays on the device.
 - **Search** across titles and lyrics, accent-insensitive (`den` finds *đèn*), with matches from
   other collections shown underneath.
-- **Share** a song: the system share sheet, or a copied link (`…/app/?bai=song-id`) that opens
-  straight on that song.
+- **Share** a song or a video: the system share sheet, or a copied link (`…/app/?bai=song-id`,
+  `…/app/?video=video-id`) that opens straight on it.
 
 ### Discover
 
@@ -181,7 +181,7 @@ Playwright · lucide-react.
 
 A Playwright suite drives the real production build in a real browser, at phone and desktop
 widths: it taps, types, drags the progress bar and pulls the network away, so a broken
-interface is caught before release. **177 tests** run on every push and pull request
+interface is caught before release. **179 tests** run on every push and pull request
 ([`test.yml`](.github/workflows/test.yml)); the HTML report is kept for two weeks.
 
 ```bash

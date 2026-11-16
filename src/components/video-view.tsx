@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import { Play } from "lucide-react";
+import { Play, Share2 } from "lucide-react";
 import { COLLECTION_BY_ID, type Video } from "@/lib/library";
 import { usePlayer } from "@/lib/player-store";
 import { ScreenHeader } from "@/components/header";
 import { useT } from "@/lib/i18n";
+import { shareVideo } from "@/components/song-menu";
 
 /**
  * Màn hình video — khung 16:9, tên và dòng phụ, rồi danh sách "Video khác"
@@ -30,12 +31,25 @@ export function VideoView() {
       <div className="min-h-0 flex-1 overflow-y-auto p-4 lg:px-6">
         <div className="mx-auto max-w-3xl">
           <Frame key={video.id} video={video} />
-          <h2 className="mt-4 font-display text-[22px] leading-tight font-semibold text-ink">
-            {td(video.title)}
-          </h2>
-          <p className="mt-1 font-sans text-[13px] text-muted">
-            {[td(video.meta), video.duration].filter(Boolean).join(" · ")}
-          </p>
+          <div className="mt-4 flex items-start gap-3">
+            <div className="min-w-0 flex-1">
+              <h2 className="font-display text-[22px] leading-tight font-semibold text-ink">
+                {td(video.title)}
+              </h2>
+              <p className="mt-1 font-sans text-[13px] text-muted">
+                {[td(video.meta), video.duration].filter(Boolean).join(" · ")}
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => void shareVideo(td(video.title), video.id, t)}
+              data-share-video={video.id}
+              className="press flex h-11 shrink-0 items-center gap-2 rounded-full border border-line bg-surface px-4 font-sans text-sm font-semibold text-ink hover:border-accent"
+            >
+              <Share2 className="size-4 text-accent" aria-hidden />
+              {t("Chia sẻ")}
+            </button>
+          </div>
 
           {more.length ? (
             <>

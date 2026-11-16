@@ -115,6 +115,27 @@ export function shareLink(songId: string): string {
   return url.toString();
 }
 
+/** Video được mở thẳng từ đường link chia sẻ (…?video=ma-video) */
+function videoFromLink(): { collectionId: CollectionId; id: string } | null {
+  try {
+    const id = new URLSearchParams(location.search).get("video");
+    if (!id) return null;
+    const col = COLLECTIONS.find((c) => c.videos.some((v) => v.id === id));
+    return col ? { collectionId: col.id, id } : null;
+  } catch {
+    return null;
+  }
+}
+
+/** Đường link chia sẻ một video: mở app là vào thẳng video ấy */
+export function shareVideoLink(videoId: string): string {
+  const url = new URL(location.href);
+  url.search = "";
+  url.hash = "";
+  url.searchParams.set("video", videoId);
+  return url.toString();
+}
+
 /** Các mức hẹn giờ tắt nhạc, tính bằng phút */
 export const SLEEP_PRESETS = [5, 15, 30, 45, 60] as const;
 export const SLEEP_TIMER_DEFAULT_MINUTES = 30;
@@ -287,6 +308,7 @@ function save(state: { songId: string; versionIndex: number }, ms: number, force
 }
 
 const linked = songFromLink();
+const linkedVideo = linked ? null : videoFromLink();
 
 /**
  * Mở màn hình «Giới thiệu» trước thư viện khi: vào từ địa chỉ gốc của trang
@@ -325,6 +347,16 @@ if (linked) {
     /* bỏ qua */
   }
 }
+if (linkedVideo) {
+  // Bỏ ?video=… khỏi thanh địa chỉ, như với ?bai=….
+  try {
+    const url = new URL(location.href);
+    url.searchParams.delete("video");
+    history.replaceState(null, "", url.toString());
+  } catch {
+    /* bỏ qua */
+  }
+}
 const savedSong = songOf(saved.songId);
 const savedVersion = songVersion(savedSong, saved.version);
 const savedMs = Math.min(saved.ms, savedVersion.durationMs || saved.ms);
@@ -338,7 +370,7 @@ function indices(song: Song, version: number, ms: number) {
 }
 
 export const usePlayer = create<PlayerState>((set, get) => ({
-  view: linked ? "player" : startOnAbout ? "about" : "library",
+  view: linked ? "player" : linkedVideo ? "video" : startOnAbout ? "about" : "library",
   songId: savedSong.id,
   versionIndex: saved.version,
   mode: "karaoke",
@@ -354,7 +386,7 @@ export const usePlayer = create<PlayerState>((set, get) => ({
   collectionId: collectionOf(savedSong.id).id,
   libraryTab: "songs",
   query: "",
-  video: null,
+  video: linkedVideo,
 
   playOrder: "sequential",
   repeat: "off",
