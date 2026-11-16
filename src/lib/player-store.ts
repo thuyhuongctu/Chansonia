@@ -106,13 +106,21 @@ function songFromLink(): string | null {
   }
 }
 
-/** Đường link chia sẻ một bài: mở app là vào thẳng bài ấy */
+/** Địa chỉ công khai của app — dùng khi chia sẻ từ bản cài trên điện thoại */
+const PUBLIC_APP = "https://chansonia.jemappellehuong.com/app/";
+
+/** Thư mục gốc của app đang chạy; bản Android/iOS (https://localhost) thì lấy địa chỉ công khai */
+function appBase(): string {
+  const native = location.protocol === "capacitor:" || (location.hostname === "localhost" && !location.port);
+  return native ? PUBLIC_APP : new URL(".", location.href).toString();
+}
+
+/**
+ * Đường link chia sẻ một bài: trang b/<mã-bài>/ mang tên và ảnh bìa riêng cho
+ * ô xem trước của Zalo, Facebook…, rồi chuyển ngay vào bài trong app.
+ */
 export function shareLink(songId: string): string {
-  const url = new URL(location.href);
-  url.search = "";
-  url.hash = "";
-  url.searchParams.set("bai", songId);
-  return url.toString();
+  return new URL(`b/${encodeURIComponent(songId)}/`, appBase()).toString();
 }
 
 /** Video được mở thẳng từ đường link chia sẻ (…?video=ma-video) */
@@ -127,13 +135,9 @@ function videoFromLink(): { collectionId: CollectionId; id: string } | null {
   }
 }
 
-/** Đường link chia sẻ một video: mở app là vào thẳng video ấy */
+/** Đường link chia sẻ một video: trang v/<mã-video>/ có tên và ảnh của video, rồi vào thẳng video */
 export function shareVideoLink(videoId: string): string {
-  const url = new URL(location.href);
-  url.search = "";
-  url.hash = "";
-  url.searchParams.set("video", videoId);
-  return url.toString();
+  return new URL(`v/${encodeURIComponent(videoId)}/`, appBase()).toString();
 }
 
 /** Các mức hẹn giờ tắt nhạc, tính bằng phút */
