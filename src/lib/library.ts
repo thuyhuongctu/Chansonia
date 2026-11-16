@@ -24,8 +24,10 @@ import { song as vanDonSong } from "@/songs/games/van-don-tieng-vong-non-song";
 import { song as bacHaiSong } from "@/songs/games/bac-hai-dao-theo-canh-buom-que-huong";
 import { song as chanTroiSong } from "@/songs/games/nguoi-trao-ta-chan-troi";
 import { song as nuocNamSong } from "@/songs/games/trong-toi-co-mot-nuoc-nam";
+import { song as cungDiSong } from "@/songs/kinhte-chung-ta-cung-di";
+import { song as tomorrowSong } from "@/songs/kinhte-we-create-tomorrow";
 
-export type CollectionId = "huong" | "bizon" | "maida" | "suviet";
+export type CollectionId = "huong" | "bizon" | "maida" | "suviet" | "kinhte";
 
 /** Một album trong bộ sưu tập (ví dụ mỗi game một album) */
 export type Album = {
@@ -480,7 +482,29 @@ const SUVIET: Collection = {
   ],
 };
 
-export const COLLECTIONS: Collection[] = [HUONG, BIZON_COLLECTION, MAIDA, SUVIET];
+/* ── Trường Kinh tế, Đại học Cần Thơ ─────────────────────────────────── */
+
+/**
+ * Bài hát của Trường Kinh tế, Đại học Cần Thơ, hai thứ tiếng — từ phần mềm
+ * «We Create Tomorrow» (Phan Anh Tú, Đỗ Thùy Hương; thuyhuongctu/we-create-tomorrow).
+ */
+const KINHTE: Collection = {
+  id: "kinhte",
+  short: "We Create Tomorrow",
+  name: "We Create Tomorrow",
+  desc: "Bài hát Trường Kinh tế, Đại học Cần Thơ, tiếng Việt và tiếng Anh",
+  color: "#1f5f8b",
+  art: "art/kinhte-art.webp",
+  link: { label: "We Create Tomorrow", url: "https://thuyhuongctu.github.io/we-create-tomorrow/" },
+  doi: "10.5281/zenodo.22080061",
+  songs: [
+    compile({ ...cungDiSong, coverSrc: "art/kinhte-cover.webp" }),
+    compile({ ...tomorrowSong, coverSrc: "art/kinhte-cover.webp" }),
+  ],
+  videos: [],
+};
+
+export const COLLECTIONS: Collection[] = [HUONG, BIZON_COLLECTION, MAIDA, SUVIET, KINHTE];
 
 export const COLLECTION_BY_ID = Object.fromEntries(
   COLLECTIONS.map((c) => [c.id, c]),
