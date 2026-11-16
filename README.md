@@ -32,7 +32,7 @@ Vietnamese history games.
 | **Web** | [chansonia.jemappellehuong.com/app/](https://chansonia.jemappellehuong.com/app/). The root address forwards to the app and opens its **About** screen. Redeployed on every push to `main`. |
 | **Android** | Capacitor project in `android/`, shipped to Google Play as an `.aab` (`com.jemappellehuong.songbook`, v1.2.0). |
 | **iOS** | Capacitor project in `ios/`, ready for Xcode, TestFlight and the App Store. |
-| **Library** | 4 collections · 32 songs · 15 videos |
+| **Library** | 4 collections · 32 songs · 16 videos |
 | **Interface** | English by default, Vietnamese and French one tap away |
 | **Privacy** | No account, no backend, no analytics, no tracking |
 
@@ -64,7 +64,7 @@ Vietnamese history games.
 | **La maison de Madam Hương** | 9 | 3 | 7 | [jemappellehuong.com](https://jemappellehuong.com/) | [10.5281/zenodo.22003853](https://doi.org/10.5281/zenodo.22003853) |
 | **BizOnland** | 17 | 8 | | [bizonland.com](https://bizonland.com/) | [10.5281/zenodo.23325489](https://doi.org/10.5281/zenodo.23325489) |
 | **M-AIDA** | 2 | | | | [10.5281/zenodo.21850575](https://doi.org/10.5281/zenodo.21850575) |
-| **Vietnamese History Game Portal** | 4 | 4 | 4 | [Vietnamese-History-Games](https://games.jemappellehuong.com/) | [10.5281/zenodo.21850564](https://doi.org/10.5281/zenodo.21850564) |
+| **Vietnamese History Game Portal** | 4 | 5 | 4 | [Vietnamese-History-Games](https://games.jemappellehuong.com/) | [10.5281/zenodo.21850564](https://doi.org/10.5281/zenodo.21850564) |
 
 The **Vietnamese History Game Portal** collection is split into albums, one per game, each
 with a link to play it: *Van Don – Vietnam’s First Trading Port*, *Bac Hai Dao – Pirates of

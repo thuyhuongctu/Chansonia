@@ -32,7 +32,7 @@ của hai game lịch sử Việt Nam.
 | **Web** | [chansonia.jemappellehuong.com/app/](https://chansonia.jemappellehuong.com/app/). Địa chỉ gốc chuyển thẳng vào app và mở màn hình **Giới thiệu**. Tự triển khai lại mỗi lần đẩy lên `main`. |
 | **Android** | Dự án Capacitor trong `android/`, nộp lên Google Play dạng `.aab` (`com.jemappellehuong.songbook`, v1.2.0). |
 | **iOS** | Dự án Capacitor trong `ios/`, sẵn sàng mở bằng Xcode, gửi TestFlight và App Store. |
-| **Thư viện** | 4 bộ sưu tập · 32 bài · 15 video |
+| **Thư viện** | 4 bộ sưu tập · 32 bài · 16 video |
 | **Giao diện** | Mặc định tiếng Anh, chuyển tiếng Việt và tiếng Pháp bằng một nút |
 | **Quyền riêng tư** | Không tài khoản, không máy chủ, không thống kê, không theo dõi |
 
@@ -64,7 +64,7 @@ của hai game lịch sử Việt Nam.
 | **La maison de Madam Hương** | 9 | 3 | 7 | [jemappellehuong.com](https://jemappellehuong.com/) | [10.5281/zenodo.22003853](https://doi.org/10.5281/zenodo.22003853) |
 | **BizOnland** | 17 | 8 | | [bizonland.com](https://bizonland.com/) | [10.5281/zenodo.23325489](https://doi.org/10.5281/zenodo.23325489) |
 | **M-AIDA** | 2 | | | | [10.5281/zenodo.21850575](https://doi.org/10.5281/zenodo.21850575) |
-| **Vietnamese History Game Portal** | 4 | 4 | 4 | [Vietnamese-History-Games](https://games.jemappellehuong.com/) | [10.5281/zenodo.21850564](https://doi.org/10.5281/zenodo.21850564) |
+| **Vietnamese History Game Portal** | 4 | 5 | 4 | [Vietnamese-History-Games](https://games.jemappellehuong.com/) | [10.5281/zenodo.21850564](https://doi.org/10.5281/zenodo.21850564) |
 
 Bộ sưu tập **Vietnamese History Game Portal** (Cổng Trò Chơi Sử Việt) chia theo album, mỗi game
 một album, có link vào chơi: *Van Don – Vietnam’s First Trading Port*, *Bac Hai Dao – Pirates of

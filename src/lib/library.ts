@@ -470,6 +470,13 @@ const SUVIET: Collection = {
       youtube: "4ltivmM8B34",
       poster: "https://i.ytimg.com/vi/4ltivmM8B34/hqdefault.jpg",
     },
+    {
+      id: "nguoi-trao-ta-chan-troi-co-trang",
+      title: "Người trao ta chân trời (Bản cổ trang)",
+      meta: "MV cổ trang · Vân Đồn · Bắc Hải Đảo · YouTube",
+      youtube: "SyNhvR19qNQ",
+      poster: "https://i.ytimg.com/vi/SyNhvR19qNQ/hqdefault.jpg",
+    },
   ],
 };
 
