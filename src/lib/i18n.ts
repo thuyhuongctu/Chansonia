@@ -180,6 +180,10 @@ const UI: Record<string, Row> = {
   "Album": { en: "Album", fr: "Album" },
   "1 bài": { en: "1 song", fr: "1 titre" },
   "Cổng Trò Chơi Sử Việt": { en: "Vietnamese History Game Portal", fr: "Portail de jeux d'histoire du Viêt Nam" },
+  "Bài hát Trường Kinh tế, Đại học Cần Thơ, tiếng Việt và tiếng Anh": {
+    en: "The song of the School of Economics, Cần Thơ University, in Vietnamese and English",
+    fr: "La chanson de l’École d’économie, Université de Cần Thơ, en vietnamien et en anglais",
+  },
   "Nhạc của các game trên Cổng Trò Chơi Sử Việt, mỗi game một album": {
     en: "Music from the Vietnamese History Game Portal, one album per game",
     fr: "La musique du portail de jeux d'histoire du Viêt Nam, un album par jeu",
@@ -340,6 +344,13 @@ const DATA: Record<string, Row> = {
   "Cao trào": { en: "Climax", fr: "Apogée" },
   "Lời tiếng Pháp": { en: "French reflection", fr: "Réflexion en français" },
   "Điệp khúc kết": { en: "Final refrain", fr: "Refrain final" },
+  "Hậu điệp khúc": { en: "Post-chorus", fr: "Post-refrain" },
+  "Outro": { en: "Outro", fr: "Outro" },
+  "Hook cuối": { en: "Final hook", fr: "Accroche finale" },
+  "Bài hát Trường Kinh tế": { en: "School of Economics song", fr: "Chanson de l’École d’économie" },
+  "Trường Kinh tế": { en: "School of Economics", fr: "École d’économie" },
+  "Đại học Cần Thơ": { en: "Cần Thơ University", fr: "Université de Cần Thơ" },
+  "English": { en: "English", fr: "Anglais" },
   "Lời ký tên": { en: "Signature", fr: "Signature" },
   "Bài hát của Cổng Trò Chơi Sử Việt": { en: "Song of the Vietnamese History Game Portal", fr: "Chanson du portail de jeux d'histoire du Viêt Nam" },
   "Lời và nhạc: Đỗ Thùy Hương": { en: "Words & music: Đỗ Thùy Hương", fr: "Paroles et musique : Đỗ Thùy Hương" },
@@ -349,6 +360,7 @@ const DATA: Record<string, Row> = {
 const PATTERNS: [RegExp, Row][] = [
   [/^Khổ (\d+)$/, { en: "Verse $1", fr: "Couplet $1" }],
   [/^Điệp khúc (\d+)$/, { en: "Chorus $1", fr: "Refrain $1" }],
+  [/^Tiền điệp khúc (\d+)$/, { en: "Pre-chorus $1", fr: "Pré-refrain $1" }],
   [/^Dẫn(?: (\d+))?$/, { en: "Lead-in $1", fr: "Amorce $1" }],
 ];
 

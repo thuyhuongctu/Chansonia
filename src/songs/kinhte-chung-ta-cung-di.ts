@@ -1,0 +1,195 @@
+import type { RawSong } from "@/lib/catalog";
+
+/**
+ * Bài hát Trường Kinh tế, Đại học Cần Thơ — từ repo thuyhuongctu/we-create-tomorrow
+ * (src/lib/anthem.ts). Nhạc phát thẳng từ GitHub Pages của repo đó.
+ * Tác giả phần mềm gốc: Phan Anh Tú, Đỗ Thùy Hương (DOI 10.5281/zenodo.22080061).
+ *
+ * MỐC CÁC PHẦN: lấy từ bản chép lời của bản thu (nhạc dạo tới khoảng 0:49).
+ */
+export const song: RawSong = {
+  id: "chung-ta-cung-di",
+  trackNo: 1,
+  title: "Chúng ta cùng đi",
+  subtitle: "Trường Kinh tế · Đại học Cần Thơ",
+  language: "Tiếng Việt",
+  meta: "Bài hát Trường Kinh tế · Đại học Cần Thơ · Tiếng Việt",
+  accent: "#1f5f8b",
+  audioSrc: "https://thuyhuongctu.github.io/we-create-tomorrow/audio/anthem-vi.mp3",
+  durationMs: 322128,
+  sections: [
+    {
+      id: "intro",
+      label: "Dạo đầu",
+      startMs: 49000,
+      lines: [
+        "Từ bên dòng Cửu Long",
+        "Một mái trường hôm nay",
+        "Nơi những ước mơ bắt đầu",
+        "Và những chân trời mở ra",
+        { text: "Trường Kinh tế", role: "title" },
+        "Chất lượng – Thân thiện",
+        "Cùng nhau đi tới ngày mai",
+      ],
+    },
+    {
+      id: "verse1",
+      label: "Khổ 1",
+      startMs: 72000,
+      lines: [
+        "Nơi giảng đường đón những mùa tuổi trẻ",
+        "Nơi từng câu hỏi đánh thức những ước mơ",
+        "Từ những con số, những dòng nghiên cứu",
+        "Ta học cách nhìn thế giới rộng hơn",
+        "Có những bài học bước ra từ thực tiễn",
+        "Có những ý tưởng bắt đầu từ hôm nay",
+        "Có những người trẻ mang theo khát vọng",
+        "Tự viết con đường bằng chính đôi tay",
+      ],
+    },
+    {
+      id: "pre1",
+      label: "Tiền điệp khúc",
+      startMs: 108000,
+      lines: [
+        "Học để hiểu",
+        "Học để sáng tạo",
+        "Học để cùng nhau đổi thay",
+        "Từ tri thức đến những giá trị",
+        "Từ hôm nay đến tương lai",
+      ],
+    },
+    {
+      id: "chorus1",
+      label: "Điệp khúc",
+      startMs: 122000,
+      lines: [
+        { text: "Trường Kinh tế!", role: "title" },
+        "Nơi những ước mơ gặp nhau!",
+        { text: "Trường Kinh tế!", role: "title" },
+        "Nơi những khát vọng vươn cao!",
+        "Cùng nghiên cứu, cùng sáng tạo",
+        "Cùng dựng xây những giá trị mới",
+        "Từ Cần Thơ mang tri thức đi xa",
+        "Mang Việt Nam đến gần thế giới!",
+        { text: "Trường Kinh tế – Chúng ta cùng đi!", role: "title" },
+      ],
+    },
+    {
+      id: "post1",
+      label: "Hậu điệp khúc",
+      startMs: 148000,
+      lines: [
+        "Oh-oh-oh! Cùng đi!",
+        "Oh-oh-oh! Cùng vươn tới!",
+        "Quality! Connection! Innovation!",
+      ],
+    },
+    {
+      id: "verse2",
+      label: "Khổ 2",
+      startMs: 153000,
+      lines: [
+        "Nơi những công trình mở thêm câu hỏi",
+        "Nơi hội thảo nối những tiếng nói gần xa",
+        "Nơi những người thầy trao đi tri thức",
+        "Và người học viết tiếp những ước mơ",
+        "Có những chuyến đi mở thêm thế giới",
+        "Có những người bạn đến từ năm châu",
+        "Từ lớp học đến những miền đất mới",
+        "Một mái trường nối những nhịp cầu",
+      ],
+    },
+    {
+      id: "pre2",
+      label: "Tiền điệp khúc 2",
+      startMs: 188000,
+      lines: [
+        "Không chỉ học trong sách",
+        "Không chỉ đứng trong trường",
+        "Ta học từ cuộc sống để tạo nên tương lai",
+        "Nghiên cứu – Kết nối – Đổi mới – Phụng sự",
+      ],
+    },
+    {
+      id: "bridge",
+      label: "Cầu nối",
+      startMs: 195000,
+      lines: [
+        "Một ý tưởng có thể mở một cánh cửa",
+        "Một nghiên cứu có thể thay đổi một góc nhìn",
+        "Một người thầy có thể truyền một niềm tin",
+        "Một sinh viên có thể viết một tương lai",
+        { text: "We learn. We create. We connect. We lead.", role: "whisper" },
+      ],
+    },
+    {
+      id: "build",
+      label: "Cao trào",
+      startMs: 220000,
+      lines: [
+        "Trường! – Kinh tế!",
+        "Chất lượng! – Thân thiện!",
+        "Tri thức! – Đổi mới!",
+        "Cần Thơ! – Ra thế giới!",
+      ],
+    },
+    {
+      id: "chorus2",
+      label: "Điệp khúc 2",
+      startMs: 235000,
+      lines: [
+        { text: "Trường Kinh tế!", role: "title" },
+        "Nơi những ước mơ gặp nhau!",
+        { text: "Trường Kinh tế!", role: "title" },
+        "Nơi những khát vọng vươn cao!",
+        "Cùng nghiên cứu, cùng sáng tạo",
+        "Cùng dựng xây những giá trị mới",
+        "Từ Cần Thơ mang tri thức đi xa",
+        "Mang Việt Nam đến gần thế giới!",
+        { text: "Chúng ta cùng đi!", role: "title" },
+      ],
+    },
+    {
+      id: "final",
+      label: "Kết",
+      startMs: 268000,
+      lines: [
+        { text: "Trường Kinh tế!", role: "title" },
+        "Nơi những ước mơ gặp nhau!",
+        { text: "Trường Kinh tế!", role: "title" },
+        "Nơi những thế hệ vươn cao!",
+        "Từ giảng đường ra doanh nghiệp",
+        "Từ nghiên cứu đến cuộc sống",
+        "Cùng một niềm tin, cùng một khát vọng",
+        "Cùng tạo nên những giá trị mới!",
+        "Chất lượng – Thân thiện!",
+        "Cùng Cần Thơ đi tới!",
+        "Từ hôm nay đến ngày mai",
+        "Từ Cửu Long ra thế giới!",
+      ],
+    },
+    {
+      id: "hook",
+      label: "Hook cuối",
+      startMs: 298000,
+      lines: [
+        { text: "Trường Kinh tế – Chúng ta cùng đi!", role: "title" },
+        { text: "Trường Kinh tế – Chúng ta cùng vươn tới!", role: "title" },
+      ],
+    },
+    {
+      id: "outro",
+      label: "Outro",
+      startMs: 308000,
+      endMs: 320000,
+      lines: [
+        "Một mái trường, một niềm tin",
+        "Một thế hệ, một hành trình",
+        { text: "Trường Kinh tế – Đại học Cần Thơ", role: "title" },
+        "Cùng học, cùng làm, cùng sáng tạo",
+        "Cùng viết những ngày mai.",
+      ],
+    },
+  ],
+};

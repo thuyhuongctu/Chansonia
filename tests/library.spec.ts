@@ -14,7 +14,7 @@ test.describe("Thư viện", () => {
   test("mở lên là thấy ba bộ sưu tập và danh sách bài của Hương", async ({ page }) => {
     const errors = await openApp(page);
 
-    for (const name of ["La maison de Madam Hương", "BizOnland", "M-AIDA", "Vietnamese History Game Portal"] as const) {
+    for (const name of ["La maison de Madam Hương", "BizOnland", "M-AIDA", "Vietnamese History Game Portal", "We Create Tomorrow"] as const) {
       await expect(collectionTab(page, name)).toBeVisible();
     }
     await expect(collectionTab(page, "La maison de Madam Hương")).toHaveAttribute("aria-selected", "true");
@@ -128,7 +128,7 @@ test.describe("Thư viện", () => {
     await page.getByRole("button", { name: "Nghệ sĩ" }).click();
     await expect(page.getByRole("heading", { name: "Je m'appelle Hương" })).toBeVisible();
 
-    const total = COUNTS.huong.songs + COUNTS.bizon.songs + COUNTS.maida.songs + COUNTS.suviet.songs;
+    const total = Object.values(COUNTS).reduce((n, c) => n + c.songs, 0);
     await expect(page.locator("dl")).toContainText(String(total));
     await expect(page.getByRole("link", { name: /10\.5281\/zenodo\.22172794/ })).toHaveAttribute(
       "href",
