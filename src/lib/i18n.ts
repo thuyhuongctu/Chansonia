@@ -271,6 +271,8 @@ const DATA: Record<string, Row> = {
   "Bài hát của game": { en: "Game song", fr: "Chanson du jeu" },
   // Ngôn ngữ
   "Tiếng Việt": { en: "Vietnamese", fr: "Vietnamien" },
+  "MV cổ trang": { en: "Period-costume music video", fr: "Clip en costumes d’époque" },
+  "Bản cổ trang": { en: "Period-costume version", fr: "Version en costumes d’époque" },
   "MV đất sét 3D": { en: "3D claymation music video", fr: "Clip en pâte à modeler 3D" },
   "Tiếng Anh": { en: "English", fr: "Anglais" },
   "Tiếng Pháp": { en: "French", fr: "Français" },
