@@ -61,7 +61,7 @@ của hai game lịch sử Việt Nam.
 
 | Bộ sưu tập | Bài | Video | Có lời chạy | Trang gốc | DOI |
 |---|:-:|:-:|:-:|---|---|
-| **La maison de Madam Hương** | 9 | 3 | 7 | [jemappellehuong.com](https://jemappellehuong.com/) | [10.5281/zenodo.22003853](https://doi.org/10.5281/zenodo.22003853) |
+| **La Maison de Madame Hương** | 9 | 3 | 7 | [jemappellehuong.com](https://jemappellehuong.com/) | [10.5281/zenodo.22003853](https://doi.org/10.5281/zenodo.22003853) |
 | **BizOnland** | 17 | 8 | | [bizonland.com](https://bizonland.com/) | [10.5281/zenodo.23325489](https://doi.org/10.5281/zenodo.23325489) |
 | **M-AIDA** | 2 | | | | [10.5281/zenodo.21850575](https://doi.org/10.5281/zenodo.21850575) |
 | **Vietnamese History Game Portal** | 4 | 5 | 4 | [Vietnamese-History-Games](https://games.jemappellehuong.com/) | [10.5281/zenodo.21850564](https://doi.org/10.5281/zenodo.21850564) |
