@@ -50,7 +50,19 @@ test.describe("Chức năng như các app nhạc", () => {
     await page.getByRole("button", { name: "Chia sẻ bài này" }).click();
     await expect(page.getByRole("status")).toHaveText("Đã chép đường link của bài");
     const link = await page.evaluate(() => navigator.clipboard.readText());
-    expect(link).toMatch(/\?bai=je-voudrais-te-parler$/);
+    expect(link).toMatch(/\/b\/je-voudrais-te-parler\/$/);
+  });
+
+  test("đường link chia sẻ bài có ảnh bìa riêng và mở thẳng vào bài", async ({ page }) => {
+    await openApp(page);
+    const res = await page.request.get("/b/la-lampe-brule-encore/");
+    const html = await res.text();
+    expect(html).toContain('<meta property="og:title" content="La lampe brûle encore" />');
+    expect(html).toMatch(/og:image" content="https:\/\/chansonia\.jemappellehuong\.com\/app\/b\/la-lampe-brule-encore\/cover\.jpg"/);
+    expect((await page.request.get("/b/la-lampe-brule-encore/cover.jpg")).headers()["content-type"]).toContain("image/jpeg");
+
+    await page.goto("/b/la-lampe-brule-encore/");
+    await expect(page.locator("[data-screen-title]")).toHaveText("La lampe brûle encore");
   });
 
   test("chia sẻ chỉ gửi chữ và đường link, không kèm ảnh (Zalo bỏ link khi có ảnh)", async ({ page }) => {
@@ -71,7 +83,7 @@ test.describe("Chức năng như các app nhạc", () => {
     const shared = await page.waitForFunction(() => (window as unknown as { __shared?: unknown }).__shared);
     const { url, files } = (await shared.jsonValue()) as { url: string; files: number };
     expect(files).toBe(0);
-    expect(url).toMatch(/\?bai=je-voudrais-te-parler$/);
+    expect(url).toMatch(/\/b\/je-voudrais-te-parler\/$/);
   });
 
   test("video có nút chia sẻ; mở đường link là vào thẳng video đó", async ({ page, context }) => {
@@ -88,7 +100,12 @@ test.describe("Chức năng như các app nhạc", () => {
     await page.getByRole("button", { name: "Chia sẻ", exact: true }).click();
     await expect(page.getByRole("status")).toHaveText("Đã chép đường link của video");
     const link = await page.evaluate(() => navigator.clipboard.readText());
-    expect(link).toMatch(/\?video=bizon-mv-lesprit$/);
+    expect(link).toMatch(/\/v\/bizon-mv-lesprit\/$/);
+
+    // Trang chia sẻ có tên và ảnh riêng của video cho ô xem trước của Zalo, Facebook.
+    const html = await (await page.request.get(link)).text();
+    expect(html).toContain(`<meta property="og:title" content="${title}" />`);
+    expect(html).toContain('content="https://i.ytimg.com/vi/ANzsAz6Nmyo/hqdefault.jpg"');
 
     await page.goto(link);
     await expect(page.locator("[data-screen-title]")).toHaveText(title);

@@ -121,8 +121,9 @@ Mini song-cycle sáu chương (cùng một bài tặng thêm), sáng tác từ 0
 - Mục **Của tôi**: **playlist** tự tạo (tạo, đổi tên, xoá, phát), **nghe nhiều nhất** và **nghe
   gần đây**. Mọi thứ lưu ngay trong máy.
 - **Tìm kiếm** theo tên bài và lời, không cần gõ dấu (`den` ra *đèn*), kèm kết quả ở bộ sưu tập khác.
-- **Chia sẻ** bài hoặc video: bảng chia sẻ của máy, hoặc link (`…/app/?bai=ma-bai`,
-  `…/app/?video=ma-video`) mở thẳng vào bài hoặc video đó.
+- **Chia sẻ** bài hoặc video: bảng chia sẻ của máy, hoặc link (`…/app/b/ma-bai/`,
+  `…/app/v/ma-video/`). Mỗi link là một trang nhỏ có tên và ảnh riêng, nên Zalo, Facebook,
+  Messenger hiện đúng bài hay video đó, bấm vào là mở thẳng.
 
 ### Khám phá
 
@@ -178,7 +179,7 @@ Playwright · lucide-react.
 
 Bộ kiểm thử Playwright mở bản dựng thật trong trình duyệt thật, ở khổ điện thoại và máy tính:
 chạm, gõ, kéo thanh tiến độ, ngắt mạng, để giao diện hỏng bị phát hiện trước khi phát hành.
-**179 bài kiểm thử** chạy mỗi lần đẩy mã và mỗi PR ([`test.yml`](.github/workflows/test.yml)); báo
+**181 bài kiểm thử** chạy mỗi lần đẩy mã và mỗi PR ([`test.yml`](.github/workflows/test.yml)); báo
 cáo HTML giữ hai tuần.
 
 ```bash
