@@ -56,7 +56,7 @@ export async function songCount(page: Page): Promise<number> {
 }
 
 /** Nút chọn bộ sưu tập. */
-export function collectionTab(page: Page, name: "La maison de Madam Hương" | "BizOnland" | "M-AIDA" | "Vietnamese History Game Portal" | "We Create Tomorrow") {
+export function collectionTab(page: Page, name: "La Maison de Madame Hương" | "BizOnland" | "M-AIDA" | "Vietnamese History Game Portal" | "We Create Tomorrow") {
   return page.getByRole("tab", { name, exact: true });
 }
 

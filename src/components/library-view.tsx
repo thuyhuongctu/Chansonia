@@ -44,7 +44,7 @@ const videoText = (v: Video) =>
   );
 
 /**
- * Thư viện — ba bộ sưu tập (La maison de Madam Hương · BizOnland · M-AIDA), mỗi bộ có Bài hát và
+ * Thư viện — ba bộ sưu tập (La Maison de Madame Hương · BizOnland · M-AIDA), mỗi bộ có Bài hát và
  * Video. Trên điện thoại là một cột: nút chọn bộ sưu tập, tên bộ, ô tìm kiếm,
  * công tắc Bài hát/Video rồi danh sách. Trên máy tính thêm cột trái 360px giới
  * thiệu bộ sưu tập.

@@ -14,10 +14,10 @@ test.describe("Thư viện", () => {
   test("mở lên là thấy ba bộ sưu tập và danh sách bài của Hương", async ({ page }) => {
     const errors = await openApp(page);
 
-    for (const name of ["La maison de Madam Hương", "BizOnland", "M-AIDA", "Vietnamese History Game Portal", "We Create Tomorrow"] as const) {
+    for (const name of ["La Maison de Madame Hương", "BizOnland", "M-AIDA", "Vietnamese History Game Portal", "We Create Tomorrow"] as const) {
       await expect(collectionTab(page, name)).toBeVisible();
     }
-    await expect(collectionTab(page, "La maison de Madam Hương")).toHaveAttribute("aria-selected", "true");
+    await expect(collectionTab(page, "La Maison de Madame Hương")).toHaveAttribute("aria-selected", "true");
     await expect(page.getByRole("tab", { name: `Bài hát · ${SONG_COUNT}` })).toBeVisible();
     expect(await songCount(page)).toBe(SONG_COUNT);
     await expect(page.locator(SONG_ROW).first()).toContainText("Je voudrais te parler");
@@ -91,7 +91,7 @@ test.describe("Thư viện", () => {
     await expect(page.getByText("Chưa có video.")).toBeVisible();
     await page.getByRole("tab", { name: /^Bài hát ·/ }).click();
 
-    await collectionTab(page, "La maison de Madam Hương").click();
+    await collectionTab(page, "La Maison de Madame Hương").click();
     await expect(page.locator(SONG_ROW)).toHaveCount(COUNTS.huong.songs);
   });
 
