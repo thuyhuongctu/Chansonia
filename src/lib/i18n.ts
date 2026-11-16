@@ -122,6 +122,8 @@ const UI: Record<string, Row> = {
   "Thêm vào Yêu thích": { en: "Add to favourites", fr: "Ajouter aux favoris" },
   "Bỏ khỏi Yêu thích": { en: "Remove from favourites", fr: "Retirer des favoris" },
   "Chia sẻ bài này": { en: "Share this song", fr: "Partager cette chanson" },
+  "Chia sẻ": { en: "Share", fr: "Partager" },
+  "Đã chép đường link của video": { en: "Video link copied", fr: "Lien de la vidéo copié" },
   "Tải về nghe offline": { en: "Download for offline", fr: "Télécharger pour écouter hors ligne" },
   "Đang tải về…": { en: "Downloading…", fr: "Téléchargement…" },
   "Xoá bản tải về": { en: "Remove download", fr: "Supprimer le téléchargement" },

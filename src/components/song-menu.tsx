@@ -22,7 +22,7 @@ import {
 } from "lucide-react";
 import type { Song } from "@/lib/catalog";
 import { SONG_INDEX, collectionOf } from "@/lib/library";
-import { RATES, shareLink, usePlayer, useUpNext } from "@/lib/player-store";
+import { RATES, shareLink, shareVideoLink, usePlayer, useUpNext } from "@/lib/player-store";
 import { cn } from "@/lib/utils";
 import { useT } from "@/lib/i18n";
 import { downloadLrc, hasLrc } from "@/lib/lrc";
@@ -64,14 +64,22 @@ export function Toaster() {
  * link (thẻ og:image trong index.html).
  */
 export async function shareSong(song: Song, t: (k: string) => string) {
-  const url = shareLink(song.id);
+  await shareLinkOf(song.title, shareLink(song.id), t("Đã chép đường link của bài"), t);
+}
+
+/** Chia sẻ một video: cũng chỉ chữ và đường link, mở app là vào thẳng video đó */
+export async function shareVideo(title: string, videoId: string, t: (k: string) => string) {
+  await shareLinkOf(title, shareVideoLink(videoId), t("Đã chép đường link của video"), t);
+}
+
+async function shareLinkOf(title: string, url: string, copied: string, t: (k: string) => string) {
   try {
     if (navigator.share) {
-      await navigator.share({ title: song.title, text: `${song.title} · Chansonia`, url });
+      await navigator.share({ title, text: `${title} · Chansonia`, url });
       return;
     }
     await navigator.clipboard.writeText(url);
-    toast(t("Đã chép đường link của bài"));
+    toast(copied);
   } catch (e) {
     if ((e as Error)?.name !== "AbortError") toast(t("Không chia sẻ được"));
   }

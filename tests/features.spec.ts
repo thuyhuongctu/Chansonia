@@ -74,6 +74,28 @@ test.describe("Chức năng như các app nhạc", () => {
     expect(url).toMatch(/\?bai=je-voudrais-te-parler$/);
   });
 
+  test("video có nút chia sẻ; mở đường link là vào thẳng video đó", async ({ page, context }) => {
+    await context.grantPermissions(["clipboard-read", "clipboard-write"]);
+    await page.addInitScript(() => {
+      Object.defineProperty(navigator, "share", { value: undefined, configurable: true });
+    });
+    await openApp(page);
+    await page.getByRole("tab", { name: "BizOnland", exact: true }).click();
+    await page.getByRole("tab", { name: /^Video ·/ }).click();
+    const title = (await page.locator("[data-video-id] span.font-bold").first().textContent())!;
+    await page.locator("[data-video-id]").first().click();
+
+    await page.getByRole("button", { name: "Chia sẻ", exact: true }).click();
+    await expect(page.getByRole("status")).toHaveText("Đã chép đường link của video");
+    const link = await page.evaluate(() => navigator.clipboard.readText());
+    expect(link).toMatch(/\?video=bizon-mv-lesprit$/);
+
+    await page.goto(link);
+    await expect(page.locator("[data-screen-title]")).toHaveText(title);
+    await expect(page.locator("[data-share-video='bizon-mv-lesprit']")).toBeVisible();
+    expect(page.url()).not.toContain("video=");
+  });
+
   test("màn hình khoá và tai nghe nhận đúng tên bài", async ({ page }) => {
     await openApp(page);
     await openFirstSong(page);
