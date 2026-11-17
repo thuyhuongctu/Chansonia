@@ -495,7 +495,7 @@ const KINHTE: Collection = {
   desc: "Bài hát Trường Kinh tế, Đại học Cần Thơ, tiếng Việt và tiếng Anh",
   color: "#1f5f8b",
   art: "art/kinhte-art.webp",
-  link: { label: "We Create Tomorrow", url: "https://thuyhuongctu.github.io/we-create-tomorrow/" },
+  link: { label: "We Create Tomorrow", url: "https://wct.jemappellehuong.com/" },
   doi: "10.5281/zenodo.22080061",
   songs: [
     compile({ ...cungDiSong, coverSrc: "art/kinhte-cover.webp" }),

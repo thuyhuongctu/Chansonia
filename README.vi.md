@@ -65,7 +65,7 @@ của hai game lịch sử Việt Nam.
 | **BizOnland** | 17 | 8 | | [bizonland.com](https://bizonland.com/) | [10.5281/zenodo.23325489](https://doi.org/10.5281/zenodo.23325489) |
 | **M-AIDA** | 2 | | | | [10.5281/zenodo.21850575](https://doi.org/10.5281/zenodo.21850575) |
 | **Vietnamese History Game Portal** | 4 | 5 | 4 | [Vietnamese-History-Games](https://games.jemappellehuong.com/) | [10.5281/zenodo.21850564](https://doi.org/10.5281/zenodo.21850564) |
-| **We Create Tomorrow** | 2 | | 2 | [we-create-tomorrow](https://thuyhuongctu.github.io/we-create-tomorrow/) | [10.5281/zenodo.22080061](https://doi.org/10.5281/zenodo.22080061) |
+| **We Create Tomorrow** | 2 | | 2 | [we-create-tomorrow](https://wct.jemappellehuong.com/) | [10.5281/zenodo.22080061](https://doi.org/10.5281/zenodo.22080061) |
 
 Bộ sưu tập **Vietnamese History Game Portal** (Cổng Trò Chơi Sử Việt) chia theo album, mỗi game
 một album, có link vào chơi: *Van Don – Vietnam’s First Trading Port*, *Bac Hai Dao – Pirates of
