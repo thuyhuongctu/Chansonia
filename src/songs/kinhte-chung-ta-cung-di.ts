@@ -15,7 +15,7 @@ export const song: RawSong = {
   language: "Tiếng Việt",
   meta: "Bài hát Trường Kinh tế · Đại học Cần Thơ · Tiếng Việt",
   accent: "#1f5f8b",
-  audioSrc: "https://thuyhuongctu.github.io/we-create-tomorrow/audio/anthem-vi.mp3",
+  audioSrc: "https://wct.jemappellehuong.com/audio/anthem-vi.mp3",
   durationMs: 322128,
   sections: [
     {
