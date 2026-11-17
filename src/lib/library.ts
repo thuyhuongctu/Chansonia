@@ -26,6 +26,7 @@ import { song as chanTroiSong } from "@/songs/games/nguoi-trao-ta-chan-troi";
 import { song as nuocNamSong } from "@/songs/games/trong-toi-co-mot-nuoc-nam";
 import { song as cungDiSong } from "@/songs/kinhte-chung-ta-cung-di";
 import { song as tomorrowSong } from "@/songs/kinhte-we-create-tomorrow";
+import { song as nhanhXuanSong } from "@/songs/huong-nhanh-xuan-ben-cua-so";
 
 export type CollectionId = "huong" | "bizon" | "maida" | "suviet" | "kinhte";
 
@@ -161,7 +162,7 @@ const HUONG: Collection = {
   id: "huong",
   short: "La Maison de Madame Hương",
   name: "La Maison de Madame Hương",
-  desc: "Album «La lampe, le fleuve et les couleurs» và một đĩa đơn",
+  desc: "Album «La lampe, le fleuve et les couleurs» và các đĩa đơn",
   color: "var(--accent)",
   art: "art/music-cover-ba-cong-con.webp",
   songs: [
@@ -194,6 +195,9 @@ const HUONG: Collection = {
         ]),
       },
     ),
+
+    // Đĩa đơn có lời chạy theo nhạc (mốc lấy từ MV) — xem tệp bài hát.
+    compile(nhanhXuanSong),
   ],
   videos: [
     {
@@ -219,6 +223,14 @@ const HUONG: Collection = {
       duration: "3:58",
       youtube: "hkUvU0YbwDA",
       poster: "video/returning-to-shore-dat-set.webp",
+    },
+    {
+      id: "nhanh-xuan-ben-cua-so-mv",
+      title: "Nhành xuân bên cửa sổ",
+      meta: "MV · Tiếng Việt · Tiếng Pháp",
+      duration: "5:20",
+      youtube: "bmbKmAPY7zU",
+      poster: "video/nhanh-xuan-ben-cua-so.webp",
     },
   ],
 };

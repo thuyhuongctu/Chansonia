@@ -261,9 +261,9 @@ const UI: Record<string, Row> = {
 
 const DATA: Record<string, Row> = {
   // Bộ sưu tập
-  "Album «La lampe, le fleuve et les couleurs» và một đĩa đơn": {
-    en: "The album «La lampe, le fleuve et les couleurs» and a single",
-    fr: "L'album «La lampe, le fleuve et les couleurs» et un single",
+  "Album «La lampe, le fleuve et les couleurs» và các đĩa đơn": {
+    en: "The album «La lampe, le fleuve et les couleurs» and singles",
+    fr: "L'album «La lampe, le fleuve et les couleurs» et des singles",
   },
   "Bài hát của các game mô phỏng kinh doanh": {
     en: "Songs from the business-simulation games",
