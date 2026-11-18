@@ -116,7 +116,7 @@ function Frame({ video }: { video: Video }) {
 
   const src = video.playlist
     ? `https://www.youtube-nocookie.com/embed/videoseries?list=${video.playlist}&autoplay=1`
-    : `https://www.youtube-nocookie.com/embed/${video.youtube}?autoplay=1&rel=0`;
+    : `https://www.youtube-nocookie.com/embed/${video.youtube}?autoplay=1&rel=0${video.end ? `&end=${video.end}` : ""}`;
 
   if (embed) {
     return (

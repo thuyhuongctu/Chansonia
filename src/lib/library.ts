@@ -51,6 +51,8 @@ export type Video = {
   mp4?: string;
   /** Mã video YouTube */
   youtube?: string;
+  /** Dừng video YouTube ở giây này (cắt bớt phần cuối, ví dụ 320 = 5:20) */
+  end?: number;
   /** Mã danh sách phát YouTube */
   playlist?: string;
   /** Ảnh bìa hiện trước khi phát */
@@ -488,7 +490,9 @@ const SUVIET: Collection = {
       id: "nguoi-trao-ta-chan-troi-co-trang",
       title: "Người trao ta chân trời (Bản cổ trang)",
       meta: "MV cổ trang · Vân Đồn · Bắc Hải Đảo · YouTube",
+      duration: "5:20",
       youtube: "SyNhvR19qNQ",
+      end: 320,
       poster: "https://i.ytimg.com/vi/SyNhvR19qNQ/hqdefault.jpg",
     },
   ],
