@@ -6,6 +6,10 @@
  * ô «Chansonia». Vì vậy lúc dựng app, mỗi video có một trang nhỏ
  * `v/<mã-video>/` và mỗi bài có `b/<mã-bài>/`, mang tên, mô tả và ảnh của
  * chính nó; người bấm vào thì được chuyển ngay vào app (`?video=` / `?bai=`).
+ *
+ * Ô xem trước viết bằng tiếng Anh, như ngôn ngữ mặc định của app: tên và dòng
+ * mô tả dịch qua translateData("en", …) của src/lib/i18n.ts; chữ nào chưa có
+ * trong bảng dịch thì giữ nguyên (thường là tên riêng của bài).
  */
 import { existsSync, mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
@@ -43,7 +47,7 @@ function page(o: {
     <meta property="og:video:height" content="720" />`
     : "";
   return `<!doctype html>
-<html lang="vi">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -88,12 +92,16 @@ async function jpegCover(src: string | undefined, outDir: string, dir: string): 
   }
 }
 
-type Lib = typeof import("../src/lib/library");
+type Lib = typeof import("../src/lib/library") & Pick<typeof import("../src/lib/i18n"), "translateData">;
 
-/** Đọc danh mục trong src/lib/library.ts bằng esbuild (không cần trình duyệt) */
+/** Đọc danh mục và bảng dịch (src/lib/library.ts, i18n.ts) bằng esbuild (không cần trình duyệt) */
 async function loadLibrary(root: string): Promise<Lib> {
   const out = await build({
-    entryPoints: [join(root, "src/lib/library.ts")],
+    stdin: {
+      contents: `export { COLLECTIONS } from "@/lib/library"; export { translateData } from "@/lib/i18n";`,
+      resolveDir: root,
+      loader: "ts",
+    },
     bundle: true,
     format: "esm",
     platform: "node",
@@ -107,7 +115,8 @@ async function loadLibrary(root: string): Promise<Lib> {
 }
 
 export async function writeSharePages(root: string, outDir: string) {
-  const { COLLECTIONS } = await loadLibrary(root);
+  const { COLLECTIONS, translateData } = await loadLibrary(root);
+  const en = (s: string) => translateData("en", s);
   const fallback = PUBLIC_APP + "og-image.png";
   let n = 0;
   for (const col of COLLECTIONS) {
@@ -119,8 +128,8 @@ export async function writeSharePages(root: string, outDir: string) {
       writeFileSync(
         join(dir, "index.html"),
         page({
-          title: v.title,
-          desc: `${v.meta} · ${col.name}`,
+          title: en(v.title),
+          desc: `${en(v.meta)} · ${en(col.name)}`,
           path: `v/${v.id}/`,
           image,
           target: `../../?video=${encodeURIComponent(v.id)}`,
@@ -138,7 +147,7 @@ export async function writeSharePages(root: string, outDir: string) {
         join(dir, "index.html"),
         page({
           title: s.title,
-          desc: [s.subtitle, col.name].filter(Boolean).join(" · "),
+          desc: [en(s.subtitle), en(col.name)].filter(Boolean).join(" · "),
           path: `b/${s.id}/`,
           image: cover ? PUBLIC_APP + `b/${s.id}/cover.jpg` : abs(s.coverSrc, fallback),
           target: `../../?bai=${encodeURIComponent(s.id)}`,

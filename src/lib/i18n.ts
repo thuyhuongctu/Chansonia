@@ -310,6 +310,15 @@ const DATA: Record<string, Row> = {
   "MV thế giới thu nhỏ 3D": { en: "3D miniature-world music video", fr: "Clip en monde miniature 3D" },
   "Bến Phù Sa (tranh vẽ)": { en: "Bến Phù Sa (hand-drawn)", fr: "Bến Phù Sa (dessiné à la main)" },
   "Bến Phù Sa (hoạt hình 3D)": { en: "Bến Phù Sa (3D animation)", fr: "Bến Phù Sa (animation 3D)" },
+  "Người trao ta chân trời (Bản cổ trang)": {
+    en: "Người trao ta chân trời (Period-costume version)",
+    fr: "Người trao ta chân trời (Version en costumes d’époque)",
+  },
+  "MV 3D": { en: "3D music video", fr: "Clip 3D" },
+  "Bài hát chủ đề của album": { en: "The album’s title song", fr: "La chanson-titre de l’album" },
+  "Lời nhắn nhủ từ người cha": { en: "A father’s message", fr: "Le message d’un père" },
+  "Nơi những con sóng còn ghi nhớ": { en: "Where the waves still remember", fr: "Là où les vagues se souviennent" },
+  "Đèn vẫn còn sáng": { en: "The lamp still burns", fr: "La lampe brûle encore" },
   MV: { en: "Music video", fr: "Clip" },
   // Phiên bản
   "Bản gốc": { en: "Original", fr: "Originale" },
