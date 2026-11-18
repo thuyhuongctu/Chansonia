@@ -69,10 +69,12 @@ test.describe("Chức năng như các app nhạc", () => {
     await openApp(page);
     const html = await (await page.request.get("/v/nguoi-trao-ta-chan-troi-co-trang/")).text();
     expect(html).toContain('<html lang="en">');
-    expect(html).toContain('<meta property="og:title" content="Người trao ta chân trời (Period-costume version)" />');
+    expect(html).toContain('<meta property="og:title" content="Those Who Gave Us the Horizon (Period-costume version)" />');
     expect(html).toMatch(/og:description" content="Period-costume music video · [^"]*Vietnamese History Game Portal"/);
     const song = await (await page.request.get("/b/26-nam-sau/")).text();
     expect(song).toContain('<meta property="og:description" content="The album’s title song · La Maison de Madame Hương" />');
+    const named = await (await page.request.get("/b/nguoi-trao-ta-chan-troi/")).text();
+    expect(named).toContain('<meta property="og:title" content="Those Who Gave Us the Horizon" />');
   });
 
   test("chia sẻ chỉ gửi chữ và đường link, không kèm ảnh (Zalo bỏ link khi có ảnh)", async ({ page }) => {
