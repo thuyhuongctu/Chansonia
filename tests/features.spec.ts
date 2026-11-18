@@ -65,6 +65,16 @@ test.describe("Chức năng như các app nhạc", () => {
     await expect(page.locator("[data-screen-title]")).toHaveText("La lampe brûle encore");
   });
 
+  test("trang chia sẻ viết bằng tiếng Anh, như ngôn ngữ mặc định của app", async ({ page }) => {
+    await openApp(page);
+    const html = await (await page.request.get("/v/nguoi-trao-ta-chan-troi-co-trang/")).text();
+    expect(html).toContain('<html lang="en">');
+    expect(html).toContain('<meta property="og:title" content="Người trao ta chân trời (Period-costume version)" />');
+    expect(html).toMatch(/og:description" content="Period-costume music video · [^"]*Vietnamese History Game Portal"/);
+    const song = await (await page.request.get("/b/26-nam-sau/")).text();
+    expect(song).toContain('<meta property="og:description" content="The album’s title song · La Maison de Madame Hương" />');
+  });
+
   test("chia sẻ chỉ gửi chữ và đường link, không kèm ảnh (Zalo bỏ link khi có ảnh)", async ({ page }) => {
     await page.addInitScript(() => {
       const w = window as unknown as { __shared?: { url: string; files: number } };
