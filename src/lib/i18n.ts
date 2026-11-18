@@ -405,6 +405,29 @@ export function translateData(lang: Lang, vi: string): string {
     .join(" · ");
 }
 
+/**
+ * Tên tiếng Anh dùng khi chia sẻ (bảng chia sẻ của máy và ô xem trước Zalo,
+ * Facebook). Chỉ dùng lúc chia sẻ, giao diện app vẫn giữ tên gốc. Bài/video
+ * chưa có tên tiếng Anh thì giữ tên gốc (qua translateData).
+ */
+const SHARE_EN: Record<string, string> = {
+  "Người trao ta chân trời": "Those Who Gave Us the Horizon",
+  "Người trao ta chân trời (Those Who Gave Us the Horizon)": "Those Who Gave Us the Horizon",
+  "Người trao ta chân trời (Bản cổ trang)": "Those Who Gave Us the Horizon (Period-costume version)",
+  "Trong tôi có một nước Nam": "A Homeland Within Me",
+  "Trong tôi có một nước Nam (A Homeland Within Me)": "A Homeland Within Me",
+  "Theo cánh buồm quê hương (Following the Sails of Home)": "Following the Sails of Home",
+  "Bắc Hải Đảo – Theo cánh buồm quê hương": "Bac Hai Dao – Following the Sails of Home",
+  "Nhành xuân bên cửa sổ": "A Spring Branch by the Window",
+  "Trở về bờ": "Returning to Shore (Vietnamese)",
+  "Returning to Shore · Trở về bờ": "Returning to Shore",
+};
+
+/** Tên đưa vào khi chia sẻ: luôn bằng tiếng Anh nếu có, bất kể ngôn ngữ giao diện */
+export function shareTitle(vi: string): string {
+  return SHARE_EN[vi] ?? translateData("en", vi);
+}
+
 /** Hook: t() cho chữ giao diện, td() cho chữ trong dữ liệu, kèm ngôn ngữ đang chọn */
 export function useT() {
   const lang = useLang((s) => s.lang);

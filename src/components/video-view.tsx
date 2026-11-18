@@ -42,7 +42,7 @@ export function VideoView() {
             </div>
             <button
               type="button"
-              onClick={() => void shareVideo(td(video.title), video.id, t)}
+              onClick={() => void shareVideo(video.title, video.id, t)}
               data-share-video={video.id}
               className="press flex h-11 shrink-0 items-center gap-2 rounded-full border border-line bg-surface px-4 font-sans text-sm font-semibold text-ink hover:border-accent"
             >

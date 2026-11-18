@@ -24,7 +24,7 @@ import type { Song } from "@/lib/catalog";
 import { SONG_INDEX, collectionOf } from "@/lib/library";
 import { RATES, shareLink, shareVideoLink, usePlayer, useUpNext } from "@/lib/player-store";
 import { cn } from "@/lib/utils";
-import { useT } from "@/lib/i18n";
+import { shareTitle, useT } from "@/lib/i18n";
 import { downloadLrc, hasLrc } from "@/lib/lrc";
 import { offlineSupported, useOffline } from "@/lib/offline";
 import { useAnnounce } from "@/lib/announce";
@@ -64,12 +64,15 @@ export function Toaster() {
  * link (thẻ og:image trong index.html).
  */
 export async function shareSong(song: Song, t: (k: string) => string) {
-  await shareLinkOf(song.title, shareLink(song.id), t("Đã chép đường link của bài"), t);
+  await shareLinkOf(shareTitle(song.title), shareLink(song.id), t("Đã chép đường link của bài"), t);
 }
 
-/** Chia sẻ một video: cũng chỉ chữ và đường link, mở app là vào thẳng video đó */
+/**
+ * Chia sẻ một video: cũng chỉ chữ và đường link, mở app là vào thẳng video đó.
+ * `title` là tên gốc trong library.ts; chữ gửi đi luôn là tên tiếng Anh (shareTitle).
+ */
 export async function shareVideo(title: string, videoId: string, t: (k: string) => string) {
-  await shareLinkOf(title, shareVideoLink(videoId), t("Đã chép đường link của video"), t);
+  await shareLinkOf(shareTitle(title), shareVideoLink(videoId), t("Đã chép đường link của video"), t);
 }
 
 async function shareLinkOf(title: string, url: string, copied: string, t: (k: string) => string) {

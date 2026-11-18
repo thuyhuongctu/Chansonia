@@ -7,9 +7,9 @@
  * `v/<mã-video>/` và mỗi bài có `b/<mã-bài>/`, mang tên, mô tả và ảnh của
  * chính nó; người bấm vào thì được chuyển ngay vào app (`?video=` / `?bai=`).
  *
- * Ô xem trước viết bằng tiếng Anh, như ngôn ngữ mặc định của app: tên và dòng
- * mô tả dịch qua translateData("en", …) của src/lib/i18n.ts; chữ nào chưa có
- * trong bảng dịch thì giữ nguyên (thường là tên riêng của bài).
+ * Ô xem trước viết bằng tiếng Anh, như ngôn ngữ mặc định của app: tên lấy từ
+ * shareTitle() (tên tiếng Anh nếu có), dòng mô tả dịch qua translateData("en", …)
+ * của src/lib/i18n.ts; chữ nào chưa có bản dịch thì giữ nguyên.
  */
 import { existsSync, mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
@@ -92,13 +92,13 @@ async function jpegCover(src: string | undefined, outDir: string, dir: string): 
   }
 }
 
-type Lib = typeof import("../src/lib/library") & Pick<typeof import("../src/lib/i18n"), "translateData">;
+type Lib = typeof import("../src/lib/library") & Pick<typeof import("../src/lib/i18n"), "translateData" | "shareTitle">;
 
 /** Đọc danh mục và bảng dịch (src/lib/library.ts, i18n.ts) bằng esbuild (không cần trình duyệt) */
 async function loadLibrary(root: string): Promise<Lib> {
   const out = await build({
     stdin: {
-      contents: `export { COLLECTIONS } from "@/lib/library"; export { translateData } from "@/lib/i18n";`,
+      contents: `export { COLLECTIONS } from "@/lib/library"; export { translateData, shareTitle } from "@/lib/i18n";`,
       resolveDir: root,
       loader: "ts",
     },
@@ -115,7 +115,7 @@ async function loadLibrary(root: string): Promise<Lib> {
 }
 
 export async function writeSharePages(root: string, outDir: string) {
-  const { COLLECTIONS, translateData } = await loadLibrary(root);
+  const { COLLECTIONS, translateData, shareTitle } = await loadLibrary(root);
   const en = (s: string) => translateData("en", s);
   const fallback = PUBLIC_APP + "og-image.png";
   let n = 0;
@@ -128,7 +128,7 @@ export async function writeSharePages(root: string, outDir: string) {
       writeFileSync(
         join(dir, "index.html"),
         page({
-          title: en(v.title),
+          title: shareTitle(v.title),
           desc: `${en(v.meta)} · ${en(col.name)}`,
           path: `v/${v.id}/`,
           image,
@@ -146,8 +146,9 @@ export async function writeSharePages(root: string, outDir: string) {
       writeFileSync(
         join(dir, "index.html"),
         page({
-          title: s.title,
-          desc: [en(s.subtitle), en(col.name)].filter(Boolean).join(" · "),
+          title: shareTitle(s.title),
+          // Bỏ dòng phụ khi nó trùng tên tiếng Anh vừa đưa lên làm tiêu đề.
+          desc: [en(s.subtitle), en(col.name)].filter((x) => x && x !== shareTitle(s.title)).join(" · "),
           path: `b/${s.id}/`,
           image: cover ? PUBLIC_APP + `b/${s.id}/cover.jpg` : abs(s.coverSrc, fallback),
           target: `../../?bai=${encodeURIComponent(s.id)}`,
