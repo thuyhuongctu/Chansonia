@@ -3,9 +3,10 @@
  * ║  THƯ VIỆN — các bộ sưu tập: Hương · BizOnland · M-AIDA · nhạc game    ║
  * ╚══════════════════════════════════════════════════════════════════════╝
  *
- * Mỗi bộ sưu tập có hai danh sách: Bài hát và Video. Mục Video chỉ nhận
- * video là trọn một bài hát (MV, danh sách phát MV) — không đưa clip ngắn,
- * trailer hay phim giới thiệu vào đây.
+ * Mỗi bộ sưu tập có hai danh sách: Bài hát và Video. Mục Video chủ yếu nhận
+ * video là trọn một bài hát (MV, danh sách phát MV). Trích đoạn chỉ đưa vào
+ * khi tác giả chọn, và phải ghi rõ «Video demo · Trích đoạn» ở dòng phụ;
+ * không đưa trailer hay phim giới thiệu vào đây.
  *
  *  - Album «La lampe, le fleuve et les couleurs» (7 bài, có lời chạy theo
  *    nhạc) lấy từ src/songs/*.ts — nhạc nằm trong app (public/audio).
@@ -476,6 +477,14 @@ const SUVIET: Collection = {
       meta: "MV 3D · YouTube",
       youtube: "if4-UFUJGiQ",
       poster: "https://i.ytimg.com/vi/if4-UFUJGiQ/hqdefault.jpg",
+    },
+    {
+      id: "trong-toi-co-mot-nuoc-nam-demo",
+      title: "Trong tôi có một nước Nam (Bản demo)",
+      meta: "Video demo · Trích đoạn · YouTube",
+      duration: "1:53",
+      youtube: "ozqctDsUfl0",
+      poster: "https://i.ytimg.com/vi/ozqctDsUfl0/hqdefault.jpg",
     },
     {
       id: "nguoi-trao-ta-chan-troi-mv",
