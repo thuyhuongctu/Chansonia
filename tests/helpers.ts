@@ -14,7 +14,7 @@ export const COUNTS = {
   huong: { songs: 10, videos: 4 },
   bizon: { songs: 17, videos: 8 },
   maida: { songs: 2, videos: 0 },
-  suviet: { songs: 4, videos: 5 },
+  suviet: { songs: 4, videos: 6 },
   kinhte: { songs: 2, videos: 0 },
 } as const;
 
