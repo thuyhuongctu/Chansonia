@@ -317,6 +317,8 @@ const DATA: Record<string, Row> = {
   "MV 3D": { en: "3D music video", fr: "Clip 3D" },
   "Video demo": { en: "Demo video", fr: "Vidéo démo" },
   "Trích đoạn": { en: "Excerpt", fr: "Extrait" },
+  "Tri ân 20.11": { en: "Teachers’ Day tribute", fr: "Hommage du 20 novembre" },
+  "Song ca": { en: "Duet", fr: "Duo" },
   "Trong tôi có một nước Nam (Bản demo)": {
     en: "Trong tôi có một nước Nam (Demo)",
     fr: "Trong tôi có một nước Nam (Démo)",

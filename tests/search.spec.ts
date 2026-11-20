@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { collectionTab, openApp, searchBox, SONG_COUNT, SONG_ROW, songCount, VIDEO_ROW } from "./helpers";
+import { collectionTab, COUNTS, openApp, searchBox, SONG_COUNT, SONG_ROW, songCount, VIDEO_ROW } from "./helpers";
 
 test.describe("Tìm kiếm", () => {
   test("gõ không dấu vẫn ra đúng bài như gõ có dấu", async ({ page }) => {
@@ -72,6 +72,6 @@ test.describe("Tìm kiếm", () => {
     await searchBox(page).fill("lampe");
     await collectionTab(page, "BizOnland").click();
     await expect(searchBox(page)).toHaveValue("");
-    await expect(page.locator(SONG_ROW)).toHaveCount(17);
+    await expect(page.locator(SONG_ROW)).toHaveCount(COUNTS.bizon.songs);
   });
 });
