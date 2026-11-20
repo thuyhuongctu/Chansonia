@@ -32,7 +32,7 @@ của hai game lịch sử Việt Nam.
 | **Web** | [chansonia.jemappellehuong.com/app/](https://chansonia.jemappellehuong.com/app/). Địa chỉ gốc chuyển thẳng vào app và mở màn hình **Giới thiệu**. Tự triển khai lại mỗi lần đẩy lên `main`. |
 | **Android** | Dự án Capacitor trong `android/`, nộp lên Google Play dạng `.aab` (`com.jemappellehuong.songbook`, v1.2.0). |
 | **iOS** | Dự án Capacitor trong `ios/`, sẵn sàng mở bằng Xcode, gửi TestFlight và App Store. |
-| **Thư viện** | 5 bộ sưu tập · 35 bài · 18 video |
+| **Thư viện** | 5 bộ sưu tập · 36 bài · 18 video |
 | **Giao diện** | Mặc định tiếng Anh, chuyển tiếng Việt và tiếng Pháp bằng một nút |
 | **Quyền riêng tư** | Không tài khoản, không máy chủ, không thống kê, không theo dõi |
 
@@ -62,7 +62,7 @@ của hai game lịch sử Việt Nam.
 | Bộ sưu tập | Bài | Video | Có lời chạy | Trang gốc | DOI |
 |---|:-:|:-:|:-:|---|---|
 | **La Maison de Madame Hương** | 10 | 4 | 8 | [jemappellehuong.com](https://jemappellehuong.com/) | [10.5281/zenodo.22003853](https://doi.org/10.5281/zenodo.22003853) |
-| **BizOnland** | 17 | 8 | | [bizonland.com](https://bizonland.com/) | [10.5281/zenodo.23325489](https://doi.org/10.5281/zenodo.23325489) |
+| **BizOnland** | 18 | 8 | | [bizonland.com](https://bizonland.com/) | [10.5281/zenodo.23325489](https://doi.org/10.5281/zenodo.23325489) |
 | **M-AIDA** | 2 | | | | [10.5281/zenodo.21850575](https://doi.org/10.5281/zenodo.21850575) |
 | **Vietnamese History Game Portal** | 4 | 6 | 4 | [Vietnamese-History-Games](https://games.jemappellehuong.com/) | [10.5281/zenodo.21850564](https://doi.org/10.5281/zenodo.21850564) |
 | **We Create Tomorrow** | 2 | | 2 | [we-create-tomorrow](https://wct.jemappellehuong.com/) | [10.5281/zenodo.22080061](https://doi.org/10.5281/zenodo.22080061) |
