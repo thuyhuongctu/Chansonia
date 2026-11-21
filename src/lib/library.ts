@@ -382,6 +382,14 @@ const BIZON_COLLECTION: Collection = {
       youtube: "sDI4m87s8Ss",
       poster: `https://i.ytimg.com/vi/sDI4m87s8Ss/hqdefault.jpg`,
     },
+    {
+      id: "bizon-mv-northern-shield",
+      title: "Ngọn hải đăng soi đường (The Northern Shield)",
+      meta: "MV · Tri ân 20.11 · YouTube",
+      duration: "4:26",
+      youtube: "8yottDb7Bg0",
+      poster: `https://i.ytimg.com/vi/8yottDb7Bg0/hqdefault.jpg`,
+    },
   ],
 };
 
