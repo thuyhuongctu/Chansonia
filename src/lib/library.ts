@@ -375,14 +375,6 @@ const BIZON_COLLECTION: Collection = {
       poster: `https://i.ytimg.com/vi/Huf5fw858iQ/hqdefault.jpg`,
     },
     {
-      id: "bizon-mv-ngon-hai-dang",
-      title: "Ngọn hải đăng soi đường (The Guiding Light)",
-      meta: "MV · Tri ân 20.11 · YouTube",
-      duration: "4:48",
-      youtube: "sDI4m87s8Ss",
-      poster: `https://i.ytimg.com/vi/sDI4m87s8Ss/hqdefault.jpg`,
-    },
-    {
       id: "bizon-mv-northern-shield",
       title: "Ngọn hải đăng soi đường (The Northern Shield)",
       meta: "MV · Tri ân 20.11 · YouTube",

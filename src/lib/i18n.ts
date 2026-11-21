@@ -426,7 +426,6 @@ const SHARE_EN: Record<string, string> = {
   "Trong tôi có một nước Nam (A Homeland Within Me)": "A Homeland Within Me",
   "Trong tôi có một nước Nam (Bản demo)": "A Homeland Within Me (Demo)",
   "Ngọn hải đăng soi đường": "The Guiding Light",
-  "Ngọn hải đăng soi đường (The Guiding Light)": "The Guiding Light",
   "Ngọn hải đăng soi đường (The Northern Shield)": "The Northern Shield",
   "Theo cánh buồm quê hương (Following the Sails of Home)": "Following the Sails of Home",
   "Bắc Hải Đảo – Theo cánh buồm quê hương": "Bac Hai Dao – Following the Sails of Home",
