@@ -64,7 +64,9 @@ test.describe("Tìm kiếm", () => {
     await collectionTab(page, "BizOnland").click();
     await page.getByRole("tab", { name: /^Video ·/ }).click();
     await searchBox(page).fill("phu sa");
-    await expect(page.locator(VIDEO_ROW)).toHaveCount(3);
+    /* Hai mục: «Bến Phù Sa (hoạt hình 3D)» và «Hương Ngọt Phù Sa». Bản MV
+       tranh vẽ đã bị gỡ khỏi album BizOn trên YouTube nên cũng gỡ khỏi app. */
+    await expect(page.locator(VIDEO_ROW)).toHaveCount(2);
   });
 
   test("đổi bộ sưu tập thì xoá từ khoá cũ", async ({ page }) => {
