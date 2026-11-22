@@ -335,14 +335,6 @@ const BIZON_COLLECTION: Collection = {
       poster: `https://i.ytimg.com/vi/9zsvwnhBMgQ/hqdefault.jpg`,
     },
     {
-      id: "bizon-ben-phu-sa-ve-tay",
-      title: "Bến Phù Sa (tranh vẽ)",
-      meta: "MV · YouTube",
-      duration: "6:28",
-      youtube: "ynmGb3GqUdU",
-      poster: `https://i.ytimg.com/vi/ynmGb3GqUdU/hqdefault.jpg`,
-    },
-    {
       id: "bizon-ben-phu-sa-3d",
       title: "Bến Phù Sa (hoạt hình 3D)",
       meta: "MV hoạt hình 3D · YouTube",
