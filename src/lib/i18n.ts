@@ -308,7 +308,6 @@ const DATA: Record<string, Row> = {
   // Video
   "MV hoạt hình 3D": { en: "3D animated music video", fr: "Clip en animation 3D" },
   "MV thế giới thu nhỏ 3D": { en: "3D miniature-world music video", fr: "Clip en monde miniature 3D" },
-  "Bến Phù Sa (tranh vẽ)": { en: "Bến Phù Sa (hand-drawn)", fr: "Bến Phù Sa (dessiné à la main)" },
   "Bến Phù Sa (hoạt hình 3D)": { en: "Bến Phù Sa (3D animation)", fr: "Bến Phù Sa (animation 3D)" },
   "Người trao ta chân trời (Bản cổ trang)": {
     en: "Người trao ta chân trời (Period-costume version)",
