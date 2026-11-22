@@ -378,9 +378,9 @@ const BIZON_COLLECTION: Collection = {
       id: "bizon-mv-southern-horizons",
       title: "Ngọn hải đăng soi đường (Southern Horizons)",
       meta: "MV đất sét 3D · Anh · Pháp · Tri ân 20.11 · YouTube",
-      duration: "4:37",
-      youtube: "3Z934Ae8Zmo",
-      poster: `https://i.ytimg.com/vi/3Z934Ae8Zmo/hqdefault.jpg`,
+      duration: "4:20",
+      youtube: "m0iGo4Oaa6U",
+      poster: `https://i.ytimg.com/vi/m0iGo4Oaa6U/hqdefault.jpg`,
     },
   ],
 };
