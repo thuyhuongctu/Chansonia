@@ -308,6 +308,7 @@ const DATA: Record<string, Row> = {
   // Video
   "MV hoạt hình 3D": { en: "3D animated music video", fr: "Clip en animation 3D" },
   "MV thế giới thu nhỏ 3D": { en: "3D miniature-world music video", fr: "Clip en monde miniature 3D" },
+  "Anh và Pháp": { en: "English and French", fr: "Anglais et français" },
   "Bến Phù Sa (hoạt hình 3D)": { en: "Bến Phù Sa (3D animation)", fr: "Bến Phù Sa (animation 3D)" },
   "Người trao ta chân trời (Bản cổ trang)": {
     en: "Người trao ta chân trời (Period-costume version)",
@@ -426,6 +427,7 @@ const SHARE_EN: Record<string, string> = {
   "Trong tôi có một nước Nam (Bản demo)": "A Homeland Within Me (Demo)",
   "Ngọn hải đăng soi đường": "The Guiding Light",
   "Ngọn hải đăng soi đường (The Northern Shield)": "The Northern Shield",
+  "Ngọn hải đăng soi đường (Southern Horizons)": "Southern Horizons",
   "Theo cánh buồm quê hương (Following the Sails of Home)": "Following the Sails of Home",
   "Bắc Hải Đảo – Theo cánh buồm quê hương": "Bac Hai Dao – Following the Sails of Home",
   "Nhành xuân bên cửa sổ": "A Spring Branch by the Window",
