@@ -307,7 +307,7 @@ const BIZON_COLLECTION: Collection = {
     bz("huong-ngot-phu-sa", 15, "Hương Ngọt Phù Sa", "Nhạc nền Hộ Chiếu Sầu Riêng", "huong-ngot-phu-sa", "6:54"),
     bz("huong-ngot-que-minh", 16, "Hương Ngọt Quê Mình", "Nhạc nền Hộ Chiếu Sầu Riêng", "huong-ngot-que-minh", "7:22"),
     bz("durian-passport", 17, "Durian Passport", "Anthem · tiếng Anh", "durian-passport", "5:48"),
-    bz("fijord-moonlight", 18, "Ngọn hải đăng soi đường", "Tri ân 20.11 · Song ca · Việt · Anh", "fijord-moonlight", "4:45"),
+    bz("fijord-moonlight", 18, "Ngọn hải đăng soi đường", "Tri ân 20.11 · Song ca · Việt · Anh", "the-northern-shield", "4:25"),
   ],
   videos: [
     {
