@@ -284,7 +284,7 @@ cd android && ./gradlew bundleRelease
 | | |
 |---|---|
 | Application ID | `com.jemappellehuong.songbook` |
-| Phiên bản | 1.2.0 (versionCode 3) |
+| Phiên bản | 1.3.0 (versionCode 5) |
 | SDK tối thiểu / đích | 24 / 36 |
 | Công cụ | JDK 21, Android SDK platform 36, build-tools 36.0.0 |
 
