@@ -22,7 +22,7 @@ export const ARTIST = {
 
   links: [
     { label: "GitHub · thuyhuongctu/Chansonia", url: "https://github.com/thuyhuongctu/Chansonia" },
-    { label: "Songbook", url: "https://thuyhuongctu.github.io/Je-mappelle-Huong/music.html" },
+    { label: "Songbook", url: "https://jemappellehuong.com/music.html" },
     { label: "ORCID · 0000-0002-7711-2487", url: "https://orcid.org/0000-0002-7711-2487" },
   ] as SocialLink[],
 
