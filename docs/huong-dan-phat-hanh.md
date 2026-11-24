@@ -11,11 +11,11 @@ nên máy khác chỉ cho ra tệp chưa ký, CH Play không nhận.
 
 | Mục | Giá trị |
 |---|---|
-| Tên hiển thị | Je m'appelle Hương |
+| Tên hiển thị | Chansonia |
 | Package name | `com.jemappellehuong.songbook` |
-| Phiên bản | 1.2.0 (versionCode 3) |
+| Phiên bản | 1.3.0 (versionCode 4) |
 | minSdk / targetSdk | 24 / 36 |
-| Số bài | 7 (6 bài album + 1 bài bonus Track 07) |
+| Số bài | 36 bài · 19 video trong 5 bộ sưu tập (nhạc ngoài album phát trực tuyến) |
 | Kích thước `.aab` | ~11 MB bản trực tuyến · ~37 MB bản offline |
 
 **Package name không đổi được sau khi đã phát hành.** Nếu muốn tên khác thì phải
