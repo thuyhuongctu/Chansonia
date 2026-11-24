@@ -1,7 +1,7 @@
 /**
  * ╔══════════════════════════════════════════════════════════════════════╗
  * ║  KHO ẢNH ĐẤT SÉT — lấy từ trang songbook cá nhân                     ║
- * ║  thuyhuongctu.github.io/Je-mappelle-Huong/music.html                 ║
+ * ║  jemappellehuong.com/music.html                                      ║
  * ╚══════════════════════════════════════════════════════════════════════╝
  *
  * Ảnh nằm trong public/art nên được đóng gói cùng ứng dụng: mở offline vẫn
@@ -78,4 +78,4 @@ export const DEDICATION = {
 
 /** Địa chỉ trang songbook gốc trên web */
 export const SONGBOOK_URL =
-  "https://thuyhuongctu.github.io/Je-mappelle-Huong/music.html";
+  "https://jemappellehuong.com/music.html";
