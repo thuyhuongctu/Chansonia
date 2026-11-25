@@ -135,10 +135,8 @@ test.describe("Thư viện", () => {
       "href",
       "https://doi.org/10.5281/zenodo.22172794",
     );
-    await expect(page.getByRole("link", { name: /GitHub/ })).toHaveAttribute(
-      "href",
-      "https://github.com/thuyhuongctu/Chansonia",
-    );
+    // Trang không còn dẫn tới kho mã GitHub.
+    await expect(page.locator('a[href*="github.com"]')).toHaveCount(0);
 
     await page.getByRole("button", { name: "Quay lại" }).click();
     await expect(page.locator(SONG_ROW).first()).toBeVisible();
