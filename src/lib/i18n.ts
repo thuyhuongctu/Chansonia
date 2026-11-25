@@ -216,6 +216,7 @@ const UI: Record<string, Row> = {
   "Màn hình không tự tắt khi đang nghe và xem lời": { en: "The screen stays on while a song plays", fr: "L’écran reste allumé pendant l’écoute" },
   "Thuộc bộ sưu tập": { en: "Collection", fr: "Collection" },
   "Về bộ sưu tập này": { en: "About this collection", fr: "À propos de cette collection" },
+  "Lời dịch tiếng Anh": { en: "English translation", fr: "Traduction anglaise" },
   "Thông tin bài hát": { en: "Song credits", fr: "Crédits" },
   "Nhạc và lời": { en: "Music & lyrics", fr: "Musique et paroles" },
   "Thuộc bản quyền của {x}": { en: "© {x}", fr: "© {x}" },
