@@ -12,6 +12,7 @@ test.describe("Lời dịch tiếng Anh", () => {
     await nut.click();
     await expect(tr).toHaveCount(0);
     await page.reload();
+    await openFirstSong(page);
     await expect(page.locator("[data-translation-toggle]")).toHaveAttribute("aria-pressed", "false");
   });
 
