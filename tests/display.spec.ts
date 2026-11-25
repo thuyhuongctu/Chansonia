@@ -52,3 +52,22 @@ test.describe("Mới phát hành và tuỳ chỉnh lời hát", () => {
     await expect.poll(() => page.evaluate(() => (window as unknown as { __locks: number }).__locks)).toBeGreaterThan(0);
   });
 });
+
+test.describe("Thông tin bài hát", () => {
+  test("cuối lời có bộ sưu tập, chủ bản quyền và DOI Zenodo", async ({ page }) => {
+    await openApp(page);
+    await openFirstSong(page);
+    const c = page.locator("[data-credits]");
+    await expect(c).toContainText("Thông tin bài hát");
+    await expect(c).toContainText("La Maison de Madame Hương");
+    await expect(c).toContainText("Thuộc bản quyền của jemappellehuong.com");
+    await expect(c.locator("[data-credits-doi]")).toHaveAttribute("href", "https://doi.org/10.5281/zenodo.22003853");
+  });
+
+  test("bài game có tên album và DOI của Cổng Trò Chơi Sử Việt", async ({ page }) => {
+    await page.goto("/?bai=trong-toi-co-mot-nuoc-nam");
+    const c = page.locator("[data-credits]");
+    await expect(c).toContainText("Thuộc bản quyền của Cổng Trò Chơi Sử Việt");
+    await expect(c.locator("[data-credits-doi]")).toHaveAttribute("href", "https://doi.org/10.5281/zenodo.21850564");
+  });
+});
