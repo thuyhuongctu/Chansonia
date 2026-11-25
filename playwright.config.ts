@@ -44,7 +44,7 @@ export default defineConfig({
       origins: [BASE_URL, `http://127.0.0.1:${PORT + 1}`].map((origin) => ({
         origin,
         localStorage: [
-          { name: "chansonia-ui-lang", value: "vi" },
+          { name: "chansonia-lang-v3", value: "vi" },
           // Lần đầu mở app là màn hình «Giới thiệu»; bộ kiểm thử bắt đầu ở thư viện.
           { name: "chansonia-about-seen", value: "1" },
         ],

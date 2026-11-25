@@ -68,6 +68,7 @@ test.describe("Ngôn ngữ giao diện", () => {
   test("lựa chọn tiếng Việt lưu từ bản cũ không còn giữ app ở tiếng Việt", async ({ page }) => {
     await page.addInitScript(() => {
       localStorage.setItem("chansonia-lang", "vi");
+      localStorage.setItem("chansonia-ui-lang", "vi");
       localStorage.setItem("chansonia-site-lang", "vi");
     });
     await page.goto("/");
@@ -76,7 +77,7 @@ test.describe("Ngôn ngữ giao diện", () => {
 
   test("màn hình Giới thiệu không có dấu gạch dài ở cả ba thứ tiếng", async ({ page }) => {
     for (const lang of ["en", "vi", "fr"]) {
-      await page.addInitScript((l) => localStorage.setItem("chansonia-ui-lang", l), lang);
+      await page.addInitScript((l) => localStorage.setItem("chansonia-lang-v3", l), lang);
       await page.goto("/?gioi-thieu");
       await expect(page.locator("html")).toHaveAttribute("lang", lang);
       const text = await page.locator("[data-about]").innerText();
