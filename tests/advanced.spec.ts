@@ -119,6 +119,7 @@ test.describe("Chức năng như các app nghe nhạc", () => {
     const id = (await page.locator(SONG_ROW).nth(3).getAttribute("data-song-id"))!;
     await page.locator(SONG_ROW).nth(3).click();
     await page.getByRole("button", { name: "Quay lại" }).click();
+    await page.getByRole("button", { name: "Cài đặt" }).click();
     await page.evaluate(() => ((window as unknown as { __mark: number }).__mark = 1));
     await Promise.all([page.waitForEvent("load"), page.getByRole("button", { name: "Làm mới trang" }).click()]);
     expect(await page.evaluate(() => (window as unknown as { __mark?: number }).__mark)).toBeUndefined();

@@ -59,6 +59,12 @@ const UI: Record<string, Row> = {
   "Chuyển sang nền tối": { en: "Switch to dark mode", fr: "Passer en mode sombre" },
   "Nền sáng": { en: "Light", fr: "Clair" },
   "Nền tối": { en: "Dark", fr: "Sombre" },
+  "Theo máy": { en: "System", fr: "Système" },
+  "Cài đặt": { en: "Settings", fr: "Réglages" },
+  "Giao diện": { en: "Appearance", fr: "Apparence" },
+  "Giờ Việt Nam và giờ Pháp": { en: "Time in Vietnam and France", fr: "Heure au Vietnam et en France" },
+  "Ứng dụng": { en: "App", fr: "Application" },
+  "Tải bản mới nhất, giữ bài đang nghe": { en: "Get the latest version, keep your place", fr: "Charger la dernière version, sans perdre l’écoute" },
   "Quay lại": { en: "Back", fr: "Retour" },
   "Ngôn ngữ": { en: "Language", fr: "Langue" },
   // Đồng hồ
