@@ -13,7 +13,7 @@ nên máy khác chỉ cho ra tệp chưa ký, CH Play không nhận.
 |---|---|
 | Tên hiển thị | Chansonia |
 | Package name | `com.jemappellehuong.songbook` |
-| Phiên bản | 1.3.0 (versionCode 5) |
+| Phiên bản | 1.4.0 (versionCode 6) |
 | minSdk / targetSdk | 24 / 36 |
 | Số bài | 36 bài · 19 video trong 5 bộ sưu tập (nhạc ngoài album phát trực tuyến) |
 | Kích thước `.aab` | ~11 MB bản trực tuyến · ~37 MB bản offline |
@@ -22,6 +22,11 @@ nên máy khác chỉ cho ra tệp chưa ký, CH Play không nhận.
 nhận một bản dựng lại từ commit `24bc591` mang versionCode 4, versionName 1.2.0
 (giao diện Chansonia, chưa có bài #85). Play không nhận lại mã đã dùng, nên bản
 1.3.0 phải mang versionCode 5 trở lên.
+
+**Bản 1.4.0 mang versionCode 6** (25/11/2026): giao diện quốc tế (Cài đặt, thẻ bộ
+sưu tập, trang album, màn hình nghe lớn), lời dịch tiếng Anh, thông tin bài hát,
+ảnh câu hát, chuyển bài mượt, phát lên loa/TV. Nâng lên 6 để chắc chắn không
+trùng mã 5 nếu đã từng tải bản 1.3.0 lên Play.
 
 **Package name không đổi được sau khi đã phát hành.** Nếu muốn tên khác thì phải
 đổi ngay bây giờ, trước lần nộp đầu tiên.
