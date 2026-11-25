@@ -263,6 +263,13 @@ function shuffle<T>(items: T[]): T[] {
   return out;
 }
 
+/* Chuyển bài mượt: nhạc nhỏ dần trong FADE_OUT_MS cuối bài, bài tự chuyển tới
+   to dần trong FADE_IN_MS đầu; tải trước bài kế khi còn PRELOAD_MS. */
+const FADE_OUT_MS = 1600;
+const FADE_IN_MS = 900;
+const PRELOAD_MS = 25_000;
+let autoAdvanced = false;
+
 function startClock(get: () => PlayerState) {
   cancelAnimationFrame(raf);
   const loop = () => {
@@ -566,6 +573,7 @@ export const usePlayer = create<PlayerState>((set, get) => ({
         get().seek(0);
         return;
       }
+      autoAdvanced = true;
       void get().next();
     });
     // Báo "đang phát" ngay để nút đổi liền tay; nếu không phát được thì lùi lại.
@@ -583,6 +591,8 @@ export const usePlayer = create<PlayerState>((set, get) => ({
 
   pause: () => {
     engine.pause();
+    autoAdvanced = false;
+    engine.setFade(1);
     set({ playing: false, status: get().status === "loading" ? "idle" : get().status });
     cancelAnimationFrame(raf);
     save(get(), get().currentMs, true);
@@ -669,6 +679,7 @@ export const usePlayer = create<PlayerState>((set, get) => ({
     const durationMs = known || engine.durationMs() || songVersion(song, v).durationMs || get().durationMs;
     set({ currentMs: ms, durationMs, ...indices(song, v, ms) });
     save(get(), ms);
+    smoothTransition(get(), ms, engine.durationMs() || durationMs);
   },
 
   setSleepMinutes: (minutes) => set({ sleepMinutes: Math.max(1, Math.round(minutes)) }),
@@ -810,6 +821,16 @@ export function useUpNext(): Song | null {
   const repeat = usePlayer((s) => s.repeat);
   const bag = usePlayer((s) => s.shuffleBag);
   const queued = usePlayer((s) => s.queue[0]);
+  return upNextOf(songId, playOrder, repeat, bag, queued);
+}
+
+function upNextOf(
+  songId: string,
+  playOrder: PlayOrder,
+  repeat: RepeatMode,
+  bag: string[],
+  queued: string | undefined,
+): Song | null {
   if (repeat === "one") return null;
   if (queued) return songOf(queued);
   const list = siblings(songId);
@@ -820,4 +841,25 @@ export function useUpNext(): Song | null {
   const i = list.indexOf(songId);
   if (i === list.length - 1 && repeat === "off") return null;
   return songOf(list[(i + 1) % list.length]);
+}
+
+/**
+ * Gọi mỗi khung hình khi đang phát: chỉnh hệ số mờ dần và tải trước bài kế.
+ * Chỉ nhỏ dần ở cuối khi sắp tự chuyển sang bài khác (không khi lặp một bài
+ * hay hẹn «dừng sau bài này»).
+ */
+function smoothTransition(s: PlayerState, ms: number, total: number) {
+  if (!s.playing || !total) return;
+  const left = total - ms;
+  const next = upNextOf(s.songId, s.playOrder, s.repeat, s.shuffleBag, s.queue[0]);
+  if (next && left < PRELOAD_MS) {
+    engine.preload(resolveAudio(songVersion(next, 0).audioSrc));
+  }
+  let f = 1;
+  if (next && !s.stopAfterSong && left < FADE_OUT_MS) f = Math.max(0, left / FADE_OUT_MS);
+  if (autoAdvanced) {
+    if (ms < FADE_IN_MS) f = Math.min(f, ms / FADE_IN_MS);
+    else autoAdvanced = false;
+  }
+  engine.setFade(f);
 }

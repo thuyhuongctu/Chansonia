@@ -220,6 +220,7 @@ const UI: Record<string, Row> = {
   "Chia sẻ câu hát thành ảnh": { en: "Share lyric as image", fr: "Partager les paroles en image" },
   "Đã tải ảnh câu hát": { en: "Lyric image saved", fr: "Image des paroles enregistrée" },
   "Không tạo được ảnh": { en: "Couldn't create the image", fr: "Impossible de créer l’image" },
+  "Phát trên loa hoặc TV": { en: "Play on a speaker or TV", fr: "Lire sur une enceinte ou une TV" },
   "Thông tin bài hát": { en: "Song credits", fr: "Crédits" },
   "Nhạc và lời": { en: "Music & lyrics", fr: "Musique et paroles" },
   "Thuộc bản quyền của {x}": { en: "© {x}", fr: "© {x}" },
