@@ -253,3 +253,15 @@ test.describe("Giao diện quốc tế: thẻ bộ sưu tập và thanh điều 
     );
   });
 });
+
+test.describe("Giao diện quốc tế: trang bộ sưu tập kiểu album", () => {
+  test("đầu trang có ảnh bìa, tên, nút phát; cuối trang có «Về bộ sưu tập này» với DOI", async ({ page }, info) => {
+    test.skip(info.project.name === "máy tính", "máy tính có cột trái riêng");
+    await openApp(page);
+    const hero = page.locator("[data-album-hero]");
+    await expect(hero).toContainText("La Maison de Madame Hương");
+    await expect(hero.locator("[data-play-all]")).toBeVisible();
+    const box = page.locator("[data-about-collection-box]");
+    await expect(box.locator("[data-collection-doi]")).toHaveAttribute("href", "https://doi.org/10.5281/zenodo.22003853");
+  });
+});

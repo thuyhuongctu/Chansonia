@@ -56,7 +56,7 @@ export function LibraryView() {
   const query = usePlayer((s) => s.query);
   const setQuery = usePlayer((s) => s.setQuery);
   const favorites = usePlayer((s) => s.favorites);
-  const { t, td } = useT();
+  const { t } = useT();
 
   const col = COLLECTION_BY_ID[collectionId];
   const needle = normalizeVi(query.trim());
@@ -112,47 +112,34 @@ export function LibraryView() {
       <section className="flex min-h-0 flex-1 flex-col" aria-label={col.name}>
         <CollectionTabs />
 
-        <div className="flex items-center gap-3 px-4 pt-3 lg:hidden">
-          <div className="min-w-0 flex-1">
-            <h2 className="font-display text-xl leading-tight font-semibold text-ink">
-              {col.name}
-            </h2>
-            <p className="mt-0.5 font-sans text-xs text-muted">{td(col.desc)}</p>
-            <CollectionLinks col={col} className="mt-2" />
-          </div>
-          <PlayAllButton />
-          <ShuffleToggle />
-        </div>
-
-        <div className="flex flex-col gap-2 px-4 pt-2.5 lg:px-0">
-          <label className="flex h-11 items-center gap-2.5 rounded-full border border-line bg-surface px-3.5 focus-within:border-accent">
-            <Search className="size-4 shrink-0 text-subtle" aria-hidden />
-            <input
-              type="search"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder={t("Tìm tên bài…")}
-              aria-label={t("Tìm trong bộ sưu tập")}
-              className="min-w-0 flex-1 bg-transparent font-sans text-sm text-ink outline-none placeholder:text-subtle"
-            />
-            {query ? (
-              <button
-                type="button"
-                onClick={() => setQuery("")}
-                aria-label={t("Xoá từ khoá")}
-                className="press -mr-1.5 flex size-8 items-center justify-center rounded-full text-subtle hover:text-ink"
-              >
-                <X className="size-4" />
-              </button>
-            ) : null}
-          </label>
-
-        </div>
-
         <div
           className="min-h-0 flex-1 overflow-y-auto px-4 pt-1 pb-2 lg:px-0"
           data-library-list
         >
+          {tab === "songs" || tab === "videos" ? <AlbumHero col={col} /> : null}
+          <div className="flex flex-col gap-2 pt-2.5 pb-1">
+            <label className="flex h-11 items-center gap-2.5 rounded-full border border-line bg-surface px-3.5 focus-within:border-accent">
+              <Search className="size-4 shrink-0 text-subtle" aria-hidden />
+              <input
+                type="search"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder={t("Tìm tên bài…")}
+                aria-label={t("Tìm trong bộ sưu tập")}
+                className="min-w-0 flex-1 bg-transparent font-sans text-sm text-ink outline-none placeholder:text-subtle"
+              />
+              {query ? (
+                <button
+                  type="button"
+                  onClick={() => setQuery("")}
+                  aria-label={t("Xoá từ khoá")}
+                  className="press -mr-1.5 flex size-8 items-center justify-center rounded-full text-subtle hover:text-ink"
+                >
+                  <X className="size-4" />
+                </button>
+              ) : null}
+            </label>
+          </div>
           {tab === "mine" ? (
             <MineView />
           ) : tab === "songs"
@@ -218,6 +205,7 @@ export function LibraryView() {
             </div>
           ) : null}
 
+          {tab === "songs" || tab === "videos" ? <AboutCollection col={col} /> : null}
           <AboutLink />
           <DoiLink />
         </div>
@@ -410,6 +398,62 @@ function PlayAllButton({ withLabel = false }: { withLabel?: boolean }) {
       <Play className="size-4 fill-current" />
       {withLabel ? <span>{t("Phát tất cả")}</span> : null}
     </button>
+  );
+}
+
+/**
+ * Đầu trang bộ sưu tập trên điện thoại, kiểu trang album: ảnh bìa lớn, tên,
+ * số bài và video, hai nút Phát tất cả và Ngẫu nhiên. Cuộn theo danh sách để
+ * nhường chỗ cho các bài khi người nghe kéo xuống.
+ */
+function AlbumHero({ col }: { col: Collection }) {
+  const { t } = useT();
+  return (
+    <header className="flex flex-col gap-3 pt-3 lg:hidden" data-album-hero>
+      <div className="flex items-end gap-4">
+        <span
+          className="size-32 shrink-0 overflow-hidden rounded-2xl border border-line shadow-song"
+          style={{ background: col.color }}
+          aria-hidden
+        >
+          {col.art ? <img src={col.art} alt="" className="size-full object-cover" /> : null}
+        </span>
+        <div className="min-w-0 pb-1">
+          <p
+            className="font-sans text-[10px] font-bold tracking-[0.16em] uppercase"
+            style={{ color: col.color }}
+          >
+            {t("{s} bài hát · {v} video", { s: col.songs.length, v: col.videos.length })}
+          </p>
+          <h2 className="mt-1 font-display text-[22px] leading-tight font-semibold text-ink">{col.name}</h2>
+        </div>
+      </div>
+      <div className="flex gap-2">
+        <PlayAllButton withLabel />
+        <ShuffleToggle withLabel />
+      </div>
+    </header>
+  );
+}
+
+/**
+ * «Về bộ sưu tập này» ở cuối danh sách trên điện thoại: mô tả, trang của dự
+ * án và mã DOI (trên máy tính các thông tin này nằm ở cột trái).
+ */
+function AboutCollection({ col }: { col: Collection }) {
+  const { t, td } = useT();
+  return (
+    <section
+      aria-label={t("Về bộ sưu tập này")}
+      className="mt-6 rounded-2xl border border-line bg-surface px-4 py-3.5 lg:hidden"
+      data-about-collection-box
+    >
+      <h3 className="font-sans text-[11px] font-bold tracking-[0.18em] text-muted uppercase">
+        {t("Về bộ sưu tập này")}
+      </h3>
+      <p className="mt-1.5 font-sans text-sm text-ink">{td(col.desc)}</p>
+      <CollectionLinks col={col} className="mt-3" />
+    </section>
   );
 }
 
