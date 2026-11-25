@@ -132,9 +132,9 @@ export function KaraokeStage() {
         </div>
       </ScreenHeader>
 
-      <div className="flex shrink-0 items-center gap-2 border-b border-line px-4 py-2 lg:px-6">
+      <div className="flex shrink-0 flex-wrap items-center gap-2 border-b border-line px-4 py-2 max-sm:justify-end lg:px-6">
         {song.versions && song.versions.length > 1 ? (
-          <div className="flex min-w-0 flex-1 gap-2 overflow-x-auto" role="group" aria-label={t("Phiên bản")}>
+          <div className="no-scrollbar flex min-w-0 flex-1 gap-2 overflow-x-auto max-sm:order-last max-sm:basis-full" role="group" aria-label={t("Phiên bản")}>
             {song.versions.map((v, i) => (
               <button
                 key={v.label}
