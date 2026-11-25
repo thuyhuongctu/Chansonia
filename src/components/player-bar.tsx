@@ -44,6 +44,10 @@ export function PlayerBar() {
   const cycleRepeat = usePlayer((s) => s.cycleRepeat);
   const sleepLeft = useSleepRemaining();
   const { t } = useT();
+  // Ở màn hình nghe trên điện thoại, thanh phát nở thành bàn điều khiển lớn
+  // (kiểu «Đang phát» của các app nhạc): giờ hai đầu thanh tiến độ, nút phát
+  // to ở giữa; tên bài đã nằm ở đầu màn hình nên không lặp lại.
+  const full = view === "player";
   const barRef = useRef<HTMLDivElement>(null);
 
   // Ghi chiều cao thật của thanh phát vào --player-h, cho những thứ cần nằm
@@ -73,8 +77,12 @@ export function PlayerBar() {
   return (
     <div
       ref={barRef}
-      className="pb-safe-bar relative z-20 shrink-0 border-t border-line bg-surface px-4 pt-1.5 lg:px-6 lg:pt-2.5"
+      className={cn(
+        "pb-safe-bar relative z-20 shrink-0 border-t border-line bg-surface px-4 pt-1.5 lg:px-6 lg:pt-2.5",
+        full && "max-lg:pt-3",
+      )}
       data-player-bar
+      data-full={full || undefined}
     >
       {status === "error" ? (
         <p
@@ -85,9 +93,23 @@ export function PlayerBar() {
           {errorText}
         </p>
       ) : null}
-      <div className="mx-auto grid max-w-6xl grid-cols-[minmax(0,1fr)_auto] items-center gap-x-2 [grid-template-areas:'scrub_scrub'_'info_ctrl'] lg:grid-cols-[280px_minmax(0,1fr)_470px] lg:gap-x-6 lg:[grid-template-areas:'info_scrub_ctrl']">
+      <div
+        className={cn(
+          "mx-auto grid max-w-6xl grid-cols-[minmax(0,1fr)_auto] items-center gap-x-2 [grid-template-areas:'scrub_scrub'_'info_ctrl'] lg:grid-cols-[280px_minmax(0,1fr)_470px] lg:gap-x-6 lg:[grid-template-areas:'info_scrub_ctrl']",
+          full && "max-lg:grid-cols-1 max-lg:[grid-template-areas:'scrub'_'ctrl']",
+        )}
+      >
         <div className="[grid-area:scrub]">
           <Scrubber />
+          {full ? (
+            <div className="-mt-0.5 flex justify-between font-sans text-[11px] text-subtle tabular-nums lg:hidden" data-full-time>
+              <span>{formatTime(currentMs)}</span>
+              <span>
+                {sleepLeft != null ? `${t("hẹn giờ {t}", { t: formatTime(sleepLeft) })} · ` : ""}
+                {durationMs ? formatTime(durationMs) : "–:––"}
+              </span>
+            </div>
+          ) : null}
         </div>
 
         <button
@@ -95,7 +117,10 @@ export function PlayerBar() {
           onClick={() => setView("player")}
           disabled={view === "player"}
           aria-label={t("Mở lời bài {t}", { t: song.title })}
-          className="press mt-0.5 flex min-w-0 items-center gap-2.5 text-left [grid-area:info] disabled:cursor-default lg:mt-0"
+          className={cn(
+            "press mt-0.5 flex min-w-0 items-center gap-2.5 text-left [grid-area:info] disabled:cursor-default lg:mt-0",
+            full && "max-lg:hidden",
+          )}
         >
           <span className="size-11 shrink-0 overflow-hidden rounded-[10px] border border-line bg-sunk">
             {song.coverSrc ? (
@@ -117,12 +142,17 @@ export function PlayerBar() {
           </span>
         </button>
 
-        <div className="mt-0.5 flex items-center gap-2 [grid-area:ctrl] lg:mt-0 lg:justify-end">
+        <div
+          className={cn(
+            "mt-0.5 flex items-center gap-2 [grid-area:ctrl] lg:mt-0 lg:justify-end",
+            full && "max-lg:mt-1 max-lg:justify-between max-lg:px-1",
+          )}
+        >
           <IconButton
             label={t("Phát ngẫu nhiên")}
             onClick={() => setPlayOrder(shuffling ? "sequential" : "shuffle")}
             pressed={shuffling}
-            className="hidden lg:flex"
+            className={full ? "flex" : "hidden lg:flex"}
           >
             <Shuffle className="size-4" />
           </IconButton>
@@ -143,7 +173,10 @@ export function PlayerBar() {
           <button
             type="button"
             onClick={() => (playing ? pause() : void play())}
-            className="press press-lg flex size-13 shrink-0 items-center justify-center rounded-full bg-accent text-on-accent shadow-song"
+            className={cn(
+              "press press-lg flex size-13 shrink-0 items-center justify-center rounded-full bg-accent text-on-accent shadow-song",
+              full && "max-lg:size-16",
+            )}
             aria-label={playing ? t("Tạm dừng") : t("Phát")}
             aria-keyshortcuts="Space K"
           >
