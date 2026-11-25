@@ -117,6 +117,12 @@ export function LibraryView() {
           data-library-list
         >
           {tab === "songs" || tab === "videos" ? <AlbumHero col={col} /> : null}
+          {tab === "favorites" && liked.length ? (
+            <div className="flex gap-2 pt-3 lg:hidden" data-favorites-actions>
+              <PlayAllButton withLabel />
+              <ShuffleToggle withLabel />
+            </div>
+          ) : null}
           <div className="flex flex-col gap-2 pt-2.5 pb-1">
             <label className="flex h-11 items-center gap-2.5 rounded-full border border-line bg-surface px-3.5 focus-within:border-accent">
               <Search className="size-4 shrink-0 text-subtle" aria-hidden />
