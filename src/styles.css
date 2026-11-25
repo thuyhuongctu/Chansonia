@@ -237,7 +237,7 @@
 
 .lyric-line {
   font-family: var(--font-display);
-  font-size: 19px;
+  font-size: calc(19px * var(--lyric-scale, 1));
   font-weight: 400;
   line-height: 1.28;
   color: var(--muted);
@@ -252,7 +252,7 @@
 }
 
 .lyric-line[data-state="active"] {
-  font-size: 27px;
+  font-size: calc(27px * var(--lyric-scale, 1));
   font-weight: 600;
   color: var(--ink);
 }
@@ -263,7 +263,7 @@
 }
 
 .lyric-line[data-state="sheet"] {
-  font-size: 17px;
+  font-size: calc(17px * var(--lyric-scale, 1));
   color: var(--ink);
 }
 

@@ -4,6 +4,8 @@ import { RefreshButton, ScreenHeader } from "@/components/header";
 import { WorldClock } from "@/components/world-clock";
 import { LANGS, LANG_NAMES, useLang, useT } from "@/lib/i18n";
 import { useTheme, type Theme } from "@/lib/theme";
+import { LYRIC_SCALES, useDisplay } from "@/lib/display-prefs";
+import { cn } from "@/lib/utils";
 
 /**
  * Màn hình «Cài đặt»: gom các nút từng nằm chật trên thanh đầu trang (ngôn
@@ -22,6 +24,10 @@ export function SettingsView() {
           </Group>
           <Group title={t("Giao diện")}>
             <ThemePicker />
+          </Group>
+          <Group title={t("Lời bài hát")}>
+            <LyricSizePicker />
+            <KeepAwakeSwitch />
           </Group>
           <Group title={t("Giờ Việt Nam và giờ Pháp")}>
             <WorldClock />
@@ -74,7 +80,7 @@ function Option({
   active: boolean;
   onClick: () => void;
   children: ReactNode;
-} & Record<`data-${string}`, string>) {
+} & { "aria-label"?: string } & Record<`data-${string}`, string>) {
   return (
     <button
       type="button"
@@ -122,5 +128,74 @@ function ThemePicker() {
         </Option>
       ))}
     </Segmented>
+  );
+}
+
+const SIZE_NAMES = ["Nhỏ", "Vừa", "Lớn", "Rất lớn"] as const;
+
+function LyricSizePicker() {
+  const scale = useDisplay((s) => s.lyricScale);
+  const setScale = useDisplay((s) => s.setLyricScale);
+  const { t } = useT();
+  return (
+    <>
+      <Segmented label={t("Cỡ chữ lời hát")}>
+        {LYRIC_SCALES.map((v, i) => (
+          <Option
+            key={v}
+            active={v === scale}
+            onClick={() => setScale(v)}
+            data-lyric-size={String(v)}
+            aria-label={t(SIZE_NAMES[i])}
+          >
+            <span className="font-display leading-none" style={{ fontSize: `${14 * v}px` }} aria-hidden>
+              Aa
+            </span>
+          </Option>
+        ))}
+      </Segmented>
+      <p
+        className="rounded-2xl border border-line bg-surface px-4 py-3 font-display font-semibold text-ink"
+        style={{ fontSize: `${19 * scale}px`, lineHeight: 1.28 }}
+        data-lyric-preview
+      >
+        Je voudrais te parler
+      </p>
+    </>
+  );
+}
+
+function KeepAwakeSwitch() {
+  const on = useDisplay((s) => s.keepAwake);
+  const setOn = useDisplay((s) => s.setKeepAwake);
+  const { t } = useT();
+  return (
+    <button
+      type="button"
+      role="switch"
+      aria-checked={on}
+      onClick={() => setOn(!on)}
+      data-keep-awake
+      className="press flex items-center justify-between gap-3 rounded-2xl border border-line bg-surface px-4 py-3 text-left"
+    >
+      <span className="min-w-0">
+        <span className="block font-sans text-sm font-semibold text-ink">{t("Giữ màn hình sáng")}</span>
+        <span className="block font-sans text-xs text-muted">{t("Màn hình không tự tắt khi đang nghe và xem lời")}</span>
+      </span>
+      <span
+        className={cn(
+          "relative h-7 w-12 shrink-0 rounded-full transition-colors",
+          on ? "bg-accent" : "bg-sunk ring-1 ring-line",
+        )}
+        aria-hidden
+      >
+        <span
+          className={cn(
+            "absolute top-1 size-5 rounded-full bg-white shadow transition-[left]",
+            on ? "left-6" : "left-1",
+          )}
+        />
+      </span>
+    </button>
   );
 }

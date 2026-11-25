@@ -9,6 +9,9 @@ import { Tilt } from "@/components/depth";
 import { cn } from "@/lib/utils";
 import { useT } from "@/lib/i18n";
 import { useAnnounce } from "@/lib/announce";
+import { useDisplay } from "@/lib/display-prefs";
+import { useWakeLock } from "@/lib/wake-lock";
+import type { CSSProperties } from "react";
 
 /**
  * Màn hình nghe — lời hát của bài đang phát.
@@ -34,6 +37,10 @@ export function KaraokeStage() {
   const play = usePlayer((s) => s.play);
   const versionIndex = usePlayer((s) => s.versionIndex);
   const setVersion = usePlayer((s) => s.setVersion);
+  const lyricScale = useDisplay((s) => s.lyricScale);
+  const keepAwake = useDisplay((s) => s.keepAwake);
+  // Đang hát theo lời thì giữ màn hình sáng, tránh máy tự tắt giữa bài.
+  useWakeLock(keepAwake && playing);
 
   const version = songVersion(song, versionIndex);
   // Lời chỉ chạy theo nhạc ở bản khớp với nó; bản khác thì in lời đứng yên.
@@ -161,6 +168,8 @@ export function KaraokeStage() {
           ref={boxRef}
           className="lyric-stage min-h-0 flex-1 overflow-y-auto px-6 py-5 font-display lg:px-2"
           data-mode={mode}
+          data-lyric-scale={lyricScale}
+          style={{ "--lyric-scale": lyricScale } as CSSProperties}
         >
           {song.lines.length > 0 && !synced ? (
             <div className="py-16 text-center" data-unsynced>

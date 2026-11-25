@@ -17,6 +17,7 @@ import {
 import { usePlayer } from "@/lib/player-store";
 import { cn, normalizeVi } from "@/lib/utils";
 import { translateData, useT } from "@/lib/i18n";
+import { isNew, newIds } from "@/lib/new-releases";
 
 /** Phần chữ tìm được của mỗi bài: tên, dòng phụ và cả lời hát (nếu có). */
 const SONG_TEXT = new Map<string, string>(
@@ -157,6 +158,7 @@ export function LibraryView() {
           ) : tab === "songs"
             ? (
                 <>
+                  {!needle ? <NewShelf /> : null}
                   {col.albums
                     ? col.albums.map((album) => {
                         const rows = songs.filter(({ song }) => album.songIds.includes(song.id));
@@ -488,8 +490,11 @@ export function SongRow({
         active={active}
       />
       <span className="min-w-0">
-        <span className="block truncate font-display text-[15px] leading-tight font-bold text-ink">
-          {song.title}
+        <span className="flex min-w-0 items-center gap-1.5">
+          <span className="truncate font-display text-[15px] leading-tight font-bold text-ink">
+            {song.title}
+          </span>
+          {isNew(song.id) ? <NewBadge /> : null}
         </span>
         <span
           className={cn(
@@ -528,8 +533,11 @@ function VideoRow({
     >
       <Thumb src={video.poster} badge="▶" />
       <span className="min-w-0">
-        <span className="block truncate font-display text-[15px] leading-tight font-bold text-ink">
-          {td(video.title)}
+        <span className="flex min-w-0 items-center gap-1.5">
+          <span className="truncate font-display text-[15px] leading-tight font-bold text-ink">
+            {td(video.title)}
+          </span>
+          {isNew(video.id) ? <NewBadge /> : null}
         </span>
         <span className="block truncate font-sans text-xs text-muted">
           {td(video.meta)}
@@ -539,6 +547,63 @@ function VideoRow({
         {video.duration ?? ""}
       </span>
     </button>
+  );
+}
+
+/** Nhãn «Mới» nhỏ cạnh tên bài hay video vừa phát hành */
+function NewBadge() {
+  const { t } = useT();
+  return (
+    <span
+      className="shrink-0 rounded-full bg-accent px-1.5 py-px font-sans text-[10px] leading-4 font-bold tracking-wide text-on-accent uppercase"
+      data-new
+    >
+      {t("Mới")}
+    </span>
+  );
+}
+
+/**
+ * «Mới phát hành»: hàng thẻ cuộn ngang ở đầu danh sách bài, gom bài mới của
+ * mọi bộ sưu tập, mới nhất trước. Bấm thẻ là phát.
+ */
+function NewShelf() {
+  const { t } = useT();
+  const playSong = usePlayer((s) => s.playSong);
+  const songs = newIds()
+    .map((id) => SONG_INDEX[id])
+    .filter(Boolean);
+  if (!songs.length) return null;
+  return (
+    <section aria-label={t("Mới phát hành")} className="pt-2 pb-3" data-new-shelf>
+      <h3 className="mb-2 font-sans text-[11px] font-bold tracking-[0.18em] text-muted uppercase">
+        {t("Mới phát hành")}
+      </h3>
+      <div className="no-scrollbar -mx-4 flex snap-x scroll-px-4 gap-3 overflow-x-auto px-4 lg:mx-0 lg:scroll-px-0 lg:px-0">
+        {songs.map((song) => (
+          <button
+            key={song.id}
+            type="button"
+            onClick={() => void playSong(song.id)}
+            data-new-song={song.id}
+            className="press w-28 shrink-0 snap-start text-left"
+          >
+            <span className="relative block aspect-square overflow-hidden rounded-2xl border border-line bg-sunk shadow-song">
+              {song.coverSrc ? (
+                <img src={song.coverSrc} alt="" loading="lazy" className="size-full object-cover" />
+              ) : null}
+              <span className="absolute right-2 bottom-2 flex size-8 items-center justify-center rounded-full bg-accent text-on-accent shadow">
+                <Play className="ml-0.5 size-3.5 fill-current" aria-hidden />
+              </span>
+            </span>
+            <span className="mt-1.5 line-clamp-2 block font-display text-[13px] leading-tight font-bold text-ink">
+              {song.title}
+            </span>
+            <span className="block truncate font-sans text-[11px] text-muted">{collectionOf(song.id).short}</span>
+          </button>
+        ))}
+      </div>
+    </section>
   );
 }
 
