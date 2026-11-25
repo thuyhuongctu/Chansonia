@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { ArrowUpRight, Heart, Repeat, Repeat1 } from "lucide-react";
+import { ArrowUpRight, Heart, Languages, Repeat, Repeat1 } from "lucide-react";
 import { formatTime, songMeta, songVersion } from "@/lib/catalog";
 import { collectionOf } from "@/lib/library";
 import { usePlayer, useSong, useUpNext } from "@/lib/player-store";
@@ -11,6 +11,7 @@ import { useT } from "@/lib/i18n";
 import { useAnnounce } from "@/lib/announce";
 import { useDisplay } from "@/lib/display-prefs";
 import { useWakeLock } from "@/lib/wake-lock";
+import { hasTranslation, translateLine } from "@/lib/translations";
 import type { CSSProperties } from "react";
 
 /**
@@ -39,6 +40,9 @@ export function KaraokeStage() {
   const setVersion = usePlayer((s) => s.setVersion);
   const lyricScale = useDisplay((s) => s.lyricScale);
   const keepAwake = useDisplay((s) => s.keepAwake);
+  const showTranslation = useDisplay((s) => s.showTranslation);
+  const translatable = hasTranslation(song.lines);
+  const translate = translatable && showTranslation;
   // Đang hát theo lời thì giữ màn hình sáng, tránh máy tự tắt giữa bài.
   useWakeLock(keepAwake && playing);
 
@@ -156,6 +160,7 @@ export function KaraokeStage() {
         ) : (
           <div className="flex-1" />
         )}
+        {translatable ? <TranslationToggle /> : null}
         <SongActions />
       </div>
 
@@ -200,6 +205,7 @@ export function KaraokeStage() {
               {song.lines.map((line, i) => {
                 const label = sectionLabel.get(line.id);
                 const isActive = i === active;
+                const tr = translate ? translateLine(line.words.map((w) => w.text).join(" ")) : undefined;
                 const state = !karaoke
                   ? "sheet"
                   : isActive
@@ -239,6 +245,11 @@ export function KaraokeStage() {
                         </span>
                       ))}
                     </button>
+                    {tr ? (
+                      <p className="lyric-translation" lang="en" data-state={state} data-translation>
+                        {tr}
+                      </p>
+                    ) : null}
                   </div>
                 );
               })}
@@ -452,5 +463,28 @@ function SongCredits() {
         ))}
       </dl>
     </section>
+  );
+}
+
+/** Nút «Lời dịch»: bật/tắt dòng dịch tiếng Anh dưới mỗi câu hát */
+function TranslationToggle() {
+  const { t } = useT();
+  const on = useDisplay((s) => s.showTranslation);
+  const setOn = useDisplay((s) => s.setShowTranslation);
+  return (
+    <button
+      type="button"
+      onClick={() => setOn(!on)}
+      aria-pressed={on}
+      aria-label={t("Lời dịch tiếng Anh")}
+      title={t("Lời dịch tiếng Anh")}
+      data-translation-toggle
+      className={cn(
+        "press flex size-11 shrink-0 items-center justify-center rounded-full border",
+        on ? "border-accent bg-accent-soft text-accent" : "border-line bg-surface text-muted hover:text-ink",
+      )}
+    >
+      <Languages className="size-4" />
+    </button>
   );
 }

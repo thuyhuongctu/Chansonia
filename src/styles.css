@@ -267,6 +267,23 @@
   color: var(--ink);
 }
 
+/* Dòng dịch tiếng Anh dưới câu hát: chữ thường, nhỏ, nhạt */
+.lyric-translation {
+  margin-top: -0.35rem;
+  padding-bottom: 0.5rem;
+  font-family: var(--font-sans);
+  font-size: calc(13px * var(--lyric-scale, 1));
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.35;
+  color: var(--subtle);
+}
+
+.lyric-translation[data-state="active"] {
+  font-size: calc(15px * var(--lyric-scale, 1));
+  color: var(--muted);
+}
+
 @media (hover: hover) {
   .lyric-line:not([data-state="active"]):hover {
     color: var(--ink);
