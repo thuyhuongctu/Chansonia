@@ -33,6 +33,7 @@ test.describe("Thư viện", () => {
   test("có đồng hồ giờ Việt Nam và giờ Pháp, kèm ngày", async ({ page }) => {
     await page.clock.setFixedTime(new Date("2026-11-11T22:30:00Z"));
     await openApp(page);
+    await page.getByRole("button", { name: "Cài đặt" }).click();
     // Mùa đông: Việt Nam UTC+7, Pháp UTC+1.
     await expect(page.locator('[data-clock="vn"]')).toContainText("05:30:00");
     await expect(page.locator('[data-clock="vn"]')).toContainText("12/11");
@@ -171,10 +172,11 @@ test.describe("Thư viện", () => {
     const paper = () => page.evaluate(() => getComputedStyle(document.body).backgroundColor);
     const sang = await paper();
 
-    await page.getByRole("button", { name: /Chuyển sang nền tối/ }).click();
+    await page.getByRole("button", { name: "Cài đặt" }).click();
+    await page.locator('[data-theme-option="dark"]').click();
     await expect.poll(paper, { message: "nền phải đổi màu khi bật nền tối" }).not.toBe(sang);
 
-    await page.getByRole("button", { name: /Chuyển sang nền sáng/ }).click();
+    await page.locator('[data-theme-option="light"]').click();
     await expect.poll(paper).toBe(sang);
   });
 

@@ -1,22 +1,22 @@
 import type { ReactNode } from "react";
-import { ChevronLeft, Moon, RotateCw, Sun } from "lucide-react";
+import { ChevronLeft, Moon, RotateCw, Settings, Sun } from "lucide-react";
 import { ARTIST } from "@/lib/artist";
 import { usePlayer } from "@/lib/player-store";
 import { useTheme } from "@/lib/theme";
 import { Logo } from "@/components/logo";
-import { WorldClock } from "@/components/world-clock";
 import { LANGS, LANG_NAMES, useLang, useT } from "@/lib/i18n";
 
 /**
- * Thanh đầu trang của thư viện: ô logo, tên app, nút mở trang nghệ sĩ (ảnh
- * chân dung) và nút đổi nền sáng/tối.
+ * Thanh đầu trang của thư viện, gọn theo kiểu app nhạc quốc tế: logo và tên
+ * app (mở «Giới thiệu») bên trái; nút «Cài đặt» và ảnh chân dung (trang nghệ
+ * sĩ) bên phải. Ngôn ngữ, nền sáng/tối, đồng hồ và làm mới nằm trong «Cài đặt».
  */
 export function LibraryHeader() {
   const setView = usePlayer((s) => s.setView);
   const { t } = useT();
 
   return (
-    <header className="pt-safe mx-auto flex w-full max-w-6xl shrink-0 flex-col gap-2 px-4 pb-2.5 lg:flex-row lg:items-center lg:gap-6 lg:px-6">
+    <header className="pt-safe mx-auto flex w-full max-w-6xl shrink-0 flex-col gap-2 px-4 pb-2.5 lg:px-6">
       <div className="flex min-w-0 flex-1 items-center gap-2.5">
         <h1 className="min-w-0 flex-1">
           <button
@@ -41,18 +41,22 @@ export function LibraryHeader() {
         </h1>
         <button
           type="button"
+          onClick={() => setView("settings")}
+          aria-label={t("Cài đặt")}
+          title={t("Cài đặt")}
+          data-settings-open
+          className="press flex size-11 shrink-0 items-center justify-center rounded-full border border-line bg-surface text-muted hover:text-ink"
+        >
+          <Settings className="size-[18px]" />
+        </button>
+        <button
+          type="button"
           onClick={() => setView("artist")}
           aria-label={t("Nghệ sĩ")}
           title={t("Nghệ sĩ")}
           className="press size-11 shrink-0 rounded-full border border-line bg-surface bg-cover bg-center"
           style={{ backgroundImage: `url(${ARTIST.portrait})` }}
         />
-        <RefreshButton />
-        <LangButton />
-        <ThemeButton />
-      </div>
-      <div className="lg:w-[420px] lg:shrink-0">
-        <WorldClock />
       </div>
     </header>
   );

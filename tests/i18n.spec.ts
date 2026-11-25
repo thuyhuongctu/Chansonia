@@ -27,21 +27,25 @@ test.describe("Ngôn ngữ giao diện", () => {
     await expect(page.locator(SONG_ROW).first()).toContainText("French");
   });
 
-  test("bấm nút ngôn ngữ để đổi EN → VI → FR, và app nhớ lựa chọn", async ({ page }) => {
+  test("đổi ngôn ngữ trong Cài đặt EN → VI → FR, và app nhớ lựa chọn", async ({ page }) => {
     await page.goto("/");
-    const nut = page.locator("button[data-lang]");
-    await expect(nut).toHaveText("EN");
+    // Thanh đầu trang gọn: ngôn ngữ nằm trong «Cài đặt».
+    await expect(page.locator("header button[data-lang]")).toHaveCount(0);
+    await page.getByRole("button", { name: "Settings" }).click();
+    await expect(page.locator('[data-lang-option="en"]')).toHaveAttribute("aria-pressed", "true");
 
-    await nut.click();
+    await page.locator('[data-lang-option="vi"]').click();
     await expect(page.locator("html")).toHaveAttribute("lang", "vi");
-    await expect(page.getByRole("tab", { name: /^Bài hát · / })).toBeVisible();
+    await expect(page.locator("[data-screen-title]")).toHaveText("Cài đặt");
 
-    await nut.click();
+    await page.locator('[data-lang-option="fr"]').click();
     await expect(page.locator("html")).toHaveAttribute("lang", "fr");
+    await page.getByRole("button", { name: "Retour" }).click();
     await expect(page.getByRole("tab", { name: /^Chansons · / })).toBeVisible();
 
     await page.reload();
-    await expect(page.locator("button[data-lang]")).toHaveText("FR");
+    await page.getByRole("button", { name: "Réglages" }).click();
+    await expect(page.locator('[data-lang-option="fr"]')).toHaveAttribute("aria-pressed", "true");
   });
 
   test("tìm bằng tiếng Anh vẫn ra bài", async ({ page }) => {

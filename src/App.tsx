@@ -2,6 +2,7 @@ import { LibraryHeader } from "@/components/header";
 import { LibraryView } from "@/components/library-view";
 import { ArtistView } from "@/components/artist-view";
 import { AboutView } from "@/components/about-view";
+import { SettingsView } from "@/components/settings-view";
 import { KaraokeStage } from "@/components/karaoke-stage";
 import { VideoView } from "@/components/video-view";
 import { PlayerBar } from "@/components/player-bar";
@@ -48,6 +49,8 @@ export default function App() {
         <ArtistView />
       ) : view === "about" ? (
         <AboutView />
+      ) : view === "settings" ? (
+        <SettingsView />
       ) : (
         <>
           <LibraryHeader />
