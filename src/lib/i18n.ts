@@ -85,6 +85,7 @@ const UI: Record<string, Row> = {
   "Bài hát · {n}": { en: "Songs · {n}", fr: "Chansons · {n}" },
   "Video · {n}": { en: "Videos · {n}", fr: "Clips · {n}" },
   "Yêu thích · {n}": { en: "Favourites · {n}", fr: "Favoris · {n}" },
+  "Yêu thích": { en: "Favourites", fr: "Favoris" },
   "Ở bộ sưu tập khác": { en: "In other collections", fr: "Dans les autres collections" },
   "Ở bộ sưu tập khác · {n}": { en: "In other collections · {n}", fr: "Dans les autres collections · {n}" },
   "Không có gì khớp.": { en: "Nothing matches.", fr: "Aucun résultat." },

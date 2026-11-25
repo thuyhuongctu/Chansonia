@@ -1,5 +1,5 @@
 import { Fragment, useMemo } from "react";
-import { ArrowUpRight, Play, Search, Shuffle, X } from "lucide-react";
+import { ArrowUpRight, Film, Heart, Music2, Play, Search, Shuffle, UserRound, X } from "lucide-react";
 import { SongMenuButton } from "@/components/song-menu";
 import { MineView } from "@/components/mine-view";
 import { CollectionLinks } from "@/components/collection-links";
@@ -54,7 +54,6 @@ export function LibraryView() {
   const tab = usePlayer((s) => s.libraryTab);
   const query = usePlayer((s) => s.query);
   const setQuery = usePlayer((s) => s.setQuery);
-  const setTab = usePlayer((s) => s.setLibraryTab);
   const favorites = usePlayer((s) => s.favorites);
   const { t, td } = useT();
 
@@ -147,35 +146,6 @@ export function LibraryView() {
             ) : null}
           </label>
 
-          <div
-            className="flex rounded-full border border-line bg-surface p-[3px]"
-            role="tablist"
-            aria-label={t("Loại nội dung")}
-          >
-            {(
-              [
-                ["songs", t("Bài hát · {n}", { n: col.songs.length })],
-                ["videos", t("Video · {n}", { n: col.videos.length })],
-                ["favorites", `♥ ${favorites.length}`],
-                ["mine", t("Của tôi")],
-              ] as const
-            ).map(([id, label]) => (
-              <button
-                key={id}
-                type="button"
-                role="tab"
-                aria-selected={tab === id}
-                aria-label={id === "favorites" ? t("Yêu thích · {n}", { n: favorites.length }) : undefined}
-                onClick={() => setTab(id)}
-                className={cn(
-                  "press h-11 flex-1 rounded-full font-sans text-[13px] font-semibold",
-                  tab === id ? "bg-ink text-paper" : "text-muted hover:text-ink"
-                )}
-              >
-                {label}
-              </button>
-            ))}
-          </div>
         </div>
 
         <div
@@ -249,49 +219,135 @@ export function LibraryView() {
           <AboutLink />
           <DoiLink />
         </div>
+
+        <ContentNav />
       </section>
     </div>
   );
 }
 
-/** Ba nút chọn bộ sưu tập — nút đang chọn tô màu riêng của bộ đó */
+/** Ảnh bìa dự phòng cho bộ sưu tập chưa có ảnh riêng */
+const CARD_ART: Partial<Record<Collection["id"], string>> = {
+  maida: "https://jemappellehuong.com/assets/img/maida-film-poster.webp",
+};
+
+/**
+ * Thẻ chọn bộ sưu tập: ảnh bìa nhỏ, tên đầy đủ (xuống dòng thay vì bị cắt) và
+ * số bài, như hàng «album» ở trang chủ các app nhạc quốc tế. Thẻ đang chọn có
+ * viền màu riêng của bộ đó.
+ */
 function CollectionTabs() {
   const collectionId = usePlayer((s) => s.collectionId);
   const setCollection = usePlayer((s) => s.setCollection);
   const { t } = useT();
   return (
     <div
-      className="no-scrollbar flex gap-1.5 overflow-x-auto px-4 lg:px-0 lg:pt-1"
+      className="no-scrollbar flex snap-x gap-2 overflow-x-auto px-4 pt-1 pb-1 lg:px-0"
       role="tablist"
       aria-label={t("Bộ sưu tập")}
+      data-collection-cards
     >
       {COLLECTIONS.map((c) => {
         const on = c.id === collectionId;
+        const art = c.art ?? CARD_ART[c.id];
         return (
           <button
             key={c.id}
             type="button"
             role="tab"
             aria-selected={on}
+            aria-label={c.short}
             onClick={(e) => {
               setCollection(c.id);
               e.currentTarget.scrollIntoView({ block: "nearest", inline: "nearest", behavior: "smooth" });
             }}
             className={cn(
-              "press h-11 shrink-0 rounded-xl border px-4 font-sans text-[13px] font-semibold whitespace-nowrap lg:flex-1 lg:px-2",
-              on
-                ? "text-white"
-                : "border-line bg-surface text-muted hover:text-ink"
+              "press flex w-44 shrink-0 snap-start items-center gap-2.5 rounded-2xl border bg-surface p-1.5 pr-3 text-left",
+              on ? "shadow-song" : "border-line hover:border-subtle"
             )}
-            style={
-              on ? { background: c.color, borderColor: c.color } : undefined
-            }
+            style={on ? { borderColor: c.color, boxShadow: `inset 0 0 0 1px ${c.color}` } : undefined}
           >
-            {c.short}
+            <span
+              className="size-11 shrink-0 overflow-hidden rounded-xl"
+              style={{ background: c.color }}
+              aria-hidden
+            >
+              {art ? <img src={art} alt="" loading="lazy" className="size-full object-cover" /> : null}
+            </span>
+            <span className="min-w-0 flex-1">
+              <span
+                className={cn(
+                  "line-clamp-2 font-sans text-[13px] leading-tight font-semibold",
+                  on ? "text-ink" : "text-muted"
+                )}
+              >
+                {c.short}
+              </span>
+              <span className="mt-0.5 block font-sans text-[11px] text-subtle">
+                {t("{n} bài", { n: c.songs.length })}
+              </span>
+            </span>
           </button>
         );
       })}
     </div>
+  );
+}
+
+/**
+ * Thanh điều hướng dưới: Bài hát · Video · Yêu thích · Của tôi, mỗi mục một
+ * biểu tượng và nhãn ngắn, như thanh tab của các app nhạc trên điện thoại.
+ * Tên đọc cho trình đọc màn hình vẫn kèm số lượng.
+ */
+function ContentNav() {
+  const collectionId = usePlayer((s) => s.collectionId);
+  const tab = usePlayer((s) => s.libraryTab);
+  const setTab = usePlayer((s) => s.setLibraryTab);
+  const favorites = usePlayer((s) => s.favorites);
+  const { t } = useT();
+  const col = COLLECTION_BY_ID[collectionId];
+  const items = [
+    ["songs", Music2, t("Bài hát"), t("Bài hát · {n}", { n: col.songs.length }), col.songs.length],
+    ["videos", Film, t("Video"), t("Video · {n}", { n: col.videos.length }), col.videos.length],
+    ["favorites", Heart, t("Yêu thích"), t("Yêu thích · {n}", { n: favorites.length }), favorites.length],
+    ["mine", UserRound, t("Của tôi"), t("Của tôi"), null],
+  ] as const;
+  return (
+    <nav
+      className="border-t border-line bg-paper/95 px-2 backdrop-blur lg:mt-2 lg:rounded-2xl lg:border lg:bg-surface">
+      <div className="mx-auto grid max-w-md grid-cols-4" role="tablist" aria-label={t("Loại nội dung")} data-content-nav>
+        {items.map(([id, Icon, label, full, n]) => {
+          const on = tab === id;
+          return (
+            <button
+              key={id}
+              type="button"
+              role="tab"
+              aria-selected={on}
+              aria-label={full}
+              onClick={() => setTab(id)}
+              className={cn(
+                "press relative flex min-h-14 flex-col items-center justify-center gap-0.5 font-sans text-[11px] font-semibold",
+                on ? "text-accent" : "text-muted hover:text-ink"
+              )}
+            >
+              <span className="relative">
+                <Icon className="size-5" aria-hidden fill={id === "favorites" && on ? "currentColor" : "none"} />
+                {n ? (
+                  <span
+                    className="absolute -top-1.5 left-3.5 min-w-4 rounded-full bg-ink px-1 text-center text-[9px] leading-4 text-paper"
+                    aria-hidden
+                  >
+                    {n}
+                  </span>
+                ) : null}
+              </span>
+              {label}
+            </button>
+          );
+        })}
+      </div>
+    </nav>
   );
 }
 
