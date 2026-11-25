@@ -17,11 +17,12 @@ export const LANG_NAMES: Record<Lang, string> = { en: "English", vi: "Tiếng Vi
 export const LOCALE: Record<Lang, string> = { en: "en-GB", vi: "vi-VN", fr: "fr-FR" };
 
 /**
- * Khoá lưu ngôn ngữ đã chọn, dùng chung với trang giới thiệu. Đổi tên từ
- * "chansonia-lang" khi chuyển mặc định sang tiếng Anh: lựa chọn cũ (lưu từ hồi
- * mặc định là tiếng Việt) không còn giữ người nghe ở tiếng Việt nữa.
+ * Khoá lưu ngôn ngữ đã chọn, dùng chung với trang giới thiệu. Mỗi lần đổi tên
+ * khoá là đưa mọi máy về tiếng Anh một lần (bản 1.3.0, 25/11/2026): lựa chọn
+ * cũ ("chansonia-lang", "chansonia-ui-lang") không còn được đọc; người dùng
+ * chọn lại tiếng Việt hay tiếng Pháp thì app nhớ theo khoá mới.
  */
-export const LANG_KEY = "chansonia-ui-lang";
+export const LANG_KEY = "chansonia-lang-v3";
 const KEY = LANG_KEY;
 
 function readLang(): Lang {
