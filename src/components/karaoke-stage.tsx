@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { Heart, Repeat, Repeat1 } from "lucide-react";
+import { ArrowUpRight, Heart, Repeat, Repeat1 } from "lucide-react";
 import { formatTime, songMeta, songVersion } from "@/lib/catalog";
 import { collectionOf } from "@/lib/library";
 import { usePlayer, useSong, useUpNext } from "@/lib/player-store";
@@ -182,6 +182,7 @@ export function KaraokeStage() {
                   b: td(song.versions?.find((v) => v.synced)?.label ?? ""),
                 })}
               </p>
+              <SongCredits />
             </div>
           ) : song.lines.length === 0 ? (
             <div className="py-16 text-center">
@@ -192,6 +193,7 @@ export function KaraokeStage() {
                 {t("Lời bài này chưa có trong ứng dụng. Vẫn nghe và hẹn giờ tắt nhạc được như thường.")}
               </p>
               <UpNext />
+              <SongCredits />
             </div>
           ) : (
             <div className="mx-auto max-w-2xl pb-[40vh] lg:pt-[12vh]">
@@ -241,6 +243,7 @@ export function KaraokeStage() {
                 );
               })}
               <UpNext />
+              <SongCredits />
             </div>
           )}
         </div>
@@ -401,5 +404,53 @@ function UpNext() {
         <span className="block truncate font-display text-[15px] font-semibold text-ink">{next.title}</span>
       </span>
     </button>
+  );
+}
+
+/**
+ * «Thông tin bài hát»: bộ sưu tập, album, chủ bản quyền nhạc và lời (game hay
+ * trang web của dự án) và mã DOI Zenodo để trích dẫn.
+ */
+function SongCredits() {
+  const song = useSong();
+  const { t, td } = useT();
+  const col = collectionOf(song.id);
+  const album = col.albums?.find((a) => a.songIds.includes(song.id));
+  const owner = col.link ? t(col.link.label) : col.short;
+  const rows: [string, React.ReactNode][] = [
+    [t("Thuộc bộ sưu tập"), col.name],
+    ...(album ? [[t("Album"), td(album.title)] as [string, React.ReactNode]] : []),
+    [t("Nhạc và lời"), t("Thuộc bản quyền của {x}", { x: owner })],
+    [
+      "DOI",
+      <a
+        key="doi"
+        href={`https://doi.org/${col.doi}`}
+        target="_blank"
+        rel="noreferrer noopener"
+        className="inline-flex items-center gap-1 tabular-nums underline decoration-line underline-offset-2 hover:text-accent"
+        data-credits-doi
+      >
+        {col.doi}
+        <ArrowUpRight className="size-3.5" aria-hidden />
+      </a>,
+    ],
+  ];
+  return (
+    <section
+      aria-label={t("Thông tin bài hát")}
+      className="mt-8 rounded-2xl border border-line bg-surface px-4 py-3.5 text-left font-sans"
+      data-credits
+    >
+      <h3 className="mb-2 text-[11px] font-bold tracking-[0.18em] text-muted uppercase">{t("Thông tin bài hát")}</h3>
+      <dl className="grid grid-cols-[max-content_minmax(0,1fr)] gap-x-4 gap-y-1.5 text-[13px]">
+        {rows.map(([k, v]) => (
+          <div key={k} className="contents">
+            <dt className="text-muted">{k}</dt>
+            <dd className="min-w-0 break-words text-ink">{v}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
   );
 }
