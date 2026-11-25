@@ -237,3 +237,19 @@ test.describe("Thư viện", () => {
     await expect(stage).toContainText("Lời tiếng Pháp", { ignoreCase: true });
   });
 });
+
+test.describe("Giao diện quốc tế: thẻ bộ sưu tập và thanh điều hướng dưới", () => {
+  test("thẻ bộ sưu tập có ảnh bìa và số bài; thanh dưới có bốn mục", async ({ page }) => {
+    await openApp(page);
+    const the = page.locator("[data-collection-cards] [role=tab]");
+    await expect(the.first()).toContainText("10 bài");
+    await expect(page.locator("[data-collection-cards] img").first()).toBeAttached();
+    const nav = page.locator("[data-content-nav] [role=tab]");
+    await expect(nav).toHaveCount(4);
+    await nav.nth(1).click();
+    await expect(nav.nth(1)).toHaveAttribute("aria-selected", "true");
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(
+      await page.evaluate(() => window.innerWidth),
+    );
+  });
+});
