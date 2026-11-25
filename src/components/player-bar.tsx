@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
 import {
+  Cast,
   LoaderCircle,
   Pause,
   Play,
@@ -18,6 +19,7 @@ import { usePlayer, useSong } from "@/lib/player-store";
 import { SleepTimerButton, useSleepRemaining } from "@/components/sleep-timer";
 import { cn, formatTime } from "@/lib/utils";
 import { useT } from "@/lib/i18n";
+import { promptCast, watchCast } from "@/lib/audio-engine";
 
 /**
  * Thanh phát — luôn nằm ở đáy mọi màn hình.
@@ -194,6 +196,7 @@ export function PlayerBar() {
           </IconButton>
 
           <VolumeControl />
+          <CastButton />
           <SleepTimerButton />
         </div>
       </div>
@@ -351,5 +354,26 @@ function VolumeControl() {
         className="volume w-20 accent-[var(--accent)]"
       />
     </div>
+  );
+}
+
+/**
+ * Nút «Phát trên loa hoặc TV»: chỉ hiện khi trình duyệt thấy có thiết bị
+ * (Chromecast, loa thông minh, Apple TV…) để không chiếm chỗ vô ích.
+ */
+function CastButton() {
+  const { t } = useT();
+  const [available, setAvailable] = useState(false);
+  useEffect(() => watchCast(setAvailable), []);
+  if (!available) return null;
+  return (
+    <IconButton
+      label={t("Phát trên loa hoặc TV")}
+      onClick={() => {
+        promptCast().catch(() => {});
+      }}
+    >
+      <Cast className="size-4" />
+    </IconButton>
   );
 }
