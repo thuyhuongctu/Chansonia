@@ -10,6 +10,7 @@ import {
   FileText,
   Gauge,
   Heart,
+  ImageDown,
   ListEnd,
   ListMusic,
   ListPlus,
@@ -28,6 +29,7 @@ import { shareTitle, useT } from "@/lib/i18n";
 import { downloadLrc, hasLrc } from "@/lib/lrc";
 import { offlineSupported, useOffline } from "@/lib/offline";
 import { useAnnounce } from "@/lib/announce";
+import { pickLine, shareQuoteCard } from "@/lib/quote-card";
 
 /* ── Thông báo nhỏ ở cạnh dưới ("Đã thêm vào hàng chờ") ─────────────── */
 
@@ -296,6 +298,25 @@ function SongMenu({ song, onClose }: { song: Song; onClose: () => void }) {
           <MenuItem icon={<Share2 className="size-5" />} onClick={() => { onClose(); void shareSong(song, t); }}>
             {t("Chia sẻ bài này")}
           </MenuItem>
+          {song.lines.length ? (
+            <MenuItem
+              icon={<ImageDown className="size-5" />}
+              onClick={() => {
+                const st = usePlayer.getState();
+                const line = pickLine(song, isCurrent ? st.lineIndex : -1, isCurrent ? st.currentMs : 0);
+                onClose();
+                shareQuoteCard(song, line)
+                  .then((r) => {
+                    if (r === "downloaded") toast(t("Đã tải ảnh câu hát"));
+                  })
+                  .catch((e) => {
+                    if ((e as Error)?.name !== "AbortError") toast(t("Không tạo được ảnh"));
+                  });
+              }}
+            >
+              {t("Chia sẻ câu hát thành ảnh")}
+            </MenuItem>
+          ) : null}
           <OfflineItem song={song} onDone={done} />
           {hasLrc(song) ? (
             <MenuItem
