@@ -22,3 +22,8 @@ test.describe("Lời dịch tiếng Anh", () => {
     await expect(page.locator("[data-translation-toggle]")).toHaveCount(0);
   });
 });
+
+test("bài game Sử Việt cũng có lời dịch", async ({ page }) => {
+  await page.goto("/?bai=trong-toi-co-mot-nuoc-nam");
+  await expect(page.locator("[data-translation]").first()).toHaveText("I was born after the bombs had fallen silent");
+});
