@@ -263,3 +263,14 @@ test.describe("Giao diện quốc tế: trang bộ sưu tập kiểu album", () 
     await expect(box.locator("[data-collection-doi]")).toHaveAttribute("href", "https://doi.org/10.5281/zenodo.22003853");
   });
 });
+
+test("«Ngọn hải đăng soi đường» có ảnh bìa riêng, cả ở trang chia sẻ", async ({ page }) => {
+  await openApp(page);
+  await page.getByRole("tab", { name: "BizOnland", exact: true }).click();
+  await expect(page.locator('[data-song-id="bizon-fijord-moonlight"] img')).toHaveAttribute(
+    "src",
+    "art/ngon-hai-dang-southern-horizons.webp",
+  );
+  const res = await page.request.get("/b/bizon-fijord-moonlight/cover.jpg");
+  expect(res.headers()["content-type"]).toContain("image/jpeg");
+});
